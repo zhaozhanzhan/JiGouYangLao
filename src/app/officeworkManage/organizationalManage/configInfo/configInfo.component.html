@@ -1,0 +1,107 @@
+<nz-card nzType="inner" nzTitle="系统配置" class="marginBottom24">
+  <form nz-form [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="organName">机构名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="organName"
+              id="organName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">机构logo</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="logoImgsStr"
+              #logoImage
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">机构图片资料</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="photoImgsStr"
+              #photoImgs
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="organIntroduction"
+            >机构介绍</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <textarea
+              rows="4"
+              nz-input
+              formControlName="organIntroduction"
+              id="organIntroduction"
+              maxlength="500"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构位置</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-input-group [nzPrefix]="searchIcon">
+              <input
+                type="text"
+                nz-input
+                placeholder="输入地址后通过回车键检索"
+                maxlength="32"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="searchAddress"
+                (keyup)="inputChange($event)"
+              />
+            </nz-input-group>
+            <ng-template #searchIcon>
+              <i nz-icon type="search"></i>
+            </ng-template>
+
+            <div id="container" style="width:550px;height:350px;"></div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      [nzLoading]="isSaveLoading"
+      (click)="saveInfo(logoImage.showImageUrls, photoImgs.showImageUrls)"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>

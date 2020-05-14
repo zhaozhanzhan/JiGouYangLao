@@ -1,0 +1,115 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>字典数据详情</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <nz-card nzType="inner" nzTitle="字典数据详情" class="marginBottom24">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="dictTag"><i class="red">*</i>字典标签</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input formControlName="dictTag" id="dictTag" />
+              <nz-form-explain [hidden]="
+                  !(
+                    validateForm.get('dictTag').dirty &&
+                    validateForm.get('dictTag').errors
+                  )
+                ">字典标签不能为空</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="dictValue"><i class="red">*</i>字典键值</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-input-number formControlName="dictValue" id="dictValue" [nzMax]="10000" [nzStep]="1"></nz-input-number>
+              <nz-form-explain [hidden]="
+                  !(
+                    validateForm.get('dictValue').dirty &&
+                    validateForm.get('dictValue').errors
+                  )
+                ">字典键值不能为空</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="orderNo"><i class="red">*</i>排序号</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-input-number formControlName="orderNo" id="orderNo" [nzMax]="10000" [nzStep]="1"></nz-input-number>
+              <nz-form-explain [hidden]="
+                  !(
+                    validateForm.get('orderNo').dirty &&
+                    validateForm.get('orderNo').errors
+                  )
+                ">排序号不能为空</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div *ngIf="dictType == 'drugFrequency'" >
+          <div nz-col [nzSpan]="8">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8" nzFor="timeUnit">数量</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <input nz-input formControlName="timeUnit" class="w100p" (keyup)="frequency($event,'timeUnit')" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}">
+                <!-- <nz-input-number formControlName="timeUnit" id="timeUnit" [nzMax]="10000" [nzStep]="1" (keyup)="frequency($event,'timeUnit')"></nz-input-number> -->
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="8">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8" nzFor="unit">单位</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <nz-select #unit formControlName="unit" (ngModelChange)="frequency($event,unit)">
+                  <nz-option nzValue="日" nzLabel="日"></nz-option>
+                  <nz-option nzValue="周" nzLabel="周"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="8">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8" nzFor="timeNumber">频次</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <input nz-input formControlName="timeNumber" class="w100p" (keyup)="frequency($event,'timeNumber')" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}">
+                <!-- <nz-input-number formControlName="timeNumber" id="timeNumber" [nzMax]="10000" [nzStep]="1" (keyup)="frequency($event,'timeNumber')"></nz-input-number> -->
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <p style="padding-left:60px;" *ngIf="isShowFrequency">频次为：{{showFrequency}} 次</p>
+        </div>
+        
+      </div>
+
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="remark">字典描述</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input formControlName="remark" id="remark"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->

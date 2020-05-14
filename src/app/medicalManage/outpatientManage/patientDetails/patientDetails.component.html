@@ -1,0 +1,1536 @@
+<!-- 病人管理病历、处方详情 -->
+<div nz-row class="content">
+    <!-- 左边的卡片显示 -->
+    <div nz-col nzMd="8" nzLg="8" nzXl="5" nzXXl="5" style="max-width: 250px;">
+        <div>
+            <div class="details-views">
+                <!-- 卡片的头像 -->
+                <div>
+                    <!-- <img src="assets/img/outpatien/img.png" alt="" style="width: 80px;" /> -->
+                    <div class="imgTitle">
+                        <span style="color: #fff;">{{ obj.name }}</span>
+                    </div>
+                </div>
+                <!-- 病人的基本信息 -->
+                <div>
+                    <!-- <span class="detailsName">{{ obj.name }}</span> <br /> -->
+                    <span class="detailsPublic">性别：{{ obj.sex }}</span> <br />
+                    <span class="detailsPublic">年龄：{{ obj.age }}</span> <br />
+                    <span class="detailsPublic">床号：{{ obj.bedName }}</span> <br />
+                </div>
+                <!-- 历史病历 和用药跟踪按钮 -->
+                <!-- 历史病历 和用药跟踪按钮 -->
+                <div>
+                    <button nz-button nzType="primary" class="buttonLeft" (click)="openIsShowCaseHistory()">
+                        历史病历
+                    </button>
+                    <button nz-button nzType="primary" class="buttonRight" (click)="openIsShowDrugHistory()">
+                        用药跟踪
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结束就诊按钮 -->
+    <ng-template #editTemplate>
+        <button nz-button nzType="primary" (click)="isShowHospital()" *ngIf="endHospitalObj.medicalRecordId != '' && obj.status != '1'">
+            结束就诊
+        </button>
+        <button nz-button nzType="primary" (click)="saveOutHosipital()" *ngIf="obj.status == '1'">
+            保存
+        </button>
+        <button nz-button nzType="default" class="marginLeft" (click)="back()">
+            返回
+        </button>
+    </ng-template>
+
+    <!-- 病历详情中得保存和查看历史病历 -->
+    <ng-template #medicalDetails>
+        <button nz-button nzType="primary" (click)="saveCasehistory()" *ngIf="obj.status != '1'">保存</button>
+        <button nz-button nzType="primary" class="marginLeft" (click)="openVisable()">
+            查看历史病历
+        </button>
+    </ng-template>
+
+    <!-- 处方详情中得新增精一处方、新增精二处方、新增普通处方、保存、查看历史病历 -->
+    <ng-template #prescriptionDetails>
+        <button nz-button nzType="danger" nzGhost (click)="addRecipe('1')" *ngIf="obj.status != '1'">
+            新增精一处方
+        </button>
+        <button nz-button nzType="default" class="marginLeft" (click)="addRecipe('2')" *ngIf="obj.status != '1'">
+            新增精二处方
+        </button>
+        <button nz-button nzType="primary" class="marginLeft" (click)="addRecipe('3')" *ngIf="obj.status != '1'">
+            新增普通处方
+        </button>
+        <button nz-button nzType="primary" class="marginLeft" (click)="savePres()" *ngIf="obj.status != '1'">
+            保存
+        </button>
+        <button nz-button nzType="primary" class="marginLeft" (click)="openDrugVisible()">
+            查看用药跟踪
+        </button>
+    </ng-template>
+    <!-- 处方详情中得新增精一处方、新增精二处方、新增普通处方、保存、查看历史病历 -->
+    <ng-template #outpatientDetails>
+        <button nz-button nzType="primary" (click)="isShowHosipital()">
+            住院归来
+        </button>
+    </ng-template>
+
+    <ng-template #medicalDetailsReturn>
+        <button nz-button nzType="primary" (click)="addOutPaintDrug()">
+            添加
+        </button>
+    </ng-template>
+    <!-- 右边的病历处方tab页 -->
+    <div nz-col nzMd="16" nzLg="16" nzXl="19" nzXXl="19">
+        <div>
+            <!-- 病人病历处方编写 -->
+            <div>
+                <nz-card>
+                    <nz-tabset [nzTabBarExtraContent]="editTemplate">
+                        <nz-tab nzTitle="病历">
+                            <nz-card nzType="inner" nzTitle="病历详情" [nzExtra]="medicalDetails" class="marginBottom24">
+                                <div nz-row [nzGutter]="24">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6" nzRequired nzFor="name">主诉</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-input-group nzSearch>
+                                                    <input placeholder="请输入主诉" [readonly]="obj.status=='1'" nz-input [(ngModel)]="medicalRecord.chiefComplaint" (input)="onInput($event.target?.value, 'complain')" [nzAutocomplete]="auto" />
+                                                    <nz-autocomplete nzBackfill #auto>
+                                                        <nz-auto-option *ngFor="let option of mainSuitList" [nzValue]="option.tempDataContent">
+                                                            {{ option.tempDataContent }}
+                                                        </nz-auto-option>
+                                                    </nz-autocomplete>
+                                                </nz-input-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">现病史</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-input-group nzSearch>
+                                                    <input nz-input class="oldName" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.presentIllnessHistory" (input)="  onInput($event.target?.value, 'historyNow')" [nzAutocomplete]="presentIllnessHistory" />
+                                                    <nz-autocomplete nzBackfill #presentIllnessHistory>
+                                                        <nz-auto-option *ngFor="let option of historyNowList" [nzValue]="option.tempDataContent">
+                                                            {{ option.tempDataContent }}
+                                                        </nz-auto-option>
+                                                    </nz-autocomplete>
+                                                </nz-input-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">体格检查</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <div nz-col [nzSpan]="24" class="healthCheckup">
+                                                    <div nz-col [nzSpan]="24">
+                                                        <nz-form-item>
+                                                            <nz-form-label [nzSpan]="8">体温(℃)</nz-form-label>
+                                                            <nz-form-control [nzSm]="16">
+                                                                <nz-input-group nzCompact>
+                                                                    <nz-select [(ngModel)]="medicalRecord.temperatureType" [nzDisabled]="obj.status=='1'">
+                                                                        <nz-option [nzLabel]="'口温'" [nzValue]="'口温'"></nz-option>
+                                                                        <nz-option [nzLabel]="'腋温'" [nzValue]="'腋温'"></nz-option>
+                                                                        <nz-option [nzLabel]="'肛温'" [nzValue]="'肛温'"></nz-option>
+                                                                    </nz-select>
+                                                                    <input nz-input style="width: 200px;" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.temperatureValue" />
+                                                                </nz-input-group>
+                                                            </nz-form-control>
+                                                        </nz-form-item>
+                                                    </div>
+                                                    <div nz-col [nzSpan]="24">
+                                                        <nz-form-item>
+                                                            <nz-form-label [nzSpan]="10">血压(mmHg)</nz-form-label>
+                                                            <nz-form-control [nzSm]="14">
+                                                                <nz-input-group nzCompact style="width:50%;float:left">
+                                                                    <input type="text" nz-input [ngModel]="'高压'" readonly style="width: 40%;" />
+                                                                    <input type="text" nz-input style="width:50%;" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.highBloodPressure " />
+                                                                </nz-input-group>
+                                                                <nz-input-group nzCompact style="width:50%;float:right">
+                                                                    <input type="text" nz-input [ngModel]="'低压'" readonly style="width: 40%;" />
+                                                                    <input type="text" nz-input style="width:50%;" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.lowBloodPressure" />
+                                                                </nz-input-group>
+                                                            </nz-form-control>
+                                                        </nz-form-item>
+                                                    </div>
+                                                    <div nz-col [nzSpan]="24" *ngFor="let item of medicalRecord.healthCheckCfgList">
+                                                        <nz-form-item>
+                                                            <nz-form-label [nzSpan]="6">{{ item.cfgName }}</nz-form-label>
+                                                            <nz-form-control [nzSm]="18">
+                                                                <input nz-input style="width: 200px;" [readonly]="obj.status=='1'" [(ngModel)]="item.cfgValue" />
+                                                            </nz-form-control>
+                                                        </nz-form-item>
+                                                    </div>
+                                                    <div nz-col [nzSpan]="24">
+                                                        <nz-input-group nzSearch>
+                                                            <input nz-input class="oldName" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.healthCheckOther" (input)="onInput($event.target?.value, 'healthCheckUp')" [nzAutocomplete]="healthCheckOther" />
+                                                            <nz-autocomplete nzBackfill #healthCheckOther>
+                                                                <nz-auto-option *ngFor="let option of healthCheckUpList" [nzValue]="option.tempDataContent">
+                                                                    {{ option.tempDataContent }}
+                                                                </nz-auto-option>
+                                                            </nz-autocomplete>
+                                                        </nz-input-group>
+                                                    </div>
+                                                </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">实验室检查</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-input-group nzSearch>
+                                                    <input nz-input class="oldName" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.labEqpInspection" (input)="onInput($event.target?.value, 'laboratory')" [nzAutocomplete]="labEqpInspection" />
+                                                    <nz-autocomplete nzBackfill #labEqpInspection>
+                                                        <nz-auto-option *ngFor="let option of laboratoryList" [nzValue]="option.tempDataContent">
+                                                            {{ option.tempDataContent }}
+                                                        </nz-auto-option>
+                                                    </nz-autocomplete>
+                                                </nz-input-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">初步诊断</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-input-group nzSearch>
+                                                    <input nz-input class="oldName" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.primaryDiagnosis" (input)="onInput( $event.target?.value,'tentativeDiaginosis')" [nzAutocomplete]="primaryDiagnosis" />
+                                                    <nz-autocomplete nzBackfill #primaryDiagnosis>
+                                                        <nz-auto-option *ngFor="let option of tentativeDiaginosisList" [nzValue]="option.tempDataContent">
+                                                            {{ option.tempDataContent }}
+                                                        </nz-auto-option>
+                                                    </nz-autocomplete>
+                                                </nz-input-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">是否外出就诊</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-radio-group [(ngModel)]="medicalRecord.isOutForDoctor" (ngModelChange)="changeOutForDoctor()" [nzDisabled]="obj.status=='1'">
+                                                    <label nz-radio nzValue="1">是</label>
+                                                    <label nz-radio nzValue="0">否</label>
+                                                </nz-radio-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div style="margin-left: 86px !important;">
+                                        <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                            <nz-form-item>
+                                                <nz-form-label [nzSpan]="6" nzRequired>外出类型</nz-form-label>
+                                                <nz-form-control [nzSm]="18">
+                                                    <nz-radio-group [(ngModel)]="medicalRecord.outType"  [nzDisabled]="obj.status=='1'">
+                                                        <label nz-radio nzValue="1">外出门诊</label>
+                                                        <label nz-radio nzValue="2">外出住院</label>
+                                                    </nz-radio-group>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                            <nz-form-item>
+                                                <nz-form-label [nzSpan]="6" nzRequired>外出时间</nz-form-label>
+                                                <nz-form-control [nzSm]="18">
+                                                    <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [nzDisabled]="obj.status=='1'" [(ngModel)]="medicalRecord.outTime"></nz-date-picker>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                            <nz-form-item>
+                                                <nz-form-label [nzSpan]="6" nzRequired>陪同人</nz-form-label>
+                                                <nz-form-control [nzSm]="18">
+                                                    <input nz-input [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.accompanyPerson" />
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                            <nz-form-item>
+                                                <nz-form-label [nzSpan]="6" nzRequired>就诊医院</nz-form-label>
+                                                <nz-form-control [nzSm]="18">
+                                                    <nz-input-group nzSearch>
+                                                        <input nz-input class="oldName" [readonly]="obj.status=='1'" [(ngModel)]="medicalRecord.clinicHospital" (input)="
+                                onInput($event.target?.value, 'clinicHosiptal')
+                              " [nzAutocomplete]="clinicHospital" />
+                                                        <nz-autocomplete nzBackfill #clinicHospital>
+                                                            <nz-auto-option *ngFor="let option of clinicHosiptalList" [nzValue]="option.tempDataContent">
+                                                                {{ option.tempDataContent }}
+                                                            </nz-auto-option>
+                                                        </nz-autocomplete>
+                                                    </nz-input-group>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                            <nz-form-item>
+                                                <nz-form-label [nzSpan]="6">备注</nz-form-label>
+                                                <nz-form-control [nzSm]="18">
+                                                    <textarea nz-input [readonly]="obj.status=='1'" [nzAutosize]="{ minRows: 2, maxRows: 6 }" class="marginBottom" [(ngModel)]="medicalRecord.comment"></textarea>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="24" *ngIf="isShowResultHandling">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">处理结果</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-input-group nzSearch>
+                                                    <input nz-input class="dealResultName" [readonly]="isShowOutForDoctor || obj.status=='1'" [(ngModel)]="medicalRecord.handingResult" (input)="onInput($event.target?.value, 'dealResult')" [nzAutocomplete]="resultOfHand" />
+                                                    <nz-autocomplete nzBackfill #resultOfHand>
+                                                        <nz-auto-option *ngFor="let option of dealResultList" [nzValue]="option.tempDataContent">
+                                                            {{ option.tempDataContent }}
+                                                        </nz-auto-option>
+                                                    </nz-autocomplete>
+                                                </nz-input-group>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </nz-card>
+                        </nz-tab>
+                        <nz-tab nzTitle="处方" [nzDisabled]="endHospitalObj.medicalRecordId == ''">
+                            <nz-card nzType="inner" nzTitle="处方详情" [nzExtra]="prescriptionDetails" class="marginBottom24">
+                                <!-- 新增精一处方列表 -->
+                                <nz-card nzType="inner" class="marginTop positionR" *ngFor="let item of clinicPrescriptionDescList; let i = index" [nzTitle]="item?.name">
+                                    <div class="positionA">
+                                        <button nz-button nzType="primary" (click)="addDrug(item?.name, i, 'add')" *ngIf="obj.status!='1'">
+                                            添加
+                                        </button>
+                                        <button nz-button nzType="danger" nzGhost class="marginLeft" (click)="deleteDrug(i)" *ngIf="obj.status!='1'">
+                                            删除
+                                        </button>
+                                    </div>
+
+                                    <nz-table nzBordered [nzData]="item.clinicPrescriptionDrugList" [nzFrontPagination]="false" [nzShowPagination]="false">
+                                        <thead>
+                                            <tr>
+                                                <th class="text">药品名称</th>
+                                                <th>规格</th>
+                                                <th>天数</th>
+                                                <th>总量（盒）</th>
+                                                <th>单次剂量（单位）</th>
+                                                <th>用法</th>
+                                                <th>用药频次</th>
+                                                <th>频次</th>
+                                                <th *ngIf="obj.status!='1'">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="
+                          let drugDetails of item.clinicPrescriptionDrugList;
+                          let detailsI = index
+                        ">
+                                                <ng-container>
+                                                    <tr *ngFor="
+                              let cds of drugDetails.clinicPrescriptionDrugDescList;
+                              let cdsI = index
+                            ">
+                                                        <td>{{ cds?.drugName }}</td>
+                                                        <td>{{ cds?.specification }}</td>
+                                                        <td>{{ cds?.daysNum }}</td>
+                                                        <td>{{ cds?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}</td>
+                                                        <td>{{ cds?.dosage }}{{ cds?.packingUnitName }}</td>
+                                                        <td [attr.rowspan]="
+                                drugDetails.clinicPrescriptionDrugDescList
+                                  .length
+                              " *ngIf="cdsI == 0">
+                                                            {{ drugDetails?.drugUsageName }}
+                                                        </td>
+                                                        <td [attr.rowspan]="
+                                drugDetails.clinicPrescriptionDrugDescList
+                                  .length
+                              " *ngIf="cdsI == 0">
+                                                            {{ drugDetails?.drugUseFrequencyName }}
+                                                        </td>
+                                                        <td [attr.rowspan]="
+                                drugDetails.clinicPrescriptionDrugDescList
+                                  .length
+                              " *ngIf="cdsI == 0">
+                                                            {{ drugDetails?.drugFrequencyName }}
+                                                        </td>
+                                                        <td [attr.rowspan]="
+                                drugDetails.clinicPrescriptionDrugDescList
+                                  .length
+                              " *ngIf="cdsI == 0 && obj.status=='0'">
+                                                            <a href="javascript:void(0)" (click)="
+                                  editDetails(
+                                    i,
+                                    detailsI,
+                                    drugDetails,
+                                    'edit',
+                                    item?.name
+                                  )
+                                ">编辑</a>
+                                                            <nz-divider nzType="vertical"></nz-divider>
+                                                            <a href="javascript:void(0)" class="colorF00" (click)="deleteDetails(i, detailsI)">删除</a>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tbody>
+                                    </nz-table>
+                                </nz-card>
+                            </nz-card>
+                        </nz-tab>
+                        <nz-tab nzTitle="外出住院" [nzDisabled]="obj.status == '0'">
+                            <nz-card nzType="inner" nzTitle="外出住院详情" [nzExtra]="outpatientDetails" class="marginBottom24">
+                                <div nz-row [nzGutter]="24">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">外出时间</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="hosipatalObj.outTime"></nz-date-picker>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">陪同人</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <input nz-input [(ngModel)]="hosipatalObj.chiefComplaint" readonly />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">就诊医院</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <div class="hosiptalTitle">
+                                                    <div class="hosiptalContent">
+                                                        <button nz-button nzType="primary" (click)="addAnotherHospital()">转院</button>
+                                                    </div>
+
+                                                    <div *ngFor="let item of hosipatalObj.visitingList;let i=index">
+                                                        <div nz-col [nzSpan]="24">
+                                                            <nz-form-item>
+                                                                <nz-form-label [nzSpan]="6">医院名称</nz-form-label>
+                                                                <nz-form-control [nzSm]="18">
+                                                                    <nz-input-group nzSearch>
+                                                                        <input nz-input class="oldName hosiptalInput" [(ngModel)]="item.hospitalName" (input)=" onInput($event.target?.value, 'clinicHosiptal')" [nzAutocomplete]="hospitalName" />
+                                                                        <nz-autocomplete nzBackfill #hospitalName>
+                                                                            <nz-auto-option *ngFor="let option of clinicHosiptalList" [nzValue]="option.tempDataContent">
+                                                                                {{ option.tempDataContent }}
+                                                                            </nz-auto-option>
+                                                                        </nz-autocomplete>
+                                                                    </nz-input-group>
+                                                                </nz-form-control>
+                                                            </nz-form-item>
+                                                        </div>
+                                                        <div nz-col [nzSpan]="24">
+                                                            <nz-form-item>
+                                                                <nz-form-label [nzSpan]="6">住院时间</nz-form-label>
+                                                                <nz-form-control [nzSm]="18">
+                                                                    <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="item.inHospitalDate" style="display: inline;"></nz-date-picker>
+                                                                    <img src="assets\img\outpatien\delete.png" alt="" class="hosiptalImg" (click)="deleteAnthorHosipital(i)" *ngIf="i!=0">
+                                                                </nz-form-control>
+                                                            </nz-form-item>
+                                                        </div>
+                                                        <div nz-col [nzSpan]="24">
+                                                            <nz-form-item>
+                                                                <nz-form-label [nzSpan]="6">备注</nz-form-label>
+                                                                <nz-form-control [nzSm]="16">
+                                                                    <textarea rows="4" nz-input [(ngModel)]="item.comment" style="display: inline;"></textarea>
+
+                                                                </nz-form-control>
+                                                            </nz-form-item>
+                                                        </div>
+                                                        <div nz-col [nzSpan]="24">
+                                                            <div *ngIf=" i < hosipatalObj.visitingList.length" style="border:1px solid #efefef;margin-bottom: 10px;margin-top:10px;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </nz-card>
+                            <nz-card nzType="inner" nzTitle="住院归来详情" class="marginBottom24" [nzLoading]="isPersonCardLoading" *ngIf="isShowHospitalStay">
+                                <div nz-row [nzGutter]="24">
+                                    <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6" nzRequired>出院日期</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="hosipatalObj.backHosptial.outHospitalDate"></nz-date-picker>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">出院记录</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <mirr-image isShowUploadBtn="true" isShowOcrBtn="true" [imageUrlStr]="logoImgsStr" #logoImage></mirr-image>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="6">备注</nz-form-label>
+                                            <nz-form-control [nzSm]="18">
+                                                <textarea rows="4" nz-input [(ngModel)]="hosipatalObj.backHosptial.outcomment"></textarea>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+
+                                <!-- 住院归来药品详情 -->
+                                <nz-card nzType="inner" nzTitle="住院归来药品详情" [nzExtra]="medicalDetailsReturn" class="marginBottom24" [nzLoading]="isPersonCardLoading">
+                                    <nz-table #basicTable [nzLoading]="takeMedLoading" [nzData]="outPaintDrugList" class="marginBottom24" nzBordered [nzFrontPagination]="false" [nzShowPagination]="false">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">接收日期</th>
+                                                <th class="center">药品名称</th>
+                                                <th class="center">简称</th>
+                                                <th class="center">规格</th>
+                                                <th class="center">剩余数量</th>
+                                                <th class="center">剂量(片/次)</th>
+                                                <th class="center">频次</th>
+                                                <th class="center">餐前</th>
+                                                <th class="center">餐后</th>
+                                                <th class="center">作用</th>
+                                                <th class="center">服用期限</th>
+                                                <th class="center">预计服用期限</th>
+                                                <th class="center">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of outPaintDrugList,let i=index">
+                                                <td class="center">{{item?.receiveTime}}</td>
+                                                <td class="center">{{item?.drugName}}</td>
+                                                <td class="center">{{item?.shortName}}</td>
+                                                <td class="center">{{item?.specification}}</td>
+                                                <td class="center">{{item?.totalNum}}</td>
+                                                <td class="center">{{item?.dosage}}</td>
+                                                <td class="center">{{item?.frequencyName}}</td>
+                                                <td class="center">{{ item?.takeTime == '0' ? '✓' : '' }}</td>
+                                                <td class="center">{{ item?.takeTime == '1' ? '✓' : '' }}</td>
+                                                <td class="center">{{ item?.effect}}</td>
+                                                <td class="center">{{ item?.takeLimit}}</td>
+                                                <td class="center">{{ item?.planTakeLimit}}</td>
+                                                <td class="center">
+                                                    <a href="javascript:void(0)" (click)="editOutPaintDrug(item)">编辑</a>
+                                                    <nz-divider nzType="vertical"></nz-divider>
+                                                    <a href="javascript:void(0)" class="colorF00" (click)="deleteOutPaintDrug(item.id)">删除</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </nz-card>
+                            </nz-card>
+                            <!-- <button nz-button nzType="primary" (click)="saveOutHosipital(logoImage.showImageUrls)" *ngIf="obj.status == '1'">
+                                保存
+                            </button> -->
+                        </nz-tab>
+                    </nz-tabset>
+                </nz-card>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 添加服用药品得弹出框 -->
+<nz-modal [(nzVisible)]="addTakeIsVisible" [nzMaskClosable]=false nzWidth="900" [nzCancelText]="null" (nzOnCancel)="addTakeIsVisible = false" (nzOnOk)="saveOutPaintDrug()">
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>药品名称</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSearch>
+                        <input nz-input class="oldName hosiptalInput wp" [(ngModel)]="outPaintAddDrugObj.drugName" (input)="getDrugName($event.target?.value)" [nzAutocomplete]="hospitalDrugName" />
+                        <nz-autocomplete nzBackfill #hospitalDrugName>
+                            <nz-auto-option *ngFor="let option of hospitalDrugNameList" [nzValue]="option.name">
+                                {{ option.name }}
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>简称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="请输入药品简称" class="wp" [(ngModel)]="outPaintAddDrugObj.shortName" name="commonName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>规格</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="请输入药品规格" [(ngModel)]="outPaintAddDrugObj.specification" class="wp" name="standard" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>药品总量</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number [(ngModel)]="outPaintAddDrugObj.totalNum" class="wp" placeholder="请输入药品总量" name="medTotal" [nzMin]="1" [nzStep]="0.5"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>剂量(片/次)</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number [(ngModel)]="outPaintAddDrugObj.dosage" class="wp" placeholder="请输入服用剂量" name="dosage" [nzMin]="1" [nzStep]="0.5"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>频次</nz-form-label>
+                <nz-form-control>
+                    <!-- 频次是获得医疗字典中得用药频次 -->
+                    <nz-select class="wp" nzShowSearch nzAllowClear nzPlaceHolder="请选择频次" [(ngModel)]="outPaintAddDrugObj.frequency" name="frequency" (ngModelChange)="changeDelegationFrequency()">
+                        <nz-option *ngFor="let item of delegationFrequencyList" [nzValue]="item.dictValue" [nzLabel]="item.dictTag"></nz-option>
+                    </nz-select>
+
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>服药时间</nz-form-label>
+                <nz-form-control>
+                    <nz-radio-group class="wp" name="takeMedTime" [(ngModel)]="outPaintAddDrugObj.takeTime">
+                        <label nz-radio nzValue="0">餐前</label>
+                        <label nz-radio nzValue="1">餐后</label>
+                    </nz-radio-group>
+
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>服用期限</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker name="limitDate" nzFormat="yyyy-MM-dd" [(ngModel)]="outPaintAddDrugObj.takeLimit"></nz-date-picker>
+
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>收药人</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="wp" name="receiveMan" [(ngModel)]="outPaintAddDrugObj.receiver" maxlength="5" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>验收人</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="wp" name="checkoutMan" [(ngModel)]="outPaintAddDrugObj.checker" maxlength="5" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>接收时间</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker name="receiveDateMark" [(ngModel)]="outPaintAddDrugObj.receiveTime"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>作用</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input class="dialog_areaInput" [(ngModel)]="outPaintAddDrugObj.effect" rows="2" maxlength="200" name="effect"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col class="mt">
+            <nz-form-item nzFlex>
+                <nz-form-label>备注</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input class="dialog_areaInput" [(ngModel)]="outPaintAddDrugObj.comment" rows="2" maxlength="200" name="remark"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- 处方添加药品时显示的药品详情弹出框 -->
+<nz-modal [(nzVisible)]="isShowDrugDetails" [nzMaskClosable]=false [nzOkText]="null" [nzCancelText]="null" nzTitle="药品列表" nzWidth="1200" (nzOnCancel)="isShowDrugDetails = false">
+    <nz-card nzType="inner" nzTitle="药品详情" class="positionR">
+        <div class="positionA">
+            <button nz-button nzType="default" (click)="addDrugDetails()">
+                添加
+            </button>
+        </div>
+        <nz-table [nzData]="drugObj.clinicPrescriptionDrugDescList" #basicTable [nzBordered]="'true'" [nzShowPagination]="false" [nzSize]="'middle'" nzShowSizeChanger="false" nzFrontPagination="false">
+            <thead>
+                <tr>
+                    <th class="textCenter">药品名称</th>
+                    <th class="textCenter">规格</th>
+                    <th class="textCenter" colspan="2">剂量</th>
+                    <th class="textCenter">天数</th>
+                    <th class="textCenter">总量</th>
+                    <th class="textCenter">用法</th>
+                    <th class="textCenter">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of drugObj.clinicPrescriptionDrugDescList;
+            let it = index
+          ">
+                    <td style="width:20%">
+                        <input nz-input style="float:rigth;width:100%" readonly [(ngModel)]="item.drugName" (click)="changeDrug(it)" />
+                    </td>
+                    <td style="width:10%">
+                        <input nz-input style="float:rigth;width:68%" readonly [(ngModel)]="item.specification" />
+                    </td>
+                    <td style="width:13%">
+
+                        <nz-input-number style="float:rigth;width:62%" [nzMin]="0.5" [nzStep]="0.5" [(ngModel)]="item.dosage"></nz-input-number>
+                    </td>
+                    <td style="width:9%">
+                        <nz-select style="float:rigth;width:90%" nzPlaceHolder="请选择" [(ngModel)]="item.packingUnit" nzDisabled>
+                            <nz-option *ngFor="let option of unitList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </td>
+                    <td style="width:13%">
+
+                        <nz-input-number style="float:rigth;width:62%" [nzMin]="1" [(ngModel)]="item.daysNum"></nz-input-number>
+                    </td>
+                    <td style="width:13%">
+                        <span style="color: red">*</span>
+                        <nz-input-number style="float:rigth;width:62%" [nzMin]="1" [(ngModel)]="item.totalNum"></nz-input-number>{{item.totalNumUnit}}
+                    </td>
+                    <td style="width:9%">
+                        {{item?.drugUsage}}
+                    </td>
+                    <td style="width:10%">
+                        <a href="javascript:void(0)" class="colorF00" (click)="deleteDrugDetails(it)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+
+    <div class="marginTop" style="width:100%;height:2px;background: #efefef"></div>
+    <div nz-row [nzGutter]="24" class="marginTop">
+        <div nz-col [nzSpan]="12" class="marginTop">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">用法</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-select style="width: 50%;" nzPlaceHolder="请选择" [(ngModel)]="drugObj.drugUsage" (ngModelChange)="changUsageName()">
+                        <nz-option *ngFor="let option of usageList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                        </nz-option>
+                    </nz-select>
+                    <nz-select style="width: 50%;" nzMode="multiple" [(ngModel)]="drugObj.drugUseFrequencyArr" nzPlaceHolder="请选择" (ngModelChange)="changFrequencyName()">
+                        <nz-option *ngFor="let option of frequencyList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12" class="marginTop">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">用药频次</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="drugObj.drugFrequency" (ngModelChange)="changDrugFrequency()">
+                        <nz-option *ngFor="let option of drugFrequencyList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="24" class="marginTop">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">其他</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                    <textarea rows="8" nz-input [(ngModel)]="drugObj.other"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" nz-button nzType="primary" nzSize="large" *ngIf="state == 'add'" (click)="saveDrugDetails()">
+            确定
+        </button>
+
+        <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="state == 'edit'" nz-button nzType="primary" nzSize="large" (click)="edigDrugDetails()">
+            确定
+        </button>
+    </div>
+</nz-modal>
+<!-- 处方添加药品时显示的弹出框 -->
+<nz-modal [(nzVisible)]="isShowOldDialog" [nzMaskClosable]=false [nzOkText]="null" nzTitle="药品列表" nzWidth="1000" (nzOnCancel)="isShowOldDialog = false">
+    <div nz-col [nzSpan]="20">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">药名</nz-form-label>
+            <nz-form-control [nzSpan]="10">
+                <input nz-input placeholder="按药品名称检索" [(ngModel)]="pharmacyDrugObj.search" (keyup)="getDrugAllList()" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="getDrugAllList()" style="margin-left:10px;">
+                    查询
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div style="margin-top: 50px;">
+        <nz-table #drupInfo [nzData]="drugAllList" [nzFrontPagination]="false" [nzShowPagination]="false" [nzLoading]="pharmacyDrugObjLoading">
+            <thead>
+                <tr>
+                    <th>药品名称</th>
+                    <th>通用名</th>
+                    <th>规格</th>
+                    <th>类型</th>
+                    <th>库存</th>
+                    <th>价格</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of drugAllList" (click)="addDrugDetail(data)">
+                    <td>{{ data?.medDrug?.drugName }}</td>
+                    <td>{{ data?.medDrug?.commonName }}</td>
+                    <td>{{ data?.medDrug?.specification }}</td>
+                    <td>{{ data?.medDrug?.drugType }}</td>
+                    <td>{{ data?.quantity }}</td>
+                    <td>{{ data?.firstPurchasePrice }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-modal>
+
+<!-- 结束就诊时需要用户确认得弹出框 -->
+<nz-modal [(nzVisible)]="isShowEndHospital" [nzMaskClosable]=false nzTitle="查看病历处方详情" nzWidth="900" (nzOnCancel)="isShowEndHospital = false" (nzOnOk)="editTheHospital()">
+    <div class="heighAuto">
+        <nz-card nzType="inner" nzTitle="病历详情">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzRequired nzFor="name">主诉</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <nz-input-group nzSearch>
+                                <input placeholder="请输入主诉" nz-input [(ngModel)]="medicalRecord.chiefComplaint" (input)="onInput($event.target?.value, 'complain')" [nzAutocomplete]="auto" readonly />
+                                <nz-autocomplete nzBackfill #auto>
+                                    <nz-auto-option *ngFor="let option of mainSuitList" [nzValue]="option.tempDataContent">
+                                        {{ option.tempDataContent }}
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">现病史</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <nz-input-group nzSearch>
+                                <input nz-input class="oldName" [(ngModel)]="medicalRecord.presentIllnessHistory" readonly (input)="onInput($event.target?.value, 'historyNow')" [nzAutocomplete]="presentIllnessHistory" />
+                                <nz-autocomplete nzBackfill #presentIllnessHistory>
+                                    <nz-auto-option *ngFor="let option of historyNowList" [nzValue]="option.tempDataContent">
+                                        {{ option.tempDataContent }}
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">体格检查</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <div nz-col [nzSpan]="24" class="healthCheckup">
+                                <div nz-col [nzSpan]="24">
+                                    <nz-form-item>
+                                        <nz-form-label [nzSpan]="8">体温(℃)</nz-form-label>
+                                        <nz-form-control [nzSm]="16">
+                                            <nz-input-group nzCompact>
+                                                <nz-select [(ngModel)]="medicalRecord.temperatureType" nzDisabled>
+                                                    <nz-option [nzLabel]="'口温'" [nzValue]="'口温'"></nz-option>
+                                                    <nz-option [nzLabel]="'腋温'" [nzValue]="'腋温'"></nz-option>
+                                                    <nz-option [nzLabel]="'肛温'" [nzValue]="'肛温'"></nz-option>
+                                                </nz-select>
+                                                <input nz-input style="width: 200px;" readonly [(ngModel)]="medicalRecord.temperatureValue" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                                <div nz-col [nzSpan]="24">
+                                    <nz-form-item>
+                                        <nz-form-label [nzSpan]="10">血压(mmHg)</nz-form-label>
+                                        <nz-form-control [nzSm]="14">
+                                            <nz-input-group nzCompact style="width:50%;float:left">
+                                                <input type="text" nz-input [ngModel]="'高压'" readonly style="width: 40%;" />
+                                                <input type="text" nz-input style="width:50%;" readonly [(ngModel)]="medicalRecord.highBloodPressure" />
+                                            </nz-input-group>
+                                            <nz-input-group nzCompact style="width:50%;float:right">
+                                                <input type="text" nz-input [ngModel]="'低压'" readonly style="width: 40%;" />
+                                                <input type="text" nz-input style="width:50%;" readonly [(ngModel)]="medicalRecord.lowBloodPressure" />
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                                <div nz-col [nzSpan]="24" *ngFor="let item of medicalRecord.healthCheckCfgList">
+                                    <nz-form-item>
+                                        <nz-form-label [nzSpan]="6">{{
+                      item.cfgName
+                    }}</nz-form-label>
+                                        <nz-form-control [nzSm]="18">
+                                            <input nz-input style="width: 200px;" readonly [(ngModel)]="item.cfgValue" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                                <div nz-col [nzSpan]="24">
+                                    <nz-input-group nzSearch>
+                                        <input nz-input class="oldName" readonly [(ngModel)]="medicalRecord.healthCheckOther" (input)="onInput($event.target?.value, 'healthCheckUp')" [nzAutocomplete]="healthCheckOther" />
+                                        <nz-autocomplete nzBackfill #healthCheckOther>
+                                            <nz-auto-option *ngFor="let option of healthCheckUpList" [nzValue]="option.tempDataContent">
+                                                {{ option.tempDataContent }}
+                                            </nz-auto-option>
+                                        </nz-autocomplete>
+                                    </nz-input-group>
+                                </div>
+                            </div>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">实验室及器械检查</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <nz-input-group nzSearch>
+                                <input nz-input class="oldName" readonly [(ngModel)]="medicalRecord.labEqpInspection" (input)="onInput($event.target?.value, 'laboratory')" [nzAutocomplete]="labEqpInspection" />
+                                <nz-autocomplete nzBackfill #labEqpInspection>
+                                    <nz-auto-option *ngFor="let option of laboratoryList" [nzValue]="option.tempDataContent">
+                                        {{ option.tempDataContent }}
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">初步诊断</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <nz-input-group nzSearch>
+                                <input nz-input class="oldName" readonly [(ngModel)]="medicalRecord.primaryDiagnosis" (input)="onInput($event.target?.value, 'tentativeDiaginosis')" [nzAutocomplete]="primaryDiagnosis" />
+                                <nz-autocomplete nzBackfill #primaryDiagnosis>
+                                    <nz-auto-option *ngFor="let option of tentativeDiaginosisList" [nzValue]="option.tempDataContent">
+                                        {{ option.tempDataContent }}
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">是否外出就诊</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <nz-radio-group [(ngModel)]="medicalRecord.isOutForDoctor" nzDisabled (ngModelChange)="changeOutForDoctor()">
+                                <label nz-radio nzValue="1">是</label>
+                                <label nz-radio nzValue="0">否</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div style="    margin-left: 86px !important;">
+                    <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="6" nzRequired>外出时间</nz-form-label>
+                            <nz-form-control [nzSm]="18">
+                                <nz-date-picker nzShowTime nzDisabled nzFormat="yyyy-MM-dd HH:mm:ss" style="width: 478px;" [(ngModel)]="medicalRecord.outTime"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="6" nzRequired>陪同人</nz-form-label>
+                            <nz-form-control [nzSm]="18">
+                                <input nz-input [(ngModel)]="medicalRecord.accompanyPerson" style="width: 478px;" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="6" nzRequired>就诊医院</nz-form-label>
+                            <nz-form-control [nzSm]="18">
+                                <nz-input-group nzSearch>
+                                    <input nz-input class="oldName" readonly style="width: 478px;" [(ngModel)]="medicalRecord.clinicHospital" (input)="onInput($event.target?.value, 'clinicHosiptal')" [nzAutocomplete]="clinicHospital" />
+                                    <nz-autocomplete nzBackfill #clinicHospital>
+                                        <nz-auto-option *ngFor="let option of clinicHosiptalList" [nzValue]="option.tempDataContent">
+                                            {{ option.tempDataContent }}
+                                        </nz-auto-option>
+                                    </nz-autocomplete>
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" *ngIf="isShowOutForDoctor">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="6">备注</nz-form-label>
+                            <nz-form-control [nzSm]="18">
+                                <textarea nz-input readonly style="width: 475px;" [nzAutosize]="{ minRows: 2, maxRows: 6 }" class="marginBottom" [(ngModel)]="medicalRecord.comment"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">处理结果</nz-form-label>
+                        <nz-form-control [nzSm]="18">
+                            <textarea nz-input readonly [nzAutosize]="{ minRows: 2, maxRows: 6 }" [(ngModel)]="medicalRecord.handingResult" [readonly]="isShowOutForDoctor"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzType="inner" nzTitle="处方详情" class="marginBottom24" [nzLoading]="isPersonCardLoading" *ngIf="endHospitalObj.recipeId != ''">
+            <!-- 新增精一处方列表 -->
+            <nz-card nzType="inner" class="marginTop" [nzLoading]="isPersonCardLoading" *ngFor="let item of clinicPrescriptionDescList; let i = index" [nzTitle]="item?.name">
+                <nz-table nzBordered [nzData]="item.clinicPrescriptionDrugList" [nzFrontPagination]="false" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th class="center">药品名称</th>
+                            <th class="center">规格</th>
+                            <th class="center">天数</th>
+                            <th class="center">总量（单位）</th>
+                            <th class="center">单次剂量（单位）</th>
+                            <th class="center">用法</th>
+                            <th class="center">用药频次</th>
+                            <th class="center">频次</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="
+                let drugDetails of item.clinicPrescriptionDrugList;
+                let detailsI = index
+              ">
+                            <ng-container>
+                                <tr *ngFor="
+                    let cds of drugDetails.clinicPrescriptionDrugDescList;
+                    let cdsI = index
+                  ">
+                                    <td class="center">{{ cds?.drugName }}</td>
+                                    <td class="center">{{ cds?.specification }}</td>
+                                    <td class="center">{{ cds?.daysNum }}</td>
+                                    <td class="center">{{ cds?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}</td>
+                                    <td class="center">{{ cds?.dosage }}{{ cds?.packingUnitName }}</td>
+                                    <td class="center" [attr.rowspan]="
+                      drugDetails.clinicPrescriptionDrugDescList.length
+                    " *ngIf="cdsI == 0">
+                                        {{ drugDetails?.drugUsageName }}
+                                    </td>
+                                    <td class="center" [attr.rowspan]="
+                      drugDetails.clinicPrescriptionDrugDescList.length
+                    " *ngIf="cdsI == 0">
+                                        {{ drugDetails?.drugUseFrequencyName }}
+                                    </td>
+                                    <td class="center" [attr.rowspan]="
+                      drugDetails.clinicPrescriptionDrugDescList.length
+                    " *ngIf="cdsI == 0">
+                                        {{ drugDetails?.drugFrequencyName }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </tbody>
+                </nz-table>
+            </nz-card>
+        </nz-card>
+    </div>
+</nz-modal>
+
+<!-- 查看历史病历 -->
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" nzTitle="历史病历" (nzOnClose)="close()" [nzWidth]="500">
+    <nz-collapse>
+        <nz-collapse-panel *ngFor="let panel of historicalRecordParArr" [nzActive]="panel.active" [nzShowArrow]="panel.arrow" [nzHeader]="panel?.title" class="positionR">
+            <div class="positionA">
+                <button nz-button nzType="default" (click)="importMedicalRecords(panel)" *ngIf="obj.status != '1'">
+                    导入
+                </button>
+            </div>
+            <!-- 显示主要内容 -->
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">主诉：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.chiefComplaint }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">现病史：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.presentIllnessHistory }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">体检检查：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.temperatureType }}:{{ panel?.temperatureValue }} ℃
+                        高压:{{panel?.highBloodPressure}}mmHg
+                        低压:{{ panel?.lowBloodPressure }}mmHg
+
+                        <div *ngFor="let item of panel?.healthCheckCfgList">
+                            {{ item?.cfgName }}:{{ item?.cfgValue }}
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">实验室检查：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.labEqpInspection }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">初步诊断：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.primaryDiagnosis }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">处理：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.handingResult }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">外出住院：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <div>
+                            患者于{{ panel?.outTime }}送往{{ panel?.clinicHospital }}，由{{ panel?.clinicHospital }}陪同一起。 <br />
+                            备注：{{ panel?.comment }}
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">Rx：</span>
+                    </div>
+                    <!-- 所有得处方 -->
+                    <div nz-col [nzSpan]="18">
+                        <!-- 处方 -->
+                        <div class="prescriptionContent marginTop5" *ngFor="let clinicDesc of panel?.clinicPrescription?.clinicPrescriptionDescList">
+                            <div class="prescriptionDetails">
+                                <span *ngIf="clinicDesc.prescriptionType == '1'">精一处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '2'">精二处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '3'">普通处方</span>
+                            </div>
+                            <div *ngFor="let clinicDrug of clinicDesc.clinicPrescriptionDrugList">
+                                <div class="marginTop5 marginBottom5 borderBottom" *ngFor="let clinicDrugDesc of clinicDrug.clinicPrescriptionDrugDescList">
+                                    <div nz-row>
+                                        <div nz-col [nzSpan]="18">
+                                            <span>{{ clinicDrugDesc?.drugName }}({{ clinicDrugDesc?.specification }})</span>
+                                            <br />
+                                            <span>Sig:
+                                                {{ clinicDrugDesc?.dosage }}
+                                                {{ clinicDrugDesc?.packingUnitName }}
+                                                {{ clinicDrug?.drugFrequencyName }}
+                                                {{ clinicDrug?.drugUseFrequencyName }}
+                                                {{ clinicDrug?.drugUsageName }}
+                                            </span>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            共{{ clinicDrugDesc?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 开处方得医生 -->
+                        <div class="prescriptionDoctor textAlignR marginTop">
+                            医生：{{ panel?.updateUser }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 需要住院归来做好之后做 -->
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">住院归来：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <span>患者于{{panel?.clinicOutHospital?.backHosptial?.outHospitalDate}} 住院归来</span> <br />
+
+                        <div>住院记录：
+                            <div *ngFor="let Url of panel?.arrOutHospitalUrl">
+                                <img alt="" [src]="Url" style="width:60%">
+                            </div>
+                        </div> <br />
+
+                        <span>备注：{{panel?.backHosptial?.outcomment}}</span> <br />
+                    </div>
+                </div>
+
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">转院记录：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <div *ngFor="let visit of panel?.clinicOutHospital?.visitingList">
+                            <span>患者于 {{visit?.inHospitalDate}} 转入 {{visit?.hospitalName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">备注：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{panel?.outcomment}}
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+</nz-drawer>
+
+<!-- 查看用药跟踪 -->
+<nz-drawer [nzClosable]="false" [nzVisible]="drugVisible" nzPlacement="right" nzTitle="用药跟踪" (nzOnClose)="close()" [nzWidth]="500">
+    <nz-collapse>
+        <nz-collapse-panel *ngFor="let panel of drugTrackList" [nzActive]="panel.active" [nzShowArrow]="panel.arrow" [nzHeader]="panel?.title" class="positionR">
+            <div class="positionA">
+                <button nz-button nzType="default" (click)="importPrescription(panel)" *ngIf="obj.status != '1'">
+                    导入
+                </button>
+            </div>
+            <!-- 显示主要内容 -->
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">Rx：</span>
+                    </div>
+                    <!-- 所有得处方 -->
+                    <div nz-col [nzSpan]="18">
+                        <!-- 处方 -->
+                        <div class="prescriptionContent marginTop5" *ngFor="
+                let clinicDesc of panel?.clinicPrescription
+                  ?.clinicPrescriptionDescList
+              ">
+                            <div class="prescriptionDetails">
+                                <span *ngIf="clinicDesc.prescriptionType == '1'">精一处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '2'">精二处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '3'">普通处方</span>
+                            </div>
+                            <div *ngFor="let clinicDrug of clinicDesc.clinicPrescriptionDrugList">
+                                <div class="marginTop5 marginBottom5 borderBottom" *ngFor="
+                    let clinicDrugDesc of clinicDrug.clinicPrescriptionDrugDescList
+                  ">
+                                    <div nz-row>
+                                        <div nz-col [nzSpan]="18">
+                                            <span>{{ clinicDrugDesc?.drugName }}({{
+                          clinicDrugDesc?.specification
+                        }})</span>
+                                            <br />
+                                            <span>Sig:
+                                                {{ clinicDrugDesc?.dosage }}
+                                                {{ clinicDrugDesc?.packingUnitName }}
+                                                {{ clinicDrug?.drugFrequencyName }}
+                                                {{ clinicDrug?.drugUseFrequencyName }}
+                                                {{ clinicDrug?.drugUsageName }}
+                                            </span>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            共{{ clinicDrugDesc?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 开处方得医生 -->
+                        <div class="prescriptionDoctor textAlignR marginTop">
+                            医生：{{ panel?.updateUser }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+</nz-drawer>
+
+<!-- 个人档案中查看历史病历 -->
+<nz-modal [(nzVisible)]="isShowCaseHistory" [nzMaskClosable]=false nzTitle="历史病历" [nzOkText]="null" nzWidth="1200" (nzOnCancel)="closeIsShowCaseHistory()">
+    <nz-collapse>
+        <nz-collapse-panel *ngFor="let panel of historicalRecordParArr" [nzActive]="panel.active" [nzShowArrow]="panel.arrow" [nzHeader]="panel?.title" class="positionR">
+            <div class="positionA">
+                <button nz-button nzType="danger" (click)="deleteMedicalRecords(panel?.id)" [ngStyle]="{display: panel.isBeyond === 0 ? 'inline-block' : 'none'}">删除</button>
+                <button nz-button nzType="default" class="marginLeft" (click)="turnToPrint(panel)">打印</button>
+            </div>
+            <!-- 显示主要内容 -->
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">主诉：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.chiefComplaint }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">现病史：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.presentIllnessHistory }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">体检检查：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.temperatureType }}:{{ panel?.temperatureValue }} ℃
+                        高压:{{panel?.highBloodPressure}}mmHg
+                        低压:{{ panel?.lowBloodPressure }}mmHg
+                        <div *ngFor="let item of panel?.healthCheckCfgList">
+                            {{ item?.cfgName }}:{{ item?.cfgValue }}
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">实验室检查：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.labEqpInspection }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">初步诊断：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.primaryDiagnosis }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">处理：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.handingResult }}
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">外出住院：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <div>
+                            患者于{{ panel?.outTime }}送往{{ panel?.clinicHospital }}，由{{ panel?.clinicHospital }}陪同一起。 <br />
+                            备注：{{ panel?.comment }}
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">Rx：</span>
+                    </div>
+                    <!-- 所有得处方 -->
+                    <div nz-col [nzSpan]="18">
+                        <!-- 处方 -->
+                        <div class="prescriptionContent marginTop5" *ngFor="let clinicDesc of panel?.clinicPrescription?.clinicPrescriptionDescList">
+                            <div class="prescriptionDetails">
+                                <span *ngIf="clinicDesc.prescriptionType == '1'">精一处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '2'">精二处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '3'">普通处方</span>
+                            </div>
+                            <div *ngFor="let clinicDrug of clinicDesc.clinicPrescriptionDrugList">
+                                <div class="marginTop5 marginBottom5 borderBottom" *ngFor="let clinicDrugDesc of clinicDrug.clinicPrescriptionDrugDescList">
+                                    <div nz-row>
+                                        <div nz-col [nzSpan]="18">
+                                            <span>{{ clinicDrugDesc?.drugName }}({{ clinicDrugDesc?.specification }})</span>
+                                            <br />
+                                            <span>Sig:
+                                                {{ clinicDrugDesc?.dosage }}
+                                                {{ clinicDrugDesc?.packingUnitName }}
+                                                {{ clinicDrug?.drugFrequencyName }}
+                                                {{ clinicDrug?.drugUseFrequencyName }}
+                                                {{ clinicDrug?.drugUsageName }}
+                                            </span>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            共{{ clinicDrugDesc?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 开处方得医生 -->
+                        <div class="prescriptionDoctor textAlignR marginTop">
+                            医生：{{ panel?.updateUser }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 需要住院归来做好之后做 -->
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">住院归来：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <span>患者于{{panel?.clinicOutHospital?.backHosptial?.outHospitalDate}} 住院归来</span> <br />
+
+                        <div>住院记录：
+                            <div *ngFor="let Url of panel?.arrOutHospitalUrl">
+                                <img alt="" [src]="Url" style="width:60%">
+                            </div>
+                        </div> <br />
+
+                        <span>备注：{{panel?.backHosptial?.outcomment}}</span> <br />
+
+                        <div *ngIf="panel?.clinicOutHospital?.backHosptial?.outHospitalDrugList.length >0 ">
+                            <h6>药品列表</h6>
+                            <nz-table #middleTable nzSize="middle" [nzData]="panel?.clinicOutHospital?.backHosptial?.outHospitalDrugList">
+                                <thead>
+                                    <tr>
+                                        <th class="center">接收日期</th>
+                                        <th class="center">药品名称</th>
+                                        <th class="center">简称</th>
+                                        <th class="center">规格</th>
+                                        <th class="center">剩余数量</th>
+                                        <th class="center">剂量(片/次)</th>
+                                        <th class="center">频次</th>
+                                        <th class="center">餐前</th>
+                                        <th class="center">餐后</th>
+                                        <th class="center">作用</th>
+                                        <th class="center">服用期限</th>
+                                        <th class="center">预计服用期限</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let middleD of middleTable.data">
+                                        <td class="center">{{middleD?.receiveTime}}</td>
+                                        <td class="center">{{middleD?.drugName}}</td>
+                                        <td class="center">{{middleD?.shortName}}</td>
+                                        <td class="center">{{middleD?.specification}}</td>
+                                        <td class="center">{{middleD?.totalNum}}</td>
+                                        <td class="center">{{middleD?.dosage}}</td>
+                                        <td class="center">{{middleD?.frequencyName}}</td>
+                                        <td class="center">{{ middleD?.takeTime == '0' ? '✓' : '' }}</td>
+                                        <td class="center">{{ middleD?.takeTime == '1' ? '✓' : '' }}</td>
+                                        <td class="center">{{ middleD?.effect}}</td>
+                                        <td class="center">{{ middleD?.takeLimit}}</td>
+                                        <td class="center">{{ middleD?.planTakeLimit}}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </div>
+                </div>
+
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">转院记录：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <div *ngFor="let visit of panel?.clinicOutHospital?.visitingList">
+                            <span>患者于 {{visit?.inHospitalDate}} 转入 {{visit?.hospitalName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div nz-row class="contentsMedicalDetails" *ngIf="panel?.isOutForDoctor == '1'">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">备注：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{panel?.outcomment}}
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+    <div class="tac mt5" *ngIf="historicalRecordPar.page + 1 < caseTotalPages"><button nz-button nzType="default" class="w100p" (click)="loadMoreCase()">加载更多...</button></div>
+    <div class="tac mt5" *ngIf="historicalRecordPar.page + 1 >= caseTotalPages">没有更多数据了...</div>
+</nz-modal>
+
+<!-- 个人档案中查看用药跟踪 -->
+<nz-modal [(nzVisible)]="isShowDrugHistory" [nzMaskClosable]=false nzTitle="用药跟踪" [nzOkText]="null" nzWidth="900" (nzOnCancel)="closeIsShowDrugHistory()">
+    <nz-collapse>
+        <nz-collapse-panel *ngFor="let panel of drugTrackList" [nzActive]="panel.active" [nzShowArrow]="panel.arrow" [nzHeader]="panel?.title" class="positionR">
+            <!-- 显示主要内容 -->
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">Rx：</span>
+                    </div>
+                    <!-- 所有得处方 -->
+                    <div nz-col [nzSpan]="18">
+                        <!-- 处方 -->
+                        <div class="prescriptionContent marginTop5" *ngFor="
+                let clinicDesc of panel?.clinicPrescription
+                  ?.clinicPrescriptionDescList
+              ">
+                            <div class="prescriptionDetails">
+                                <span *ngIf="clinicDesc.prescriptionType == '1'">精一处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '2'">精二处方</span>
+                                <span *ngIf="clinicDesc.prescriptionType == '3'">普通处方</span>
+                            </div>
+                            <div *ngFor="let clinicDrug of clinicDesc.clinicPrescriptionDrugList">
+                                <div class="marginTop5 marginBottom5 borderBottom" *ngFor="
+                    let clinicDrugDesc of clinicDrug.clinicPrescriptionDrugDescList
+                  ">
+                                    <div nz-row>
+                                        <div nz-col [nzSpan]="18">
+                                            <span>{{ clinicDrugDesc?.drugName }}({{
+                          clinicDrugDesc?.specification
+                        }})</span>
+                                            <br />
+                                            <span>Sig:
+                                                {{ clinicDrugDesc?.dosage }}
+                                                {{ clinicDrugDesc?.packingUnitName }}
+                                                {{ clinicDrug?.drugFrequencyName }}
+                                                {{ clinicDrug?.drugUseFrequencyName }}
+                                                {{ clinicDrug?.drugUsageName }}
+                                            </span>
+                                        </div>
+                                        <div nz-col [nzSpan]="6">
+                                            共{{ clinicDrugDesc?.totalNum }}{{ clinicDrugDesc?.totalNumUnit }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 开处方得医生 -->
+                        <div class="prescriptionDoctor textAlignR marginTop">
+                            医生：{{ panel?.updateUser }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+    <div class="tac mt5" *ngIf="drugTrackRecordPar.page + 1 < drugTotalPages"><button nz-button nzType="default" class="w100p" (click)="loadMoreDrug()">加载更多...</button></div>
+    <div class="tac mt5" *ngIf="drugTrackRecordPar.page + 1 >= drugTotalPages">没有更多数据了...</div>
+</nz-modal>

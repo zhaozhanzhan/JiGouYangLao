@@ -1,0 +1,113 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6" style="margin-left: -10px;">
+        <nz-form-item>
+          <nz-form-control>
+              <nz-input-group nzSuffixIcon="anticon anticon-search">
+                  <input type="text" name="oldman_name" nz-input placeholder="请输入长者姓名" [(ngModel)]="reqObj.name">
+                </nz-input-group>
+          </nz-form-control>
+
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="6" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6">登记日期</nz-form-label>
+          <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+            <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="7" nzFor="name">审核状态</nz-form-label>
+          <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="17">
+            <nz-select style="width: 120px;" [(ngModel)]="reqObj.appayType" (ngModelChange)="onRangerPickerChange($event)" nzPlaceHolder="选择审核状态" name="auditStatus">
+              <nz-option nzValue="0" nzLabel="全部"></nz-option>
+              <nz-option nzValue="1" nzLabel="未审核"></nz-option>
+              <nz-option nzValue="2" nzLabel="已审核"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="入院评估列表" >
+  <nz-table nzBordered nzShowSizeChanger [nzLoading]="isTableLoading" [nzTitle]="serchArea" [nzFrontPagination]="false" [nzData]="list"
+    [nzTotal]="page.total" [nzShowTotal]="totalTit" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    >
+    <thead>
+      <tr>
+        <th class="textCenter">姓名</th>
+        <th class="textCenter">登记日期</th>
+        <th class="textCenter">能力评估</th>
+        <th class="textCenter">护理评估</th>
+        <th class="textCenter">跌倒风险评估</th>
+        <th class="textCenter">审核状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of list">
+        <td class="textCenter">{{data.name}}</td>
+        <td class="textCenter">{{data.inDate ? data.inDate.substr(0, 10) : ''}}</td>
+        <td class="textCenter admissionCursor">
+          <span *ngIf="data.appayType=='5'">
+            <span *ngIf="data.assessmentDown==false"></span>
+            <a href="javascript:void(0)" *ngIf="data.assessmentDown==true" (click)="turnToAdd('addDisabled',data.id,$event)">初步等级：{{data.memo.preliminaryGrade}}
+              <br>最终等级：{{data.memo.finalGrade}}</a>
+          </span>
+          <span *ngIf="data.appayType!='5'">
+            <a href="javascript:void(0)" *ngIf="data.assessmentDown==false" (click)="turnToAdd('add',data.id,$event)">开始评估</a>
+            <a href="javascript:void(0)" *ngIf="data.assessmentDown==true" (click)="turnToAdd('addDisabled',data.id,$event)">初步等级：{{data.memo.preliminaryGrade}}
+              <br>最终等级：{{data.memo.finalGrade}}</a>
+          </span>
+        </td>
+        <td class="textCenter admissionCursor">
+          <span *ngIf="data.appayType=='5'">
+            <span *ngIf="data.nursingGradeDown==false"></span>
+            <a href="javascript:void(0)" *ngIf="data.nursingGradeDown==true" (click)="turnToAdd('checkDisabled',data.id,$event)">压疮高危：{{data.memo.bradenHighRisk}}
+              <br>跌倒/坠床高危：{{data.memo.morseHighRisk}}</a>
+          </span>
+          <span *ngIf="data.appayType!='5'">
+            <a href="javascript:void(0)" *ngIf="data.nursingGradeDown==false" (click)="turnToAdd('check',data.id,$event)">开始评估</a>
+            <a href="javascript:void(0)" *ngIf="data.nursingGradeDown==true" (click)="turnToAdd('checkDisabled',data.id,$event)">压疮高危：{{data.memo.bradenHighRisk}}
+              <br>跌倒/坠床高危：{{data.memo.morseHighRisk}}</a>
+          </span>
+        </td>
+        <td class="textCenter admissionCursor">
+          <span *ngIf="data.appayType=='5'">
+            <span *ngIf="data.fallDown==false"></span>
+            <a href="javascript:void(0)" *ngIf="data.fallDown==true" (click)="turnToAdd('tumbleDisabled',data.id,$event)">总分：{{data.memo.totalScore}}
+              <br>等级：{{data.memo.fallResults}}</a>
+          </span>
+          <span *ngIf="data.appayType!='5'">
+            <a href="javascript:void(0)" *ngIf="data.fallDown==false" (click)="turnToAdd('tumble',data.id,$event)">开始评估</a>
+            <a href="javascript:void(0)" *ngIf="data.fallDown==true" (click)="turnToAdd('tumbleDisabled',data.id,$event)">总分：{{data.memo.totalScore}}
+              <br>等级：{{data.memo.fallResults}}</a>
+          </span>
+        </td>
+        <td class="textCenter admissionCursor">
+          <span *ngIf="data.appayType=='5'">已审核</span>
+          <span *ngIf="data.appayType!='5'">未审核</span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<!-- <ng-template #extraTemplate>
+  <a href="#" (click)="showInfo(null,$event)">申请评估</a>
+</ng-template> -->
+<ng-template #totalTit>共&nbsp;{{page.total}}&nbsp;条</ng-template>

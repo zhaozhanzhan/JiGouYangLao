@@ -1,0 +1,974 @@
+
+ <div  style="width:210mm;height:300mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 老年人能力评估基本信息表</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td colspan="3" style="padding: 5px;font-weight: bold">评估基本信息</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">评估编号</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.assCode}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">评估人</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.asser}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">评估基准日期</td>
+                        <td style="padding: 5px;">
+                           <div>{{abilityAssess.assDate}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">评估原因</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.assReason}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding: 5px;;font-weight: bold">被评估者的基本信息</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">姓名</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.name}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">性别</td>
+                        <td style="padding: 5px;">
+                           <div>{{abilityAssess.personInfo.sex}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">出生日期</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.birthYearMonth}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">身份证号</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.cardno}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">社保卡号</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.medicalCard}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">民族</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.nation}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">文化程度</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.education}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">宗教信仰</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.religion}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">婚姻状况</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.marriage}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">医疗费用支付方式</td>
+                        <td style="padding: 5px;">
+                            <div>{{abilityAssess.personInfo.medicalPayment}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" style="padding: 5px;">疾病诊断</td>
+                        <td style="padding: 5px;">痴呆</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.dementiaDiagnosis}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">精神疾病</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.mentalDiseaseDiagnosis}}</span>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">慢性疾病</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.chronicDiseaseDiagnosis}}</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="5" style="padding: 5px;">近30天内意外事件</td>
+                        <td style="padding: 5px;">跌倒</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.fallDownAccd}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">走失</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.wanderAwayAccd}}</span>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">噎食</td>
+                        <td style="padding: 5px;">
+                            <span>{{abilityAssess.chokeFeedAccd}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">自杀</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.commitSuicideAccd}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">其他</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.otherAccd}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding: 5px;font-weight: bold">信息提供者及联系人信息</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">信息提供者的姓名</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.infoProvider}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">信息提供者与老年人的关系</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.infoProviderRelationship}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">联系人姓名</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.contactName}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 5px;">联系人电话</td>
+                        <td style="padding: 5px;">
+                                <span>{{abilityAssess.contactPhone}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div  style="width:210mm;height:620mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 日常生活活动评估表</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="3" class="w30p" style="padding: 5px;">
+                            <b>进食：</b> 指用餐具将食物由容器送到口中、咀嚼、吞咽等过程
+                        </td>
+                        <td rowspan="3" class="w20p" style="padding: 5px;width: 15%;">
+                            <span>{{dailyLife.assessmentDay[0]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[0]!='0'">0分，需极大帮助或完全依赖他人，或有留置营养管</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[0]=='0'" >0分，需极大帮助或完全依赖他人，或有留置营养管</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[0]!='5'">5分，需部分帮助（进食过程中需要一定帮助，如协助把持餐具）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[0]=='5'">5分，需部分帮助（进食过程中需要一定帮助，如协助把持餐具）</td>
+                    </tr>
+                    <tr>
+                        <td class="w50p" style="padding: 5px;" *ngIf="dailyLife.assessmentDay[0]!='10'">10分，可独立进食（在合理的时间内独立进食准备好的食物）</td>
+                        <td class="w50p" style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[0]=='10'">10分，可独立进食（在合理的时间内独立进食准备好的食物）</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2" class="addFirstTd" style="padding: 5px;">
+                            <b>洗澡</b>
+                        </td>
+                        <td rowspan="2" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[1]}}分</span>
+                        </td>
+                        
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[1]!='0'">0分，在洗澡过程中需他人帮助</td>
+                        <td style="padding: 5px;font-weight: bold;" *ngIf="dailyLife.assessmentDay[1]=='0'">0分，在洗澡过程中需他人帮助</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[1]!='5'">5分，准备好洗澡水后，可独立完成洗澡过程</td>
+                        <td style="padding: 5px;font-weight: bold;" *ngIf="dailyLife.assessmentDay[1]=='5'">5分，准备好洗澡水后，可独立完成洗澡过程</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2" class="addFirstTd" style="padding: 5px;">
+                            <b>修饰：</b> 指洗脸、刷牙、梳头、刮脸等
+                        </td>
+                        <td rowspan="2" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[2]}}分</span>
+                        </td>
+                        
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[2]!='0'" >0分，需他人帮助</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[2]=='0'">0分，需他人帮助</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[2]!='5'">5分，可独立完成</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[2]=='5'">5分，可独立完成</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>穿衣：</b> 指穿脱衣服、系扣、拉拉链、穿脱鞋袜、系鞋带
+                        </td>
+                        <td rowspan="3" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[3]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[3]!='0'" >0分，需极大帮助或完全依赖他人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[3]=='0'">0分，需极大帮助或完全依赖他人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[3]!='5'" >5分，需部分帮助（能自己穿脱，但需他人帮助整理衣物、系扣/鞋带、拉拉链）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[3]=='5'" >5分，需部分帮助（能自己穿脱，但需他人帮助整理衣物、系扣/鞋带、拉拉链）</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[3]!='10'" >10分，可独立完成</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[3]=='10'" >10分，可独立完成</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>大便控制</b>
+                        </td>
+                        <td rowspan="3" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[4]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[4]!='0'">0分，完全失控</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[4]=='0'">0分，完全失控</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[4]!='5'">5分，偶尔失控（每周&nbsp;&lt;&nbsp;1次），或需要他人提示</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[4]=='5'">5分，偶尔失控（每周&nbsp;&lt;&nbsp;1次），或需要他人提示</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[4]!='10'">10分，可控制大便</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[4]=='10'">10分，可控制大便</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>小便控制</b>
+                        </td>
+                        <td rowspan="3" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[5]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[5]!='0'">0分，完全失控，或留置导尿管</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[5]=='0'">0分，完全失控，或留置导尿管</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[5]!='5'">5分，偶尔失控（每天&nbsp;&lt;&nbsp;1次，但每周&nbsp;&gt;&nbsp;1次），或需要他人提示</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[5]=='5'">5分，偶尔失控（每天&nbsp;&lt;&nbsp;1次，但每周&nbsp;&gt;&nbsp;1次），或需要他人提示</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[5]!='10'">10分，可控制小便</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[5]=='10'">10分，可控制小便</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>如厕：</b>包括去厕所、解开衣裤、擦净、整理衣裤、冲水等
+                        </td>
+                        <td rowspan="3" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[6]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[6]!='0'">0分， 需极大帮助或完全依赖他人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[6]=='0'">0分， 需极大帮助或完全依赖他人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[6]!='5'">5分， 需部分帮助（需他人搀扶去厕所、需他人帮忙冲水或整理衣裤等）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[6]=='5'">5分， 需部分帮助（需他人搀扶去厕所、需他人帮忙冲水或整理衣裤等）</td>
+                    </tr>
+                    <tr>
+                        
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[6]!='10'">10分，可独立完成</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[6]=='10'">10分，可独立完成</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>床椅转移</b>
+                        </td>
+                        <td rowspan="4" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[7]}}分</span>
+                        </td>
+                        
+
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[7]!='0'">0分， 完全依赖他人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[7]=='0'">0分， 完全依赖他人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[7]!='5'">5分， 需极大帮助（较大程度上依赖他人搀扶和帮助）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[7]=='5'">5分， 需极大帮助（较大程度上依赖他人搀扶和帮助）</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[7]!='10'">10分，需部分帮助（需他人搀扶或使用拐杖）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[7]=='10'">10分，需部分帮助（需他人搀扶或使用拐杖）</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[7]!='15'">15分，可独立完成</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[7]=='15'">15分，可独立完成</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>平地行走</b>
+                        </td>
+                        <td rowspan="4" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[8]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[8]!='0'">0分， 完全依赖他人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[8]=='0'">0分， 完全依赖他人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[8]!='5'">5分， 需极大帮助（较大程度上依赖他人搀扶，或坐在轮椅上自行移动）</td> 
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[8]=='5'">5分， 需极大帮助（较大程度上依赖他人搀扶，或坐在轮椅上自行移动）</td> 
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[8]!='10'">10分，需部分帮助（需他人搀扶，或使用拐杖、助行器等辅助用具）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[8]=='10'">10分，需部分帮助（需他人搀扶，或使用拐杖、助行器等辅助用具）</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[8]!='15'">15分，可独立在平地上行走45m </td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[8]=='15'">15分，可独立在平地上行走45m </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>上下楼梯</b>
+                        </td>
+                        <td rowspan="3" style="padding: 5px;">
+                            <span>{{dailyLife.assessmentDay[9]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[9]!='0'">0分， 需极大帮助或完全依赖他人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[9]=='0'">0分， 需极大帮助或完全依赖他人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[9]!='5'">5分， 需部分帮助（需扶楼梯、他人搀扶，或使用拐杖等） </td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[9]=='5'">5分， 需部分帮助（需扶楼梯、他人搀扶，或使用拐杖等） </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.assessmentDay[9]!='10'">10分，可独立上下楼梯（10~15个台阶）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.assessmentDay[9]=='10'">10分，可独立上下楼梯（10~15个台阶）</td>
+                    </tr>
+
+                    <tr>
+                        <td class="addFirstTd" style="padding: 5px;">
+                            <b>日常生活部分总分</b>
+                        </td>
+                        <td style="padding: 5px;">
+                            <span>{{dailyLife.totalScore}}分</span>
+                        </td>
+                        <td style="padding: 5px;">上述10个项目得分之和</td>
+                    </tr>
+
+
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>日常生活活动分级</b>
+                        </td>
+                        <td rowspan="4" style="padding: 5px;">
+                            <span>{{dailyLife.classification}}级</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="dailyLife.classification!='0'" >0 （能力完好）：总分100分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.classification=='0'">0 （能力完好）：总分100分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.classification!='1'">1 （轻度受损）：总分65~95分 </td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.classification=='1'">1 （轻度受损）：总分65~95分 </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.classification!='2'">2 （中度受损）：总分45~60分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.classification=='2'">2 （中度受损）：总分45~60分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="dailyLife.classification!='3'">3 （重度受损）：总分≤40分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="dailyLife.classification=='3'">3 （重度受损）：总分≤40分</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div  style="width:210mm;height:300mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 精神状态评估表</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="6" class="addFirstTd" style="padding: 5px;width: 20%;">
+                            <b>认知功能</b>
+                        </td>
+                        <td rowspan="3" class="tac" style="padding: 5px;width: 10%;">
+                            测试
+                        </td>
+                        <td class="w50p tac" style="padding: 5px;">“我说三样东西，请重复一遍，并记住，一会儿还会问您”：苹果、手表、国旗</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">(1)画钟测验：“请在这儿画一个圆形时钟，在时钟上标出10点45分”</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">
+                            (2)回忆词语：“现在请您告诉我，刚才我要您记住的三样东西是什么
+                            <br> 答：_______、________、_________（不必按顺序）
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="tac" style="padding: 5px;">
+                            <span>{{health.assessmentMentality[0]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[0]!='0'" >0分，画钟正确（画出一个闭锁圆，指针位置准确），且能回忆出2-3个词</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[0]=='0'">0分，画钟正确（画出一个闭锁圆，指针位置准确），且能回忆出2-3个词</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[0]!='1'" >1分，画钟错误（画的圆不闭锁，或指针位置不准确），或只回忆出0-1个词</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[0]=='1'" >1分，画钟错误（画的圆不闭锁，或指针位置不准确），或只回忆出0-1个词</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[0]!='2'" >2分，确诊为认知障碍，如老年痴呆</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[0]=='2'" >2分，确诊为认知障碍，如老年痴呆</td>
+                    </tr>
+
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>攻击行为</b>
+                        </td>
+                        <td rowspan="3" class="tac" style="padding: 5px;">
+                            <span>{{health.assessmentMentality[1]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[1]!='0'" >0分，无身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[1]=='0'">0分，无身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[1]!='1'">1分，每月有几次身体攻击行为，或每周有几次语言攻击行为</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[1]=='1'">1分，每月有几次身体攻击行为，或每周有几次语言攻击行为</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[1]!='2'">2分，每周有几次身体攻击行为，或每日有语言攻击行为</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[1]=='2'">2分，每周有几次身体攻击行为，或每日有语言攻击行为</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="addFirstTd" style="padding: 5px;">
+                            <b>抑郁情绪</b>
+                        </td>
+                        <td rowspan="3" class="tac" style="padding: 5px;">
+                            <span>{{health.assessmentMentality[2]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[2]!='0'">0分，无 </td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[2]=='0'">0分，无 </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[2]!='1'">1分，情绪低落、不爱说话、不爱梳洗、不爱活动</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[2]=='1'">1分，情绪低落、不爱说话、不爱梳洗、不爱活动</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.assessmentMentality[2]!='2'">2分，有自杀念头或自杀行为</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.assessmentMentality[2]=='2'">2分，有自杀念头或自杀行为</td>
+                    </tr>
+
+                    <tr>
+                        <td class="addFirstTd" style="padding: 5px;">
+                            <b>精神状态总分</b>
+                        </td>
+                        <td class="tac" style="padding: 5px;">
+                            <span>{{health.totalScore}}分</span>
+                        </td>
+                        <td style="padding: 5px;">上述3个项目得分之和 </td>
+                    </tr>
+
+
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>精神状态分级</b>
+                        </td>
+                        <td rowspan="4" class="tac" style="padding: 5px;">
+                            <span>{{health.classification}}级</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="health.classification!='0'">0（能力完好）：总分为0分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.classification=='0'">0（能力完好）：总分为0分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.classification!='1'">1（轻度受损）：总分为1分 </td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.classification=='1'">1（轻度受损）：总分为1分 </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.classification!='2'"> 2（中度受损）：总分2-3分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.classification=='2'"> 2（中度受损）：总分2-3分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="health.classification!='3'">3（重度受损）：总分4-6分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="health.classification=='3'">3（重度受损）：总分4-6分</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div  style="width:210mm;height:300mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 知觉与沟通评估表</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>精神意识水平</b>
+                        </td>
+                        <td rowspan="4" class="tac w20p" style="padding: 5px;width: 10%;">
+                            <span>{{sensoryPer.assessmentCommunication[0]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[0]!='0'" >0分，神志清醒，对周围环境警觉</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[0]=='0'">0分，神志清醒，对周围环境警觉</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[0]!='1'">1分，嗜睡，表现为睡眠状态过度延长。当呼唤或推动患者的肢体时可唤醒，并能进行正确的交谈或执行指令，停止刺激后又继续入睡</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[0]=='1'">1分，嗜睡，表现为睡眠状态过度延长。当呼唤或推动患者的肢体时可唤醒，并能进行正确的交谈或执行指令，停止刺激后又继续入睡</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[0]!='2'">2分，昏睡，一般的外界刺激不能使其觉醒，给予较强烈的刺激时可有短时的意识清醒，醒后可简短回答提问，当刺激减弱后又很快进入睡眠状态</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[0]=='2'">2分，昏睡，一般的外界刺激不能使其觉醒，给予较强烈的刺激时可有短时的意识清醒，醒后可简短回答提问，当刺激减弱后又很快进入睡眠状态</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[0]!='3'">3分，昏迷，处于浅昏迷时对疼痛刺激有回避和痛苦表情；处于深昏迷时对刺激无反应，全身肌肉松弛，眼球固定，瞳孔散大</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[0]=='3'">3分，昏迷，处于浅昏迷时对疼痛刺激有回避和痛苦表情；处于深昏迷时对刺激无反应，全身肌肉松弛，眼球固定，瞳孔散大</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>视力：</b>若平日带老花镜或近视镜，应在佩戴眼镜的情况下评估
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{sensoryPer.assessmentCommunication[1]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[1]!='0'">0分，能看清书报上的标准字体</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[1]=='0'">0分，能看清书报上的标准字体</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[1]!='1'">1分，能看清楚大字体，但看不清书报上的标准字体</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[1]=='1'">1分，能看清楚大字体，但看不清书报上的标准字体</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[1]!='2'">2分，视力有限，看不清报纸大标题，但能辨认物体</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[1]=='2'">2分，视力有限，看不清报纸大标题，但能辨认物体</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[1]!='3'">3分，辨认物体有困难，但眼睛能跟随物体移动，只能看到光、颜色和形状</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[1]=='3'">3分，辨认物体有困难，但眼睛能跟随物体移动，只能看到光、颜色和形状</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[1]!='4'">4分，没有视力，眼睛不能跟随物体移动</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[1]=='4'">4分，没有视力，眼睛不能跟随物体移动</td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>听力：</b>若平时佩戴助听器，应在佩戴助听器的情况下评估
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{sensoryPer.assessmentCommunication[2]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[2]!='0'">0分，可正常交谈，能听到电视、电话、门铃的声音</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[2]=='0'">0分，可正常交谈，能听到电视、电话、门铃的声音</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[2]!='1'">1分，在轻声说话或说话距离超过2米时听不清</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[2]=='1'">1分，在轻声说话或说话距离超过2米时听不清</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[2]!='2'">2分，正常交流有些困难，需在安静的环静或大声说话才能听到</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[2]=='2'">2分，正常交流有些困难，需在安静的环静或大声说话才能听到</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[2]!='3'">3分，讲话者大声说话或说话很慢，才能部分听见</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[2]=='3'">3分，讲话者大声说话或说话很慢，才能部分听见</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"  *ngIf="sensoryPer.assessmentCommunication[2]!='4'">4分，完全听不见</td>
+                        <td style="padding: 5px;font-weight: bold"  *ngIf="sensoryPer.assessmentCommunication[2]=='4'">4分，完全听不见</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>沟通交流（包括非语言沟通）</b>
+                        </td>
+                        <td rowspan="4" class="tac" style="padding: 5px;">
+                            <span>{{sensoryPer.assessmentCommunication[3]}}分</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[3]!='0'">0分，无困难，能与他人正常沟通和交流</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[3]=='0'">0分，无困难，能与他人正常沟通和交流</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[3]!='1'">1分，能够沟通，但需要增加时间或给予帮助</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[3]=='1'">1分，能够沟通，但需要增加时间或给予帮助</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[3]!='2'">2分，沟通有困难，需频繁重复或简化口头表达</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[3]=='2'">2分，沟通有困难，需频繁重复或简化口头表达</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.assessmentCommunication[3]!='3'">3分，不能表达需要</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.assessmentCommunication[3]=='3'">3分，不能表达需要</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>感知觉与沟通分级</b>
+                        </td>
+                        <td rowspan="4" class="tac" style="padding: 5px;">
+                            <span>{{sensoryPer.classification}}级</span>
+                        </td>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.classification!='0'"> 0（能力完好）：意识为清醒，且视力和听力评定为0或1，沟通评定为0。</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.classification=='0'"> 0（能力完好）：意识为清醒，且视力和听力评定为0或1，沟通评定为0。</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.classification!='1'"> 1（轻度受损）：意识为清醒，但视力或听力中至少一项评定为2，或沟通评定为1。</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.classification=='1'"> 1（轻度受损）：意识为清醒，但视力或听力中至少一项评定为2，或沟通评定为1。</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.classification!='2'"> 2（中度受损）：意识清醒，但视力或听力中至少一项评定为3，或沟通评定为2；或嗜睡，视力或听力评定为3级及以下，沟通评定为2级及以下。</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.classification=='2'"> 2（中度受损）：意识清醒，但视力或听力中至少一项评定为3，或沟通评定为2；或嗜睡，视力或听力评定为3级及以下，沟通评定为2级及以下。</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="sensoryPer.classification!='3'">3（重度受损）：意识为清醒或嗜睡，但视力或听力中至少一项评定为4，或沟通评定为3；或昏睡/昏迷。</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="sensoryPer.classification=='3'">3（重度受损）：意识为清醒或嗜睡，但视力或听力中至少一项评定为4，或沟通评定为3；或昏睡/昏迷。</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div  style="width:210mm;height:620mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 社会参与评估表</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>生活能力</b>
+                        </td>
+                        <td rowspan="5" class="tac w20p" style="padding: 5px;width: 10%;">
+                            <span>{{mentalCondi.assessmentSocial[0]}}</span>分
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[0]!='0'" >0分，除个人生活自理外（如饮食、洗漱、穿戴、二便），还能料理家务（如做饭、洗衣）或当家管理事务</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[0]=='0'" >0分，除个人生活自理外（如饮食、洗漱、穿戴、二便），还能料理家务（如做饭、洗衣）或当家管理事务</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[0]!='1'" >1分，除个人生活自理外，能做家务，但欠好，家庭事务安排欠条理</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[0]=='1'" >1分，除个人生活自理外，能做家务，但欠好，家庭事务安排欠条理</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[0]!='2'">2分，个人生活能自理；只有在他人帮助下才能做些家务，但质量不好</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[0]=='2'">2分，个人生活能自理；只有在他人帮助下才能做些家务，但质量不好</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[0]!='3'">3分，个人基本生活事务能自理（如饮食、二便），在督促下可洗漱</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[0]=='3'">3分，个人基本生活事务能自理（如饮食、二便），在督促下可洗漱</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[0]!='4'">4分，个人基本生活事务（如饮食、二便）需要部分帮助或完全帮助</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[0]=='4'">4分，个人基本生活事务（如饮食、二便）需要部分帮助或完全帮助</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>工作能力</b>
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.assessmentSocial[1]}}</span>分
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[1]!='0'" >0分，原来熟练的脑力工作或体力技巧性工作可照常进行</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[1]=='0'" >0分，原来熟练的脑力工作或体力技巧性工作可照常进行</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[1]!='1'">1分，原来熟练的脑力工作或体力技巧性工作能力有所下降</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[1]=='1'">1分，原来熟练的脑力工作或体力技巧性工作能力有所下降</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[1]!='2'">2分，原来熟练的脑力工作或体力技巧性工作明显不如以往，部分遗忘</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[1]=='2'">2分，原来熟练的脑力工作或体力技巧性工作明显不如以往，部分遗忘</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[1]!='3'">3分，对熟练工作只有一些片段保留，技能全部遗忘</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[1]=='3'">3分，对熟练工作只有一些片段保留，技能全部遗忘</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[1]!='4'">4分，对以往的知识或技能全部磨灭</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[1]=='4'">4分，对以往的知识或技能全部磨灭</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>时间/空间定向</b>
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.assessmentSocial[2]}}</span>分
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[2]!='0'">0分，时间观念（年、月、日、时）清楚；可单独出远门，能很快掌握新环境的方位</td>
+                        <td style="padding: 5px;font-weight: bold"  *ngIf="mentalCondi.assessmentSocial[2]=='0'">0分，时间观念（年、月、日、时）清楚；可单独出远门，能很快掌握新环境的方位</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[2]!='1'">1分，时间观念有些下降，年、月、日清楚，但有时相差几天；可单独来往于近街，知道现住地的名称和方位，但不知回家路线</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[2]=='1'">1分，时间观念有些下降，年、月、日清楚，但有时相差几天；可单独来往于近街，知道现住地的名称和方位，但不知回家路线</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[2]!='2'">2分，时间观念较差，年、月、日不清楚，可知上半年或下半年；只能单独在家附近行动，对现住地只知名称，不知道方位</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[2]=='2'">2分，时间观念较差，年、月、日不清楚，可知上半年或下半年；只能单独在家附近行动，对现住地只知名称，不知道方位</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[2]!='3'">3分，时间观念很差，年、月、日不清楚，可知上午或下午；只能在左邻右舍间串门，对现住地不知名称和方位</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[2]=='3'">3分，时间观念很差，年、月、日不清楚，可知上午或下午；只能在左邻右舍间串门，对现住地不知名称和方位</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[2]!='4'">4分，无时间观念；不能单独外出</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[2]=='4'">4分，无时间观念；不能单独外出</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>人物定向</b>
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.assessmentSocial[3]}}</span>分
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[3]!='0'">0分，知道周围人们的关系，知道祖孙、叔伯、姑姨、侄子侄女等称谓的意义；可分辨陌生人的大致年龄和身份，可用适当称呼</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[3]=='0'">0分，知道周围人们的关系，知道祖孙、叔伯、姑姨、侄子侄女等称谓的意义；可分辨陌生人的大致年龄和身份，可用适当称呼</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[3]!='1'">1分，只知家中亲密近亲的关系，不会分辨陌生人的大致年龄，不能称呼陌生人</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[3]=='1'">1分，只知家中亲密近亲的关系，不会分辨陌生人的大致年龄，不能称呼陌生人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[3]!='2'">2分，只能称呼家中人，或只能照样称呼，不知其关系，不辨辈分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[3]=='2'">2分，只能称呼家中人，或只能照样称呼，不知其关系，不辨辈分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"  *ngIf="mentalCondi.assessmentSocial[3]!='3'">3分，只认识常同住的亲人，可称呼子女或孙子女，可辨熟人和生人</td>
+                        <td style="padding: 5px;font-weight: bold"  *ngIf="mentalCondi.assessmentSocial[3]=='3'">3分，只认识常同住的亲人，可称呼子女或孙子女，可辨熟人和生人</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"  *ngIf="mentalCondi.assessmentSocial[3]!='4'">4分，只认识保护人，不辨熟人和生人</td>
+                        <td style="padding: 5px;font-weight: bold"  *ngIf="mentalCondi.assessmentSocial[3]=='4'">4分，只认识保护人，不辨熟人和生人</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="addFirstTd" style="padding: 5px;">
+                            <b>社会交往能力</b>
+                        </td>
+                        <td rowspan="5" class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.assessmentSocial[4]}}</span>分
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[4]!='0'"> 0分，参与社会，在社会环境有一定的适应能力，待人接物恰当</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[4]=='0'"> 0分，参与社会，在社会环境有一定的适应能力，待人接物恰当</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[4]!='1'"> 1分，能适应单纯环境，主动接触人，初见面时难让人发现智力问题，不能理解隐喻语</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[4]=='1'"> 1分，能适应单纯环境，主动接触人，初见面时难让人发现智力问题，不能理解隐喻语</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[4]!='2'"> 2分，脱离社会，可被动接触，不会主动待人，谈话中很多不适词句，容易上当受骗</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[4]=='2'"> 2分，脱离社会，可被动接触，不会主动待人，谈话中很多不适词句，容易上当受骗</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[4]!='3'">3分，勉强可与人交往，谈吐内容不清楚，表情不恰当</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[4]=='3'">3分，勉强可与人交往，谈吐内容不清楚，表情不恰当</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.assessmentSocial[4]!='4'">4分，难以与人接触</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.assessmentSocial[4]=='4'">4分，难以与人接触</td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding: 5px;">
+                            <b>社会参与总分</b>
+                        </td>
+                        <td class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.totalScore}}</span>分
+                        </td>
+                        <td style="padding: 5px;"> 上述5个项目得分之和</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" class="addFirstTd" style="padding: 5px;">
+                            <b>社会参与分级</b>
+                        </td>
+                        <td rowspan="4" class="tac" style="padding: 5px;">
+                            <span>{{mentalCondi.classification}}</span>级
+                        </td>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.classification!='0'" > 0（能力完好）：总分0-2分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.classification=='0'" > 0（能力完好）：总分0-2分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.classification!='1'"> 1（轻度受损）：总分3-7分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.classification=='1'"> 1（轻度受损）：总分3-7分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.classification!='2'"> 2（中度受损）：总分8-13分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.classification=='2'"> 2（中度受损）：总分8-13分</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;" *ngIf="mentalCondi.classification!='3'">3（重度受损）：总分14-20分</td>
+                        <td style="padding: 5px;font-weight: bold" *ngIf="mentalCondi.classification=='3'">3（重度受损）：总分14-20分</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div  style="width:210mm;height:200mm; margin: 0 auto;">
+    <div  style="text-align: center;width: 100%; margin: 0 auto;">
+        <div style="font-size:22px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;"> 老年人能力评估报告</div>
+        <div style="font-size:16px;letter-spacing: 6px;font-weight: bold;margin-bottom: 20px;margin-top: 20px;">
+            <table style="border-collapse:collapse;width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="2" class="addFirstTd" style="padding:5px;">
+                            <b>一级指标分级</b>
+                        </td>
+                        <td class="tac" style="padding:5px;">
+                            <label>日常生活活动：</label>
+                            <span>{{dailyLife.classification}}
+                                <span *ngIf='dailyLife.classification=="0"'>能力完好</span>
+                                <span *ngIf='dailyLife.classification=="1"'>轻度受损</span>
+                                <span *ngIf='dailyLife.classification=="2"'>中度受损</span>
+                                <span *ngIf='dailyLife.classification=="3"'>重度受损</span>
+                            </span>
+                        </td>
+                        <td class="tac" style="padding:5px;">
+                            <label>精神状况：</label>
+                            <span>{{health.classification}}
+                                <span *ngIf='health.classification=="0"'>能力完好</span>
+                                <span *ngIf='health.classification=="1"'>轻度受损</span>
+                                <span *ngIf='health.classification=="2"'>中度受损</span>
+                                <span *ngIf='health.classification=="3"'>重度受损</span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tac" style="padding:5px;">
+                            <label>感知觉与沟通：</label>
+                            <span>{{sensoryPer.classification}}
+                                <span *ngIf='sensoryPer.classification=="0"'>能力完好</span>
+                                <span *ngIf='sensoryPer.classification=="1"'>轻度受损</span>
+                                <span *ngIf='sensoryPer.classification=="2"'>中度受损</span>
+                                <span *ngIf='sensoryPer.classification=="3"'>重度受损</span>
+                            </span>
+                        </td>
+                        <td class="tac" style="padding:5px;">
+                            <label>社会参与：</label>
+                            <span>{{mentalCondi.classification}}
+                                <span *ngIf='mentalCondi.classification=="0"'>能力完好</span>
+                                <span *ngIf='mentalCondi.classification=="1"'>轻度受损</span>
+                                <span *ngIf='mentalCondi.classification=="2"'>中度受损</span>
+                                <span *ngIf='mentalCondi.classification=="3"'>重度受损</span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <b>老年人能力初步等级</b>
+                        </td>
+                        <td colspan="2" style="padding:5px;">
+                            <span>
+                                    0 能力完好
+                                    1 轻度失能
+                                    2 中度失能
+                                    3 重度失能
+                            </span>
+                            <div style="font-weight:bold;margin-top: 5px">老年人能力初步等级：
+                                <span *ngIf="asseReport.preliminaryGrade=='0'" >能力完好</span>
+                                <span *ngIf="asseReport.preliminaryGrade=='1'" >轻度失能</span>
+                                <span *ngIf="asseReport.preliminaryGrade=='2'" >中度失能</span>
+                                <span *ngIf="asseReport.preliminaryGrade=='3'" >重度失能</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <b>等级变更条款</b>
+                        </td>
+                        <td colspan="2" style="padding:5px;">
+                            <span>1 有认知障碍/痴呆、精神疾病者，在原有能力级别上提高一个等级；</span><br>
+                            <span>2 近30天内发生过2次及以上跌倒、噎食、自杀、走失者，在原有能力级别上提高一个等级；</span><br>
+                            <span>3 处于昏迷状态者，直接评定为重度失能；</span><br>
+                            <span>4 若初步等级确定为“3重度失能”，则不考虑上述1-3各情况对最终等级的影响，等级不再提高。</span><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <b>老年人能力最终等级</b>
+                        </td>
+                        <td colspan="2" style="padding:5px;">
+                            <span style="display:inline-block;margin-right:10px;" *ngFor="let x of finalLevel;let i=index">{{i+1}} {{x.levelName}}</span>
+                            <div style="font-weight:bold;margin-top: 5px">老年人能力最终等级：{{asseReport.finalGrade}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <span>评 估 员 签 名&nbsp;&nbsp;&nbsp;</span>
+                        </td>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <div>{{asseReport.autographMemo.assess.name}}</div>
+                        </td>
+                        <td colspan="2" style="padding:5px;">
+                            <span class="">日期</span>
+                            <div>{{asseReport.autographMemo.assess.date}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" style="padding:5px;">
+                            <span>信息提供者签名</span>
+                        </td>
+                        <td class="addFirstTd" style="padding:5px;">
+                                <div>{{asseReport.autographMemo.provide.name}}</div>
+                        </td>
+                        <td colspan="2" style="padding:5px;">
+                            <span class="">日期</span>
+                            <div>{{asseReport.autographMemo.provide.date}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="addFirstTd" colspan="3" class="tal" style="padding:5px;">
+                            <span>注：老年人能力等级划分标准</span><br>
+                            <div class="gradeStandard" *ngFor="let item of gradingData">
+                                <b><span style="margin-right:10px;">{{item.dictValue}}</span> <span>{{item.dictTag}}</span>：</b><br>
+                                <span>{{item.comment}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

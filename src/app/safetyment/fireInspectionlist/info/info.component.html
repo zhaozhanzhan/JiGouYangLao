@@ -1,0 +1,36 @@
+<ng-template #extraTemplate>
+   <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+      
+<nz-card nzTitle="防火巡查详情" [nzExtra]="extraTemplate">
+        <div nz-row>
+            <div nz-col nzSpan="8">
+                <label>巡查区域</label>
+                <input nz-input  [(ngModel)]="PatrolAreaDetails.areaName" class="xuncWInput" disabled>
+            </div>
+            <div nz-col nzSpan="8">
+                <label>巡查人</label>
+                <input nz-input  [(ngModel)]="PatrolAreaDetails.fpName" class="xuncWInput" disabled>
+            </div>
+            <div nz-col nzSpan="8">
+                <label>巡查时间</label>
+                <input nz-input  [(ngModel)]="PatrolAreaDetails.fpDate" class="xuncWInput" disabled>
+            </div>
+        </div>
+
+        <div *ngFor="let item of list">
+            <div nz-row class="detailFireln" >
+                <label>{{item.fpTypeDesc}}</label><br>
+                <nz-radio-group [(ngModel)]="item.isQualified" nzDisabled>
+                    <label nz-radio nzValue="1">是</label>
+                    <label nz-radio nzValue="0">否</label>
+                </nz-radio-group>
+                <input nz-input  [(ngModel)]="item.inspectDesc" class="emergencyExitInput" disabled> <br>
+                <img *ngFor="let data of item.picUrl"  src="{{data}}"  alt="" class="fireinspectionWidt" (click)="openNew(data)">
+            </div>
+        </div>
+</nz-card>
+      
+
+
+

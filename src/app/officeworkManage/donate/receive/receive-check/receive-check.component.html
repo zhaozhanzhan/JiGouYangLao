@@ -1,0 +1,232 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="物品调拨详情" [nzExtra]="btnArea">
+  <nz-card class="mt10" nzType="inner">
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="whOutName"
+        >出库库房</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="outStorehouse?.donatedWarehouseOut?.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="recTime"
+        >出库时间</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <nz-date-picker
+          class="form_input"
+          nzShowTime
+          [ngModel]="outStorehouse?.createDate | date: 'yyyy-MM-dd HH:mm:ss'"
+          [nzStyle]="{ width: '400px' }"
+          readonly
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="recDeptName"
+        >调拨部门</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          class="form_input"
+          nz-input
+          [(ngModel)]="outStorehouse.recDept.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="whInName"
+        >调拨库房</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.donatedWarehouseIn?.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="receiver"
+        >调拨人员</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.receiver"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="recTime"
+        >调拨时间</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.recTime | date: 'yyyy-MM-dd HH:mm:ss'"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="recTime"
+        >调拨用途</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.useFor"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="outComment"
+        >备注</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <textarea
+          rows="4"
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.outComment"
+          readonly
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+
+  <nz-card class="mt10" nzType="inner" nzTitle="出库物品">
+    <nz-table
+      #drugTable
+      [nzData]="outStorehouse.outDonatedWarehouseGoods"
+      [nzHideOnSinglePage]="true"
+      nzBordered
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>批次号</th>
+          <th>物品名称</th>
+          <th>捐赠用途</th>
+          <th>物品类别</th>
+          <th>数量</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of drugTable.data; let num = index">
+          <td class="maxW50 tac">{{ num + 1 }}</td>
+          <td class="minW150">{{ data?.batchNum }}</td>
+          <td class="minW150">{{ data?.donatedGoods?.name }}</td>
+          <td class="maxW80">{{ data?.useFor }}</td>
+          <td class="maxW150">
+            {{ data?.donatedGoods?.donatedGoodsCategory?.name }}
+          </td>
+          <td class="maxW80">{{ data?.outNum }}</td>
+          <td>{{ data.goodsComment }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <nz-card class="mt10" nzType="inner" nzTitle="签名">
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="outComment"
+        >经办人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="outStorehouse.operatorUrl"
+          [isShowSign]="false"
+          #operatorUrl
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="outComment"
+        >调拨人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="outStorehouse.receiverUrl"
+          [isShowSign]="false"
+          #receiverUrl
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+</nz-card>
+<!-- 表单区域End -->

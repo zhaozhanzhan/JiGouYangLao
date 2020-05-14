@@ -1,0 +1,676 @@
+<!-- 委托详情返回 -->
+<ng-template #btnAdd>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+<!-- 委托详情内容 -->
+<nz-card nzTitle="委托详情" [nzExtra]="btnAdd">
+  <!-- 用户详细信息 -->
+  <div>
+    <span class="sw10 fz">姓名：{{ olderInfo.name }}</span>
+    <span class="sw10"></span>
+    <span class="sw10 fz">性别：{{ olderInfo.sex }}</span>
+    <span class="sw10"></span>
+    <span class="sw10 fz">年龄：{{ olderInfo.age }}</span>
+    <span class="sw10"></span>
+    <span class="sw10 fz">床位：{{ olderInfo.bedNum }}</span>
+    <span class="sw10"></span>
+    <span class="sw10 fz">房间：{{ olderInfo.room }}</span>
+    <span class="sw10"></span>
+  </div>
+  <nz-tabset>
+    <!-- 服用药品列表 -->
+    <nz-tab nzTitle="服用药品" (nzSelect)="takeMedTable()">
+      <!-- 服用药品添加和保存按钮 -->
+      <div class="allButton">
+        
+        <button nz-button nzType="primary" style="margin-left:10px;" (click)="add()">
+          添加
+        </button>
+        <button nz-button nzType="primary" style="margin-left:10px;" (click)="save()">
+          保存
+        </button>
+
+        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+        <button style="margin-left:10px;" nz-button nzType="primary" (click)="clickPrint($event)">打印</button>
+      </div>
+
+      <!-- 服用药品列表 -->
+      <div #printArea>
+          <nz-table #basicTable [nzLoading]="takeMedLoading" nzBordered [nzFrontPagination]="false" [nzShowPagination]="false" [nzNoResult]="takeList.length || medList.length ? '&nbsp;' : '暂无数据'">
+              <!-- [nzNoResult]="' &nbsp;'" -->
+            <thead>
+              <tr>
+                <th class="center">接收日期</th>
+                <th class="center">药品名称</th>
+                <th class="center">简称</th>
+                <th class="center">规格</th>
+                <th class="center">剩余数量</th>
+                <th class="center">剂量(片/次)</th>
+                <th class="center">频次</th>
+                <th class="center">餐前</th>
+                <th class="center">餐后</th>
+                <th class="center">作用</th>
+                <th class="center">服用期限</th>
+                <th class="center">预计服用期限</th>
+                <th class="center" *ngIf="isShowOper">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 添加到数据库中的数据 -->
+              <tr *ngFor="let data of takeList; let i = index">
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.receiveDate }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.medName }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.commonName }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.specification }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.medTotal }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.dosage }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.frequency }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.takeMedTime == 0 ? '✓' : '' }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.takeMedTime == 1 ? '✓' : '' }}</td>
+                <td nz-tooltip nzTitle="{{data.effect}}" nzPlacement="top" class="center over5WordHidden" [ngClass]="{'red': data.limitSign == 1}">{{ data.effect }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.limitDate }}</td>
+                <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{ data.limitPredictDate }}</td>
+                <td class="center" *ngIf="isShowOper">
+                    <a href="javascript:void(0)" (click)="detail(data)">详情</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="detail(data,true)">变更</a> 
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="stop(data.id,data)">停服</a>
+                </td>
+              </tr>
+              <!-- 未添加到数据库中得列表 -->
+              <tr *ngFor="let data of medList; let i = index">
+                  <td class="center">{{ data.receiveDate }}</td>
+                  <td class="center">{{ data.medName }}</td>
+                  <td class="center">{{ data.commonName }}</td>
+                  <td class="center">{{ data.standard }}</td>
+                  <td class="center">{{ data.medTotal }}</td>
+                  <td class="center">{{ data.dosage }}</td>
+                  <td class="center">{{ data.showFrequencyTag }}</td>
+                  <td class="center">{{ data.takeMedTime == 0 ? '✓' : '' }}</td>
+                  <td class="center">{{ data.takeMedTime == 1 ? '✓' : '' }}</td>
+                  <td nz-tooltip nzTitle="{{data.effect}}" nzPlacement="top" class="center over5WordHidden">{{ data.effect }}</td>
+                  <td class="center">{{ data.limitDate }}</td>
+                  <td class="center"></td>
+                  <td class="center" *ngIf="isShowOper">
+                    <a href="javascript:void(0)" (click)="edit(i,data)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" style="color: #f81d22 !important;" (click)="delete(i)">删除</a>
+                  </td>
+                </tr>
+            </tbody>
+          </nz-table>
+      </div>
+      
+    </nz-tab>
+    <!--停服药品列表 -->
+    <nz-tab nzTitle="停服药品" (nzSelect)="stopMedTable()">
+      <ng-template #stopMedListTemplate let-total>共 {{ stopMedListTotalElements }} 条</ng-template>
+      <nz-table #stopTable [nzData]="stopTakeList" [nzLoading]="stopTakeMedLoading" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="stopMedListTotalElements" [nzShowTotal]="stopMedListTemplate" [nzPageIndex]="stopMedListSendData.page+1" [nzPageSize]="stopMedListSendData.size"
+      (nzPageSizeChange)="stopMedListPageSizeChange($event)" (nzPageIndexChange)="stopMedListPageIndexChange($event)" >
+        <thead>
+          <tr>
+            <th class="center">接收日期</th>
+            <th class="center">药品名称</th>
+            <th class="center">简称</th>
+            <th class="center">规格</th>
+            <th class="center">剩余数量</th>
+            <th class="center">剂量(片/次)</th>
+            <th class="center">频次</th>
+            <th class="center">餐前</th>
+            <th class="center">餐后</th>
+            <th class="center">作用</th>
+            <th class="center">服用期限</th>
+            <th class="center">停用日期</th>
+            <th class="center">停用原因</th>
+            <th class="center">操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of stopTable.data">
+            <td class="center">{{ data.receiveDate }}</td>
+            <td class="center">{{ data.medName }}</td>
+            <td class="center">{{ data.commonName }}</td>
+            <td class="center">{{ data.specification }}</td>
+            <td class="center">{{ data.medTotal }}</td>
+            <td class="center">{{ data.dosage }}</td>
+            <td class="center">{{ data.frequency }}</td>
+            <td class="center">{{ data.takeMedTime == 0 ? '✓' : ''  }}</td>
+            <td class="center">{{ data.takeMedTime == 1 ? '✓' : ''  }}</td>
+            <td nz-tooltip nzTitle="{{data.effect}}" nzPlacement="top" class="center over5WordHidden">{{ data.effect }}</td>
+            <td class="center">{{ data.limitDate }}</td>
+            <td class="center">{{ data.stopDate }}</td>
+            <td nz-tooltip nzTitle="{{data.stopRemark}}" nzPlacement="top" class="center over5WordHidden">{{ data.stopRemark }}</td>
+            <td class="center">{{ data.operator }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+    <!--委托记录列表 -->
+    <nz-tab nzTitle="委托记录" (nzSelect)="entrusTable()">
+      <ng-template #entrustRecordListTemplate let-total>共 {{ entrustRecordListTotalElements }} 条</ng-template>
+      <nz-table #recordTable [nzData]="recordTakeList" [nzLoading]="entrustRecordLoading" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="entrustRecordListTotalElements" [nzShowTotal]="entrustRecordListTemplate" [nzPageIndex]="entrustRecordSendData.page+1" [nzPageSize]="entrustRecordSendData.size"
+      (nzPageSizeChange)="entrustRecordListPageSizeChange($event)" (nzPageIndexChange)="entrustRecordListPageIndexChange($event)" >
+        <thead>
+          <tr>
+            <th class="center">接收日期</th>
+            <th class="center">药品名称</th>
+            <th class="center">简称</th>
+            <th class="center">规格</th>
+            <th class="center">原剩余数量</th>
+            <th class="center">现剩余数量</th>
+            <th class="center">原剂量(片/次)</th>
+            <th class="center">现剂量(片/次)</th>
+            <th class="center">原频次</th>
+            <th class="center">现频次</th>
+            <th class="center">餐前</th>
+            <th class="center">餐后</th>
+            <th class="center">作用</th>
+            <th class="center">原服用期限</th>
+            <th class="center">现服用期限</th>
+            <th class="center">原委托家属姓名</th>
+            <th class="center">现委托家属姓名</th>
+            <th class="center">操作时间</th>
+            <th class="center">操作内容</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of recordTable.data">
+            <td class="center"  [ngClass]="{'red': data.operationContent == '变更'}">{{ data.receiveDate }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.medName }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.commonName }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.specification }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.oMedTotal }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.nMedTotal }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.oDosage }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.nDosage }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.oFrequency }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.nFrequency }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.takeMedTime == 0 ? '✓' : '' }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.takeMedTime == 1 ? '✓' : '' }}</td>
+            <td nz-tooltip nzTitle="{{data.effect}}" nzPlacement="top" class="center over5WordHidden" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.effect }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.oLimitDate }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.nLimitDate }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.oFamilyMember }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.nFamilyMember }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.createDate }}</td>
+            <td class="center" [ngClass]="{'red': data.operationContent == '变更'}">{{ data.operationContent }}</td>
+            
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+    <!--服药记录列表 -->
+    <nz-tab nzTitle="服药记录" (nzSelect)="takeMedRecordTable()">
+      <ng-template #takeMedRecordTemplate let-total>共 {{ takeMedRecordTotalElements }} 条</ng-template>
+      <nz-table #medicineTable [nzData]="medicineTakeList" [nzLoading]="takeMedRecordLoading" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="takeMedRecordTotalElements" [nzShowTotal]="takeMedRecordTemplate" [nzPageIndex]="takeMedRecordSendData.page+1" [nzPageSize]="takeMedRecordSendData.size"
+      (nzPageSizeChange)="takeMedRecordPageSizeChange($event)" (nzPageIndexChange)="takeMedRecordPageIndexChange($event)" >
+        <thead>
+          <tr>
+            <th class="center">药品名称</th>
+            <th class="center">简称</th>
+            <th class="center">规格</th>
+            <th class="center">剩余数量</th>
+            <th class="center">作用</th>
+            <th class="center">剂量(片/次)</th>
+            <th class="center">频次</th>
+            <th class="center">餐前</th>
+            <th class="center">餐后</th>
+            <th class="center">服用期限</th>
+            <th class="center">服药时间</th>
+            <th class="center">护士执行者</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of medicineTable.data">
+            <td class="center">{{ data.medName }}</td>
+            <td class="center">{{ data.commonName }}</td>
+            <td class="center">{{ data.specification }}</td>
+            <td class="center">{{ data.medTotal }}</td>
+            <td nz-tooltip nzTitle="{{data.effect}}" nzPlacement="top" class="center over5WordHidden">{{ data.effect }}</td>
+            <td class="center">{{ data.dosage }}</td>
+            <td class="center">{{ data.frequency }}</td>
+            <td class="center">{{ data.takeMedTime == 0 ? '✓' : '' }}</td>
+            <td class="center">{{ data.takeMedTime == 1 ? '✓' : '' }}</td>
+            <td class="center">{{ data.limitDate }}</td>
+            <td class="center">{{ data.takeDate }}</td>
+            <td class="center">{{ data.operator }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-tab>
+  </nz-tabset>
+</nz-card>
+
+<!-- 添加服用药品得弹出框 -->
+<nz-modal [(nzVisible)]="addTakeIsVisible" [nzTitle]="addMedChange ? '药品变更' : '药品详情'" nzWidth="900" (nzOnCancel)="addTakeCancel()" (nzOnOk)="addMedChange ? changeMedOk() : addTakeOk()" [nzFooter]="addMedzIndexModel ? null : '' " [nzOkLoading]="addTakeOkLoading">
+  <div  style="position:relative">
+    <div *ngIf="addMedzIndexModel" style="position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(248, 244, 244, 0.1);z-index: 9999;"></div>
+    <div *ngIf="boxLoading" style="position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(248, 244, 244, 0.1);z-index: 9999;">
+      <div class="loader"></div>
+    </div>
+    <form nz-form [formGroup]="addMedOutBoxForm">
+      <div nz-row nzType="flex">
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>药品名称</nz-form-label>
+            <nz-form-control>
+              <!-- <input nz-input #medName placeholder="请输入药品名称" class="wp" formControlName="medName" [readonly]="addMedChange" (keyup)="onSearchNameChange(medName.value)"/> --> 
+              <!-- 药品名称可以填写也可以再数据库里查询选择-->
+              <nz-mention [nzSuggestions]="medNameList" (nzOnSelect)="onSelect($event)" (nzOnSearchChange)="onSearchNameChange($event)" [nzNotFoundContent]="'无匹配结果'" [nzPrefix]="medName.value[0]?medName.value[0]:''" [nzLoading]="inputSuggestLoading">
+                <input #medName placeholder="请输入药品名称" nzMentionTrigger nz-input formControlName="medName" [readonly]="addMedChange" (keyup)="profix(medName)" />
+              </nz-mention>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('medName').dirty && addMedOutBoxForm.get('medName').errors">请输入药品名称!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label>简称</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入药品简称" class="wp" formControlName="commonName" [readonly]="addMedChange" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label>规格</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入药品规格" class="wp" formControlName="standard" [readonly]="addMedChange" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- 点击变更隐藏  -->
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>药品总量</nz-form-label>
+            <nz-form-control>
+              <input #medTotal nz-input placeholder="请输入药品总量" class="wp" formControlName="medTotal" />
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('medTotal').dirty && addMedOutBoxForm.get('medTotal').errors">请输入有效的数字</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>剂量(片/次)</nz-form-label>
+            <nz-form-control>
+              <input #dosage nz-input placeholder="请输入服用剂量" class="wp" formControlName="dosage" />
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('dosage').dirty && addMedOutBoxForm.get('dosage').errors">请输入有效的数字</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>频次</nz-form-label>
+            <nz-form-control>
+              <!-- 频次是获得医疗字典中得用药频次 -->
+              <nz-select class="wp" nzShowSearch nzAllowClear nzPlaceHolder="请选择频次" formControlName="frequency" (ngModelChange)="frequencyTag($event)">
+                <nz-option *ngFor="let item of medFrequencyLisy" [nzValue]="item.dictValue" [nzLabel]="item.dictTag" ></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('frequency').dirty && addMedOutBoxForm.get('frequency').errors">请选择频次!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服药时间</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group class="wp" formControlName="takeMedTime">
+                <label nz-radio nzValue="0">餐前</label>
+                <label nz-radio nzValue="1">餐后</label>
+              </nz-radio-group>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('takeMedTime').dirty && addMedOutBoxForm.get('takeMedTime').errors">请选择服药时间!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服用期限</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="limitDate" (ngModelChange)="onDateChange($event,'limitDate')"></nz-date-picker>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('limitDate').dirty && addMedOutBoxForm.get('limitDate').errors">请选择服用期限!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="!addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>家属姓名</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="familyMember" maxlength="5"/>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('familyMember').dirty && addMedOutBoxForm.get('familyMember').errors">请输入家属姓名!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- 以上 -->
+
+        <!-- 点击变更显示  -->
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>药品总量</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入药品总量" class="wp" formControlName="medTotal2" [readonly]="addMedChange"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>剂量(片/次)</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入服用剂量" class="wp" formControlName="dosage2" [readonly]="addMedChange"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>频次</nz-form-label>
+            <nz-form-control>
+              <!-- 频次是获得医疗字典中得用药频次 -->
+              <nz-select class="wp" nzShowSearch nzAllowClear nzPlaceHolder="请选择频次" formControlName="frequency2" (ngModelChange)="frequencyTag($event)" [nzDisabled]="addMedChange">
+                <nz-option *ngFor="let item of medFrequencyLisy" [nzValue]="item.dictValue" [nzLabel]="item.dictTag" ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服药时间</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group class="wp" formControlName="takeMedTime2" [nzDisabled]="addMedChange" >
+                <label nz-radio nzValue="0">餐前</label>
+                <label nz-radio nzValue="1">餐后</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服用期限</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="limitDate2" (ngModelChange)="onDateChange($event,'limitDate')" [nzDisabled]="addMedChange"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>家属姓名</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="familyMember2" maxlength="5" [readonly]="addMedChange"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- 以上 -->
+
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label>收药人</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="receiveMan" [readonly]="addMedChange" maxlength="5"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label>验收人</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="checkoutMan" [readonly]="addMedChange" maxlength="5"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col >
+            <nz-form-item nzFlex>
+              <nz-form-label>接收时间</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker formControlName="receiveDateMark" (ngModelChange)="onDateChange($event,'receiveDate')" [nzDisabled]="addMedChange"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        <div nz-col >
+          <nz-form-item nzFlex>
+            <nz-form-label>作用</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input class="dialog_areaInput" rows="2" maxlength="200" formControlName="effect" [readonly]="addMedChange"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col class="mt" >
+          <nz-form-item nzFlex>
+            <nz-form-label>备注</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input class="dialog_areaInput" rows="2" maxlength="200" formControlName="remark" [readonly]="addMedChange"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- 点击变更显示  -->
+        <div nz-col *ngIf="addMedChange" style="width:100%;height:1px;background:#ccc;margin:10px 0;"></div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>药品总量</nz-form-label>
+            <nz-form-control>
+              <input #medTotal nz-input placeholder="请输入药品总量" class="wp" formControlName="medTotal" />
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('medTotal').dirty && addMedOutBoxForm.get('medTotal').errors">请输入有效的数字</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>剂量(片/次)</nz-form-label>
+            <nz-form-control>
+              <input #dosage nz-input placeholder="请输入服用剂量" class="wp" formControlName="dosage" />
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('dosage').dirty && addMedOutBoxForm.get('dosage').errors">请输入有效的数字</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>频次</nz-form-label>
+            <nz-form-control>
+              <!-- 频次是获得医疗字典中得用药频次 -->
+              <nz-select class="wp" nzShowSearch nzAllowClear nzPlaceHolder="请选择频次" formControlName="frequency" (ngModelChange)="frequencyTag($event)">
+                <nz-option *ngFor="let item of medFrequencyLisy" [nzValue]="item.dictValue" [nzLabel]="item.dictTag" ></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('frequency').dirty && addMedOutBoxForm.get('frequency').errors">请选择频次!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服药时间</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group class="wp" formControlName="takeMedTime">
+                <label nz-radio nzValue="0">餐前</label>
+                <label nz-radio nzValue="1">餐后</label>
+              </nz-radio-group>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('takeMedTime').dirty && addMedOutBoxForm.get('takeMedTime').errors">请选择服药时间!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>服用期限</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker formControlName="limitDate" (ngModelChange)="onDateChange($event,'limitDate')"></nz-date-picker>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('limitDate').dirty && addMedOutBoxForm.get('limitDate').errors">请选择服用期限!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col *ngIf="addMedChange">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>家属姓名</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="familyMember" maxlength="5"/>
+              <nz-form-explain *ngIf="addMedOutBoxForm.get('familyMember').dirty && addMedOutBoxForm.get('familyMember').errors">请输入家属姓名!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- 以上 -->
+      </div>
+    </form>
+  </div>
+</nz-modal>
+
+<!-- 停服药品得弹出框 -->
+<nz-modal [(nzVisible)]="stopTakeIsVisible" nzTitle="停服药品详情" nzWidth="900" (nzOnCancel)="stopTakeCancel()" (nzOnOk)="stopTakeOk()"  [nzOkLoading]="stopTakeOkLoading">
+      <!-- 药品详情 -->
+      <form nz-form [formGroup]="addMedOutBoxForm" style="position:relative">
+          <div style="position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(248, 244, 244, 0.1);z-index: 9999;"></div>
+          <div nz-row nzType="flex">
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>药品名称</nz-form-label>
+                <nz-form-control>
+                  <!-- <input nz-input #medName placeholder="请输入药品名称" class="wp" formControlName="medName" [readonly]="addMedChange" (keyup)="onSearchNameChange(medName.value)"/> -->
+                  <!-- 药品名称可以填写也可以再数据库里查询选择-->
+                  <input placeholder="请输入药品名称" nz-input formControlName="medName" [readonly]="addMedChange" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label>简称</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="请输入药品简称" class="wp" formControlName="commonName" [readonly]="addMedChange" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label>规格</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="请输入药品规格" class="wp" formControlName="standard" [readonly]="addMedChange" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>药品总量</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="请输入药品总量" class="wp" formControlName="medTotal" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>剂量(片/次)</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="请输入服用剂量" class="wp" formControlName="dosage" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>频次</nz-form-label>
+                <nz-form-control>
+                  <!-- 频次是获得医疗字典中得用药频次 -->
+                  <nz-select class="wp" nzShowSearch nzAllowClear nzPlaceHolder="请选择频次" formControlName="frequency" (ngModelChange)="frequencyTag($event)">
+                    <nz-option *ngFor="let item of medFrequencyLisy" [nzValue]="item.dictValue" [nzLabel]="item.dictTag" ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>服药时间</nz-form-label>
+                <nz-form-control>
+                  <nz-radio-group class="wp" formControlName="takeMedTime">
+                    <label nz-radio nzValue="0">餐前</label>
+                    <label nz-radio nzValue="1">餐后</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>服用期限</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker formControlName="limitDate" (ngModelChange)="onDateChange($event,'limitDate')"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label nzRequired>家属姓名</nz-form-label>
+                <nz-form-control>
+                  <input nz-input class="wp" formControlName="familyMember" maxlength="5"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label>收药人</nz-form-label>
+                <nz-form-control>
+                  <input nz-input class="wp" formControlName="receiveMan" [readonly]="addMedChange" maxlength="5"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label>验收人</nz-form-label>
+                <nz-form-control>
+                  <input nz-input class="wp" formControlName="checkoutMan" [readonly]="addMedChange" maxlength="5"/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col >
+                <nz-form-item nzFlex>
+                  <nz-form-label>接收时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-date-picker formControlName="receiveDateMark" (ngModelChange)="onDateChange($event,'receiveDate')" [nzDisabled]="addMedChange"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            <div nz-col >
+              <nz-form-item nzFlex>
+                <nz-form-label>作用</nz-form-label>
+                <nz-form-control>
+                  <textarea nz-input class="dialog_areaInput" rows="2" maxlength="200" formControlName="effect" [readonly]="addMedChange"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col class="mt" >
+              <nz-form-item nzFlex>
+                <nz-form-label>备注</nz-form-label>
+                <nz-form-control>
+                  <textarea nz-input class="dialog_areaInput" rows="2" maxlength="200" formControlName="remark" [readonly]="addMedChange"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+      </form>
+      
+      
+      <div nz-col style="width:100%;height:1px;background:#ccc;margin:10px 0;"></div>
+      <!-- 以上 -->
+      <form nz-form [formGroup]="stopMedOutBoxForm2">
+      <div nz-row nzType="flex">
+        <div nz-col>
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>操作人</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="operator" maxlength="5"/>
+              <nz-form-explain *ngIf="stopMedOutBoxForm2.get('operator').dirty && stopMedOutBoxForm2.get('operator').errors">请输入操作人姓名!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col>
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>家属姓名</nz-form-label>
+            <nz-form-control>
+              <input nz-input class="wp" formControlName="familyMember" maxlength="5"/>
+              <nz-form-explain *ngIf="stopMedOutBoxForm2.get('familyMember').dirty && stopMedOutBoxForm2.get('familyMember').errors">请输入家属姓名!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col class="mt">
+          <nz-form-item nzFlex>
+            <nz-form-label nzRequired>停用原因</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input class="dialog_areaInput" rows="4" maxlength="300" formControlName="stopRemark"></textarea>
+              <nz-form-explain *ngIf="stopMedOutBoxForm2.get('stopRemark').dirty && stopMedOutBoxForm2.get('stopRemark').errors">请输入停用原因!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+</nz-modal>

@@ -1,0 +1,13 @@
+
+  .barcodeArea {
+      -webkit-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.36);
+      -moz-box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.36);
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.36);
+      background: white;
+      margin-left: 100px;
+      margin-right: 0px;
+      position: absolute;
+      z-index: 10;
+      width: 200px;
+      padding: 10px;
+  }

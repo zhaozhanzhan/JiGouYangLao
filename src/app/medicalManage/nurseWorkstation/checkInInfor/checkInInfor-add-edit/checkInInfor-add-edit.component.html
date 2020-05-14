@@ -1,0 +1,145 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="入院信息详情" [nzExtra]="btnArea">
+    <nz-card nzType="inner" nzTitle="入院信息" class="marginBottom24">
+        <form nz-form [formGroup]="validateForm">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="admissionNo" nzRequired>住院号</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="admissionNo" id="admissionNo" maxlength="15" />
+                            <nz-form-explain *ngIf="validateForm.get('admissionNo').dirty && validateForm.get('admissionNo').errors" class="red">住院号不能为空</nz-form-explain>
+                        </nz-form-control>
+
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="admissionTimes" nzRequired>第几次入院</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="admissionTimes" id="admissionTimes" maxlength="15" />
+                            <nz-form-explain *ngIf="validateForm.get('admissionTimes').dirty && validateForm.get('admissionTimes').errors" class="red">入院次数不能为空</nz-form-explain>
+                        </nz-form-control>
+
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="admissionDate" nzRequired>入院日期</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="admissionDate" id="admissionDate" [nzDisabled]="disabled"></nz-date-picker>
+                            <nz-form-explain *ngIf="validateForm.get('admissionDate').dirty && validateForm.get('admissionDate').errors">入院日期不能为空</nz-form-explain>
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="sectionOfficeId" nzRequired>入院科室</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="sectionOfficeId" id="sectionOfficeId" (ngModelChange)="getDoctor()" [nzDisabled]="disabled">
+                                <nz-option *ngFor="let item of SectionOfficedList" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('sectionOfficeId').dirty && validateForm.get('sectionOfficeId').errors">入院科室不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="attendingDoc" nzRequired>主治医生</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="attendingDoc" id="attendingDoc" [nzDisabled]="disabled">
+                                <nz-option *ngFor="let item of doctorForSoList" [nzLabel]="item.employees.name" [nzValue]="item.employees.name"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('attendingDoc').dirty && validateForm.get('attendingDoc').errors">主治医生不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="careLevelCase" nzRequired>护理级别</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="careLevelCase" id="careLevelCase">
+                                <nz-option *ngFor="let option of nursingList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                                </nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('careLevelCase').dirty && validateForm.get('careLevelCase').errors">护理级别不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="sickWardId" nzRequired>病区</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="sickWardId" id="sickWardId" (ngModelChange)="getBedForSickWard()" [nzDisabled]="disabled">
+                                <nz-option *ngFor="let item of sickWardForSoList" [nzLabel]="item.sickWard.sickWardName" [nzValue]="item.sickWard.id"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('sickWardId').dirty && validateForm.get('sickWardId').errors"> 病区不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="bedId" nzRequired>床位</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzShowSearch nzPlaceHolder="请选择" formControlName="bedId" id="bedId" [nzDisabled]="disabled" *ngIf="disabled==false">
+                                <nz-option *ngFor="let item of bedForSickWardList" [nzLabel]="item.bedName" [nzValue]="item.id"></nz-option>
+                            </nz-select>
+                            <input nz-input formControlName="bedName" id="bedName" *ngIf="disabled==true" readonly />
+                            <nz-form-explain *ngIf="validateForm.get('bedId').dirty && validateForm.get('bedId').errors"> 床位不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="入院时情况" class="marginBottom24">
+        <form nz-form [formGroup]="validateForm">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="situation" nzRequired>入院时情况</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="situation" id="situation">
+                                <nz-option nzValue="危险" nzLabel="危险"></nz-option>
+                                <nz-option nzValue="紧急" nzLabel="紧急"></nz-option>
+                                <nz-option nzValue="一般" nzLabel="一般"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('situation').dirty && validateForm.get('situation').errors"> 入院时情况不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="judgement">门（急）诊诊断</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <textarea rows="4" nz-input formControlName="judgement" id="judgement"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24" class="marginBottom24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <textarea rows="4" nz-input formControlName="comment" id="comment"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+        <div style="text-align:center;margin-top: 30px;">
+            <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+                保存
+            </button>
+        </div>
+    </nz-card>
+</nz-card>
+<!-- 表单区域End -->

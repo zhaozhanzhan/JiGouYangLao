@@ -1,0 +1,18 @@
+<div style="padding:20px;background: white;position: relative;">
+  <button nz-button nzType="default" style="display:inline-block;position:absolute;right:50px;z-index:999;" (click)="back(everyComponent)">返回</button>
+  <nz-tabset>
+    <nz-tab [nzTitle]="register">
+      <app-register #registComponent [id]="olderId" [everydayComponent]="everyComponent" [sumComponent]="summaryComponent" ></app-register>
+    </nz-tab>
+    <nz-tab [nzTitle]="everyday">
+      <app-everyday [id]="olderId" #everyComponent></app-everyday>
+    </nz-tab>
+    <nz-tab [nzTitle]="summary">
+      <app-summary #summaryComponent [id]="olderId" [everydayComponent]="everyComponent" [registerComponent]="registComponent"></app-summary>
+    </nz-tab>
+  </nz-tabset>
+</div>
+<ng-template #register><span style="font-size:16px; ">跟进登记</span></ng-template>
+<ng-template #everyday><span style="font-size:16px; ">每日跟进</span></ng-template>
+<ng-template #summary><span style="font-size:16px; ">跟进总结</span></ng-template>
+

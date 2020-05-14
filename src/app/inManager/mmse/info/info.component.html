@@ -1,0 +1,572 @@
+<div class="animated fadeIn ">
+    <ng-template #extraTemplate>
+        <button (click)="back()" nz-button nzType="default">返回</button>
+      </ng-template>
+    
+  <div >
+    <!-- <div class="card-header col-md-12">
+      老年人认知功能智力状态状态简易评价量表(MMSE) 
+      <div class="pull-right">
+        <button (click)="back()" nz-button nzType="default">返回</button>
+      </div>
+    </div> -->
+    <nz-card nzType="inner" nzTitle="一般情况"  [nzExtra]="extraTemplate" style="    border-bottom: 0px solid transparent;">
+      <div class="card-block">
+        <div nz-row  nzSpan="24">
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label nzFor="name" class="infoDisplay">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</nz-form-label>
+              <!-- <nz-form-control  class="infoDisplay">
+                <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name == undefined ? '请选择长者' : olderInfo.name}}"
+                >
+              </nz-form-control> -->
+              <nz-form-control *ngIf="olderInfo.name==''" class="infoDisplay">
+                <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="请选择老者"
+                  >
+              </nz-form-control>
+              <nz-form-control *ngIf="olderInfo.name !=''" class="infoDisplay">
+                <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name}}"
+                  disabled>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label nzFor="sex"  class="infoDisplay">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</nz-form-label>
+              <nz-form-control  class="infoDisplay">
+                <input nz-input placeholder="" [value]="olderInfo?.sex" disabled>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label nzFor="name"  class="infoDisplay">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</nz-form-label>
+              <nz-form-control  class="infoDisplay">
+                <input nz-input placeholder="" [value]="olderInfo?.birthYearMonth | AgeCount" disabled>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label nzFor="name"  class="infoDisplay">文化程度</nz-form-label>
+              <nz-form-control  class="infoDisplay">
+                <input nz-input placeholder="" [(ngModel)]="olderInfo.education" disabled>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="10">
+            <nz-form-item>
+              <nz-form-label nzFor="name"  class="infoDisplay">档案编号</nz-form-label>
+              <nz-form-control  class="infoDisplay">
+                <input nz-input placeholder="" [(ngModel)]="mmseInfo.recordNum" style="width: 300px">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="10">
+              <nz-form-item>
+                <nz-form-label nzFor="name"  class="infoDisplay">既往病史</nz-form-label>
+                <nz-form-control  class="infoDisplay">
+                  <input nz-input placeholder="" [(ngModel)]="mmseInfo.anamnesis"  class="barthelBorder" style="width: 320px">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+         
+          <!-- <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label nzFor="name">评定人</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="" [(ngModel)]="mmseInfo.adjuster">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label nzFor="name">评定时间</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="mmseInfo.assessmentDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div> -->
+      </div>
+    </nz-card>
+
+    <nz-card nzType="inner" nzTitle="简易智力状态检查量表（MMSE）" >
+      <table border="1" class="dailyLife assessmentForm">
+        <thead>
+          <tr>
+            <th colspan="3">
+              <b>项目</b>
+            </th>
+            <th>
+              <b>记录</b>
+            </th>
+            <th>
+              <b>评分</b>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="10">
+              <b>定向力(10)</b>
+            </td>
+            <td colspan="2" style="text-align: left">星期几</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.week" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.weekGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">几号</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.date" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.dateGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">几月</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.month" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.monthGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">什么季节</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.season" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.seasonGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">哪一年</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.year" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.yearGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">省市</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.province" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.provinceGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">区县</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.district" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.districtGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">街道或乡</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.street" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.streetGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">什么地方</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.place" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.placeGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">第几层楼</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.floor" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.floorGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">
+              <b>记忆力（3分）</b>
+            </td>
+            <td colspan="2" style="text-align: left">皮球</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.ball" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.ballGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">国旗</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.flag" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.flagGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">树木</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.tree" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.treeGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td rowspan="5">
+              <b>注意力和计算力（5分）</b>
+            </td>
+            <td colspan="2" style="text-align: left">100-7=93</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.compute1" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.compute1Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">93-7=86</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.compute2" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.compute2Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">86-7=79</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.compute3" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.compute3Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">79-7=72</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.compute4" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.compute4Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">72-7=65</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.compute5" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.compute5Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">
+              <b>回忆能力（3分）</b>
+            </td>
+            <td colspan="2" style="text-align: left">皮球</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.rememberBall" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.rememberBallGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">国旗</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.rememberFlag" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.rememberFlagGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">树木</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.rememberTree" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.rememberTreeGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+
+          <tr>
+            <td rowspan="9">
+              <b>语言能力（9分）</b>
+            </td>
+            <td rowspan="2" style="text-align: left">命名能力</td>
+            <td>手表</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.watch" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.watchGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>铅笔</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.pan" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.panGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>复述能力</td>
+            <td style="text-align: left">四十四只石狮子</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.fortyFour" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.fortyFourGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">三步命令</td>
+            <td style="text-align: left">用右手拿这张纸</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.paper1" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.paper1Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>再用双手把纸对折</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.paper2" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.paper2Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>将纸放到大腿上</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.paper3" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.paper3Grade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>阅读能力</td>
+            <td style="text-align: left">闭上您的眼睛</td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.read" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.readGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>书写能力</td>
+            <td></td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.write" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.writeGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+
+          <tr>
+            <td>结构能力</td>
+            <td>
+              <img src="assets/img/jiegou.png" alt="">
+            </td>
+            <td>
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.structure" class="intelligenceApply">
+            </td>
+            <td>
+              <nz-radio-group (ngModelChange)="gradeChange()" [(ngModel)]="mmseInfo.structureGrade">
+                <label nz-radio nzValue=0>0</label>
+                <label nz-radio nzValue=1>1</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>总分：</td>
+            <td colspan="2">
+              <input nz-input placeholder="" [(ngModel)]="mmseInfo.total" class="intelligenceApply"  class="barthelBorder">
+            </td>
+            <td>结果：</td>
+            <td>{{mmseInfo.total | MMSELevel}}</td>
+          </tr>
+        
+          <tr>
+              <td>评估人：</td>
+              <td colspan="2">
+                  <input nz-input placeholder="" [(ngModel)]="mmseInfo.adjuster" class="barthelBorder">
+              </td>
+              <td>评估时间：</td>
+              <td> 
+                <nz-date-picker [(ngModel)]="mmseInfo.assessmentDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </nz-card>
+  </div>
+  <label>注：最高得分30分，分数在27~30分为正常，分数&lt;27分为认知功能障碍。</label>
+  <div  style="text-align:center">
+    <div style="text-align:center">
+      <button nz-button nzType="primary" nzSize="large" [nzLoading]="saveBtnLoading" (click)="onSave();" class="saveBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() ">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按长者姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>身份证</th>
+          <th>入院时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <td>{{data?.cardno}}</td>
+          <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>

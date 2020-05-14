@@ -1,0 +1,103 @@
+<ng-template #serchArea>
+  <form nz-form>
+      <div nz-row [nzGutter]="8" nzType="flex">
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-label nzFor="name">姓名</nz-form-label>
+                  <nz-form-control>
+                    <input name="name" nz-input style="width:150px" [(ngModel)]="queryParams.name" placeholder="请输入检索姓名" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-label nzFor="cardno">身份证</nz-form-label>
+                  <nz-form-control>
+                      <input name="cardno" nz-input style="width:150px" [(ngModel)]="queryParams.cardno" placeholder="请输入检索身份证" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col>
+              <nz-form-item>
+                  <nz-form-control>
+                      <button nz-button nzType="primary" (click)="getList(true)">
+                          查询
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+      </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="缴存登记列表" [nzExtra]="extraTemplate" [nzBordered]="false">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="getList()" (nzPageSizeChange)="getList(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th style="text-align: center;">姓名</th>
+                <th style="text-align: center;">性别</th>
+                <th style="text-align: center;">身份证</th>
+                <th style="text-align: center;">修养类型</th>
+                <th style="text-align: center;">费用支付方式</th>
+                <th style="text-align: center;">缴存账目余额（元）</th>
+                <th style="text-align: center;">抵扣卷信息</th>
+                <th style="text-align: center;">补价卷信息</th>
+                <th style="text-align: center;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let data of basicTable.data;">
+
+                <ng-container *ngIf="data.ConsumerRegistration.length">
+                    <tr *ngFor="let item of data.ConsumerRegistration; index as i;">
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">{{ data?.name }}</td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">{{ data?.sex }}</td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">{{ data?.cardno }}</td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">{{ data?.cultivation }}</td>
+                        <td style="text-align: center;">{{ payMode(item.methodPayment) }}</td>
+                        <td style="text-align: center;">{{ item?.depositAccounts?.accountsName +"："+ item?.accountBalance}}</td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">
+                        <ng-container *ngFor="let item of data.rebate">
+                            {{item?.rebate?.voucherName}} × {{item?.rebateNum}}<br>
+                        </ng-container>
+                        </td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">
+                        <ng-container *ngFor="let item of data.supplementCoupons">
+                            {{item?.supplementCoupons?.supplementName}} × {{item?.supplementCouponsNum}}<br>
+                        </ng-container>
+                        </td>
+                        <td style="text-align: center;" [attr.rowspan]="data.ConsumerRegistration.length" *ngIf="i == 0">
+                            <a href="javascript: void(0)" (click)="goto('paid', data.id)">缴存</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a href="javascript: void(0)" (click)="goto('detail', data.id)">明细</a>
+                        </td>
+                    </tr>
+                </ng-container>
+                
+                <ng-container *ngIf="!data.ConsumerRegistration.length">
+                    <tr>
+                        <td style="text-align: center;">{{ data?.name }}</td>
+                        <td style="text-align: center;">{{ data?.sex }}</td>
+                        <td style="text-align: center;">{{ data?.cardno }}</td>
+                        <td style="text-align: center;">{{ data?.cultivation }}</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;">
+                            <a href="javascript: void(0)" (click)="goto('paid', data.id)">缴存</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a href="javascript: void(0)" (click)="goto('detail', data.id)">明细</a>
+                        </td>
+                    </tr>
+                </ng-container>
+                
+            </ng-container>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <!-- <a href="javascript: void(0)" (click)="addInfo()">添加</a> -->
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template>
+

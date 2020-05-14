@@ -1,0 +1,159 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="服务项目详情" [nzExtra]="btnArea">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="2" nzRequired nzFor="custom"
+        >绑定类别</nz-form-label
+      >
+      <nz-form-control [nzSpan]="5">
+        <nz-select
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          formControlName="customId"
+          id="sort"
+          (ngModelChange)="onCustomChange()"
+        >
+          <nz-option
+            *ngFor="let item of customList"
+            [nzValue]="item.id"
+            [nzLabel]="item.categoryName"
+          ></nz-option>
+        </nz-select>
+        <nz-form-explain
+          [hidden]="
+            !(
+              validateForm.get('customId').dirty &&
+              validateForm.get('customId').errors
+            )
+          "
+          >需要绑定的服务类别不能为空</nz-form-explain
+        >
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="2" nzRequired nzFor="item"
+        >服务项目</nz-form-label
+      >
+      <nz-form-control [nzSpan]="5">
+        <nz-select
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          formControlName="sortId"
+          id="sort"
+          (ngModelChange)="onSortChange()"
+        >
+          <nz-option
+            *ngFor="let sort of sortList"
+            [nzValue]="sort.id"
+            [nzLabel]="sort.caseName"
+          ></nz-option>
+        </nz-select>
+        <nz-form-explain
+          [hidden]="
+            !(
+              validateForm.get('sortId').dirty &&
+              validateForm.get('sortId').errors
+            )
+          "
+          >服务类别不能为空</nz-form-explain
+        >
+      </nz-form-control>
+      <nz-form-control [nzSpan]="5" style="margin-left:10px">
+        <nz-select
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          formControlName="itemId"
+          id="item"
+          (ngModelChange)="onItemChange($event)"
+        >
+          <nz-option
+            *ngFor="let item of itemList"
+            [nzValue]="item.id"
+            [nzLabel]="item.caseName"
+          ></nz-option>
+        </nz-select>
+        <nz-form-explain
+          [hidden]="
+            !(
+              validateForm.get('itemId').dirty &&
+              validateForm.get('itemId').errors
+            )
+          "
+          >服务项目不能为空</nz-form-explain
+        >
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="2" nzRequired>项目别名</nz-form-label>
+      <nz-form-control [nzSpan]="5">
+        <input
+          nz-input
+          nzPlaceHolder="请输入服务项目别名"
+          formControlName="alias"
+          style="width:100%"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="2" nzRequired>服务频次</nz-form-label>
+      <nz-form-control
+        [nzSpan]="5"
+        [hidden]="isNumHidden"
+        style="margin-right:10px"
+        [class.has-error]="
+          validateForm.get('danwei').dirty &&
+          (validateForm.get('num').errors || validateForm.get('danwei').errors)
+        "
+      >
+        <nz-input-number
+          nzPlaceHolder="请输入次数"
+          formControlName="num"
+          [hidden]="isNumHidden"
+          style="width:100%"
+        ></nz-input-number>
+      </nz-form-control>
+
+      <nz-form-control
+        [nzSpan]="5"
+        [class.has-error]="
+          validateForm.get('danwei').dirty &&
+          (validateForm.get('num').errors || validateForm.get('danwei').errors)
+        "
+      >
+        <nz-select
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          formControlName="danwei"
+          (ngModelChange)="onDanweiChange()"
+        >
+          <nz-option nzLabel="即时" nzValue="即时"></nz-option>
+          <nz-option nzLabel="次/天" nzValue="次/天"></nz-option>
+          <nz-option nzLabel="次/周" nzValue="次/周"></nz-option>
+          <nz-option nzLabel="次/月" nzValue="次/月"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveForm()"
+      [nzLoading]="isBtnLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->

@@ -1,0 +1,109 @@
+<nz-card nzType="inner" nzTitle="人员情况信息" class="marginBottom24">
+  <form nz-form [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="checkInNum">入住人员总数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="checkInNum" id="checkInNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="focusProvideNum">集中供养老年人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="focusProvideNum" id="focusProvideNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="socialFosterageNum">社会寄养老年人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="socialFosterageNum" id="socialFosterageNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="employeeNum">从业人员总数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="employeeNum" id="employeeNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="managerNum">管理人员人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="managerNum" id="managerNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="doctorNum">医生人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="doctorNum" id="doctorNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="nurseNum">护士人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="nurseNum" id="nurseNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="nursingWorkerNum">护工人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="nursingWorkerNum" id="nursingWorkerNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="otherEmployeeNum">其它工作人员人数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="otherEmployeeNum" id="otherEmployeeNum"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="organCertifiedDesc">机构持证上岗状况</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="organCertifiedDesc" id="organCertifiedDesc"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveOrganStaffInfo()" 
+      [nzLoading]="saveBasicInformationLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>

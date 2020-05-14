@@ -1,0 +1,127 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-22 14:13:20
+ * @Description:
+ -->
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzFor="name">类型名称</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            id="name"
+            style="width:150px"
+            [(ngModel)]="queryParams.name"
+            placeholder="请输入名称"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="loadingDataArray(true)"
+            style="margin-left:10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="医患沟通类型列表" [nzExtra]="extraTemplate">
+  <nz-table
+    #basicTable
+    [nzData]="dataArray"
+    [nzTitle]="serchArea"
+    [nzShowPagination]="true"
+    [nzBordered]="'true'"
+    [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements"
+    [nzShowTotal]="totalTit"
+    [(nzPageIndex)]="queryParams.page"
+    [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+    [nzScroll]="{ y: '500px', x: '800px' }"
+  >
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th nzWidth="240px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data?.name }}</td>
+        <td nzRight="0px">
+          <a href="#" (click)="showModifyDialog(data, $event)">修改</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="confirmDelContract(data, $event)" class="red"
+            >删除</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+  <!-- <a href="#" (click)="showAddDialog($event)">添加</a> -->
+  <button nz-button nzType="primary" (click)="showAddDialog($event)">
+    添加
+  </button>
+</ng-template>
+<ng-template #totalTit
+  >共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template
+>
+
+<nz-modal
+  [(nzVisible)]="isShowAddDialog"
+  nzTitle="医患沟通类型"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  [nzMaskClosable]="false"
+  (nzOnCancel)="isShowAddDialog = false"
+>
+  <ng-template #modalContent>
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label nzRequired>医患沟通类型名称</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nzAutosize
+            nz-input
+            formControlName="name"
+            placeholder="请输入类型名称"
+            maxLength="50"
+            [(ngModel)]="inputTypeName"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="onSaveTemplate()"
+      [nzLoading]="isSaveLoading"
+    >
+      保存
+    </button>
+  </ng-template>
+</nz-modal>

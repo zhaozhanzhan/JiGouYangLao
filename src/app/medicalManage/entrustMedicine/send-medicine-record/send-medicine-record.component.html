@@ -1,0 +1,102 @@
+<!-- 表格查询条件Begin -->
+<!-- <ng-template #serchArea>
+    <div style="padding: 20px 0;">
+        <div nz-row nzType="flex">
+            <div nz-col style="margin-right:10px;margin-left: 20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>病人</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input style="width:150px" placeholder="按老人姓名或住院号检索" [(ngModel)]="regObj.name" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>建筑</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择建筑" [(ngModel)]="regObj.build" (ngModelChange)="reFreshBuild(regObj.build)">
+                            <nz-option *ngFor="let item of buildArr;let key = index" [nzValue]="item.id" [nzLabel]="item.buildingName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>楼层</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择楼层" [(ngModel)]="regObj.floor" (ngModelChange)="reFreshFloor(regObj.floor)">
+                            <nz-option *ngFor="let item of floorArr;let key = index" [nzValue]="item.id" [nzLabel]="item.floorName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>房间</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择房间" [(ngModel)]="regObj.room">
+                            <nz-option *ngFor="let item of roomArr;let key = index" [nzValue]="item.id" [nzLabel]="item.roomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+</ng-template> -->
+<!-- 表格查询条件End -->
+<!-- 发药记录列表内容 -->
+<!-- <nz-card nzTitle="发药记录列表">
+    <nz-table #basicTable [nzLoading]="Loading" [nzData]="listOfData" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="regObj.page" [(nzPageSize)]="regObj.size" (nzPageIndexChange)="getList()"
+        (nzPageSizeChange)="getList(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th class="center">姓名</th>
+                <th class="center">床位</th>
+                <th class="center">药品</th>
+                <th class="center">规格</th>
+                <th class="center">剩余数量</th>
+                <th class="center">剂量(片/次)</th>
+                <th class="center">频次</th>
+                <th class="center">餐前</th>
+                <th class="center">餐后</th>
+                <th class="center">作用</th>
+                <th class="center">服用期限</th>
+                <th class="center">领用时间</th>
+                <th class="center">领用人</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td class="center">{{ data.name }} {{ index }}</td>
+                <td class="center">{{ data.age }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">{{ data.address }}</td>
+                <td class="center">
+                    <a href="javascript:void(0)" (click)="detail(data)">详情</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="change(data?.id)">变更</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="stop(data?.id)">停服</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTit>共&nbsp;{{resultData.totalElements}}&nbsp;条</ng-template> -->

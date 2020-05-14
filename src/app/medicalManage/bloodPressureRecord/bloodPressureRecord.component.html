@@ -1,0 +1,171 @@
+<!-- 主体内容 Begin -->
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div id="bloodPressureRecord" style="page-break-after: always;" class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13">
+                            <span class="ftwB ftzPt16">血&nbsp;压&nbsp;记&nbsp;录&nbsp;单</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!inHospitalInfoId" class="posAbs r0 t0">
+                        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="clickPrint($event)">打印</button>
+                        <!-- <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="printAll()" [nzLoading]="serAll">
+                            <span *ngIf="!serAll">打印全部</span>
+                            <span *ngIf="serAll">正在查询</span>
+                        </button> -->
+                        <button nz-button nzType="default" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="showModal('add')">新增</button>
+                        <!-- <button nz-button nzType="primary" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="saveForm()">保存</button> -->
+                    </div>
+                </div>
+                <div class="mt10">
+                    <table class="w100p cusTable" style="border: none !important;">
+                        <thead class="w100p" style="display:table-header-group;border: none !important;">
+                            <tr class="w100p" style="border: none !important;">
+                                <td class="w100p pb10" colspan="14" style="border: none !important;">
+                                    <div class="w100p borBSB8C0CD h30 pb10">
+                                        <div class="w100p disFlex justConSB">
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>姓名：</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w60 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.name" [(ngModel)]="formInfo.basicInfo.name">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>科室</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w70 h20 tac" [disabled]="true" [attr.value]="formInfo.sectionOffice.name" [(ngModel)]="formInfo.sectionOffice.name">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>床号</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.bedName" [(ngModel)]="formInfo.bedName">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>住院号数</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.admissionNo" [(ngModel)]="formInfo.admissionNo">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>年龄</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w50 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.age" [(ngModel)]="formInfo.basicInfo.age">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>性别</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w50 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.sex" [(ngModel)]="formInfo.basicInfo.sex">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" class="tac">
+                                    <span>日期</span>
+                                </td>
+                                <td colspan="13" class="tac">血压</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+
+                            <tr>
+                                <td class="tac" colspan="6">时间</td>
+                                <td class="tac" colspan="7">血压值</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of tabList;let i = index;">
+                                <td class="w150 tac" colspan="1">{{x?.recordDate}}</td>
+                                <td class="w150 tac" colspan="6">{{x?.recordTime}}</td>
+                                <td class="w100 tac" colspan="7">{{x?.lowValue}} / {{x?.highValue}}</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td class="w100 tac" *ngIf="isAdd && !isPrintNow && !isDisable">
+                                        <!-- <button nz-button nzSize="'small'" nzGhost nzType="primary" (click)="showModal('edit',x)">修改</button> -->
+                                        <button nz-button nzSize="'small'" nzGhost nzType="danger" (click)="delect(x)">删除</button>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-container *ngIf="!inHospitalInfoId">
+                    <div class="disFlex justConC mt30" *ngIf="!isPrintNow">
+                        <span *ngIf="isMore" class="color09F" (click)="loadingMore()">
+                            <nz-spin nzSimple [nzSize]="'small'" *ngIf="isLoading"></nz-spin>
+                            <i nz-icon type="down" theme="outline" *ngIf="!isLoading"></i>
+                            &emsp;加载更多
+                        </span>
+                        <span *ngIf="!isMore" class="color09F">没有更多数据</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主体内容 End -->
+
+<!-- 新增数据弹出框 Begin -->
+<nz-modal [(nzVisible)]="isVisible" nzWidth="600" [nzTitle]="modalTit" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="recordDate">日期</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker class="w150" name="recordDate" id="recordDate" [(ngModel)]="newAddData.recordDate"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="recordDate">时间</nz-form-label>
+                <nz-form-control>
+                    <nz-time-picker [(ngModel)]="newAddData.recordTime" nzFormat="h:mm" [attr.value]="newAddData.recordTime" [nzAddOn]="addOnTemplate" #timePicker></nz-time-picker>
+                    <ng-template #addOnTemplate>
+                        <button nz-button nzSize="small" nzType="primary" (click)="timePicker.close()">确定</button>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="recordDate">血压</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number [(ngModel)]="newAddData.lowValue" [nzMin]="1" [nzStep]="1"></nz-input-number> /
+                    <nz-input-number [(ngModel)]="newAddData.highValue" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+<!-- 新增数据弹出框 End -->

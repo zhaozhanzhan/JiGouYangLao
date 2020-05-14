@@ -1,0 +1,401 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+    <div>
+        <p>
+            <span *ngIf="getParam.state == 'add'">咨询入住详情</span>
+            <span *ngIf="getParam.state == 'edit' || getParam.state == 'reception'">咨询入住详情</span>
+            <span *ngIf="getParam.state == 'detail'">咨询入住详情</span>
+        </p>
+    </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+    <form nz-form [formGroup]="formData">
+        <nz-card nzType="inner" [nzLoading]="isDataLoading">
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzRequired nzFor="name">姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="name" id="name" />
+                            <nz-form-explain [hidden]="!(formData.get('name').dirty && formData.get('name').errors)">姓名长度小于&nbsp;2&nbsp;位或包含非法字符</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzRequired nzFor="sex">性别</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="sex" id="sex">
+                                <nz-option nzValue="男" nzLabel="男"></nz-option>
+                                <nz-option nzValue="女" nzLabel="女"></nz-option>
+                            </nz-select>
+                            <nz-form-explain [hidden]="!(formData.get('sex').dirty && formData.get('sex').errors)">性别不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzRequired nzFor="birthYearMonth">出生年月</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="birthYearMonth" id="birthYearMonth" class="w100p"></nz-date-picker>
+                            <nz-form-explain [hidden]="!(formData.get('birthYearMonth').dirty && formData.get('birthYearMonth').errors)">出生年月不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="phone">联系电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="phone" id="phone" />
+                            <nz-form-explain [hidden]="!(formData.get('phone').dirty && formData.get('phone').errors)">固定电话或手机号格式不正确</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="oneself">信息提供者</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="oneself" id="oneself">
+                                <nz-option nzValue="true" nzLabel="本人"></nz-option>
+                                <nz-option nzValue="false" nzLabel="非本人"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="theName">提供者姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="theName" id="theName" />
+                            <nz-form-explain [hidden]="!(formData.get('theName').dirty && formData.get('theName').errors)">姓名长度小于&nbsp;2&nbsp;位或包含非法字符</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="relationship">与托养人关系</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="relationship" id="relationship">
+                                <nz-option nzLabel="户主/本人" nzValue="户主/本人"></nz-option>
+                                <nz-option nzLabel="配偶" nzValue="配偶"></nz-option>
+                                <nz-option nzLabel="子/婿" nzValue="子/婿"></nz-option>
+                                <nz-option nzLabel="女/媳" nzValue="女/媳"></nz-option>
+                                <nz-option nzLabel="孙子女/外孙子女" nzValue="孙子女/外孙子女"></nz-option>
+                                <nz-option nzLabel="父母/岳父母/公婆" nzValue="父母/岳父母/公婆"></nz-option>
+                                <nz-option nzLabel="祖父母/外祖父母" nzValue="祖父母/外祖父母"></nz-option>
+                                <nz-option nzLabel="兄弟姐妹" nzValue="兄弟姐妹"></nz-option>
+                                <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="isProvider">经济供养人</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="isProvider" id="isProvider">
+                                <nz-option nzValue="true" nzLabel="是"></nz-option>
+                                <nz-option nzValue="false" nzLabel="否"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="consultingType">咨询方式</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="consultingType" id="consultingType" *ngIf="getParam.state == 'reception'">
+                                <nz-option nzValue="1" nzLabel="微信咨询"></nz-option>
+                                <nz-option nzValue="2" nzLabel="电话咨询"></nz-option>
+                                <nz-option nzValue="3" nzLabel="来院咨询"></nz-option>
+                            </nz-select>
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="consultingType" id="consultingType" *ngIf="getParam.state != 'reception'">
+                                <nz-option nzValue="2" nzLabel="电话咨询"></nz-option>
+                                <nz-option nzValue="3" nzLabel="来院咨询"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzRequired nzFor="consultingTime">咨询日期</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="consultingTime" id="consultingTime" class="w100p"></nz-date-picker>
+                            <nz-form-explain [hidden]="!(formData.get('consultingTime').dirty && formData.get('consultingTime').errors)">咨询日期不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzRequired nzFor="estimatedTime">预计到访</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="estimatedTime" id="estimatedTime" class="w100p"></nz-date-picker>
+                            <nz-form-explain [hidden]="!(formData.get('estimatedTime').dirty && formData.get('estimatedTime').errors)">预计到访日期不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="assessmentLevel">评估等级</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="assessmentLevel" id="assessmentLevel">
+                                <nz-option nzValue="能力完好" nzLabel="能力完好"></nz-option>
+                                <nz-option nzValue="轻度失能" nzLabel="轻度失能"></nz-option>
+                                <nz-option nzValue="中度失能" nzLabel="中度失能"></nz-option>
+                                <nz-option nzValue="重度失能" nzLabel="重度失能"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="16">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="address">现住址</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <input nz-input formControlName="address" id="address" />
+                            <!-- <nz-form-explain [hidden]="!(formData.get('address').dirty && formData.get('address').errors)">现住址不能为空</nz-form-explain> -->
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <!-- <div nz-col [nzSpan]="8">
+                 <nz-form-item>
+                     <nz-form-label [nzSpan]="8" nzRequired nzFor="mobile">手机号</nz-form-label>
+                     <nz-form-control [nzSpan]="16" [class.has-error]="formData.get('mobile').invalid && formData.get('mobile').touched">
+                         <input nz-input formControlName="mobile" id="mobile">
+                         <nz-form-explain [hidden]="formData.get('mobile').valid || formData.get('mobile').untouched">请输入正确的手机号</nz-form-explain>
+                     </nz-form-control>
+                 </nz-form-item>
+             </div>
+             <div nz-col [nzSpan]="8">
+                 <nz-form-item>
+                     <nz-form-label [nzSpan]="8" nzRequired nzFor="idCard">身份证</nz-form-label>
+                     <nz-form-control [nzSpan]="16" [class.has-error]="formData.get('idCard').invalid && formData.get('idCard').touched">
+                         <input nz-input formControlName="idCard" id="idCard">
+                         <nz-form-explain [hidden]="formData.get('idCard').valid || formData.get('idCard').untouched">请输入正确的身份证号</nz-form-explain>
+                     </nz-form-control>
+                 </nz-form-item>
+             </div> -->
+            <!-- <div nz-row nzGutter="8">
+             <div nz-col [nzSpan]="8">
+                 <nz-form-item>
+                     <nz-form-label [nzSpan]="8" nzRequired nzFor="telephone">固话</nz-form-label>
+                     <nz-form-control [nzSpan]="16" [class.has-error]="formData.get('telephone').invalid && formData.get('telephone').touched">
+                         <input nz-input formControlName="telephone" id="telephone">
+                         <nz-form-explain [hidden]="formData.get('telephone').valid || formData.get('telephone').untouched">固定电话格式不正确</nz-form-explain>
+                     </nz-form-control>
+                 </nz-form-item>
+             </div>
+             <div nz-col [nzSpan]="8">
+                 <nz-form-item>
+                     <nz-form-label [nzSpan]="8" nzRequired nzFor="phone">固话/手机</nz-form-label>
+                     <nz-form-control [nzSpan]="16" [class.has-error]="formData.get('phone').invalid && formData.get('phone').touched">
+                         <input nz-input formControlName="phone" id="phone">
+                         <nz-form-explain [hidden]="formData.get('phone').valid || formData.get('phone').untouched">固定电话或手机号格式不正确</nz-form-explain>
+                     </nz-form-control>
+                 </nz-form-item>
+             </div>
+             <div nz-col [nzSpan]="8">
+                 <nz-form-item>
+                     <nz-form-label [nzSpan]="8" nzFor="mobile1">手机号</nz-form-label>
+                     <nz-form-control [nzSpan]="16">
+                         <input nz-input formControlName="mobile1" id="mobile1">
+                         <nz-form-explain [hidden]="!(formData.get('mobile1').invalid && formData.get('mobile1').errors)">请输入正确的手机号</nz-form-explain>
+                     </nz-form-control>
+                 </nz-form-item>
+             </div>
+         </div> -->
+        </nz-card>
+        <nz-card nzType="inner" class="mt20" [nzLoading]="isDataLoading">
+            <div nz-row nzGutter="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="roomIntention">房间意向</nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <input nz-input formControlName="roomIntention" id="roomIntention" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="estimatedPrice">预估价位</nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <nz-input-number class="w100p" formControlName="estimatedPrice" id="estimatedPrice" [nzMin]="1" [nzMax]="99999999999" [nzStep]="1"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="24" class="mt10">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="medicalHistory">病吏</nz-form-label>
+                        <nz-form-control [nzSpan]="18" id="medicalHistory">
+                            <textarea formControlName="medicalHistory" nz-input rows="3" placeholder="请输入病吏"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="habitsHobbies">生活习性、爱好</nz-form-label>
+                        <nz-form-control [nzSpan]="18" id="habitsHobbies">
+                            <textarea formControlName="habitsHobbies" nz-input rows="3" placeholder="请输入生活习性、爱好"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="24" class="mt20">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="understandChannel">了解渠道</nz-form-label>
+                        <nz-form-control [nzSpan]="18" id="understandChannel">
+                            <textarea formControlName="understandChannel" nz-input rows="3" placeholder="请输入了解渠道"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="suggestion">意见或建议</nz-form-label>
+                        <nz-form-control [nzSpan]="18" id="suggestion">
+                            <textarea formControlName="suggestion" nz-input rows="3" placeholder="请输入意见或建议"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card nzTitle="回访或跟进信息" class="mt20">
+            <div>
+                <nz-table nzBordered="true" nzSize="middle" [nzNoResult]="noResultArr" formArrayName="reviewInfo">
+                    <thead>
+                        <tr>
+                            <th>次数</th>
+                            <th>时间</th>
+                            <th>回访内容</th>
+                            <th>回该结果</th>
+                            <th>回访人</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of formData.get('reviewInfo')['controls']; let i=index;" [formGroupName]="i">
+                            <td class="p5">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="0" nzRequired></nz-form-label>
+                                    <nz-form-control [nzSpan]="24">
+                                        <nz-input-number class="w100p" formControlName="reviewNum" [nzMin]="1" [nzMax]="99999999999" [nzStep]="1"></nz-input-number>
+                                        <!-- <nz-form-explain class="colorF00" [hidden]="x.get('reviewNum').valid">非法的数值</nz-form-explain> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </td>
+                            <td class="p5">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="0" nzRequired></nz-form-label>
+                                    <nz-form-control [nzSpan]="24">
+                                        <nz-date-picker class="w100p" formControlName="reviewTime"></nz-date-picker>
+                                        <!-- <nz-form-explain class="colorF00" [hidden]="x.get('reviewTime').valid">请选择时间</nz-form-explain> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </td>
+                            <td class="p5">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="0" nzRequired></nz-form-label>
+                                    <nz-form-control [nzSpan]="24">
+                                        <input nz-input formControlName="reviewContent" />
+                                        <!-- <nz-form-explain class="colorF00" [hidden]="x.get('reviewContent').valid">请输入</nz-form-explain> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </td>
+                            <td class="p5">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="0" nzRequired></nz-form-label>
+                                    <nz-form-control [nzSpan]="24">
+                                        <input nz-input formControlName="reviewResult" />
+                                        <!-- <nz-form-explain class="colorF00" [hidden]="x.get('reviewResult').valid">请输入</nz-form-explain> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </td>
+                            <td class="p5">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="0" nzRequired></nz-form-label>
+                                    <nz-form-control [nzSpan]="24">
+                                        <input nz-input formControlName="reviewer" />
+                                        <!-- <nz-form-explain class="colorF00" [hidden]="x.get('reviewer').valid">请输入</nz-form-explain> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </td>
+                            <td class="p5">
+                                <a href="javascript:void(0)" *ngIf="!(getParam.state == 'detail')" class="colorF00" (click)="rmRevInfoObj()">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <ng-template #noResultArr>
+                    <div class="w100p disFlex justConC" *ngIf="!(getParam.state == 'detail')">
+                        <button class="w70p" nz-button nzType="primary" nzGhost="true" (click)="addRevInfoObj()"><i nz-icon type="plus-circle"></i>新增回访或跟进信息</button>
+                    </div>
+                </ng-template>
+                <!-- <ng-template #noResultArr>
+                    <div class="w100p disFlex justConC">
+                        <button class="w70p" nz-button nzType="primary" nzGhost="true" (click)="addRevInfoObj()"><i nz-icon type="plus-circle"></i>新增回访或跟进信息</button>
+                    </div>
+                </ng-template> -->
+            </div>
+        </nz-card>
+        <nz-card nzTitle="接待信息" class="mt20" [nzLoading]="isDataLoading">
+            <div nz-row>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="attendant" nzRequired *ngIf="getParam.state == 'reception'">接待人</nz-form-label>
+                        <nz-form-label [nzSpan]="6" nzFor="attendant" *ngIf="getParam.state != 'reception'">接待人</nz-form-label>
+                        <nz-form-control [nzSpan]="18">
+                            <input nz-input formControlName="attendant" id="attendant" />
+                            <nz-form-explain [hidden]="!(formData.get('attendant').dirty && formData.get('attendant').errors)">姓名长度小于&nbsp;2&nbsp;位或包含非法字符</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row>
+                <div nz-col [nzSpan]="16">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="3" nzFor="memo">备注</nz-form-label>
+                        <nz-form-control [nzSpan]="21" id="memo">
+                            <textarea formControlName="memo" nz-input rows="2" placeholder="请输入备注信息"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row *ngIf="getParam.state == 'edit'">
+                <div nz-col [nzSpan]="24">
+                    <p class="tar">
+                        <span>记录人：{{ formData.get("noteTaker").value }}</span>
+                    </p>
+                </div>
+            </div>
+        </nz-card>
+    </form>
+
+    <div style="text-align:center;margin-top: 30px;" *ngIf="getParam.state == 'edit' || getParam.state == 'add'">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" *ngIf="!(getParam.state == 'detail')" (click)="saveForm()" [nzLoading]="saveBtnLoading">保存</button>
+    </div>
+
+    <div style="text-align:center;margin-top: 30px;" *ngIf="getParam.state == 'reception'">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="SaveReception()" [nzLoading]="saveBtnLoading">接待</button>
+    </div>
+</nz-card>
+<!-- 表单区域End -->

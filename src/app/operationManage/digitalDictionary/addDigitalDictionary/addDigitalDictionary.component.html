@@ -1,0 +1,107 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>字典管理详情</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <nz-card nzType="inner" nzTitle="字典管理详情" class="marginBottom24">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="dictName"
+              ><i class="red">*</i>字典名称</nz-form-label
+            >
+            <nz-form-control [nzSpan]="20">
+              <input nz-input formControlName="dictName" id="dictName" />
+              <nz-form-explain
+                [hidden]="
+                  !(
+                    validateForm.get('dictName').dirty &&
+                    validateForm.get('dictName').errors
+                  )
+                "
+                >字典名称不能为空</nz-form-explain
+              >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="dictType"
+              ><i class="red">*</i>字典类型</nz-form-label
+            >
+            <nz-form-control [nzSpan]="20">
+              <input nz-input formControlName="dictType" id="dictType" />
+              <nz-form-explain
+                [hidden]="
+                  !(
+                    validateForm.get('dictType').dirty &&
+                    validateForm.get('dictType').errors
+                  )
+                "
+                >字典类型不能为空</nz-form-explain
+              >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!--
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="8">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8" nzFor="sysDictFlag"><i class="red">*</i>系统字典</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                  <nz-select  formControlName="sysDictFlag" id="sysDictFlag" nzAllowClear nzPlaceHolder="请选择">
+                    <nz-option nzValue="true" nzLabel="是"></nz-option>
+                    <nz-option nzValue="false" nzLabel="否"></nz-option>
+                  </nz-select>
+                  <nz-form-explain [hidden]="!(validateForm.get('sysDictFlag').dirty && validateForm.get('sysDictFlag').errors)">系统字典不能为空</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      -->
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="comment">备注信息</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea
+                rows="4"
+                nz-input
+                formControlName="comment"
+                id="comment"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveForm()"
+      [nzLoading]="isBtnLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->

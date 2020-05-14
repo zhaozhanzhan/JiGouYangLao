@@ -1,0 +1,103 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="name">护工姓名</nz-form-label>
+        <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+          <input nz-input name="name" id="name" placeholder="请输入护工姓名" [(ngModel)]="reqObj.name">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #extraTemplate>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+
+<nz-card nzTitle="病区列表" [nzExtra]="extraTemplate">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list"
+    [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">病区号</th>
+        <th class="textCenter">病区名</th>
+        <th class="textCenter">电话</th>
+        <th class="textCenter">所属科室</th>
+        <th class="textCenter">护士班组</th>
+        <th class="textCenter">病房</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{data?.sickWardNo}}</td>
+        <td class="textCenter">{{data?.sickWardName}}</td>
+        <td class="textCenter">{{data?.sickWardTel}}</td>
+        <td class="textCenter">{{data?.sectionOfficeStr}}</td>
+        <td class="textCenter">{{data?.nurseTeamStr}}</td>
+        <td class="textCenter">{{data?.bedNames}}</td>
+        <td class="textCenter" width="400">
+          <a href="javascript:void(0)" (click)="turnToEdit(data)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" style="color: #f81d22 !important;" (click)="delSickArea(data.id)">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="showGroupModel(data)">分配班组</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="showSickRoomModel(data)">分配病房</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="showOfficeModel(data)">绑定科室</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>
+
+<!-- 绑定科室弹框  -->
+<nz-modal nzWidth="700" [(nzVisible)]="officeModel" nzTitle="绑定科室" (nzOnCancel)="officeModelCancel()" (nzOnOk)="officeModelOk()">
+  <div>
+    <p>选择科室：</p>
+    <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="请选择" [(ngModel)]="selOffice">
+      <nz-option *ngFor="let option of allOffice" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+    </nz-select>
+  </div>
+</nz-modal>
+
+<!-- 分配班组弹框  -->
+<nz-modal nzWidth="700" [(nzVisible)]="groupModel" nzTitle="分配班组" (nzOnCancel)="groupModelCancel()" (nzOnOk)="groupModelOk()">
+  <div>
+    <p>选择班组：</p>
+    <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="请选择" [(ngModel)]="selGroup">
+      <nz-option *ngFor="let option of allGroup" [nzLabel]="option.nurseTeamName" [nzValue]="option.id"></nz-option>
+    </nz-select>
+  </div>
+</nz-modal>
+
+<!-- 分配病房弹框  -->
+<nz-modal nzWidth="700" [(nzVisible)]="sickRoomModel" nzTitle="分配病房" (nzOnCancel)="sickRoomModelCancel()" (nzOnOk)="sickRoomModelOk()">
+  <div>
+    <p>选择病房：</p>
+    <nz-tree-select
+      style="width: 100%"
+      [nzNodes]="allSickRoom"
+      nzShowSearch
+      nzCheckable
+      nzPlaceHolder="请选择"
+      [(ngModel)]="selSickRoom"
+      (ngModelChange)="onChange($event)">
+    </nz-tree-select>
+  </div>
+</nz-modal>
+
+

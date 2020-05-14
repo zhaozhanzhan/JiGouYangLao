@@ -1,0 +1,66 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+    <div>
+        <p><span>模板数据详情</span></p>
+    </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+    <form nz-form [formGroup]="validateForm">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzFor="tempDataDescribe" nzRequired>模板简称</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <input nz-input formControlName="tempDataDescribe" id="tempDataDescribe" />
+                        <nz-form-explain [hidden]="!(validateForm.get('tempDataDescribe').dirty && validateForm.get('tempDataDescribe').errors)">字典标签不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="tempDataValue" nzRequired>模板键值</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number formControlName="tempDataValue" id="tempDataValue" [nzMax]="10000" [nzStep]="1"></nz-input-number>
+                        <nz-form-explain [hidden]="!(validateForm.get('tempDataValue').dirty &&validateForm.get('tempDataValue').errors)">字典键值不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="tempDataOrder" nzRequired>排序号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number formControlName="tempDataOrder" id="tempDataOrder" [nzMax]="10000" [nzStep]="1"></nz-input-number>
+                        <nz-form-explain [hidden]="!(validateForm.get('tempDataOrder').dirty && validateForm.get('tempDataOrder').errors)">排序号不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzFor="tempDataContent" nzRequired>模板描述</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input formControlName="tempDataContent" id="tempDataContent"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+            保存
+        </button>
+    </div>
+</nz-card>
+<!-- 表单区域End -->

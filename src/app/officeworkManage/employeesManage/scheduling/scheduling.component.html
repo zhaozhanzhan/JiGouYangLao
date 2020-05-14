@@ -1,0 +1,156 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">班次模板</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                    <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="employeesGroupId" id="employeesGroupId" class="w100p">
+                        <nz-option *ngFor="let employeesGroup of employeesGroupList" [nzValue]="employeesGroup.id" [nzLabel]="employeesGroup.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">时间</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                    <nz-month-picker [(ngModel)]="yearMonth" nzPlaceHolder="请选择时间"></nz-month-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="listScheduling()" [nzLoading]="isTableLoading">查询</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #extraTemplate>
+    <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="print_div" [printCSS]="printCSS" (printComplete)="printComplete()">
+    </e-ngx-print>
+    <button nz-button nzType="primary" (click)="onPrint()" class="mr10">打印</button>
+    <button nz-button nzType="primary" (click)="createScheduling()">排班</button>
+</ng-template>
+
+<nz-card nzTitle="护工排班" [nzExtra]="extraTemplate">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="10" [nzLg]="10" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">班组模板</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                    <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="employeesGroupId" id="employeesGroupId" class="w100p">
+                        <nz-option *ngFor="let employeesGroup of employeesGroupList" [nzValue]="employeesGroup.id" [nzLabel]="employeesGroup.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="10" [nzLg]="10" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">时间</nz-form-label>
+                <nz-form-control [nzSpan]="19">
+                    <nz-month-picker [(ngModel)]="yearMonth" nzPlaceHolder="请选择时间"></nz-month-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="listScheduling()" [nzLoading]="isTableLoading">查询</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div #print_div>
+        <nz-table #ajaxTable nzBordered [nzTitle]="schedulingTitile" [nzFrontPagination]="false" [nzShowPagination]="false" [nzData]="schedulingList" [nzLoading]="isTableLoading">
+            <tbody>
+                <tr>
+                    <td style="padding: 0.5rem 0;" *ngFor="let head of schedulingHead">
+
+                        {{head}}</td>
+                </tr>
+                <tr *ngFor="let scheduling of ajaxTable.data; let num = index;">
+                    <td nzLeft="0px" style="padding: 0.5rem 0; width:50px;" (click)="showSetNumberModal(scheduling)">{{num+1}}</td>
+                    <td nzLeft="0px" style="padding: 0.5rem 0; width:80px" (click)="showSingleCreateModal(scheduling)">{{scheduling.ename}}</td>
+                    <td style="padding: 0.5rem 0;" *ngFor="let info of scheduling.schinfos" (click)="showChangeSchedulingModal(scheduling, info)">{{info.value == undefined ? '' : info.value.realscheduling}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-card>
+
+<!-- 排班弹出框 -->
+<nz-modal [(nzVisible)]="isSingleCreateModalVisible" nzTitle="排班信息" nzOkText="确认" nzCancelText="取消" (nzOnOk)="singleCreateModalHandleOk()" (nzOnCancel)="singleCreateModalHandleCancel()">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>护工姓名</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <input nz-input id="name" [(ngModel)]="singleCreateModalObj.ename" disabled>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>开始日期</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="singleCreateModalObj.date"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>排班模板</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="singleCreateModalObj.schTempletId" (ngModelChange)="makeBanci()" class="w100p">
+                <nz-option *ngFor="let schTemplet of schTempletList" [nzValue]="schTemplet.id" [nzLabel]="schTemplet.shift+'：'+schTemplet.name"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>选择班次</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-radio-group [(ngModel)]="singleCreateModalObj.schTempletBanci">
+                <label *ngFor="let schedule of schList; let num = index" nz-radio [nzValue]="num">{{schedule.banci}}</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<!-- 人员排序弹出框 -->
+<nz-modal [(nzVisible)]="isSetNumberModalVisible" nzTitle="护工排序" nzOkText="确认" nzCancelText="取消" (nzOnOk)="setNumberModalHandleOk()" (nzOnCancel)="setNumberModalHandleCancel()">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>护工姓名</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <input nz-input id="name" [(ngModel)]="setNumberModalObj.ename" disabled>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>护工序号</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-input-number [(ngModel)]="setNumberModalObj.num" [nzMin]="1" [nzStep]="1"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<!-- 换班弹出框 -->
+<nz-modal [(nzVisible)]="isChangeSchedulingModalVisible" nzTitle="护工排序" nzOkText="确认" nzCancelText="取消" (nzOnOk)="changeSchedulingModalHandleOk()" (nzOnCancel)="changeSchedulingModalHandleCancel()">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>护工姓名</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <input nz-input id="name" [(ngModel)]="changeSchedulingModalObj.ename" disabled>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>开始日期</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="changeSchedulingModalObj.date" nzDisabled></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired>选择班次</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="changeSchedulingModalObj.banci" class="w100p">
+                <nz-option *ngFor="let banci of bancis" [nzValue]="banci" [nzLabel]="banci"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>

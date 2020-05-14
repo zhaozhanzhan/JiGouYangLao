@@ -1,0 +1,490 @@
+<div nz-row nzGutter="16">
+  <div nz-col nzMd="6" nzLg="6" nzXl="4" nzXXl="4">
+    <nz-card nzTitle="建筑" style="height: calc(100vh - 112px);overflow: auto;">
+      <nz-tree [(ngModel)]="nodes" [nzShowLine]="true" [nzDefaultExpandedKeys]="expandKeys" (nzExpandChange)="mouseAction('expand',$event)"
+        (nzClick)="mouseAction('click',$event)">
+      </nz-tree>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="18" nzLg="18" nzXl="20" nzXXl="20">
+    <ng-template #btnBuildingAdd>
+      <button nz-button nzType="primary" (click)="turnToAddBuilding()">添加</button>
+    </ng-template>
+    <nz-card nzTitle="楼栋列表" [nzExtra]="btnBuildingAdd" *ngIf="cardToSee === 'listBuilding'">
+      <nz-table #buildingTable nzBordered [nzData]="buildingList" nzHideOnSinglePage="true">
+        <thead>
+          <tr>
+            <th>楼栋名称</th>
+            <th>楼层数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of buildingTable.data">
+            <td>{{data.buildingName}}</td>
+            <td>{{data.floorsNum}}</td>
+            <td>
+              <a href="javascript:void(0)" (click)="turnToEditBuilding(data)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="javascript:void(0)" (click)="deleteBuilding(data)" class="red">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <nz-card nzTitle="新增楼栋" *ngIf="cardToSee === 'addBuilding'">
+      <nz-form-item>
+        <nz-form-label nzFor="buildingName">楼栋名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#楼" [(ngModel)]="building.buildingName" id="buildingName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onAddBuilding()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToBuildingList()">取消</button>
+      </div>
+    </nz-card>
+    <nz-card nzTitle="修改楼栋" *ngIf="cardToSee === 'editBuilding'">
+      <nz-form-item>
+        <nz-form-label nzFor="buildingName">楼栋名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#楼" [(ngModel)]="building.buildingName" id="buildingName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onEditBuilding()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToBuildingList()">取消</button>
+      </div>
+    </nz-card>
+
+    <ng-template #btnFloorAdd>
+      <button nz-button nzType="primary" (click)="turnToAddFloor()">添加</button>
+    </ng-template>
+    <nz-card nzTitle="楼层列表" [nzExtra]="btnFloorAdd" *ngIf="cardToSee === 'listFloor'">
+      <nz-table #floorTable nzBordered [nzData]="floorList" nzHideOnSinglePage="true">
+        <thead>
+          <tr>
+            <th>楼层名称</th>
+            <th>房间数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of floorTable.data">
+            <td>{{data.floorName}}</td>
+            <td>{{data.roomsNum}}</td>
+            <td>
+              <a href="javascript:void(0)" (click)="turnToEditFloor(data)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="javascript:void(0)" (click)="deleteFloor(data)" class="red">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <nz-card nzTitle="新增楼层" *ngIf="cardToSee === 'addFloor'">
+      <nz-form-item>
+        <nz-form-label nzFor="floorName">楼层名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#X层" [(ngModel)]="floor.floorName" id="floorName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onAddFloor()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToFloorList()">取消</button>
+      </div>
+    </nz-card>
+    <nz-card nzTitle="修改楼层" *ngIf="cardToSee === 'editFloor'">
+      <nz-form-item>
+        <nz-form-label nzFor="floorName">楼层名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#X层" [(ngModel)]="floor.floorName" id="floorName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onEditFloor()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToFloorList()">取消</button>
+      </div>
+    </nz-card>
+
+    <ng-template #btnRoomAdd>
+      <button nz-button nzType="primary" (click)="turnToAddRoom()">添加</button>
+    </ng-template>
+    <nz-card nzTitle="房间列表" [nzExtra]="btnRoomAdd" *ngIf="cardToSee === 'listRoom'">
+      <nz-table #roomTable nzBordered [nzData]="roomList" nzHideOnSinglePage="true">
+        <thead>
+          <tr>
+            <th>房间名称</th>
+            <th>床位数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of roomTable.data">
+            <td>{{data.roomName}}</td>
+            <td>{{data.bedsNum}}</td>
+            <td>
+              <a href="javascript:void(0)" (click)="turnToEditRoom(data)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="javascript:void(0)" (click)="deleteRoom(data)" class="red">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <nz-card nzTitle="新增房间" *ngIf="cardToSee === 'addRoom'">
+      <nz-form-item>
+        <nz-form-label nzFor="roomName">房间名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#XXX" [(ngModel)]="room.roomName" id="roomName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onAddRoom()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToRoomList()">取消</button>
+      </div>
+    </nz-card>
+    <nz-card nzTitle="修改房间" *ngIf="cardToSee === 'editRoom'">
+      <nz-form-item>
+        <nz-form-label nzFor="roomName">房间名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#XXX" [(ngModel)]="room.roomName" id="roomName">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onEditRoom()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToRoomList()">取消</button>
+      </div>
+    </nz-card>
+
+    <ng-template #btnBedAdd>
+      <button nz-button nzType="primary" (click)="turnToAddBed()">添加</button>
+    </ng-template>
+    <nz-card nzTitle="床位列表" [nzExtra]="btnBedAdd" *ngIf="cardToSee === 'listBed'">
+      <nz-table #bedTable nzBordered [nzData]="bedList" nzHideOnSinglePage="true">
+        <thead>
+          <tr>
+            <th>床位名称</th>
+            <th>备注</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of bedTable.data">
+            <td>{{data.bedName}}</td>
+            <td>{{data.memo}}</td>
+            <td>
+              <a href="javascript:void(0)" (click)="turnToEditBed(data)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="javascript:void(0)" (click)="deleteBed(data)" class="red">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <nz-card nzTitle="新增房间" *ngIf="cardToSee === 'addBed'">
+      <nz-form-item>
+        <nz-form-label nzFor="bedName">床位名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#XXX-X" [(ngModel)]="bed.bedName" id="bedName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="memo">备注</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="bed.memo" id="memo">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onAddBed()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToBedList()">取消</button>
+      </div>
+    </nz-card>
+    <nz-card nzTitle="修改房间" *ngIf="cardToSee === 'editBed'">
+      <nz-form-item>
+        <nz-form-label nzFor="bedName">床位名称</nz-form-label>
+        <nz-form-control>
+          <input nz-input placeholder="X#XXX-X" [(ngModel)]="bed.bedName" id="bedName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="memo">备注</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="bed.memo" id="memo">
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="buttons">
+        <button nz-button nzType="primary" (click)="onEditBed()" class="marginR16">保存</button>
+        <button nz-button nzType="default" (click)="backToBedList()">取消</button>
+      </div>
+    </nz-card>
+
+  </div>
+</div>
+
+<!-- 
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>建筑
+        </div>
+        <div class="card-block">
+          <c-ztree #ztreeInstance [setting]="setting" [zNodes]="nodes" (onTreeClick)="onTreeClick($event)"></c-ztree>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="card" *ngIf="cardToSee === 'listBuilding'">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>楼栋列表
+          <button type="button" class="btn btn-info add-button pull-right" (click)="turnToAddBuilding()">添加</button>
+        </div>
+        <div class="card-block">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>楼栋名称</th>
+                <th>楼层数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let buildingTemp of buildingList">
+                <td>{{buildingTemp.buildingName}}</td>
+                <td>{{buildingTemp.floorsNum}}</td>
+                <td>
+                  <button type="button" class="btn btn-link" style="color:#63c2de;padding:0rem" (click)="turnToEditBuilding(buildingTemp)">编辑</button>
+                  <button type="button" class="btn btn-link" style="color:#f95372;padding:0rem" (click)="deleteBuilding(buildingTemp)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'addBuilding'">
+        <div class="card-header col-md-12">
+          新增楼栋
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onAddBuilding()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToBuildingList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>楼栋名称</label>
+            <input type="text" class="form-control" placeholder="X#楼" [(ngModel)]="building.buildingName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'editBuilding'">
+        <div class="card-header col-md-12">
+          修改楼栋
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onEditBuilding()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToBuildingList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>楼栋名称</label>
+            <input type="text" class="form-control" placeholder="X#楼" [(ngModel)]="building.buildingName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'listFloor'">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>楼层列表
+          <button type="button" class="btn btn-info add-button pull-right" (click)="turnToAddFloor()">添加</button>
+        </div>
+        <div class="card-block">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>楼层名称</th>
+                <th>房间数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let floorTemp of floorList">
+                <td>{{floorTemp.floorName}}</td>
+                <td>{{floorTemp.roomsNum}}</td>
+                <td>
+                  <button type="button" class="btn btn-link" style="color:#63c2de;padding:0rem" (click)="turnToEditFloor(floorTemp)">编辑</button>
+                  <button type="button" class="btn btn-link" style="color:#f95372;padding:0rem" (click)="deleteFloor(floorTemp)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'addFloor'">
+        <div class="card-header col-md-12">
+          新增楼层
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onAddFloor()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToFloorList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>楼层名称</label>
+            <input type="text" class="form-control" placeholder="X#X层" [(ngModel)]="floor.floorName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'editFloor'">
+        <div class="card-header col-md-12">
+          修改楼层
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onEditFloor()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToFloorList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>楼层名称</label>
+            <input type="text" class="form-control" [(ngModel)]="floor.floorName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'listRoom'">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>房间列表
+          <button type="button" class="btn btn-info add-button pull-right" (click)="turnToAddRoom()">添加</button>
+        </div>
+        <div class="card-block">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>房间名称</th>
+                <th>床位数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let roomTemp of roomList">
+                <td>{{roomTemp.roomName}}</td>
+                <td>{{roomTemp.bedsNum}}</td>
+                <td>
+                  <button type="button" class="btn btn-link" style="color:#63c2de;padding:0rem" (click)="turnToEditRoom(roomTemp)">编辑</button>
+                  <button type="button" class="btn btn-link" style="color:#f95372;padding:0rem" (click)="deleteRoom(roomTemp)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'addRoom'">
+        <div class="card-header col-md-12">
+          新增房间
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onAddRoom()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToRoomList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>房间名称</label>
+            <input type="text" class="form-control" placeholder="X#XXX" [(ngModel)]="room.roomName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'editRoom'">
+        <div class="card-header col-md-12">
+          修改房间
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onEditRoom()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToRoomList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>房间名称</label>
+            <input type="text" class="form-control" [(ngModel)]="room.roomName">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'listBed'">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>床位列表
+          <button type="button" class="btn btn-info add-button pull-right" (click)="turnToAddBed()">添加</button>
+        </div>
+        <div class="card-block">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>床位名称</th>
+                <th>备注</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bedTemp of bedList">
+                <td>{{bedTemp.bedName}}</td>
+                <td>{{bedTemp.memo}}</td>
+                <td>
+                  <button type="button" class="btn btn-link" style="color:#63c2de;padding:0rem" (click)="turnToEditBed(bedTemp)">编辑</button>
+                  <button type="button" class="btn btn-link" style="color:#f95372;padding:0rem" (click)="deleteBed(bedTemp)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'addBed'">
+        <div class="card-header col-md-12">
+          新增床位
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onAddBed()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToBedList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>床位名称</label>
+            <input type="text" class="form-control" placeholder="X#XXX-X" [(ngModel)]="bed.bedName">
+          </div>
+          <div class="form-group">
+            <label>备注</label>
+            <input type="text" class="form-control" [(ngModel)]="bed.memo">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="cardToSee === 'editBed'">
+        <div class="card-header col-md-12">
+          修改床位
+          <div class="pull-right">
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="onEditBed()">保存</button>
+            <button class="btn btn-outline-primary" style="margin-left:20px" (click)="backToBedList()">取消</button>
+          </div>
+        </div>
+        <div class="card-block col-md-12">
+          <div class="form-group">
+            <label>床位名称</label>
+            <input type="text" class="form-control" [(ngModel)]="bed.bedName">
+          </div>
+          <div class="form-group">
+            <label>备注</label>
+            <input type="text" class="form-control" [(ngModel)]="bed.memo">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> -->

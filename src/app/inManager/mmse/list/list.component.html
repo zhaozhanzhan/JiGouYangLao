@@ -1,0 +1,78 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="7" nzFor="name">长者姓名</nz-form-label>
+          <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="17">
+            <nz-input-group [nzSuffix]="suffixTemplate">
+              <input nz-input name="name" id="name" placeholder="请输入长者姓名" [(ngModel)]="queryParams.name">
+            </nz-input-group>
+            <ng-template #suffixTemplate>
+              <i class="anticon anticon-close-circle" (click)="queryParams.name=null" *ngIf="queryParams.name"></i>
+            </ng-template>
+          </nz-form-control> -->
+          <nz-form-control>
+              <nz-input-group nzSuffixIcon="anticon anticon-search">
+                 <input type="text" name="oldman_name" nz-input placeholder="请输入长者姓名" [(ngModel)]="queryParams.name">
+              </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+      </div>
+      <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="10" [nzXXl]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">评估日期</nz-form-label>
+          <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+            <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [ngModel]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="loadingDataArray(true)">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{resultData.totalElements}}&nbsp;条</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="MMSE评估列表" [nzExtra]="extraTemplate">
+  <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'"
+    [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [nzShowTotal]="totalTit" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>评估日期</th>
+        <th>评估总分</th>
+        <th>评估结果</th>
+        <th>评估人</th>
+        <th>记录人</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data?.oldman?.name}}</td>
+        <td>{{data?.assDate | date:'yyyy-MM-dd'}}</td>
+        <td>{{data?.totalScore}}</td>
+        <td>{{data?.assResults}}</td>
+        <td>{{data?.asser}}</td>
+        <td>{{data?.modifier == "" ? data?.noteTaker : data?.modifier}}</td>
+        <td>
+          <a href="#" (click)="showInfo(data, $event)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="showDeleteConfirm(data.id, $event)" class="red">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+  <a href="#" (click)="showInfo(null,$event)">申请评估</a>
+</ng-template>

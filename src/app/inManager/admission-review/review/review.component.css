@@ -1,0 +1,27 @@
+:host /deep/ .ant-calendar-picker {
+  width: 100%;
+}
+
+.marginBottom24 {
+  margin-bottom: 24px;
+}
+
+.textRight {
+  text-align: right
+}
+
+:host /deep/ label {
+  margin-bottom: 0;
+}
+
+.dib {
+  display: inline-block;
+}
+
+.inputw{
+  width: 30%;
+  margin-left: 10px;
+}
+.ant-input-review{
+  background-color: #f5f5f5 !important;
+}

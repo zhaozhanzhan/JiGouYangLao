@@ -1,0 +1,353 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-10 17:14:53
+ * @Description:
+ -->
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div style="padding: 20px 0;">
+    <div nz-row nzType="flex">
+      <div nz-col style="margin-right:10px;margin-left: 20px;">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="name">病人</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="name"
+              id="name"
+              style="width:150px"
+              placeholder="按病人姓名检索"
+              [(ngModel)]="sendData.patient"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>药房</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              style="width: 200px;"
+              nzPlaceHolder="选择药房"
+              [(ngModel)]="sendData.medRoomId"
+            >
+              <nz-option
+                *ngFor="let item of medRoomList; let key = index"
+                [nzValue]="item.id"
+                [nzLabel]="item.medRoomName"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>科室</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              style="width: 200px;"
+              nzPlaceHolder="选择科室"
+              [(ngModel)]="sendData.sectionOfficeId"
+              (ngModelChange)="findSickward()"
+            >
+              <nz-option
+                *ngFor="let item of officeList; let key = index"
+                [nzValue]="item.id"
+                [nzLabel]="item.name"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>病区</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              style="width: 200px;"
+              nzPlaceHolder="选择病区"
+              [(ngModel)]="sendData.sickWardId"
+            >
+              <nz-option
+                *ngFor="let item of sickWardList; let key = index"
+                [nzValue]="item.id"
+                [nzLabel]="item.sickWardName"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="doctor">主治医生</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="doctor"
+              id="doctor"
+              style="width:150px"
+              placeholder="按医生姓名检索"
+              [(ngModel)]="sendData.attendingDoc"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              style="margin-left:10px;"
+              (click)="getList(true)"
+            >
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              style="margin-left:10px;"
+              (click)="showReturnMedicineModel('0')"
+            >
+              长嘱退药
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              style="margin-left:10px;"
+              (click)="showReturnMedicineModel('1')"
+            >
+              临嘱退药
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div
+  style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;"
+>
+  住院退药
+</div>
+<div style="padding:0 50px;padding-top: 24px;background: #fff;">
+  <nz-table
+    #basicTable
+    [nzData]="listOfData"
+    [nzLoading]="Loading"
+    [nzTitle]="serchArea"
+    nzBordered
+    nzShowSizeChanger
+    [nzFrontPagination]="false"
+    [nzTotal]="totalElements"
+    [nzShowTotal]="totalTemplate"
+    [nzPageIndex]="sendData.page + 1"
+    [nzPageSize]="sendData.size"
+    [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"
+    (nzPageSizeChange)="PageSizeChange($event)"
+    (nzPageIndexChange)="PageIndexChange($event)"
+  >
+    <thead>
+      <tr>
+        <th>住院号</th>
+        <th>床号</th>
+        <th>姓名</th>
+        <th>科室</th>
+        <th>病区</th>
+        <th>主治医生</th>
+        <th>项目</th>
+        <th style="text-align: center;">数量</th>
+        <th>规格/单位</th>
+        <th style="text-align: center;">日期</th>
+        <th>退药说明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.admissionNo }}</td>
+        <td>{{ data.bedNum }}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.sectionOffice?.name }}</td>
+        <td>{{ data.sickWard?.sickWardName }}</td>
+        <td>{{ data.attendingDoc }}</td>
+        <td>{{ data.medName }}</td>
+        <td style="text-align: center;">{{ data.medNum }}</td>
+        <td>{{ data.medUnit }}</td>
+        <td style="text-align: center;">{{ data.backDate }}</td>
+        <td>{{ data.backRemark }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>
+<!-- 新增退药弹框  -->
+<nz-modal
+  nzWidth="700"
+  id="returnMedicineModel"
+  [(nzVisible)]="returnMedicineModel"
+  nzTitle="{{ reMedInfo.orderType == '0' ? '长期医嘱' : '临时医嘱' }}退药登记"
+  (nzOnCancel)="returnMedicineModelCancel()"
+  (nzOnOk)="returnMedicineModelOk()"
+  [nzOkLoading]="nzOkLoading"
+>
+  <div nz-row>
+    <div nz-col nzSpan="24" style="position:relative">
+      <span style="display: inline-block;width:80px;">住院患者：</span>
+
+      <nz-select
+        style="width: 527px;"
+        [(ngModel)]="reMedInfo.admissionNo"
+        nzPlaceHolder="住院号或患者姓名检索"
+        nzShowSearch
+        [nzServerSearch]="true"
+        (nzOnSearch)="searchPatientInfo($event)"
+        (ngModelChange)="onChoosePatientInfo(reMedInfo.admissionNo)"
+      >
+        <ng-container *ngFor="let item of patientList">
+          <nz-option
+            *ngIf="!isLoading"
+            [nzValue]="item.basicId"
+            nzLabel="{{
+              item.admissionNo + '&nbsp;&nbsp;--&nbsp;&nbsp;' + item.name
+            }}"
+          ></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon type="loading" class="loading-icon"></i> 查询中...
+        </nz-option>
+      </nz-select>
+    </div>
+    <!-- <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">患者姓名：</span>
+      <nz-select
+        style="width: 200px;"
+        [(ngModel)]="reMedInfo.name"
+        nzPlaceHolder="住院号"
+        nzShowSearch
+        [nzServerSearch]="true"
+        (nzOnSearch)="searchPatientInfo($event)"
+        (ngModelChange)="onChoosePatientInfo(reMedInfo.name)"
+      >
+        <ng-container *ngFor="let item of patientList">
+          <nz-option
+            *ngIf="!isLoading"
+            [nzValue]="item.basicId"
+            [nzLabel]="item.name"
+          ></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon type="loading" class="loading-icon"></i> 查询中...
+        </nz-option>
+      </nz-select> -->
+    <!-- </div> -->
+  </div>
+  <div nz-row style="margin-top:10px;">
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">所属医嘱：</span>
+      <nz-select
+        style="width: 200px;"
+        [(ngModel)]="reMedInfo.adviceId"
+        nzPlaceHolder="医嘱"
+        (ngModelChange)="onChooseAdviceInfo(reMedInfo.adviceId)"
+      >
+        <ng-container *ngFor="let item of adviceList">
+          <nz-option
+            *ngIf="!isLoading"
+            [nzValue]="item.tempOrdersId"
+            [nzLabel]="item.tempOrdersTime"
+          ></nz-option>
+        </ng-container>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">主治医生：</span
+      ><input
+        nz-input
+        disabled
+        placeholder="主治医生"
+        [(ngModel)]="reMedInfo.mainDoc"
+        class="w200"
+      />
+    </div>
+  </div>
+
+  <div nz-row style="margin-top:10px;">
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">药品名称：</span>
+      <nz-select
+        style="width: 200px;"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="药品名称"
+        [(ngModel)]="reMedInfo.medName"
+        (ngModelChange)="changeMed()"
+      >
+        <nz-option
+          *ngFor="let item of selMedicine"
+          [nzLabel]="item.medName"
+          [nzValue]="item.id"
+        ></nz-option>
+      </nz-select>
+      <!-- <input nz-input placeholder="药品名称" [(ngModel)]="reMedInfo.medName" class="w200"> -->
+    </div>
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">退药数量：</span>
+      <nz-input-number
+        nz-input
+        [nzStep]="1"
+        [nzMin]="1"
+        [nzMax]="99"
+        placeholder="退药数量"
+        [(ngModel)]="reMedInfo.num"
+        class="w200"
+        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"
+      ></nz-input-number>
+    </div>
+  </div>
+  <div nz-row style="margin-top:10px;">
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">规格单位：</span
+      ><input
+        nz-input
+        disabled
+        placeholder="规格单位"
+        [(ngModel)]="reMedInfo.type"
+        class="w200"
+      />
+    </div>
+    <div nz-col nzSpan="12">
+      <span style="display: inline-block;width:80px;">发药日期：</span
+      ><input
+        nz-input
+        disabled
+        placeholder="发药日期"
+        [(ngModel)]="reMedInfo.date"
+        class="w200"
+      />
+    </div>
+  </div>
+  <div nz-row style="margin-top:10px;">
+    <div nz-col nzSpan="24">
+      <span style="display: inline-block;width:80px;">退药原因：</span>
+    </div>
+    <div nz-col nzSpan="24">
+      <textarea rows="4" nz-input [(ngModel)]="reMedInfo.backRemark"></textarea>
+    </div>
+  </div>
+</nz-modal>

@@ -1,0 +1,84 @@
+.textRight {
+    text-align: right
+  }
+  .AbnormalContent{
+    display: inline-block;
+    width: 110px;
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-right: 0px solid transparent;
+    border-radius: 0px;
+  }
+  .AbnormalContent:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0px transparent;
+}
+.RiskAssessmentContent{
+    position: absolute;
+    left: 12%;
+    right: 24%;
+    padding: 30px 30px 15px 30px;
+    border: 1px solid #efefef;
+    box-shadow: 0px 0px 10px #d9d9d9;
+    background: #fff;
+}
+.RiskAssessment{
+  text-align: left;
+  background: #fff;
+  border: 1px solid #efefef;
+  width: 100%;
+}
+.RiskAssessment tr th{
+  padding: 10px 5px
+}
+.RiskAssessment tbody tr td{
+  padding: 10px 5px
+}
+.textRight{
+
+  margin-top: 20px
+}
+.countermand{
+  margin-right: 20px;
+}
+.checkMargin{
+  margin-top: 10px
+}
+.RiskAssessmentContentTitle{
+  font-size: 16px;
+    padding: 6px 0px;
+    background: #fff;
+    padding-left: 5px;
+    /* border: 1px solid #e8e8e8; */
+    border-bottom: 1px solid #efefef;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.RiskAssessmentContentMarkSheet{
+  position: fixed;
+    top: 10%;
+    bottom: 0;
+    left: 16%;
+    right: 0;
+    background: rgba(255,255,255,0.5);
+}
+.RAPos1{
+  top: 20%
+}
+.RAPos{
+  top: 0%
+}
+.addMargin{
+  background: #fff;
+  border:1px solid #ccc;
+  color: #000;
+}
+.Braden{
+    display: inline-block;
+    width: 50px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+.cancel{
+  margin-right: 10px
+}

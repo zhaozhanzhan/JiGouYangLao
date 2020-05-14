@@ -1,0 +1,46 @@
+.editCategory {
+    position: absolute;
+    left: 100%;
+    z-index: 800;
+}
+
+.ant-form-item {
+    margin: 0px !important;
+}
+
+.form_input {
+    width: 200px;
+}
+
+.marginL {
+    margin-right: 10px;
+    margin-top: 5px;
+    color: #63c2de;
+}
+
+h6 {
+    padding: 10px !important;
+    margin-bottom: 0px !important;
+    font-weight: bold;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 100% !important;
+}
+
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+.marginBottom24 {
+    margin-top: 10px;
+}

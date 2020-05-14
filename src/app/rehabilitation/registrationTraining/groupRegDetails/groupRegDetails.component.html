@@ -1,0 +1,128 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>训练登记详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-card nzType="inner" nzTitle="基本信息">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 范畴</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <nz-select style="width: 100%;" [(ngModel)]="addDataObj.scope" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of scopeList" [nzLabel]="option.name" [nzValue]="option.name"> </nz-option>
+                        </nz-select> -->
+                        <input nz-input [(ngModel)]="addDataObj.scope" [disabled]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 子范畴</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <nz-select style="width: 100%;" [(ngModel)]="addDataObj.childScope" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of subcategoryList" [nzLabel]="option.name" [nzValue]="option.name"> </nz-option>
+                        </nz-select> -->
+                        <input nz-input [(ngModel)]="addDataObj.childScope" [disabled]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 项目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="addDataObj.projectId" (ngModelChange)="changePr($event)" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of conRehabilitationList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 参考年龄</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="addDataObj.age" [readonly]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 提示方式</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="addDataObj.promptWay" [readonly]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 成功标准</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="addDataObj.standard" [readonly]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 训练时间</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="addDataObj.time" [nzDisabled]="disabled"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">训练康复师</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="addDataObj.therapist" [readonly]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">目标</nz-form-label>
+                    <nz-form-control [nzSpan]="18">
+                        <textarea rows="4" nz-input [(ngModel)]="addDataObj.target" [readonly]="disabled"> </textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="个人训练表现" style="margin-top:10px;">
+        <div nz-row [nzGutter]="24" *ngFor="let item of addDataObj.perfermenceList">
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">姓名</nz-form-label>
+                    <nz-form-control [nzSpan]="18">
+                        <input nz-input maxlength="32" [(ngModel)]="item.name" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16" style="margin-top:10px;">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">训练表现</nz-form-label>
+                    <nz-form-control [nzSpan]="18">
+                        <textarea rows="4" nz-input [(ngModel)]="item.perfermence" [readonly]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16" style="margin-top:10px;margin-bottom: 6px">
+                <nz-form-item>
+                    <div style="height:1px;background:#efefef;"></div>
+                </nz-form-item>
+            </div>
+
+        </div>
+
+    </nz-card>
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" *ngIf="disabled==false" fnzSize="large" (click)="saveTrainDetails()" [nzLoading]="saveBasicInformationLoading">
+            保存
+        </button>
+    </div>
+</nz-card>

@@ -1,0 +1,163 @@
+<div nz-row [nzGutter]="8">
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">建筑</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <nz-select [(ngModel)]="reqObj.building" (ngModelChange)="onBuildingChange()" class="width100">
+                    <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+                    <nz-option *ngFor="let buildingTemp of buildingList" [nzValue]="buildingTemp.id" [nzLabel]="buildingTemp.buildingName"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">楼层</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <nz-select [(ngModel)]="reqObj.floor" (ngModelChange)="onFloorChange()" class="width100">
+                    <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+                    <nz-option *ngFor="let floorTemp of floorList" [nzValue]="floorTemp.id" [nzLabel]="floorTemp.floorName"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">房间</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <nz-select [(ngModel)]="reqObj.room" (ngModelChange)="onRoomChange()" class="width100">
+                    <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+                    <nz-option *ngFor="let roomTemp of roomList" [nzValue]="roomTemp.id" [nzLabel]="roomTemp.roomName"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="old">长者姓名</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <input nz-input name="old" id="old" placeholder="请输入长者姓名" [(ngModel)]="reqObj.name">
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">状态</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <nz-select [(ngModel)]="reqObj.isout" class="width100">
+                    <nz-option nzValue="0" nzLabel='全部' selected></nz-option>
+                    <nz-option nzValue="2" nzLabel='在院' selected></nz-option>
+                    <nz-option nzValue="1" nzLabel='出院' selected></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">护理等级</nz-form-label>
+            <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="reqObj.carelevel" name="careLevelCase_id" (ngModelChange)="carelevelChange($event)" id="careLevelCase_id" style="width: 100%;">
+                    <nz-option *ngFor="let data of nursingGradeList" [nzLabel]="data.levelName" [nzValue]="data.id"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
+
+<div style="background: #ECECEC;padding:30px;">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="6" *ngFor="let data of list">
+            <nz-card [nzActions]="[actionSetting,actionEdit,actionEllipsis]" class="marginBottom8">
+                <nz-card-meta [nzTitle]="data.name" [nzDescription]="descriptionTemplate" [nzAvatar]="avatarTemplate"></nz-card-meta>
+            </nz-card>
+            <ng-template #avatarTemplate>
+                <!-- <nz-avatar nzSize="large" nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar> -->
+                <img [src]=" (data.oldmanUrl == undefined || data.oldmanUrl == '') ? 'assets/img/male-avatar.png' : data.oldmanUrl" class="img-avatar" style="width:80px;height:80px">
+            </ng-template>
+            <ng-template #descriptionTemplate>
+                <span class="paddingSpan">
+                    <span class="color">性别：</span>
+                    <span>{{data?.sex}}</span>
+                </span><br>
+                <span class="paddingSpan">
+                    <span class="color">年龄：</span>
+                    <span>{{data?.birthYearMonth | AgeCount}}</span>
+                </span><br>
+                <span class="paddingSpan">
+                    <span class="color">床号：</span>
+                    <span>{{data?.bed?.bedName}}</span>
+                </span><br>
+                <span class="paddingSpan">
+                    <span class="color">护理等级：</span>
+                    <span>{{data?.careLevelCase?.levelName}}</span>
+                </span><br>
+            </ng-template>
+            <ng-template #actionSetting>
+                <a href="#" (click)="turnToPersonalFile(data.id, $event)">个人档案</a>
+                <!-- <i class="anticon anticon-setting"></i> -->
+            </ng-template>
+            <ng-template #actionEdit>
+                <a href="#" (click)="disabledBedName(data.id,data?.bed?.bedName,data.name,'EditfireExtinguisher',$event)">更改床号</a>
+                <!-- <i class="anticon anticon-ellipsis"></i> -->
+            </ng-template>
+            <ng-template #actionEllipsis>
+                <a href="#" (click)="disabledBedName(data.id,data?.careLevelCase?.levelName,data.name,'LevelOfCare',$event)">更改护理等级</a>
+                <!-- <i class="anticon anticon-ellipsis"></i> -->
+            </ng-template>
+        </div>
+    </div>
+    <div nz-row class="marginTopBottom16">
+        <div class="floatRight">
+            <nz-pagination [(nzPageIndex)]="page.index" [(nzTotal)]="page.total" [(nzPageSize)]="page.size" [nzShowTotal]="totalTemplate" (nzPageIndexChange)="onPageIndexChange($event)"></nz-pagination>
+            <ng-template #totalTemplate let-total>
+                共 {{page.total}} 条
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+
+<!-- 编辑更改床号 -->
+<nz-modal [(nzVisible)]="EditfireExtinguisher" nzTitle="编辑更改床号" (nzOnCancel)="EditfireHandleCancel('EditfireExtinguisher')" (nzOnOk)="EditfireHandleOk('EditfireExtinguisher')">
+    <label>长者姓名：</label>
+    <input nz-input placeholder="" [(ngModel)]="oldname" disabled>
+    <label>原床号：</label>
+    <input nz-input placeholder="" [(ngModel)]="bedNameN" disabled>
+    <nz-form-item>
+        <nz-form-label nzRequired nzFor="bed_id">更改床号</nz-form-label>
+        <nz-form-control>
+            <nz-tree-select style="width: 100%;" [nzDefaultExpandedKeys]="expandKeys" [nzDropdownMatchSelectWidth]="true" [nzDropdownStyle]="{ 'max-height': '300px' }" [(ngModel)]="UpdateBed.bedId" [nzNodes]="nodes" [nzAsyncData]="true" [nzShowSearch]="true" id="bed_id">
+            </nz-tree-select>
+        </nz-form-control>
+    </nz-form-item>
+    <label>变更原因：</label>
+    <textarea nz-input placeholder="请输入变更原因" [nzAutosize]="{ minRows: 2, maxRows: 6 }" [(ngModel)]="UpdateBed.changeReason"></textarea>
+</nz-modal>
+
+
+<!-- 编辑护理等级 -->
+<nz-modal [(nzVisible)]="LevelOfCare" nzTitle="编辑更改护理等级" (nzOnCancel)="EditfireHandleCancel('LevelOfCare')" (nzOnOk)="EditfireHandleOk('LevelOfCare')">
+    <label>长者姓名：</label>
+    <input nz-input placeholder="" [(ngModel)]="oldname" disabled>
+    <label>原护理等级：</label>
+    <input nz-input placeholder="" [(ngModel)]="levelNameN" disabled>
+    <nz-form-item>
+        <nz-form-label nzRequired nzFor="careLevelCase_id">护理等级</nz-form-label>
+        <nz-form-control>
+            <nz-input-group nzCompact>
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="UpdateLevelName.careLevelCase_id" id="careLevelCase_id" style="width: 100%;">
+                    <nz-option *ngFor="let data of nursingGradeList" [nzLabel]="data.levelName" [nzValue]="data.id"></nz-option>
+                </nz-select>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <label>变更原因：</label>
+    <textarea nz-input placeholder="请输入变更原因" [nzAutosize]="{ minRows: 2, maxRows: 6 }" [(ngModel)]="UpdateLevelName.changeReason"></textarea>
+</nz-modal>

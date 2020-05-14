@@ -1,0 +1,40 @@
+<nz-card nzTitle="护士班组" [nzExtra]="extraTemplate">
+  <form nz-form [formGroup]="validateForm">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="name" nzRequired>班组名称</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input id="name" formControlName="name">
+          <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">班组名称不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">病区</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select class="w100p" nzAllowClear nzShowSearch nzPlaceHolder="情选择病区" formControlName="departmentId">
+              <nz-option *ngFor="let item of inpatientArea" [nzValue]="item.id" [nzLabel]="item.sickWardName"></nz-option>
+            </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="selectMonitors" nzRequired>班长</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="请选择" formControlName="monitorIds">
+            <nz-option *ngFor="let option of allMonitors" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('monitorIds').dirty && validateForm.get('monitorIds').errors">班长不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSubmit()" [nzLoading]="isSaveBtnLoading">保存</button>
+  </div>
+</nz-card>
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>

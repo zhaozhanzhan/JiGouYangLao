@@ -1,0 +1,16 @@
+td, th {
+  text-align: center !important;
+}
+
+.red {
+  color: #f81d22 !important;
+}
+nz-form-item {
+  margin-bottom: 0px;
+}
+
+.ant-select-selection--single {
+  height: 32px;
+  position: relative;
+  cursor: pointer;
+}

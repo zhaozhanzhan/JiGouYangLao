@@ -1,0 +1,118 @@
+<nz-card nzType="inner" nzTitle="收费标准信息" class="marginBottom24">
+  <form nz-form [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="chargingType">收费方式</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="6"  formControlName="chargingType" id="chargingType">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="deposit">押金</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="deposit" id="deposit">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="allLowCost">全包收费最低费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="allLowCost" id="allLowCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="allHighCost">全包收费最高费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="allHighCost" id="allHighCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="nursingLowCost">护理费最低费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="nursingLowCost" id="nursingLowCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="nursingHighCost">护理费最高费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="nursingHighCost" id="nursingHighCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="dietLowCost">膳食费最低费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="dietLowCost" id="dietLowCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="dietHighCost">膳食费最高费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="dietHighCost" id="dietHighCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="bedLowCost">床位费最低费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="bedLowCost" id="bedLowCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="bedHighCost">床位费最高费用</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="bedHighCost" id="bedHighCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="hydropowerCost">水电费</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="hydropowerCost" id="hydropowerCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="warmCost">取暖费</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="10" type="number" step="0.01" oninput="if(value.length>10)value=value.slice(0,10)" formControlName="warmCost" id="warmCost">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4"  nzFor="comment">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveOrganFeeScaleInfo()" [nzLoading]="saveBasicInformationLoading">保存</button>
+  </div>
+</nz-card>

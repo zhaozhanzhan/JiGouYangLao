@@ -1,0 +1,346 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-27 16:13:25
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="入库详情" [nzExtra]="btnArea">
+  <nz-card nzType="inner">
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="inDate"
+          >入库日期</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-date-picker
+            nzShowTime
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            formControlName="inDate"
+            id="inDate"
+            [nzStyle]="{ width: '400px' }"
+          ></nz-date-picker>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('inDate').dirty &&
+                validateForm.get('inDate').errors
+              )
+            "
+            >入库日期不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"
+          >出库药房</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-select
+            style="width: 400px;"
+            nzPlaceHolder="选择药房"
+            formControlName="sectionOfficeOutId"
+          >
+            <nz-option nzValue="" nzLabel="正常入库"></nz-option>
+            <nz-option
+              *ngFor="let item of medRoomList; let key = index"
+              [nzValue]="item?.id"
+              [nzLabel]="item?.name"
+            ></nz-option>
+          </nz-select>
+          <nz-form-explain
+            style="color: orange"
+            [hidden]="validateForm.get('sectionOfficeOutId').value.length == 0"
+            >*当前入库药品将自动出库到该药房</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="operator"
+          >操作人</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            nz-input
+            formControlName="operator"
+            id="operator"
+            class="form_input"
+          />
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('operator').dirty &&
+                validateForm.get('operator').errors
+              )
+            "
+            >操作人不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="inComment"
+          >备注</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <textarea
+            class="form_input"
+            rows="4"
+            nz-input
+            formControlName="inComment"
+            id="inComment"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-card>
+
+  <ng-template #btnListAdd>
+    <button nz-button nzType="dashed" (click)="showSaveGoodsDialog(null, -1)">
+      <i class="anticon anticon-plus"></i>添加药品
+    </button>
+  </ng-template>
+  <nz-card
+    class="mt10"
+    nzType="inner"
+    nzTitle="入库药品"
+    [nzExtra]="btnListAdd"
+  >
+    <nz-table
+      #goodsTable
+      [nzData]="inGoodsList"
+      [nzHideOnSinglePage]="true"
+      nzBordered
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th class="tac">序号</th>
+          <th class="tac">药品名称</th>
+          <th class="tac">药品规格</th>
+          <th class="tac">供应商</th>
+          <th class="tac">数量</th>
+          <th class="tac">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of goodsTable.data; let num = index">
+          <td class="maxW50 tac">{{ data?.autoNum }}</td>
+          <td class="maxW150 tac">{{ data?.inMedDrugsName }}</td>
+          <td class="maxW80 tac">
+            {{ data?.specificationsModels }}
+          </td>
+          <td class="maxW150 tac">{{ data?.supplier }}</td>
+          <td class="maxW150 tac">{{ data?.inNum }}</td>
+          <td class="maxW50 tac">
+            <a
+              href="javascript:void(0)"
+              (click)="showSaveGoodsDialog(data, num)"
+              >编辑</a
+            >
+            <nz-divider nzType="vertical"></nz-divider>
+            <a
+              href="javascript:void(0)"
+              (click)="deleteInGood(num)"
+              style="color: #f81d22 !important;"
+              >删除</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveForm()"
+      [nzLoading]="isBtnLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<nz-modal
+  [(nzVisible)]="isShowSaveGoodsDialog"
+  nzTitle="入库药品详情"
+  nzWidth="900"
+  (nzOnCancel)="isShowSaveGoodsDialog = false"
+  [nzMaskClosable]="false"
+  (nzOnOk)="doDialogSave()"
+>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzRequired>药品名称</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class="dialog_input"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            [(ngModel)]="selectedGoods.inMedDrugsId"
+            (ngModelChange)="onGoodsChange($event)"
+          >
+            <nz-option
+              *ngFor="let goods of goodsList"
+              [nzLabel]="goods.drugName"
+              [nzValue]="goods.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzRequired>入库数量</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            class="dialog_input"
+            [nzMin]="0"
+            [nzStep]="5"
+            [(ngModel)]="selectedGoods.inNum"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>药品规格</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            readonly
+            [(ngModel)]="selectedGoods.specificationsModels"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>生产厂商</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [(ngModel)]="selectedGoods.manufacturer"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>供应商</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [(ngModel)]="selectedGoods.supplier"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzRequired>药品批号</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [(ngModel)]="selectedGoods.mdBatchNum"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>生产日期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker
+            class="dialog_input"
+            [(ngModel)]="selectedGoods.productionDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzRequired>保质期(天)</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number class="dialog_input" [nzMin]="0" [nzStep]="10" [(ngModel)]="selectedGoods.shelfLife"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzRequired>有效期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker
+            class="dialog_input"
+            [(ngModel)]="selectedGoods.validityDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>采购单价</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            class="dialog_input"
+            [nzFormatter]="formatterDollar"
+            [nzParser]="parserDollar"
+            nzMin="0"
+            [(ngModel)]="selectedGoods.purchasePrice"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>备注</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nz-input
+            class="dialog_areaInput"
+            rows="2"
+            maxlength="50"
+            [(ngModel)]="selectedGoods.comment"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>

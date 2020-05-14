@@ -1,0 +1,398 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="采购申请详情" [nzExtra]="btnArea">
+  <nz-card nzType="inner">
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="rid"
+          >申请单号</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            nz-input
+            formControlName="rid"
+            id="rid"
+            class="form_input"
+            maxlength="20"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="title"
+          >申请概述</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            nz-input
+            formControlName="title"
+            id="title"
+            class="form_input"
+            maxlength="20"
+            readonly
+          />
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('title').dirty &&
+                validateForm.get('title').errors
+              )
+            "
+            >申请概述不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="createDate"
+          >申请时间</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-date-picker
+            nzShowTime
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            formControlName="createDate"
+            id="createDate"
+            [nzStyle]="{ width: '400px' }"
+            [nzDisabled]="true"
+          ></nz-date-picker>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('createDate').dirty &&
+                validateForm.get('createDate').errors
+              )
+            "
+            >申请时间不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="deptId"
+          >申请部门</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-select
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            formControlName="deptId"
+            class="form_input"
+            [nzDisabled]="true"
+          >
+            <nz-option
+              *ngFor="let department of departmentList"
+              [nzLabel]="department.name"
+              [nzValue]="department.id"
+            ></nz-option>
+          </nz-select>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('deptId').dirty &&
+                validateForm.get('deptId').errors
+              )
+            "
+            >所属部门不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="rOperator"
+          >操作人</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            class="form_input"
+            nz-input
+            formControlName="rOperator"
+            id="rOperator"
+            readonly
+          />
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('rOperator').dirty &&
+                validateForm.get('rOperator').errors
+              )
+            "
+            >入库人员不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="rComment"
+          >备注</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <textarea
+            class="form_input"
+            rows="4"
+            nz-input
+            formControlName="rComment"
+            id="rComment"
+            readonly
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-card>
+
+  <ng-template #btnListAdd> </ng-template>
+  <nz-card
+    class="mt10"
+    nzType="inner"
+    nzTitle="采购物品"
+    [nzExtra]="btnListAdd"
+  >
+    <nz-table
+      #goodsTable
+      [nzData]="inGoodsList"
+      [nzHideOnSinglePage]="true"
+      nzBordered
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th class="tac">序号</th>
+          <th class="tac">物品名称</th>
+          <th class="tac">数量</th>
+          <th class="tac">采购单价</th>
+          <th class="tac">使用单位</th>
+          <th class="tac">备注</th>
+          <th class="tac">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of goodsTable.data; let num = index">
+          <td class="maxW50 tac">{{ num + 1 }}</td>
+          <td class="maxW150 tac">{{ data?.goodsName }}</td>
+          <td class="maxW80 tac">{{ data?.rGoodsNum }}</td>
+          <td class="maxW150 tac">{{ data?.rGoodsPrice }}</td>
+          <td class="maxW150 tac">{{ data?.rGoodsUser }}</td>
+          <td class="maxW150 tac">{{ data?.rGoodsComment }}</td>
+          <td class="maxW50 tac">
+            <a
+              href="javascript:void(0)"
+              (click)="showSaveGoodsDialog(data, num)"
+              >查看</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <nz-card class="mt10" nzType="inner" nzTitle="审批信息">
+    <div nz-row nzType="flex">
+      <div nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label>审批人</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              class="form_input"
+              maxlength="20"
+              readonly
+              [ngModel]="saveApproveParam.applyName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzSpan="24" *ngIf="pageMode == 'info'">
+        <nz-form-item nzFlex>
+          <nz-form-label>审批时间</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              class="form_input"
+              maxlength="20"
+              readonly
+              [ngModel]="
+                saveApproveParam?.applyDate | date: 'yyyy-MM-dd HH:mm:ss'
+              "
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label>电子签名</nz-form-label>
+          <nz-form-control>
+            <mirr-electronicSign
+              [imgUrl]="saveApproveParam.approvalUrl"
+              [isShowSign]="pageMode == 'edit'"
+              #operatorSign
+            >
+            </mirr-electronicSign>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </nz-card>
+  <div
+    style="text-align:center;margin-top: 30px;"
+    *ngIf="pageMode == 'add' || pageMode == 'edit'"
+  >
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveApprove(operatorSign.imgUrl)"
+      [nzLoading]="isBtnLoading"
+    >
+      同意采购
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<nz-modal
+  [(nzVisible)]="isShowSaveGoodsDialog"
+  nzTitle="采购物品详情"
+  nzWidth="900"
+  (nzOnCancel)="isShowSaveGoodsDialog = false"
+  (nzOnOk)="doDialogSave()"
+>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>物品名称</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.goodsName"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>数量</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.rGoodsNum"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>使用单位</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.rGoodsUser"
+            maxlength="10"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>采购单价</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.rGoodsPrice"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>物品类别</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.goodsClassification"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>规格型号</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.goodsModel"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>计量单位</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods?.goodsUnit"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>备注</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nz-input
+            class="dialog_areaInput"
+            rows="2"
+            maxlength="20"
+            [ngModel]="selectedGoods?.rGoodsComment"
+            readonly
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>

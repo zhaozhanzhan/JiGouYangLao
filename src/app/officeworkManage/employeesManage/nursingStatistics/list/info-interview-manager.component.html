@@ -1,0 +1,154 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="10" [nzXXl]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">护理日期</nz-form-label>
+          <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+            <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [(ngModel)]="queryParams.date" (ngModelChange)="selDate($event)"></nz-range-picker>
+          </nz-form-control> 
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="护理统计列表" >
+  <nz-table #basicTable [nzData]="nursingStatisticsList" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'"
+    [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th>班组</th>
+        <th>班组护工</th>
+        <th>服务总数</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let nursingStatistics of nursingStatisticsList">
+            <td>{{nursingStatistics.spName}}</td>
+            <td>
+              <span *ngFor="let data of nursingStatistics.values; let num = index;" (click)="showSingleDetail(nursingStatistics.spName, data)"><a href="javascript:void(0);">{{data.eName}}({{data.allNum}})</a>
+                <span *ngIf="num < nursingStatistics.values.length - 1"> 、 </span>
+              </span>
+            </td>
+            <td (click)="showModal(nursingStatistics)"><a href="javascript:void(0);">{{nursingStatistics.allNum}}</a></td>
+          </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{resultData.totalElements}} 条</ng-template>
+
+
+
+<nz-modal nzWidth="40%" [(nzVisible)]="isVisible" nzTitle="护理统计列表" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <div class="modalCard" *ngIf="showModalNumber=='2'">
+    <!-- <h6>班组：{{employeesGroup}}</h6>
+    <h6>护工：{{data.eName}}</h6>
+    <h6>日期：{{this.queryParams.btime}} &sim; {{this.queryParams.etime}}</h6> -->
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+          <label for="">班组:</label>
+          <span>{{employeesGroup}}</span>
+      </div>
+      <div nz-col nzSpan="24">
+        <label for="">护工:</label>
+        <span>{{data.eName}}</span>
+      </div>
+     
+    </div>
+    <!-- <div style="margin-top: 10px;"> -->
+      <!-- <h6>责任包干: {{data.resMemoNum}}次</h6>
+      <h6>翻身服务: {{data.rollMemoNum}}次</h6>
+      <h6>二便服务: {{data.shPeMemoNum}}次</h6>
+      <h6>查房记录: {{data.checkNum}}次</h6>
+      <h6>消毒记录: {{data.jordanCleanNum}}次</h6> -->
+      <table >
+        <thead>
+          <tr>
+            <th>责任包干</th>
+            <th>翻身服务</th>
+            <th>二便服务</th>
+            <th>查房记录</th>
+            <th>消毒记录</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{data.resMemoNum}}次</td>
+            <td>{{data.rollMemoNum}}次</td>
+            <td>{{data.shPeMemoNum}}次</td>
+            <td>{{data.crNum}}次</td>
+            <td>{{data.jcNum}}次</td>
+          </tr>
+        </tbody>
+      </table>
+    <!-- </div> -->
+  </div>
+
+  <div class="modalCard" *ngIf="showModalNumber=='1'">
+    <!-- <h6>班组：{{nursingDataList.spName}}</h6>
+    <h6>护工：
+      <span *ngFor="let data of nursingDataList.values; let num = index;">{{data.eName}}
+        <span *ngIf="num < nursingDataList.values.length - 1"> 、 </span>
+      </span>
+    </h6>
+    <h6>日期：{{this.queryParams.btime}} &sim; {{this.queryParams.etime}}</h6> -->
+    <!-- <div style="margin-top: 10px;">
+      <h6>责任包干: {{nursingDataList.allresnum}}次</h6>
+      <h6>翻身服务: {{nursingDataList.allrollnum}}次</h6>
+      <h6>二便服务: {{nursingDataList.allshpenum}}次</h6>
+      <h6>查房记录: {{nursingDataList.allchecknum}}次</h6>
+      <h6>消毒记录: {{nursingDataList.alljordanCleanNum}}次</h6>
+    </div> -->
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+          <label for="">班组:</label>
+          <span>{{nursingDataList.spName}}</span>
+      </div>
+      <div nz-col nzSpan="24">
+        <label for="">护工:</label>
+        <span *ngFor="let data of nursingDataList.values; let num = index;">{{data.eName}}
+          <span *ngIf="num < nursingDataList.values.length - 1"> 、 </span>
+        </span>
+      </div>
+      <div nz-col nzSpan="24" *ngIf="this.queryParams.btime!='' || this.queryParams.etime!=''">
+        <label for="">日期:</label>
+        <span>{{this.queryParams.btime}} &sim; {{this.queryParams.etime}}</span>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>责任包干</th>
+          <th>翻身服务</th>
+          <th>二便服务</th>
+          <th>查房记录</th>
+          <th>消毒记录</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{nursingDataList.allresnum}}次</td>
+          <td>{{nursingDataList.allrollnum}}次</td>
+          <td>{{nursingDataList.allshpenum}}次</td>
+          <td> {{nursingDataList.allNum}}次</td>
+          <td> {{nursingDataList.alljcnum}}次</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</nz-modal>

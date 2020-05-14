@@ -1,0 +1,147 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="药品详情" [nzExtra]="btnArea">
+    <form nz-form>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugName">药品名称</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="drugName" id="drugName" [(ngModel)]="result.drugName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="commonName">通用名</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="commonName" id="commonName" [(ngModel)]="result.commonName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugType">药品类别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="drugType" id="drugType" [(ngModel)]="result.drugType" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="isOtc">是否OTC</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-radio-group name="isOtc" id="isOtc" [(ngModel)]="result.isOtc" nzDisabled>
+                            <label nz-radio nzValue="1">是</label>
+                            <label nz-radio nzValue="0">否</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="dosageForm">剂型</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <input nz-input name="dosageForm" id="dosageForm" [(ngModel)]="result.dosageForm" readonly /> -->
+                        <nz-select nzShowSearch name="dosageForm" id="dosageForm" [(ngModel)]="result.dosageForm" nzDisabled>
+                            <nz-option *ngFor="let option of dosageFormList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugUsage">用法</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="drugUsage" id="drugUsage" [(ngModel)]="result.drugUsage" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="limitLevel">限制等级</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="limitLevel" id="limitLevel" [(ngModel)]="result.limitLevel" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="manufacturers">生产厂商</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="manufacturers" id="manufacturers" [(ngModel)]="result.manufacturers" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="specification">药品规格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="specification" id="specification" [(ngModel)]="result.specification" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="largePackingUnit">大包装单位</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <input nz-input name="largePackingUnit" id="largePackingUnit" [(ngModel)]="result.largePackingUnit" readonly /> -->
+                        <nz-select nzShowSearch name="largePackingUnit" id="largePackingUnit" [(ngModel)]="result.largePackingUnit" nzDisabled>
+                            <nz-option *ngFor="let option of unitList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="minPackingQuantity">最小包装数量</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="minPackingQuantity" id="minPackingQuantity" [(ngModel)]="result.minPackingQuantity" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="minPackingUnit">最小包装单位</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <input nz-input name="minPackingUnit" id="minPackingUnit" [(ngModel)]="result.minPackingUnit" readonly /> -->
+                        <nz-select nzShowSearch name="minPackingUnit" id="minPackingUnit" [(ngModel)]="result.minPackingUnit" nzDisabled>
+                            <nz-option *ngFor="let option of unitList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="salePrice">售价</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input name="salePrice" id="salePrice" [(ngModel)]="result.salePrice" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input name="comment" id="comment" [(ngModel)]="result.comment" readonly></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</nz-card>
+<!-- 表单区域End -->

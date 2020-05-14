@@ -1,0 +1,221 @@
+<nz-card [nzExtra]="extraTemplate" [nzBordered]="false" nzTitle="缴存登记">
+    <nz-card nzTitle="基本信息" style="font-size: 15px;">
+        <div nz-row>
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="5">姓名：{{ olderInfo?.name }}</div>
+            <div nz-col nzSpan="5">性别：{{ olderInfo?.sex }}</div>
+            <div nz-col nzSpan="5">年龄：{{ olderInfo?.age }}</div>
+            <div nz-col nzSpan="5">身份证：{{ olderInfo?.cardno }}</div>
+        </div>
+        <div nz-row style="margin-top: 20px;">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="5">房间：{{ olderInfo?.roomName }}</div>
+            <div nz-col nzSpan="5">
+                入院日期：{{ olderInfo?.inDate | date: "yyyy-MM-dd" }}
+            </div>
+            <div nz-col nzSpan="5">累计住院天数：{{ olderInfo?.days }}</div>
+        </div>
+    </nz-card>
+
+    <nz-card [nzExtra]="addAccountTemplate" nzTitle="账目信息" style="font-size: 15px;">
+        <div nz-row style="margin-top: 20px;" *ngFor="let item of olderInfo.ConsumerRegistration">
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">
+                缴存账目：{{ item?.depositAccounts?.accountsName }}
+            </div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">
+                账目余额：{{ item?.accountBalance }} 元
+            </div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">
+                账目累计缴存：{{ item?.accountTotal }} 元
+            </div>
+        </div>
+    </nz-card>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="default" onclick="window.history.back()">
+        返回
+    </button>
+</ng-template>
+<ng-template #addAccountTemplate>
+    <button nz-button nzType="primary" (click)="addaccount()">新增缴存</button>
+</ng-template>
+
+<!-- 新增缴存 -->
+<nz-modal nzWidth="700" [(nzVisible)]="isVisibleAddModel" nzTitle="新增缴存" (nzOnCancel)="addModalCancel()" (nzOnOk)="addModalOk()" nzOkText="确认缴存">
+    <div nz-row>
+        <div nz-col nzSpan="5" style="text-align: right;line-height: 30px;">
+            <span style="color: red">*</span>
+            缴存账目：
+        </div>
+        <div nz-col>
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="选择缴存账目" [(ngModel)]="modelForm.account">
+                <nz-option *ngFor="let item of accountList" [nzLabel]="item.accountsName" [nzValue]="item"></nz-option>
+            </nz-select>
+        </div>
+    </div>
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="text-align: right;line-height: 30px;">
+            <span style="color: red">*</span>
+            缴费方式：
+        </div>
+        <div nz-col>
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="选择缴费方式" [(ngModel)]="modelForm.methodPayment">
+                <nz-option *ngFor="let item of payMode" [nzLabel]="item.dictTag" [nzValue]="item.dictValue"></nz-option>
+            </nz-select>
+        </div>
+    </div>
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="text-align: right;line-height: 30px;">
+            <span style="color: red">*</span>
+            本次缴纳金额：
+        </div>
+        <div nz-col>
+            <nz-input-group nzAddOnAfter="元" style="width: 200px;">
+                <input [(ngModel)]="modelForm.capturePutsMoney" type="number" min="0" max="999999" nz-input onkeyup="this.value = (this.value.match(/^\d*(\.?\d{0,2})/g)[0]) || null; if(this.value > 999999){this.value = 999999.00}" />
+            </nz-input-group>
+        </div>
+    </div>
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="text-align: right;line-height: 30px;">
+            <span style="color: red">*</span>
+            缴款人姓名：
+        </div>
+        <div nz-col>
+            <input [(ngModel)]="modelForm.paymentPeople" style="width: 200px;" type="text" maxlength="10" nz-input />
+        </div>
+    </div>
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="text-align: right;line-height: 30px;">
+            <span style="color: red">*</span>
+            缴款人电话：
+        </div>
+        <div nz-col>
+            <input [(ngModel)]="modelForm.paymentTel" (blur)="matchPhone(modelForm.paymentTel)" style="width: 200px;" type="text" maxlength="20" nz-input />
+        </div>
+    </div>
+
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="line-height: 30px;">
+            抵扣卷：
+        </div>
+        <div nz-col nzSpan="15"></div>
+        <div nz-col nzSpan="4" style="z-index: 99">
+            <button nz-button nzType="dashed" (click)="addCoupon('couponListD')">
+                <span style="color: #1890ff">添加</span>
+            </button>
+        </div>
+        <div nz-row style="padding-left: 50px;padding-top: 20px;" *ngFor="let coupon of couponListD; let i = index">
+            赠送抵扣卷：
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="选择抵扣卷" [(ngModel)]="coupon.id">
+                <nz-option *ngFor="let item of selCouponD" [nzLabel]="item.voucherName" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            &nbsp;&emsp; 赠送数量：
+            <input nz-input [(ngModel)]="coupon.num" style="width: 100px;" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')};if(this.value>99){this.value = 99}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')};if(this.value>99){this.value = 99}" />
+            &nbsp;&emsp;&nbsp;&emsp;
+            <a href="javascript: void(0)" nz-popconfirm nzTitle="确认删除?" (nzOnConfirm)="delCoupen('couponListD', i)" style="color: red;">删除</a>
+        </div>
+    </div>
+
+    <div nz-row style="margin-top: 20px;">
+        <div nz-col nzSpan="5" style="line-height: 30px;">
+            补价卷：
+        </div>
+        <div nz-col nzSpan="15"></div>
+        <div nz-col nzSpan="4" style="z-index: 99">
+            <button nz-button nzType="dashed" (click)="addCoupon('couponListB')">
+                <span style="color: #1890ff">添加</span>
+            </button>
+        </div>
+        <div nz-row style="padding-left: 50px;padding-top: 20px;" *ngFor="let coupon of couponListB; let i = index">
+            赠送补价卷：
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="选择补价卷" [(ngModel)]="coupon.id">
+                <nz-option *ngFor="let item of selCouponB" [nzLabel]="item.supplementName" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            &nbsp;&emsp; 赠送数量：
+            <input nz-input [(ngModel)]="coupon.num" style="width: 100px;" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')};if(this.value>99){this.value = 99}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')};if(this.value>99){this.value = 99}" />
+            &nbsp;&emsp;&nbsp;&emsp;
+            <a href="javascript: void(0)" nz-popconfirm nzTitle="确认删除?" (nzOnConfirm)="delCoupen('couponListB', i)" style="color: red;">删除</a>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- 二次确认筐 -->
+<nz-modal nzWidth="800" [(nzVisible)]="isVisibleSubmitModel" nzTitle="确认缴存" [nzMaskClosable]="false" (nzOnCancel)="submitModelCancel()" (nzOnOk)="submitModelOk()" nzOkText="确认无误" [nzOkLoading]="submitOKLoading">
+    <div style="font-size: 15px;">
+        <div nz-row style="margin-bottom: 20px;">
+            <div nz-col nzSpan="4">老人信息</div>
+            <div nz-col nzSpan="20">
+                <div nz-row>
+                    <div nz-col nzSpan="24">&nbsp;</div>
+                    <div nz-col nzSpan="8">姓名：{{ olderInfo?.name }}</div>
+                    <div nz-col nzSpan="8">性别：{{ olderInfo?.sex }}</div>
+                    <div nz-col nzSpan="8">年龄：{{ olderInfo?.age }}</div>
+                    <div nz-col nzSpan="8" style="margin-top: 10px;">
+                        身份证：{{ olderInfo?.cardno }}
+                    </div>
+                    <div nz-col nzSpan="8" style="margin-top: 10px;">
+                        房间：{{ olderInfo?.bedNo }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row style="margin-bottom: 20px;">
+            <div nz-col nzSpan="4">缴款人信息</div>
+            <div nz-col nzSpan="20">
+                <div nz-row>
+                    <div nz-col nzSpan="24">&nbsp;</div>
+                    <div nz-col nzSpan="8">姓名：{{ modelForm?.paymentPeople }}</div>
+                    <div nz-col nzSpan="8">手机号：{{ modelForm?.paymentTel }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row style="margin-bottom: 20px;">
+            <div nz-col nzSpan="4">缴费信息</div>
+            <div nz-col nzSpan="20">
+                <div nz-row>
+                    <div nz-col nzSpan="24">&nbsp;</div>
+                    <div nz-col nzSpan="8">
+                        缴费账目：{{ modelForm?.account?.accountsName }}
+                    </div>
+                    <div nz-col nzSpan="8">
+                        缴费金额：{{ modelForm?.capturePutsMoney }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row style="margin-bottom: 20px;" *ngIf="modelForm.couponD.length">
+            <div nz-col nzSpan="4">抵扣卷信息</div>
+            <div nz-col nzSpan="20">
+                <div nz-row>
+                    <div nz-col nzSpan="24">&nbsp;</div>
+                    <div nz-col nzSpan="24" *ngFor="let item of modelForm.couponD" style="margin-bottom: 10px;">
+                        赠送抵扣卷：
+                        <nz-select style="width: 200px;" nzShowSearch [nzDisabled]="true" [(ngModel)]="item.id">
+                            <nz-option *ngFor="let x of selCouponD" [nzLabel]="x.voucherName" [nzValue]="x.id"></nz-option>
+                        </nz-select>
+                        &nbsp;&emsp; 赠送数量：{{ item.num }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row style="margin-bottom: 20px;" *ngIf="modelForm.couponB.length">
+            <div nz-col nzSpan="4">补价卷信息</div>
+            <div nz-col nzSpan="20">
+                <div nz-row>
+                    <div nz-col nzSpan="24">&nbsp;</div>
+                    <div nz-col nzSpan="24" *ngFor="let item of modelForm.couponB" style="margin-bottom: 10px;">
+                        赠送补价卷：
+                        <nz-select style="width: 200px;" nzShowSearch [nzDisabled]="true" [(ngModel)]="item.id">
+                            <nz-option *ngFor="let x of selCouponB" [nzLabel]="x.supplementName" [nzValue]="x.id"></nz-option>
+                        </nz-select>
+                        &nbsp;&emsp; 赠送数量：{{ item.num }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nz-modal>

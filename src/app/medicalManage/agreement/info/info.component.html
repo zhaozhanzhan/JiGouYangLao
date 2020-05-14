@@ -1,0 +1,114 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-23 16:54:38
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button (click)="back()" *ngIf="!isModifyMode" nz-button nzType="default">
+    返回
+  </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>医患沟通详情</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <div class="container long-div scrollable-container" #divTarget>
+    <div nz-row nzGutter="24" style="padding-left:-24px;padding-right: -24px">
+      <div nz-col nzSpan="5">
+        <nz-card class="oldCard">
+          <div nz-row>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+            <div
+              nz-col
+              [nzXs]="{ span: 11, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            >
+              <img
+                [src]="
+                  saveContractParams?.oldman?.oldmanUrl == undefined ||
+                  saveContractParams?.oldman?.oldmanUrl == ''
+                    ? 'assets/img/male-avatar.png'
+                    : saveContractParams?.oldman?.oldmanUrl
+                "
+                class="img-avatar"
+                style="width:80px;height:80px;margin-left: auto;margin-right: auto"
+              />
+            </div>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+          </div>
+          <br />
+          <a>{{ saveContractParams?.inHospitalInfo?.basicInfo?.name }}</a>
+          <div style="text-align: left;">
+            性别：
+            <span
+              *ngIf="saveContractParams?.inHospitalInfo?.basicInfo?.sex == '0'"
+              >男</span
+            >
+            <span
+              *ngIf="saveContractParams?.inHospitalInfo?.basicInfo?.sex == '1'"
+              >女</span
+            >
+            <br />
+            出生日期：
+            <span>{{
+              saveContractParams?.inHospitalInfo?.basicInfo?.birthDay
+            }}</span>
+            <br />
+            身份证号：
+            <span>{{
+              saveContractParams?.inHospitalInfo?.basicInfo?.cardno
+            }}</span>
+            <br />
+            医疗支付：
+            <span>{{
+              saveContractParams?.inHospitalInfo?.basicInfo?.medicalPayment
+            }}</span>
+            <br />
+            住院号：
+            <span>{{ saveContractParams?.inHospitalInfo?.admissionNo }}</span>
+            <br />
+            入院日期：
+            <span>{{
+              saveContractParams?.inHospitalInfo?.admissionDate
+                | date: "yyyy-MM-dd"
+            }}</span>
+          </div>
+        </nz-card>
+      </div>
+      <div nz-col nzSpan="19">
+        <nz-card
+          nzTitle="{{ saveContractParams?.templateName }}"
+          [nzExtra]="extraTemplate"
+        >
+          <mirr-customform
+            [boundParams]="saveContractParams?.inHospitalInfo?.basicInfo"
+            [formMode]="'view'"
+            [formName]="saveContractParams?.templateName"
+            [(formContent)]="templateContent"
+            [isShowModeController]="'false'"
+          ></mirr-customform>
+        </nz-card>
+        <ng-template #extraTemplate> </ng-template>
+      </div>
+    </div>
+  </div>
+  <nz-back-top [nzTarget]="divTarget" [nzVisibilityHeight]="100"> </nz-back-top>
+</nz-card>

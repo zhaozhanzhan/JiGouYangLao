@@ -1,0 +1,43 @@
+.logo {
+  float: left;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.ant-menu {
+  color: #001529;
+  background: transparent;
+  font-size: 1.2rem;
+  height: 64px;
+  vertical-align: middle
+}
+
+li:focus {
+  outline: 0 !important;
+  /*这里你可以自己调节边框样式*/
+}
+
+
+::-webkit-scrollbar  
+{  
+    width: 3px;  
+    height: 5px;  
+    background-color: #fff;  
+}  
+
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+    border-radius: 10px;  
+    background-color: lightgray;  
+}  
+
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #efefef;  
+}  
+

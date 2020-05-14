@@ -1,0 +1,14 @@
+<nz-card>
+    <nz-tabset [(nzSelectedIndex)]="tabSelectedIndex">
+        <nz-tab nzTitle="图表模式">
+            <div class="scrollable-container" #target>
+                <app-temperatureTable [tabSelectedIndex]="tabSelectedIndex" [inHospitalId]="inHospitalId" [BloodPressMode]="BloodPressMode"></app-temperatureTable>
+            </div>
+        </nz-tab>
+        <nz-tab nzTitle="表单模式" [nzDisabled]="user.data.employees.personType=='0'">
+            <div class="scrollable-container">
+                <app-temperatureForm [inHospitalId]="inHospitalId" [BloodPressMode]="BloodPressMode"></app-temperatureForm>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+</nz-card>

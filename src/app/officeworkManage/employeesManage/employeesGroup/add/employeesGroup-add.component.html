@@ -1,0 +1,52 @@
+<nz-card nzTitle="护工班组" [nzExtra]="extraTemplate">
+  <form nz-form [formGroup]="validateForm">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="name" nzRequired>班组名称</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input id="name" formControlName="name">
+          <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">班组名称不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired nzFor="nzSelectTreeData">班组房间</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-tree-select style="width: 100%" [nzDropdownStyle]="{ 'max-height': '300px' }" [nzNodes]="nodes" nzShowSearch nzCheckable
+            nzPlaceHolder="请选择" formControlName="nzSelectTreeData" (ngModelChange)="onChange($event)">
+          </nz-tree-select>
+          <nz-form-explain *ngIf="validateForm.get('nzSelectTreeData').dirty && validateForm.get('nzSelectTreeData').errors">班组房间不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzRequired nzFor="departmentId">部门</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-tree-select class="w100p" [nzNodes]="goodsClassificationNodes" nzShowSearch [nzPlaceHolder]="reqObjGoodName"
+            formControlName="departmentId" id="departmentId">
+          </nz-tree-select>
+          <nz-form-explain *ngIf="validateForm.get('departmentId').dirty && validateForm.get('departmentId').errors">部门不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="selectMonitors" nzRequired>班长</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="请选择" formControlName="selectMonitors">
+            <nz-option *ngFor="let option of allMonitors" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('selectMonitors').dirty && validateForm.get('selectMonitors').errors">班长不能为空</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSubmit()" [nzLoading]="isSaveBtnLoading">保存</button>
+  </div>
+</nz-card>
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>

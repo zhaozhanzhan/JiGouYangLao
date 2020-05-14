@@ -1,0 +1,28 @@
+<ng-template #btnNursingGradeAdd>
+  <button nz-button nzType="primary" (click)="turnToAddNursingGrade()">添加</button>
+</ng-template>
+<nz-card nzTitle="护理等级列表" [nzExtra]="btnNursingGradeAdd">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">等级名称</th>
+        <th class="textCenter">等级描述</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{data.levelName}}</td>
+        <td class="textCenter">{{data.memo}}</td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" (click)="turnToEditNursingGrade(data)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="delNursingGrade(data.id)" style="color: #f81d22 !important;">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>

@@ -1,0 +1,111 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-26 17:16:45
+ * @Description:
+ -->
+<div class="animated fadeIn">
+  <div nz-row>
+    <div
+      nz-col
+      nzSpan="8"
+      style="margin-top:20px;margin-bottom:20px;width:180px;text-align: center"
+      *ngIf="isShowUploadBtn == 'true'"
+    >
+      <div class="text-center" style="width:150px;margin:auto;">
+        <qr-code style="float:left;" [value]="qrCode" [size]="150"></qr-code>
+      </div>
+
+      <div style="text-align:center;font-size:1.0rem;margin-top:5px">
+        扫描二维码上传
+      </div>
+
+      <button
+        style="width: 80%;margin-top:5px"
+        nz-button
+        nzBlock
+        nzType="primary"
+        (click)="refreshImgList()"
+        [nzLoading]="updateLoading"
+      >
+        刷新
+      </button>
+
+      <a
+        href="javascript:;"
+        class="ant-btn-default ant-btn file"
+        style="margin-top:5px"
+        ><i nz-icon type="upload"></i>本地上传
+        <input
+          style="width: 100%;"
+          type="file"
+          accept="image/png, image/jpeg"
+          (change)="fileChangeListener($event)"
+        />
+      </a>
+    </div>
+    <div nz-col nzSpan="16">
+      <div nz-row>
+        <div
+          nz-col
+          nzSpan="12"
+          style=" padding: 10px;"
+          *ngFor="let imgUrl of showImageUrls; let i = index"
+        >
+          <nz-skeleton [nzLoading]="updateLoading" nzActive="true">
+            <img
+              src="{{ imgUrl }}"
+              style="width:100%;"
+              (click)="showImg(imgUrl)"
+            />
+            <button
+              nz-button
+              class="btn"
+              style="margin-top:5px"
+              (click)="showImg(imgUrl)"
+              *ngIf="isShowOcrBtn == 'true'"
+              nzType="primary"
+              nzGhost
+            >
+              查看图像
+            </button>
+            <button
+              nz-button
+              class="btn"
+              style="margin-top:5px;margin-left:5px"
+              (click)="ocrImg(imgUrl)"
+              *ngIf="isShowOcrBtn == 'true'"
+              nzType="primary"
+              nzGhost
+              [nzLoading]="ocrImageLoading"
+            >
+              识别文字
+            </button>
+            <button
+              nz-button
+              class="btn "
+              style="margin-top:5px"
+              (click)="delImg(i)"
+              *ngIf="isShowDelBtn == 'true'"
+              nzGhost
+              nzType="danger"
+            >
+              删除图像
+            </button>
+          </nz-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="ocrImageDialog"
+  nzTitle="文字识别结果"
+  (nzOnCancel)="ocrImageDialog = false"
+  (nzOnOk)="ocrImageDialog = false"
+  [nzWidth]="700"
+>
+  <p *ngFor="let item of ocrData">{{ item.words }}</p>
+</nz-modal>

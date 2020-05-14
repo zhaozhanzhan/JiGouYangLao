@@ -1,0 +1,7 @@
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+
+<nz-card nzTitle="物品调拨列表" [nzExtra]="btnAdd">
+  <app-receive-list1></app-receive-list1>
+</nz-card>

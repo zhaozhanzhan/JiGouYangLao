@@ -1,0 +1,19 @@
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+
+
+
+<nz-card nzTitle="入库列表" [nzExtra]="btnAdd">
+    <nz-card-tab>
+        <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="clickTab($event)">
+            <nz-tab nzTitle="入库订单列表">
+                <app-in-storehouse-list1></app-in-storehouse-list1>
+            </nz-tab>
+            <nz-tab nzTitle="入库物品列表">
+                <app-in-storehouse-list2></app-in-storehouse-list2>
+            </nz-tab>
+        </nz-tabset>
+    </nz-card-tab>
+    <ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>
+</nz-card>

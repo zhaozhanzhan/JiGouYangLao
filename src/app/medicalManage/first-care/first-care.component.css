@@ -1,0 +1,18 @@
+.lineStyle2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 2px;
+    padding-left: 15px;
+    padding-bottom: 4px;
+}
+
+.lineStyle1 {
+    border-bottom: 1px solid #555;
+    padding-bottom: 2px;
+    padding-left: 15px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.noBorder {
+    border: none;
+}

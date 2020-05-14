@@ -1,0 +1,22 @@
+<nz-mention
+  [nzSuggestions]="suggestions"
+  [nzLoading]="loading"
+  (nzOnSearchChange)="onSearchChange($event)"
+  [nzValueWith]="valueWith"
+  [nzPrefix]="['@']"
+  (nzOnSelect)="onSelect($event)"
+>
+  <textarea
+    nz-input
+    [nzAutosize]="autoSizeSetting"
+    [(ngModel)]="inputValue"
+    [placeholder]="placeholder"
+    nzMentionTrigger
+    (ngModelChange)="valueChange($event)"
+  >
+  </textarea>
+  <div style="color: steelblue">
+    *&nbsp;输入<nz-tag [nzColor]="'geekblue'" style="margin-left: 8px">@</nz-tag
+    >符可以检索已定义模板
+  </div>
+</nz-mention>

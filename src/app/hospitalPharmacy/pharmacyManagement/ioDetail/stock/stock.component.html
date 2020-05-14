@@ -1,0 +1,109 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="库存明细" [nzExtra]="btnArea">
+    <nz-skeleton [nzActive]="isLoading" *ngIf="isLoading"></nz-skeleton>
+    <nz-card *ngIf="!isLoading">
+        <div nz-row nzType="flex">
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.drugName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>通用名</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.commonName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>生产厂商</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.manufacturers" id="whInId" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品规格</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.specification" id="inDate" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品类别</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.drugType" id="drugType" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>剂型</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.dosageForm | dosageFormPipe" id="dosageForm" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label>用法</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [ngModel]="result.drugUsage" id="drugUsage" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="inComment">备注</nz-form-label>
+                    <nz-form-control>
+                        <textarea rows="2" nz-input [ngModel]="result.comment" id="inComment" readonly></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+
+    <nz-table #goodsTable [nzData]="list" [nzHideOnSinglePage]="true" nzBordered [nzFrontPagination]="false">
+        <thead>
+            <tr>
+                <th class="tac">批次号</th>
+                <th class="tac">科室药房</th>
+                <th class="tac">药品批号</th>
+                <th class="tac">供应商</th>
+                <th class="tac">过期日期</th>
+                <th class="tac">数量</th>
+                <th class="tac">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of goodsTable.data; let num = index">
+                <td class="maxW50 tac">{{ data?.batchNum }}</td>
+                <td class="maxW150 tac" *ngIf="data?.sectionOffice">{{ data?.sectionOffice?.name }}</td>
+                <td class="maxW50 tac" *ngIf="!data?.sectionOffice">药库</td>
+                <td class="maxW150 tac" [ngClass]="{'red':  data?.isExpire!=1 && data?.isExpire!=2, 'hu':  data?.isExpire==2}">{{ data?.mdBatchNum }}</td>
+                <td class="maxW150 tac">{{ data?.supplier }}</td>
+                <td class="maxW150 tac">{{ data?.expireDate }}</td>
+                <td class="maxW150 tac">{{ data?.quantity }}</td>
+                <td class="textCenter" nzWidth="220px" nzRight="0px">
+                    <a *ngIf="!data?.sectionOffice &&  data?.isExpire==2 && data?.isOd=='0' || !data?.sectionOffice &&  data?.isExpire==-1 && data?.isOd=='0'" href="javascript:void(0)" (click)="turnToDateProcessing(data)" roleBtnControll [roleBtnKey]="'DateProcessingBtn'">过期处理</a>
+                    <a *ngIf="!data?.sectionOffice &&  data?.isExpire==2 && data?.isOd=='1' || !data?.sectionOffice &&  data?.isExpire==-1 && data?.isOd=='1'" href="javascript:void(0)" (click)="turnToCheckDateProcessing(data)" roleBtnControll [roleBtnKey]="'DateProcessingBtn'">查看处理</a>
+                    <a *ngIf="data?.sectionOffice &&  data?.quantity!=0" href="javascript:void(0)" (click)="turnToRefundMedicine(data)" roleBtnControll [roleBtnKey]="'editIsUseBtn'">科室退药</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<!-- 表单区域End -->

@@ -1,0 +1,79 @@
+/* 
+// 优惠卷
+<div class="coupon-item" (click)="checkCoupon(coupon)">
+	<i *ngIf="coupon.isChecked" nz-icon type="check-circle" theme="fill" style="position: absolute; z-index: 10; right: 20px; color: #52c41a;font-size: 20px;line-height: 52px;"></i>
+	<div class="style-four">
+		<div class="info-box">
+			<div class="coupon-money">
+				<div class="lay of">￥<em>{{coupon?.num}}</em></div>
+				<div class="lay">
+					<p class="tit">优惠?</p>
+					<p class="demand">{{coupon?.condition}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+*/
+
+.coupon-item {
+    width:100%;
+    position: relative;
+}
+.style-four {
+    width:100%;
+	height:3rem;
+	position:relative;
+	margin:5% 0;
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background-color:#fff;
+	border:1px solid #E5004F;
+	background-color:#fff;
+	-webkit-border-radius:1rem;
+	border-radius:1rem;
+    border:1px dashed #e5004f;
+}
+.style-four .info-box {
+    -webkit-box:1;
+	-webkit-flex:1;
+	flex:1;
+	padding:0 3% 0 10%;
+	position:relative;
+}
+.coupon-item .nick {
+	padding:.66% 0;
+	color:#fff;
+}
+.coupon-item .coupon-money {
+	width:100%;
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:flex;
+	font-size:0.2rem;
+	align-items:center;
+}
+.coupon-item .coupon-money em {
+	font-size:1.8rem;
+}
+.coupon-item .coupon-money .lay:last-child {
+	flex:1;
+	padding:0 3%;
+	line-height:1.66rem;
+}
+.style-four .lay p{
+    margin: 0;
+}
+.style-four .lay .tit{
+    color:#E5004F;
+}
+.style-four .of{
+    color:#E5004F;
+}
+.style-four .lay .demand {
+	color:#454545;
+}
+

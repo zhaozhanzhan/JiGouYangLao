@@ -1,0 +1,158 @@
+<div nz-row nzGutter="16">
+  <div nz-col nzMd="6" nzLg="6" nzXl="6" nzXXl="6">
+    <ng-template #btnAdd>
+      <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+    </ng-template>
+    <nz-card nzTitle="物品类别" [nzExtra]="btnAdd" style="height: calc(100vh - 112px);overflow: auto;">
+      <nz-tree
+        [(ngModel)]="nodes"
+        nzShowLine="true"
+        nzDefaultExpandAll="true"
+        (nzClick)="nzEvent($event)"
+      >
+      </nz-tree>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="18" nzLg="18" nzXl="18" nzXXl="18">
+    <ng-template #btnDel>
+      <button nz-button nzType="primary" (click)="turnToEdit()" class="mr10">
+          编辑
+      </button>
+      <button nz-button nzType="danger" (click)="delete()">删除</button>
+    </ng-template>
+    <nz-card nzTitle="物品类别详情" [nzExtra]="btnDel" *ngIf="selectKey">
+      <form nz-form [formGroup]="validateForm">
+        <nz-form-item>
+          <nz-form-label
+            [nzMd]="6"
+            [nzLg]="6"
+            [nzXl]="4"
+            [nzXXl]="4"
+            nzRequired
+            nzFor="name"
+            >物品类别名称</nz-form-label
+          >
+          <nz-form-control [nzMd]="18" [nzLg]="18" [nzXl]="20" [nzXXl]="18">
+            <input nz-input formControlName="name" id="name" />
+            <nz-form-explain
+              [hidden]="
+                !(
+                  validateForm.get('name').dirty &&
+                  validateForm.get('name').errors
+                )
+              "
+              >物品类别名称不能为空</nz-form-explain
+            >
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label
+            [nzMd]="6"
+            [nzLg]="6"
+            [nzXl]="4"
+            [nzXXl]="4"
+            nzFor="comment"
+            >备注</nz-form-label
+          >
+          <nz-form-control [nzMd]="18" [nzLg]="18" [nzXl]="20" [nzXXl]="18">
+            <!-- <input nz-input formControlName="comment" id="comment"> -->
+
+            <textarea
+              rows="4"
+              nz-input
+              formControlName="comment"
+              id="comment"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+      <div style="text-align:center;margin-top: 30px;" *ngIf="isEditing">
+        <button
+          class="saveBtn mr10"
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          (click)="saveForm()"
+        >
+          保存
+        </button>
+        <button
+          class="saveBtn"
+          nz-button
+          nzType="default"
+          nzSize="large"
+          (click)="cancelForm()"
+        >
+          取消
+        </button>
+      </div>
+    </nz-card>
+
+    <nz-card nzTitle="添加物品类别" *ngIf="isAdding">
+      <form nz-form [formGroup]="addForm">
+        <nz-form-item>
+          <nz-form-label
+            [nzMd]="6"
+            [nzLg]="6"
+            [nzXl]="4"
+            [nzXXl]="4"
+            nzRequired
+            nzFor="name"
+            >物品类别名称</nz-form-label
+          >
+          <nz-form-control [nzMd]="18" [nzLg]="18" [nzXl]="20" [nzXXl]="18">
+            <input nz-input formControlName="name" id="name" />
+            <nz-form-explain
+              [hidden]="
+                !(addForm.get('name').dirty && addForm.get('name').errors)
+              "
+              >物品类别名称不能为空</nz-form-explain
+            >
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label
+            [nzMd]="6"
+            [nzLg]="6"
+            [nzXl]="4"
+            [nzXXl]="4"
+            nzFor="comment"
+            >备注</nz-form-label
+          >
+          <nz-form-control [nzMd]="18" [nzLg]="18" [nzXl]="20" [nzXXl]="18">
+            <!-- <input nz-input formControlName="comment" id="comment"> -->
+            <textarea
+              rows="4"
+              nz-input
+              formControlName="comment"
+              id="comment"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+      <div style="text-align:center;margin-top: 30px;">
+        <button
+          class="saveBtn mr10"
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          (click)="saveAddForm()"
+        >
+          保存
+        </button>
+        <button
+          class="saveBtn"
+          nz-button
+          nzType="default"
+          nzSize="large"
+          (click)="cancelAddForm()"
+        >
+          取消
+        </button>
+      </div>
+    </nz-card>
+  </div>
+</div>

@@ -1,0 +1,175 @@
+
+  <form nz-form  [formGroup]="formData">
+    <nz-card nzType="inner" nzTitle="机构基本信息" class="marginBottom24">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8"  nzFor="floorNum">楼层</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number"  maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="floorNum" id="floorNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="elevatorNum">电梯数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="elevatorNum" id="elevatorNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="houseType">房屋类型</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+              <input nz-input formControlName="houseType" id="houseType">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="oldRoomNum">机构内居住房间数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="oldRoomNum" id="oldRoomNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="sigalRoomNum">机构内单人房间数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="sigalRoomNum" id="sigalRoomNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="doubleRoomNum">机构内双人房间数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="doubleRoomNum" id="doubleRoomNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="manyRoomNum">多人间数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="manyRoomNum" id="manyRoomNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="medicalBedNum">医用床床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="medicalBedNum" id="medicalBedNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="normalBedNum">普通床床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="normalBedNum" id="normalBedNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="selfcareBedNum">自理床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="selfcareBedNum" id="selfcareBedNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="mediateBedNum">介助床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="mediateBedNum" id="mediateBedNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="nursingBedNum">介护床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)" formControlName="nursingBedNum" id="nursingBedNum">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="fixedAsset">固定资产</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input type="number" maxlength="32" oninput="if(value.length>32)value=value.slice(0,32)" formControlName="fixedAsset" id="fixedAsset">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="机构设备信息" class="marginBottom24" style="margin-top:10px;">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="oldRoomEquip" class="Tf">老年人房间设备</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="oldRoomEquip" id="oldRoomEquip"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="publicServiceEquip" class="Tf">公共服务设备</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="publicServiceEquip" id="publicServiceEquip"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="medicalEquip" class="Tf">医疗康复设备</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="medicalEquip" id="medicalEquip"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="safeSecurityEquip" class="Tf">安全保障设备</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="safeSecurityEquip" id="safeSecurityEquip"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="entertainFitnessEquip" class="Tf">娱乐健身器材</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="entertainFitnessEquip" id="entertainFitnessEquip"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="medicalSituationDesc"  class="Tf">医护人员及主要医疗设施设备情况</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="256" formControlName="medicalSituationDesc" id="medicalSituationDesc"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="comment" class="Tf">备注</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-card>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveOrganFacilitiesInfo()" [nzLoading]="saveBasicInformationLoading">保存</button>
+  </div>

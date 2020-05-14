@@ -1,0 +1,79 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="sectionOfficeOutId">退药科室</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzAllowClear nzPlaceHolder="请选择" name="sectionOfficeOutId" class="form_input" style="width:150px;" id="sectionOfficeOutId" [(ngModel)]="reqObj.sectionOfficeBackId">
+                        <nz-option *ngFor="let item of setionOfficeList" [nzLabel]="item?.name" [nzValue]="item?.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>退药时间</nz-form-label>
+                <nz-form-control>
+                    <nz-range-picker name="date" style="width:250px" [(ngModel)]="selectedDates" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>操作人</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="old" id="old" style="width:150px" [(ngModel)]="reqObj.operator" placeholder="检索入库操作人" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>药品名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="old" id="old" style="width:150px" [(ngModel)]="reqObj.backMedDrug" placeholder="请输入药品名称" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="退药记录列表">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1000px' }">
+        <thead>
+            <tr>
+                <th class="textCenter" nzWidth="150px" nzLeft="0px">订单号</th>
+                <th class="textCenter">批次号</th>
+                <th class="textCenter">科室</th>
+                <th class="textCenter">药品名称</th>
+                <th class="textCenter">退回数量</th>
+                <th class="textCenter">操作人</th>
+                <th class="textCenter">退药时间</th>
+                <th class="textCenter" nzWidth="100px" nzRight="0px">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter" nzWidth="150px" nzLeft="0px">{{ data?.backId }}</td>
+                <td class="textCenter">{{ data?.batchNum }}</td>
+                <td class="textCenter">{{ data?.sectionOfficeBack?.name }}</td>
+                <td class="textCenter">{{ data?.backMedDrug }}</td>
+                <td class="textCenter">{{ data?.backNum }}</td>
+                <td class="textCenter">{{ data?.operator }}</td>
+                <td class="textCenter">{{ data?.backDate }}</td>
+                <td class="textCenter" nzWidth="100px" nzRight="0px">{{ data?.backComment }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

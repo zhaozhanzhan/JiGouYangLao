@@ -1,0 +1,116 @@
+
+  <form nz-form [formGroup]="formData">
+    <nz-card nzType="inner" nzTitle="服务信息" class="marginBottom24">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="serviceObjectType">服务对象类型</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input maxlength="8" formControlName="serviceObjectType" id="serviceObjectType">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="serviceItem">服务项目</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+              <input nz-input maxlength="8" formControlName="serviceItem" id="serviceItem">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="isReceiveRemoteOld">是否接收异地老年人</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+              <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="isReceiveRemoteOld" id="isReceiveRemoteOld">
+                <nz-option *ngFor="let option of isReceiveRemoteOldList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="medicalServiceType">医疗服务方式</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+                <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="medicalServiceType" id="medicalServiceType">
+                  <nz-option *ngFor="let option of medicalServiceTypeList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="isMedicalInsurance">是否具备医保定点资格</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+                <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="isMedicalInsurance" id="isMedicalInsurance">
+                  <nz-option *ngFor="let option of isMedicalInsuranceList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="medicalOrganFlag">内设有医疗机构标志</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+                <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="medicalOrganFlag" id="medicalOrganFlag">
+                  <nz-option *ngFor="let option of medicalOrganFlagList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="medicalOrganName">医疗机构名称</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+              <input nz-input maxlength="32" formControlName="medicalOrganName" id="medicalOrganName">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="isOpenFlag">是否对港澳台和外国人开放标志</nz-form-label>
+            <nz-form-control [nzSpan]="16" >
+                <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="isOpenFlag" id="isOpenFlag">
+                  <nz-option *ngFor="let option of isOpenFlagList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="businessScope">服务范围</nz-form-label>
+              <nz-form-control [nzSpan]="20" >
+                <textarea rows="4" nz-input maxlength="255" formControlName="businessScope" id="businessScope"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="开放标志信息" class="marginBottom24" style="margin-top:10px;">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="20" nzFor="isOpenFlag" style="text-align:left;">是否对港澳台和外国人开放标志</nz-form-label>
+            <nz-form-control [nzSpan]="20" >
+                <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="isOpenFlag" id="isOpenFlag">
+                  <nz-option *ngFor="let option of isOpenFlagList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </nz-card>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveOrganServiceInfo()" [nzLoading]="saveBasicInformationLoading">保存</button>
+  </div>

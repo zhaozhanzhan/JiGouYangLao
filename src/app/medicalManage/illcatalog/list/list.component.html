@@ -1,0 +1,92 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+      <div nz-row nzType="flex">
+        <div nz-col>
+          <nz-form-item nzFlex>
+            <nz-form-label nzFor="name">老人姓名</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                name="name"
+                id="name"
+                style="width:150px"
+                placeholder="根据姓名进行模糊检索"
+                [(ngModel)]="reqObj.key"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- <div nz-col>
+          <nz-form-item nzFlex>
+            <nz-form-label nzFor="name">身份证号</nz-form-label>
+            <nz-form-control>
+              <input
+                nz-input
+                name="name"
+                id="name"
+                style="width:150px"
+                placeholder="根据身份证号进行模糊检索"
+                [(ngModel)]="reqObj.cardNo"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+        <div>
+          <nz-form-item nzFlex>
+            <nz-form-control>
+              <button
+                nz-button
+                nzType="primary"
+                (click)="search()"
+                style="margin-left: 10px;"
+              >
+                查询
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  
+  <nz-card nzTitle="">
+    <nz-table
+      #basicTable
+      nzBordered
+      nzShowSizeChanger
+      [nzTitle]="serchArea"
+      [nzFrontPagination]="false"
+      [nzLoading]="http?.loading"
+      [nzShowPagination]="false"
+      [nzData]="list"
+    >
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>年龄</th>
+          <!-- <th>护理等级</th> -->
+          <th>病区</th>
+          <th>病床</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of basicTable.data; let i = index">
+          <td>{{item?.basicInfo?.name}}</td>
+          <td>{{item?.basicInfo?.sex == '0' ? '男' : '女'}}</td>
+          <td>{{item?.basicInfo?.age}}</td>
+          <!-- <td>{{item?.careLevelCase?.memo}}</td> -->
+          <td>{{item?.sickWard?.sickWardName}}</td>
+          <td>{{item?.bedName}}</td>
+          <td>
+            <a href="javascript: void(0)" (click)="go('detail',item)">病案目录打印</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a href="javascript: void(0)" (click)="go('printall',item)">住院档案打印</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  

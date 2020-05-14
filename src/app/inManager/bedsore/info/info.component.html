@@ -1,0 +1,665 @@
+<!-- <div nz-row nzType="flex" nzJustify="end">
+  <button (click)="back()" nz-button nzType="default">返回</button>
+</div> -->
+<ng-template #extraTemplate>
+  <button (click)="back()" nz-button nzType="default">返回</button>
+</ng-template>
+
+
+<ng-template #TurnOver>
+  <button nz-button nzType="primary"  (click)="addTurnOver($event)">新增转归</button>
+</ng-template>
+
+<nz-tabset nzSize="large">
+  <nz-tab nzTitle="新发生">
+    
+
+    <nz-card nzType="inner" nzTitle="基本信息" class="marginBottom24" [nzExtra]="extraTemplate" style="border-bottom: 1px solid transparent">
+        <div class="card-block" style="padding-bottom: 0px;">
+          <div nz-row nzGutter="24">
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">姓名</nz-form-label>
+                <nz-form-control >
+                  <input nz-input *ngIf="olderInfo.name==''"   placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="请选择老者"
+                    >
+                    <input nz-input *ngIf="olderInfo.name !=''" placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name}}"
+                    disabled>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="sex">性别</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="" [value]="olderInfo?.sex" disabled>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">年龄</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="" [value]="olderInfo?.birthYearMonth | AgeCount" disabled>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="24">
+            <div nz-col nzSpan="6">
+              <nz-form-item>
+                <nz-form-label nzFor="name">评估人</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="" [(ngModel)]="bradenInfo.adjuster" maxlength="5">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">评估日期</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [(ngModel)]="bradenInfo.reportDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+    </nz-card>
+
+    <nz-card nzType="inner" nzTitle="压疮发生危险因素基本条件评估（因病情需要严格限制翻身）" class="marginBottom24"  style="border-bottom: 1px solid transparent">
+        <div class="card-block" style="padding-bottom: 0px;">
+          <nz-form-item>
+            <nz-form-label>1.中枢神经系统损伤老年人</nz-form-label>
+            <nz-form-control>
+              <nz-checkbox-group [(ngModel)]="bradenInfo.nerve" ></nz-checkbox-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>2.骨盆骨折</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="bradenInfo.fracture" >
+                <label nz-radio nzValue="有">有</label>
+                <label nz-radio nzValue="无">无</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>3.生命体征不稳定</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="bradenInfo.life" >
+                <label nz-radio nzValue="是">是</label>
+                <label nz-radio nzValue="否">否</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>4.心力衰竭Ⅲ°</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="bradenInfo.heart" >
+                <label nz-radio nzValue="是">是</label>
+                <label nz-radio nzValue="否">否</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>5.其他</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="" [(ngModel)]="bradenInfo.other" maxlength="30">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+    </nz-card>
+
+    <nz-card nzType="inner" nzTitle="压疮发生危险因素量化评估（Braden评分表）" class="marginBottom24"  style="border-bottom: 1px solid transparent">
+        <!-- <div class="card-header col-md-12">
+            压疮发生危险因素量化评估（Braden评分表）：总分：{{bradenInfo.total}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{bradenInfo.total | BradenLevel}}
+          </div> -->
+
+          <div class="card-block">
+            <table class="table table-bordered">
+              <tr>
+                <th>
+                  <label nzTitle="对压力导致的不适感觉的能力" nzPlacement="top" nz-tooltip>感觉</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.feel">
+                    <label nzTitle="由于知觉减退或服用镇静剂而对疼痛刺激无反应或者是大部分接触床的表面只有很小感觉疼痛的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                      nzValue="1">完全受损1分</label>
+                    <label nzTitle="仅仅对疼痛有反应，除了呻吟或烦躁外不能表达不适，或者是身体的1/2由于感觉障碍而限制了感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                      nzValue="2">非常受损2分</label>
+                    <label nzTitle="对言语指挥有反应，但不是总能表达不适或需要翻身或者1-2个肢体有些感觉障碍从而感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                      nzValue="3">轻微受损3分</label>
+                    <label nzTitle="对言语指挥反应良好，无感觉障碍，感觉或表达疼痛不适的能力没有受限" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">无受损4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <label nzTitle="皮肤潮湿的程度" nzPlacement="top" nz-tooltip>湿度</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.humidity">
+                    <label nzTitle="皮肤持续暴露在汗液或尿液等制造的潮湿中，老年人每次翻身或移动时都能发现潮湿" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">持续潮湿1分</label>
+                    <label nzTitle="皮肤经常但不是始终潮湿，至少每次移动时必须换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">经常潮湿2分</label>
+                    <label nzTitle="皮肤偶尔潮湿，每天需额外更换一次床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">偶尔潮湿3分</label>
+                    <label nzTitle="皮肤一般是干爽的，只需常规换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">很少潮湿4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <label nzTitle="身体的活动程度" nzPlacement="top" nz-tooltip>活动情况</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.sport">
+                    <label nzTitle="限制卧床" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">卧床1分</label>
+                    <label nzTitle="行走能力严重受限或不存在，不能负荷自身重量和/或必须依赖椅子或轮椅" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">坐位2分</label>
+                    <label nzTitle="白天可短距离行走伴或不伴辅助，每次在床上或椅子上移动需耗费大半力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">偶尔行走3分</label>
+                    <label nzTitle="醒着的时候每天至少可以在室外行走两次，室内每两小时活动一次" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">经常行走4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <label nzTitle="改变和控制身体姿势的能力" nzPlacement="top" nz-tooltip>控制力</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.control">
+                    <label nzTitle="没有辅助身体或肢体甚至不能够轻微地改变位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">完全不自主1分</label>
+                    <label nzTitle="可以偶尔轻微改变身体或肢体位置，但不能独立、经常或明显改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">非常受限2分</label>
+                    <label nzTitle="可以独立、经常、轻微改变身体或肢体位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">轻微受限3分</label>
+                    <label nzTitle="没有辅助可以经常进行大的改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">不受限4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <label nzTitle="日常进食方式" nzPlacement="top" nz-tooltip>营养</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.nutrition">
+                    <label nzTitle="从未吃过完整的一餐，每餐很少吃完1/3的食物，每天吃两餐，而且缺少蛋白质（肉或奶制品）摄入液体量少，没有补充每日规定量以外的液体：或者是肠外营养和/或主要进清流食或超过5天是静脉输液" nzPlacement="top"
+                      nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">非常缺乏1分</label>
+                    <label nzTitle="很少吃完一餐，通常每餐只能吃完1/2的食物，蛋白质摄入仅仅是每日三餐中的肉或奶制品，偶尔进行每日规定量外的补充：或者少于最适量的液体食物或管饲" nzPlacement="top" nz-tooltip
+                      nz-col nz-radio nzSpan="6" nzValue="2">可能缺乏2分</label>
+                    <label nzTitle="能吃完半数餐次以上，每日吃四餐含肉或奶制品的食物，偶尔会拒吃一餐，但通常会接受补充食物：或者管饲或胃肠外营养提供大多数的营养需要" nzPlacement="top" nz-tooltip nz-col
+                      nz-radio nzSpan="6" nzValue="3">充足3分</label>
+                    <label nzTitle="吃完每餐食物，从不拒吃任一餐，通常每日吃四餐或更多次含肉或奶制品的食物，偶尔在两餐之间吃点食物，不需要额外补充营养" nzPlacement="top" nz-tooltip nz-col nz-radio
+                      nzSpan="6" nzValue="4">营养丰富4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+
+              <tr>
+                <th>
+                  <label nzTitle="" nzPlacement="top" nz-tooltip>摩擦力和剪切力</label>
+                </th>
+                <th>
+                  <nz-radio-group (ngModelChange)="gradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="bradenInfo.friction">
+                    <label nzTitle="移动时需要中等到大量的辅助，不能抬起身体避免在床单上滑动，常常需要人帮助才能复位。大脑麻痹，挛缩，激动不安导致不断的摩擦" nzPlacement="top" nz-tooltip nz-col nz-radio
+                      nzSpan="6" nzValue="1">有问题1分</label>
+                    <label nzTitle="可以虚弱地移动或需要小的辅助，移动时皮肤在某种程度上与床单、椅子、约束物或其他物品发生滑动，大部分时间可以在床上椅子上保持相对较好的姿势，但偶尔也会滑下来" nzPlacement="top" nz-tooltip
+                      nz-col nz-radio nzSpan="6" nzValue="2">潜在的问题2分</label>
+                    <label nzTitle="可以独自在床上或椅子上移动，肌肉的力量足以在移动时可以完全抬起身体，在任何时候都可在床上或椅子上保持良好姿势" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                      nzValue="3">无明显问题3分</label>
+                    <label nzTitle="" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">无任何问题4分</label>
+                  </nz-radio-group>
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  <label nzTitle="" nzPlacement="top" nz-tooltip>总分</label>
+                </th>
+                <th>
+                    {{bradenInfo.total}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{bradenInfo.total | BradenLevel}}
+                </th>
+              </tr>
+            </table>
+            <div>
+              <p>评分标准：轻度危险：15-18分；中度危险：13-14分；高度危险：10-12分；严重危险： &lt;9分</p>
+              <p>评定周期：12-18分病情变化时评估，每两周评估；&le;12分每周评估；评分&le;18分应采取预防压疮的措施</p>
+            </div>
+          </div>
+    </nz-card>
+
+    <nz-card nzType="inner" nzTitle="压疮评估" class="marginBottom24"  style="border-bottom: 1px solid transparent">
+        <div class="card-block" style="padding-bottom: 0px;">
+            <div nz-row nzGutter="8">
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>难免压疮申报</nz-form-label>
+                  <nz-form-control>
+                    <nz-radio-group [(ngModel)]="bradenInfo.declare" >
+                      <label nz-radio nzValue="是">是</label>
+                      <label nz-radio nzValue="否">否</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>压疮类别</nz-form-label>
+                  <nz-form-control>
+                    <nz-radio-group [(ngModel)]="bradenInfo.type">
+                      <label nz-radio nzValue="院外">院外发生</label>
+                      <label nz-radio nzValue="院内">院内发生</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="name">发生日期</nz-form-label>
+                  <nz-form-control>
+                    <nz-date-picker [(ngModel)]="bradenInfo.findDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="8">
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>部位</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input placeholder="" [(ngModel)]="bradenInfo.place" maxlength="15">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>面积</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input placeholder="" [(ngModel)]="bradenInfo.area" maxlength="15">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>程度</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input placeholder="" [(ngModel)]="bradenInfo.degree" maxlength="15">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row nzGutter="8">
+              <div nz-col nzSpan="16">
+                <nz-form-item>
+                  <nz-form-label>备注说明</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input placeholder="" [(ngModel)]="bradenInfo.explain" maxlength="30">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+    </nz-card>
+
+
+    <nz-card nzType="inner" nzTitle="压疮预防及治疗措施" class="marginBottom24"  style="border-bottom: 1px solid transparent">
+      <div class="card-block">
+        <nz-checkbox-wrapper style="width: 100%;" >
+          <div nz-row>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="保持床铺和衣裤清洁、干燥，及时清洗" [(ngModel)]="bradenInfo.measure.bedClean">保持床铺和衣裤清洁、干燥，及时清洗</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="局部创面贴溃疡贴" [(ngModel)]="bradenInfo.measure.paster">局部创面贴溃疡贴</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="保持皮肤清洁、干燥，及时清洗" [(ngModel)]="bradenInfo.measure.skinClean">保持皮肤清洁、干燥，及时清洗</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="局部伤口按外科换药处理" [(ngModel)]="bradenInfo.measure.medical">局部伤口按外科换药处理</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="定时翻身" [(ngModel)]="bradenInfo.measure.turnover">定时翻身</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="加强营养，采取适当的营养支持措施" [(ngModel)]="bradenInfo.measure.eat">加强营养，采取适当的营养支持措施</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="给予气垫床" [(ngModel)]="bradenInfo.measure.airpillow">给予气垫床</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="给予减压工具" [(ngModel)]="bradenInfo.measure.reliever">给予减压工具</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="其他" [(ngModel)]="bradenInfo.measure.other">其他</label>
+              <input nz-input placeholder="其他措施" [(ngModel)]="bradenInfo.measure.measureOther" *ngIf="bradenInfo.measure.other">
+            </div>
+          </div>
+        </nz-checkbox-wrapper>
+      </div>
+    </nz-card>
+    <div class="textRight" style="text-align:center">
+        <button nz-button nzType="primary" nzSize="large" [nzLoading]="saveBtnLoading" (click)="onSave();" style="width:200px;height:40px" class="saveBtn">保存</button>
+    </div>
+  </nz-tab>
+  <nz-tab nzTitle="压疮转归"  [nzDisabled]="saveInfo.id == ''">
+    <nz-card nzType="inner" nzTitle="压疮转归评估记录" class="marginBottom24"  [nzExtra]="TurnOver" style="border-bottom: 1px solid transparent">
+        <div class="card-block">
+            <nz-table #basicTable [nzData]="dataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'default'"
+            [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size"
+            (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false"
+            [nzScroll]="{x:'1240px'}">
+            <thead>
+              <tr>
+                <th nzWidth="100px" nzLeft="0">部位</th>
+                <th nzWidth="100px">面积</th>
+                <th nzWidth="100px">程度</th>
+                <th nzWidth="120px">Braden评分</th>
+                <th nzWidth="100px">评估人</th>
+                <th nzWidth="140px">评估日期</th>
+                <th nzWidth="100px">记录人</th>
+                <th nzWidth="140px">更新日期</th>
+                <th nzWidth="100px" nzRight="240px">转归状态</th>
+                <th nzWidth="240px" nzRight="0px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td nzLeft="0">{{data?.place}}</td>
+                <td>{{data?.area}}</td>
+                <td>{{data?.woundMemo}}</td>
+                <td>{{data?.bradenScore | BradenLevel}}</td>
+                <td>{{data?.asser}}</td>
+                <td>{{data?.assDate | date:'yyyy-MM-dd'}}</td>
+                <td>{{data?.modifier == null ? data?.noteTaker : data?.modifier}}</td>
+                <td>{{data?.updateDate | date:'yyyy-MM-dd'}}</td>
+                <td nzRight="240px">{{data?.isDown ? "已治愈" : "治愈中"}}</td>
+                <td nzWidth="240px" nzRight="0px">
+                  <a href="#" (click)="modifyTurnOver(data, $event)">评定详情</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a href="#" (click)="delTurnOver(data, $event)" class="red">删除</a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+    </nz-card>
+
+  </nz-tab>
+
+</nz-tabset>
+
+
+
+
+
+
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() " nzMaskClosable="false" nzWidth="800">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按老年人姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>身份证</th>
+          <th>入院时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <td>{{data?.cardno}}</td>
+          <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>
+
+<nz-modal [nzFooter]="turnOverModalFooter" [(nzVisible)]="isShowTurnOverDialog" [nzTitle]="trunOverModalTitle" [nzContent]="turnOverModalContent"
+  (nzOnCancel)="cancelTurnOverDialog() " nzMaskClosable="false" [nzStyle]="turnOverStyle" nzWidth="800">
+  <ng-template #trunOverModalTitle>
+    转归评估
+  </ng-template>
+
+  <ng-template #turnOverModalContent>
+    <div class="card">
+      <div class="card-header col-md-12">
+        Braden评分表：总分：{{turnOverInfo.total}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{turnOverInfo.total | BradenLevel}}
+      </div>
+
+      <div class="card-block">
+        <table class="table table-bordered">
+          <tr>
+            <th>
+              <label nzTitle="对压力导致的不适感觉的能力" nzPlacement="top" nz-tooltip>感觉</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.feel">
+                <label nzTitle="由于知觉减退或服用镇静剂而对疼痛刺激无反应或者是大部分接触床的表面只有很小感觉疼痛的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                  nzValue="1">完全受损1分</label>
+                <label nzTitle="仅仅对疼痛有反应，除了呻吟或烦躁外不能表达不适，或者是身体的1/2由于感觉障碍而限制了感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                  nzValue="2">非常受损2分</label>
+                <label nzTitle="对言语指挥有反应，但不是总能表达不适或需要翻身或者1-2个肢体有些感觉障碍从而感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                  nzValue="3">轻微受损3分</label>
+                <label nzTitle="对言语指挥反应良好，无感觉障碍，感觉或表达疼痛不适的能力没有受限" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">无受损4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+
+          <tr>
+            <th>
+              <label nzTitle="皮肤潮湿的程度" nzPlacement="top" nz-tooltip>湿度</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.humidity">
+                <label nzTitle="皮肤持续暴露在汗液或尿液等制造的潮湿中，老年人每次翻身或移动时都能发现潮湿" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">持续潮湿1分</label>
+                <label nzTitle="皮肤经常但不是始终潮湿，至少每次移动时必须换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">经常潮湿2分</label>
+                <label nzTitle="皮肤偶尔潮湿，每天需额外更换一次床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">偶尔潮湿3分</label>
+                <label nzTitle="皮肤一般是干爽的，只需常规换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">很少潮湿4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+
+          <tr>
+            <th>
+              <label nzTitle="身体的活动程度" nzPlacement="top" nz-tooltip>活动情况</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.sport">
+                <label nzTitle="限制卧床" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">卧床1分</label>
+                <label nzTitle="行走能力严重受限或不存在，不能负荷自身重量和/或必须依赖椅子或轮椅" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">坐位2分</label>
+                <label nzTitle="白天可短距离行走伴或不伴辅助，每次在床上或椅子上移动需耗费大半力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">偶尔行走3分</label>
+                <label nzTitle="醒着的时候每天至少可以在室外行走两次，室内每两小时活动一次" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">经常行走4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+
+          <tr>
+            <th>
+              <label nzTitle="改变和控制身体姿势的能力" nzPlacement="top" nz-tooltip>控制力</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.control">
+                <label nzTitle="没有辅助身体或肢体甚至不能够轻微地改变位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">完全不自主1分</label>
+                <label nzTitle="可以偶尔轻微改变身体或肢体位置，但不能独立、经常或明显改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">非常受限2分</label>
+                <label nzTitle="可以独立、经常、轻微改变身体或肢体位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="3">轻微受限3分</label>
+                <label nzTitle="没有辅助可以经常进行大的改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">不受限4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+
+          <tr>
+            <th>
+              <label nzTitle="日常进食方式" nzPlacement="top" nz-tooltip>营养</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.nutrition">
+                <label nzTitle="从未吃过完整的一餐，每餐很少吃完1/3的食物，每天吃两餐，而且缺少蛋白质（肉或奶制品）摄入液体量少，没有补充每日规定量以外的液体：或者是肠外营养和/或主要进清流食或超过5天是静脉输液" nzPlacement="top"
+                  nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">非常缺乏1分</label>
+                <label nzTitle="很少吃完一餐，通常每餐只能吃完1/2的食物，蛋白质摄入仅仅是每日三餐中的肉或奶制品，偶尔进行每日规定量外的补充：或者少于最适量的液体食物或管饲" nzPlacement="top" nz-tooltip
+                  nz-col nz-radio nzSpan="6" nzValue="2">可能缺乏2分</label>
+                <label nzTitle="能吃完半数餐次以上，每日吃四餐含肉或奶制品的食物，偶尔会拒吃一餐，但通常会接受补充食物：或者管饲或胃肠外营养提供大多数的营养需要" nzPlacement="top" nz-tooltip nz-col
+                  nz-radio nzSpan="6" nzValue="3">充足3分</label>
+                <label nzTitle="吃完每餐食物，从不拒吃任一餐，通常每日吃四餐或更多次含肉或奶制品的食物，偶尔在两餐之间吃点食物，不需要额外补充营养" nzPlacement="top" nz-tooltip nz-col nz-radio
+                  nzSpan="6" nzValue="4">营养丰富4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+
+          <tr>
+            <th>
+              <label nzTitle="" nzPlacement="top" nz-tooltip>摩擦力和剪切力</label>
+            </th>
+            <th>
+              <nz-radio-group (ngModelChange)="turnOverGradeChange()" nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="turnOverInfo.friction">
+                <label nzTitle="移动时需要中等到大量的辅助，不能抬起身体避免在床单上滑动，常常需要人帮助才能复位。大脑麻痹，挛缩，激动不安导致不断的摩擦" nzPlacement="top" nz-tooltip nz-col nz-radio
+                  nzSpan="6" nzValue="1">有问题1分</label>
+                <label nzTitle="可以虚弱地移动或需要小的辅助，移动时皮肤在某种程度上与床单、椅子、约束物或其他物品发生滑动，大部分时间可以在床上椅子上保持相对较好的姿势，但偶尔也会滑下来" nzPlacement="top" nz-tooltip
+                  nz-col nz-radio nzSpan="6" nzValue="2">潜在的问题2分</label>
+                <label nzTitle="可以独自在床上或椅子上移动，肌肉的力量足以在移动时可以完全抬起身体，在任何时候都可在床上或椅子上保持良好姿势" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                  nzValue="3">无明显问题3分</label>
+                <label nzTitle="" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="4">无任何问题4分</label>
+              </nz-radio-group>
+            </th>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header col-md-12">
+        转归情况
+      </div>
+      <div class="card-block" style="padding-bottom: 0px;">
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label>部位</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="" [(ngModel)]="turnOverInfo.place" maxlength="15">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label>面积</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="" [(ngModel)]="turnOverInfo.area" maxlength="15">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-label>程度</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="" [(ngModel)]="turnOverInfo.degree" maxlength="15">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label>转归情况</nz-form-label>
+              <nz-form-control>
+                <nz-select style="width: 100%;" name="isDown" [(ngModel)]="turnOverInfo.turnoverType" nzPlaceHolder="转归状态">
+                  <nz-option nzValue="治愈" nzLabel="治愈"></nz-option>
+                  <nz-option nzValue="好转" nzLabel="好转"></nz-option>
+                  <nz-option nzValue="无变化" nzLabel="无变化"></nz-option>
+                  <nz-option nzValue="加重" nzLabel="加重"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label>备注说明</nz-form-label>
+              <nz-form-control>
+                <input nz-input placeholder="" [(ngModel)]="turnOverInfo.explain" maxlength="30">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzFor="name">评估人</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="" [(ngModel)]="turnOverInfo.asser" maxlength="5">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzFor="name">评估日期</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [(ngModel)]="turnOverInfo.assDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header col-md-12">
+        压疮预防及治疗措施：
+      </div>
+      <div class="card-block">
+        <nz-checkbox-wrapper style="width: 100%;" >
+          <div nz-row>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="保持床铺和衣裤清洁、干燥，及时清洗" [(ngModel)]="turnOverInfo.measure.bedClean">保持床铺和衣裤清洁、干燥，及时清洗</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="局部创面贴溃疡贴" [(ngModel)]="turnOverInfo.measure.paster">局部创面贴溃疡贴</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="保持皮肤清洁、干燥，及时清洗" [(ngModel)]="turnOverInfo.measure.skinClean">保持皮肤清洁、干燥，及时清洗</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="局部伤口按外科换药处理" [(ngModel)]="turnOverInfo.measure.medical">局部伤口按外科换药处理</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="定时翻身" [(ngModel)]="turnOverInfo.measure.turnover">定时翻身</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="加强营养，采取适当的营养支持措施" [(ngModel)]="turnOverInfo.measure.eat">加强营养，采取适当的营养支持措施</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="给予气垫床" [(ngModel)]="turnOverInfo.measure.airpillow">给予气垫床</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="给予减压工具" [(ngModel)]="turnOverInfo.measure.reliever">给予减压工具</label>
+            </div>
+            <div nz-col nzSpan="8">
+              <label nz-checkbox nzValue="其他" [(ngModel)]="turnOverInfo.measure.other">其他</label>
+              <input nz-input placeholder="其他措施" [(ngModel)]="turnOverInfo.measure.measureOther" *ngIf="turnOverInfo.measure.other">
+            </div>
+          </div>
+        </nz-checkbox-wrapper>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #turnOverModalFooter>
+    <button nz-button nzType="primary" (click)="onSaveTurnOver()" [nzLoading]="isTurnOverSaveLoading">保存</button>
+  </ng-template>
+</nz-modal>

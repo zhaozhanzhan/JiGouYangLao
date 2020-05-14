@@ -1,0 +1,112 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>资产编号</nz-form-label>
+        <nz-form-control>
+          <input class="w200" nz-input [(ngModel)]="reqObj.propertyNumbers" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-label>名称</nz-form-label>
+        <nz-form-control>
+          <input class="w200" nz-input [(ngModel)]="reqObj.propertyName" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-label>类型</nz-form-label>
+        <nz-form-control>
+          <input class="w200" nz-input [(ngModel)]="reqObj.propertyType" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-label>领用部门</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear class="w250" nzPlaceHolder="请选择" [(ngModel)]="reqObj.warehousingDepartment">
+            <nz-option *ngFor="let option of departmentList" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="addEdit('ADD')">添加</button>
+</ng-template>
+<nz-card nzTitle="资产明细列表" [nzExtra]="btnAdd">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">资产编号</th>
+        <th class="textCenter">名称</th>
+        <th class="textCenter">规格</th>
+        <th class="textCenter">类型</th>
+        <th class="textCenter">领用部门</th>
+        <th class="textCenter">状态</th>
+        <th class="textCenter">备注</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.propertyNumbers }}</td>
+        <td class="textCenter">{{ data?.propertyName }}</td>
+        <td class="textCenter">{{ data?.propertySpecifications }}</td>
+        <td class="textCenter">{{ data?.propertyType }}</td>
+        <td class="textCenter">{{ data?.warehousingDepartment | departmentPipe : departmentList  }}</td>
+        <td class="textCenter">{{ data?.propertyState | propertyStatePipe }}</td>
+        <td class="textCenter">{{ data?.remark }}</td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" (click)="addEdit('EDIT', data)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="showOfficeModel(data)">调拨</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="showHandleModel(data)">处理</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" style="color: #f81d22 !important;" (click)="delete(data?.id)">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+
+<!-- 调拨部门弹框  -->
+<nz-modal nzWidth="700" [(nzVisible)]="officeModel" nzTitle="调拨" (nzOnCancel)="officeModelCancel()"
+  (nzOnOk)="officeModelOk()">
+  <p>选择部门：</p>
+  <nz-select nzAllowClear style="width: 100%" nzPlaceHolder="请选择" [(ngModel)]="selDepartmentId">
+    <nz-option *ngFor="let option of departmentList" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+  </nz-select>
+</nz-modal>
+
+<!-- 处理弹框  -->
+<nz-modal nzWidth="700" [(nzVisible)]="handleModel" nzTitle="处理" (nzOnCancel)="handleModelCancel()"
+  (nzOnOk)="handleModelOk()">
+  <p>选择处理方式：</p>
+  <nz-select nzAllowClear style="width: 100%" nzPlaceHolder="请选择" [(ngModel)]="selPropertyState">
+    <nz-option nzLabel="封存" nzValue="1"></nz-option>
+    <nz-option nzLabel="维修" nzValue="3"></nz-option>
+    <nz-option nzLabel="报废" nzValue="4"></nz-option>
+  </nz-select>
+</nz-modal>

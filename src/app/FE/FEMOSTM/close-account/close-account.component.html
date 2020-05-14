@@ -1,0 +1,238 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-10 17:38:44
+ * @Description:
+ -->
+<ng-template #card_title>
+  月度结算详情&nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;&nbsp;
+  <label style="color: dodgerblue">
+    {{ settleStatus == 1 ? "未结算" : settleStatus == 2 ? "已结算" : "拖欠中" }}
+  </label>
+</ng-template>
+<nz-card [nzExtra]="extraTemplate" [nzBordered]="false" [nzTitle]="card_title">
+  <nz-card nzTitle="基本信息" style="font-size: 15px;">
+    <div nz-row>
+      <div nz-col nzSpan="2"></div>
+      <div nz-col nzSpan="5">姓名：{{ payRecordInfo?.name }}</div>
+      <div nz-col nzSpan="5">性别：{{ payRecordInfo?.sex }}</div>
+      <div nz-col nzSpan="5">年龄：{{ payRecordInfo?.age }}</div>
+      <div nz-col nzSpan="5">身份证：{{ payRecordInfo?.cardno }}</div>
+    </div>
+    <div nz-row style="margin-top: 20px;">
+      <div nz-col nzSpan="2"></div>
+      <div nz-col nzSpan="5">房间：{{ payRecordInfo?.roomName }}</div>
+      <div nz-col nzSpan="5">
+        入院日期：{{ payRecordInfo?.inDate | date: "yyyy-MM-dd" }}
+      </div>
+      <div nz-col nzSpan="5">累计住院天数：{{ payRecordInfo?.days }}</div>
+    </div>
+  </nz-card>
+
+  <nz-card nzType="inner" nzTitle="账目信息" style="margin-top:10px">
+    <div
+      nz-row
+      style="margin-top: 20px;"
+      *ngFor="let item of payRecordInfo.monthAccountList"
+    >
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        缴存账目：{{ item?.accountsName }}
+      </div>
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        累计缴存：{{ item?.accountTotal }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        上月余额：{{ item?.lastMonthBalance }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        本月缴存：{{ item?.accountMonth }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        本月支出：{{ item?.consumptionMonth }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="4"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        当前余额：{{ item?.accountBalance }} 元
+      </div>
+    </div>
+  </nz-card>
+
+  <nz-card
+    [nzTitle]="payRecord"
+    [nzExtra]="addPayTemplate"
+    style="margin-top:10px"
+  >
+    <nz-table
+      #basicTable
+      [nzData]="payRecordInfo.consumptionList"
+      [nzShowPagination]="false"
+      [nzBordered]="'true'"
+      [nzLoading]="isTableLoading"
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th style="text-align: center;">项目编号</th>
+          <th style="text-align: center;">项目名称</th>
+          <th style="text-align: center;">消费类别</th>
+          <th style="text-align: center;">消费时间</th>
+          <th style="text-align: center;">单价（元）</th>
+          <th style="text-align: center;">规格</th>
+          <th style="text-align: center;">收费方式</th>
+          <th style="text-align: center;">扣款账目</th>
+          <th style="text-align: center;">计费方式</th>
+          <th style="text-align: center;">结算状态</th>
+          <th style="text-align: center;" *ngIf="settleStatus == '1'">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of payRecordInfo.consumptionList">
+          <td>{{ data?.expItem?.itemCode }}</td>
+          <td>{{ data?.expItem?.itemName }}</td>
+          <td>{{ data?.expItem?.expCategoryInfo?.name }}</td>
+          <td>{{ data?.consumptionTime | date: "yyyy-MM-dd" }}</td>
+          <td>{{ data?.expItem?.unitPrice }}</td>
+          <td>{{ data?.expItem?.specs }}</td>
+          <td>
+            <span *ngIf="data?.expItem?.chargeMode == '1'">现结</span>
+            <span *ngIf="data?.expItem?.chargeMode == '2'">代扣</span>
+          </td>
+          <td>{{ data?.expItem?.depositAccountsInfo?.accountsName }}</td>
+          <td>
+            <span *ngIf="data?.expItem?.feeMode == '1'">登记计费</span>
+            <span *ngIf="data?.expItem?.feeMode == '2'">按月计费</span>
+            <span *ngIf="data?.expItem?.feeMode == '3'">按日计费</span>
+          </td>
+          <td>
+            <span *ngIf="data?.settlementStatus == '1'">已计费</span>
+            <span *ngIf="data?.settlementStatus == '2'">已结算</span>
+            <span *ngIf="data?.settlementStatus == '3'">已取消</span>
+          </td>
+          <td style="text-align: center;" *ngIf="settleStatus == '1'">
+            <a
+              *ngIf="
+                data?.settlementStatus == '1' || data?.settlementStatus == '2'
+              "
+              href="javascript: void(0)"
+              style="color: red;"
+              (click)="delete(data?.id, data?.expItem?.itemName)"
+              >取消消费</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzType="inner" nzTitle="本月总计" style="margin-top:10px">
+    <div nz-row style="margin-top: 20px;">
+      <div
+        nz-col
+        nzSpan="6"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        缴存总额：{{ payRecordInfo?.totalPuts }}
+      </div>
+      <div
+        nz-col
+        nzSpan="6"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        余额总计：{{ payRecordInfo?.totalBalance }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="6"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        消费总计：{{ payRecordInfo?.totalConsumption }} 元
+      </div>
+      <div
+        nz-col
+        nzSpan="6"
+        style="border-bottom: 1px solid;padding-bottom: 10px;"
+      >
+        结余总计：{{ payRecordInfo?.totalRemain }} 元
+      </div>
+    </div>
+  </nz-card>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <!-- 未结算 -->
+    <ng-container *ngIf="settleStatus == '1'">
+      <button
+        nz-button
+        nzType="primary"
+        nzSize="large"
+        (click)="setSettleStatus('2')"
+        [nzLoading]="isBtnLoading"
+      >
+        结清
+      </button>
+
+      <button
+        nz-button
+        nzSize="large"
+        nzType="danger"
+        (click)="setSettleStatus('3')"
+        [nzLoading]="isBtnLoading"
+        style="margin-left: 20px;"
+      >
+        拖欠
+      </button>
+    </ng-container>
+    <!-- 已结清 -->
+    <ng-container *ngIf="settleStatus == '2'"> </ng-container>
+    <!-- 拖欠中 -->
+    <ng-container *ngIf="settleStatus == '3'">
+      <button
+        nz-button
+        nzSize="large"
+        nzType="primary"
+        (click)="setSettleStatus('2')"
+        [nzLoading]="isBtnLoading"
+      >
+        结清
+      </button>
+    </ng-container>
+  </div>
+</nz-card>
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" onclick="window.history.back()">
+    返回
+  </button>
+</ng-template>
+<ng-template #addPayTemplate>
+  <button
+    nz-button
+    nzType="primary"
+    (click)="turnToAddCustom()"
+    *ngIf="settleStatus == '1'"
+  >
+    新增消费
+  </button>
+</ng-template>

@@ -1,0 +1,118 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row nzType="flex">
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="whInId">出库库房</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              style="width:150px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="reqObj.whId"
+              name="whInId"
+            >
+              <nz-option
+                *ngFor="let storehouse of storehouseList"
+                [nzLabel]="storehouse.name"
+                [nzValue]="storehouse.id"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>领用人员</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="old"
+              id="old"
+              style="width:150px"
+              [(ngModel)]="reqObj.receiver"
+              placeholder="请输入领用人员"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>领用日期</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker
+              name="date"
+              style="width:250px"
+              [(ngModel)]="selectedDates"
+              (ngModelChange)="onRangerPickerChange($event)"
+            ></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="updateList(true)"
+              style="margin-left: 10px;"
+            >
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-table
+  #ajaxTable
+  nzBordered
+  nzShowSizeChanger
+  [nzTitle]="serchArea"
+  [nzFrontPagination]="false"
+  [nzLoading]="isTableLoading"
+  [nzData]="list"
+  [nzTotal]="page.total"
+  [(nzPageIndex)]="page.index"
+  [(nzPageSize)]="page.size"
+  (nzPageIndexChange)="updateList()"
+  (nzPageSizeChange)="updateList(true)"
+  [nzShowTotal]="totalTemplate"
+  [nzScroll]="{ x: '1300px' }"
+>
+  <thead>
+    <tr>
+      <th class="textCenter" nzWidth="180px" nzLeft="0px">出库单号</th>
+      <th class="textCenter">出库库房</th>
+      <th class="textCenter">领用部门</th>
+      <th class="textCenter">领用人员</th>
+      <th class="textCenter">领用用途</th>
+      <th class="textCenter">领用时间</th>
+      <th class="textCenter">备注</th>
+      <th class="textCenter" nzWidth="100px" nzRight="0px">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of ajaxTable.data">
+      <td class="textCenter" nzWidth="180px" nzLeft="0px">{{ data.outId }}</td>
+      <td class="textCenter">{{ data?.donatedWarehouseOut?.name }}</td>
+      <td class="textCenter">{{ data?.recDept?.name }}</td>
+      <td class="textCenter">{{ data?.receiver }}</td>
+      <td class="textCenter">{{ data?.useFor }}</td>
+      <td class="textCenter">
+        {{ data?.recTime | date: "yyyy-MM-dd HH:mm:ss" }}
+      </td>
+      <td class="textCenter">{{ data?.outComment }}</td>
+      <td class="textCenter" nzWidth="100px" nzRight="0px">
+        <a href="javascript:void(0)" (click)="turnToCheck(data)">查看</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>共 {{ page.total }} 条</ng-template>

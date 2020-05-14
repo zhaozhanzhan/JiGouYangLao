@@ -1,0 +1,53 @@
+<!-- 顶部功能按钮Begin -->
+<!--
+  <ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+  </ng-template>
+-->
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>机构管理详情</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+
+<nz-card [nzTitle]="titleArea">
+  <nz-tabset nzSize="large">
+    <nz-tab nzTitle="机构基本信息">
+      <app-organizationa-basicInfo></app-organizationa-basicInfo>
+    </nz-tab>
+    <nz-tab nzTitle="法人及负责人信息">
+      <app-organizationa-principalInfo></app-organizationa-principalInfo>
+    </nz-tab>
+    <nz-tab nzTitle="机构设施信息">
+      <app-organizationa-facilityInfo></app-organizationa-facilityInfo>
+    </nz-tab>
+    <nz-tab nzTitle="房屋建筑信息">
+      <app-organizationa-buildingInfo></app-organizationa-buildingInfo>
+    </nz-tab>
+    <nz-tab nzTitle="人员情况信息">
+      <app-organizationa-peopleInfo></app-organizationa-peopleInfo>
+    </nz-tab>
+    <nz-tab nzTitle="收费标准信息">
+      <app-organizationa-ratesInfo></app-organizationa-ratesInfo>
+    </nz-tab>
+    <nz-tab nzTitle="服务信息">
+      <app-organizationa-serviceInfo></app-organizationa-serviceInfo>
+    </nz-tab>
+    <nz-tab nzTitle="其他信息">
+      <app-organizationa-otherInfo></app-organizationa-otherInfo>
+    </nz-tab>
+    <nz-tab nzTitle="证明材料">
+      <app-organizationa-materialInfo></app-organizationa-materialInfo>
+    </nz-tab>
+    <nz-tab nzTitle="系统配置" (nzSelect)="selectedConfigPage()">
+      <app-organizationa-configInfo></app-organizationa-configInfo>
+    </nz-tab>
+  </nz-tabset>
+</nz-card>
+
+<!-- 表单区域End -->

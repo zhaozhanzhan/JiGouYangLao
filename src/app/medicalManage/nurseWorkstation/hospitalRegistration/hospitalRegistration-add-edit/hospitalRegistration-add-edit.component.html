@@ -1,0 +1,311 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="住院登记详情" [nzExtra]="btnArea">
+    <nz-card nzType="inner" nzTitle="基本信息登记" class="marginBottom24">
+        <form nz-form [formGroup]="validateForm">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="name" nzRequired>姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="name" id="name" style="width:80%" />
+                            <button nz-button nzType="primary" nzSearch (click)="showOldDialog()" style="width:20%" class="chooseOldMan">
+                                选择
+                            </button>
+                            <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors" class="red">姓名不能为空</nz-form-explain>
+                        </nz-form-control>
+
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="sex" nzRequired>性别</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="sex" id="sex">
+                                <nz-option *ngFor="let option of sexList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('sex').dirty && validateForm.get('sex').errors" class="red">性别不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="birthDay" nzRequired>出生年月</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" formControlName="birthDay" id="birthDay"></nz-date-picker>
+                            <nz-form-explain *ngIf="validateForm.get('birthDay').dirty && validateForm.get('birthDay').errors">出生年月不能为空</nz-form-explain>
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <!-- <div nz-col [nzSpan]="12" *ngIf="validateForm.get('id')!=''">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="age">年龄</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="age" id="age" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="marriage">婚姻</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="marriage" id="marriage">
+                                <nz-option nzValue="未婚" nzLabel="未婚"></nz-option>
+                                <nz-option nzValue="已婚" nzLabel="已婚"></nz-option>
+                                <nz-option nzValue="离婚" nzLabel="离婚"></nz-option>
+                                <nz-option nzValue="丧偶" nzLabel="丧偶"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="occupation">职业</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="occupation" id="occupation">
+                                <nz-option *ngFor="let option of occupationList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="nation">民族</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="nation" id="nation">
+                                <nz-option *ngFor="let item of folkList" [nzLabel]="item.dictTag" [nzValue]="item.dictValue"></nz-option>
+                            </nz-select>
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="country">国籍</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="country" id="country" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="cardno" nzRequired>身份证号</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="cardno" id="cardno" />
+                            <nz-form-explain *ngIf="validateForm.get('cardno').hasError('pattern')">请正确填写身份证号码</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('cardno').dirty && validateForm.get('cardno').errors">身份证号码不能为空</nz-form-explain>
+                        </nz-form-control>
+
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyAndAddress">工作单位及地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="companyAndAddress" id="companyAndAddress" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyPhone">工作单位联系电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="companyPhone" id="companyPhone" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyPost">工作单位邮编</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="companyPost" id="companyPost" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="registeredAddress">户口地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="registeredAddress" id="registeredAddress" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="post">邮编</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="post" id="post" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="phone">电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="phone" id="phone" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactName" nzRequired>联系人姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="contactName" id="contactName" maxlength="255" />
+                            <nz-form-explain *ngIf="validateForm.get('contactName').dirty && validateForm.get('contactName').errors">联系人姓名不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="relation" nzRequired>联系人关系</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <!-- <input nz-input formControlName="relation" id="relation" maxlength="255" /> -->
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="relation" id="relation">
+                                <nz-option nzLabel="户主/本人" nzValue="户主/本人"></nz-option>
+                                <nz-option nzLabel="配偶" nzValue="配偶"></nz-option>
+                                <nz-option nzLabel="子/婿" nzValue="子/婿"></nz-option>
+                                <nz-option nzLabel="女/媳" nzValue="女/媳"></nz-option>
+                                <nz-option nzLabel="孙子女/外孙子女" nzValue="孙子女/外孙子女"></nz-option>
+                                <nz-option nzLabel="父母/岳父母/公婆" nzValue="父母/岳父母/公婆"></nz-option>
+                                <nz-option nzLabel="祖父母/外祖父母" nzValue="祖父母/外祖父母"></nz-option>
+                                <nz-option nzLabel="兄弟姐妹" nzValue="兄弟姐妹"></nz-option>
+                                <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('relation').dirty && validateForm.get('relation').errors">联系人关系不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactAddress" nzRequired>联系人地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="contactAddress" id="contactAddress" />
+                            <nz-form-explain *ngIf="validateForm.get('contactAddress').dirty && validateForm.get('contactAddress').errors">联系人地址不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactPhone" nzRequired>联系人电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="contactPhone" id="contactPhone" />
+                            <nz-form-explain *ngIf="validateForm.get('contactPhone').dirty && validateForm.get('contactPhone').errors">联系人电话不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="medicalPayment" nzRequired>医疗付款方式</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="medicalPayment" id="medicalPayment">
+                                <nz-option nzValue="社会基本医疗保险" nzLabel="社会基本医疗保险"></nz-option>
+                                <nz-option nzValue="商业保险" nzLabel="商业保险"></nz-option>
+                                <nz-option nzValue="自费医疗" nzLabel="自费医疗"></nz-option>
+                                <nz-option nzValue="公费医疗" nzLabel="公费医疗"></nz-option>
+                                <nz-option nzValue="大病统筹" nzLabel="大病统筹"></nz-option>
+                                <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('medicalPayment').dirty && validateForm.get('medicalPayment').errors">医疗付款方式不能为空</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="medicalNum">医疗保险（公费）号</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input formControlName="medicalNum" id="medicalNum" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="birthPlace">出生地</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" formControlName="birthPlacePro" id="birthPlacePro" (ngModelChange)="getListCitys()">
+                                <nz-option *ngFor="let option of provincesList" [nzLabel]="option.provName" [nzValue]="option.provCode"> </nz-option>
+                            </nz-select>省
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" formControlName="birthPlaceCity" id="birthPlaceCity" (ngModelChange)="getListAreas()">
+                                <nz-option *ngFor="let option of citysList" [nzLabel]="option.cityName" [nzValue]="option.cityCode"> </nz-option>
+                            </nz-select>市
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" formControlName="birthPlaceArea" id="birthPlaceArea">
+                                <nz-option *ngFor="let option of areasList" [nzLabel]="option.areaName" [nzValue]="option.areaCode"> </nz-option>
+                            </nz-select>县
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="basicComment">备注</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <textarea rows="4" nz-input formControlName="basicComment" id="basicComment"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+        <div style="text-align:center;margin-top: 30px;">
+            <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+                保存
+            </button>
+        </div>
+    </nz-card>
+</nz-card>
+<!-- 表单区域End -->
+
+
+
+<!-- 选择老人时，显示的弹窗 -->
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() " nzWidth="800">
+    <ng-template #oldModalTitle>
+        请选择长者
+    </ng-template>
+
+    <ng-template #oldModalContent>
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+            <input type="text " nz-input placeholder="按长者姓名检索 " [(ngModel)]="searchOldName ">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+                <i class="anticon anticon-search"></i>
+            </button>
+        </ng-template>
+
+        <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading" [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()" (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+            <thead>
+                <tr>
+                    <th class="tac ftwB">姓名</th>
+                    <th class="tac ftwB">性别</th>
+                    <th class="tac ftwB">出生年月</th>
+                    <th class="tac ftwB">联系电话</th>
+                    <th class="tac ftwB">咨询日期</th>
+                    <!-- <th class="tac ftwB">预约方式</th>
+          <th class="tac ftwB">预计到访</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of basicTable.data; let idx = index;" (click)="chooseOld(x)">
+                    <td class="tac">{{x.name}}</td>
+                    <td class="tac">{{x.sex}}</td>
+                    <td class="tac">{{x.birthYearMonth}}</td>
+                    <td class="tac">{{x.phone}}</td>
+                    <td class="tac">{{x.createDate | date:'yyyy-MM-dd'}}</td>
+                    <!-- <td class="tac">
+            <span *ngIf="x.consultingType == 1">微信咨询</span>
+            <span *ngIf="x.consultingType == 2">电话咨询</span>
+            <span *ngIf="x.consultingType == 3">来院咨询</span>
+          </td>
+          <td class="tac">{{x.estimatedTime | date:'yyyy-MM-dd'}}</td> -->
+                </tr>
+            </tbody>
+        </nz-table>
+    </ng-template>
+</nz-modal>

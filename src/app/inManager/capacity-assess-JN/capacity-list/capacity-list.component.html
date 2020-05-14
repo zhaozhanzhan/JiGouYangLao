@@ -1,0 +1,119 @@
+<!-- 顶部添加按钮Begin -->
+<ng-template #btnArea>
+    <!-- <button nz-button nzType="primary" (click)="addCapacityAssess()">添加</button> -->
+    <!-- <a href="#" (click)="addCapacityAssess(null,$event)">申请评估</a> -->
+    <a href="#"  (click)="jumpPage('add',{'state':'add'},$event)">申请评估</a>
+
+</ng-template>
+<!-- 顶部添加按钮End -->
+
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8">
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzSuffixIcon="anticon anticon-search">
+                           <input type="text" name="oldman_name" nz-input placeholder="请输入长者姓名" [(ngModel)]="serValObj.name">
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="10" [nzXXl]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">评估日期</nz-form-label>
+                    <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                        <nz-range-picker name="date" [(ngModel)]="serValObj.date" (ngModelChange)="selDate(serValObj.date)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="serFun(true)">查询</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<!-- 表格列表区域Begin -->
+<nz-card nzTitle="能力评估列表" [nzExtra]="btnArea">
+    <nz-table #dataTemp nzShowSizeChanger [nzLoading]="isTableLoading" [nzBordered]="true" [nzTitle]="serchArea" [nzShowTotal]="totalTit" [nzFrontPagination]="false" [(nzPageIndex)]="serValObj.page" [(nzTotal)]="serValObj.totalItem" [(nzPageSize)]="serValObj.size" [(nzData)]="dataList"
+        (nzPageIndexChange)="serFun()">
+        <thead>
+            <tr>
+                <th class="tac">姓名</th>
+                <th class="tac">性别</th>
+                <th class="tac">评估编号</th>
+                <th class="tac">评估人</th>
+                <th class="tac">评估日期</th>
+                <th class="tac">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of dataTemp.data; let idx = index;">
+                <td class="tac">{{x.oldman?x.oldman.name:''}}</td>
+                <td class="tac">{{x.oldman?x.oldman.sex:''}}</td>
+                <td class="tac">{{x.assCode}}</td>
+                <td class="tac">{{x.asser}}</td>
+                <td class="tac">{{x.assDate}}</td>
+                <td class="tac">
+                    <a href="javascript:void(0)" (click)="jumpPage('add',{'id':x.id,'oldId':'',state:'edit'})">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="checkPage('check',{'id':x.id,'oldId':'',state:'edit'})">打印</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" class="colorF00" (click)="clickDelBtn(x.id)">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<!-- 表格列表区域End -->
+
+<!-- 分页信息显示Begin -->
+<ng-template #totalTit>共&nbsp;{{serValObj.totalItem}}&nbsp;条</ng-template>
+<!-- 分页信息显示End -->
+
+
+<!-- 选择老人弹出框Begin -->
+<nz-modal [nzFooter]="null" [(nzVisible)]="isShowOldDialog" [nzTitle]="oldModalTitle" [nzContent]="oldModalContent" (nzOnCancel)="cancelOldDialog()">
+    <ng-template #oldModalTitle>
+        请选择长者
+    </ng-template>
+
+    <ng-template #oldModalContent>
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 15px">
+            <input type="text" nz-input placeholder="按长者姓名检索" [(ngModel)]="searchOldName">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+          <i class="anticon anticon-search"></i>
+        </button>
+        </ng-template>
+
+        <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading" [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size"
+            (nzPageIndexChange)="loadingOldList()" (nzPageSizeChange)="loadingOldList(true)" [nzShowSizeChanger]="false" [nzFrontPagination]="false">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>身份证</th>
+                    <th>入院时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+                    <td>{{data?.name}}</td>
+                    <td>{{data?.sex}}</td>
+                    <td>{{data?.cardno}}</td>
+                    <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </ng-template>
+</nz-modal>
+<!-- 选择老人弹出框End -->

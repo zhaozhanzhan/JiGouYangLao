@@ -1,0 +1,60 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="发放记录详情" [nzExtra]="btnArea">
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="name">物品名称</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="name" id="name" disabled  [(ngModel)]="obj.sendGoodsName">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="sendEmp">发放人</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="sendEmp" id="sendEmp" disabled  [(ngModel)]="obj.sendEmp">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="name">领用时间</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="name" id="name" disabled  [(ngModel)]="obj.sendTime">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="deptId">发放班组</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  id="deptId"  name="deptId" disabled [(ngModel)]="schedulingProgramName">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="haveSendNum">发放数量</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="haveSendNum" id="haveSendNum" disabled [(ngModel)]="obj.haveSendNum">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="haveSendNum">剩余数量</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="haveSendNum" id="haveSendNum" disabled [(ngModel)]="obj.leftSendNum">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="oldmans">领用人</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input  name="oldmans" id="oldmans" disabled [(ngModel)]="obj.oldmans">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="account_ids">领用人图片</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <span *ngFor="let url of oldmanUrlList" >
+            <img  alt="" [src]="url">
+        </span>
+      </nz-form-control>
+    </nz-form-item>
+</nz-card>
+<!-- 表单区域End -->

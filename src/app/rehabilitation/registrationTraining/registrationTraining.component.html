@@ -1,0 +1,11 @@
+<nz-card nzTitle="训练登记列表">
+    <nz-tabset nzSize="large">
+        <nz-tab nzTitle="个训登记列表">
+            <app-aTraining></app-aTraining>
+        </nz-tab>
+        <nz-tab nzTitle="小组登记列表">
+            <app-groupReg></app-groupReg>
+        </nz-tab>
+    </nz-tabset>
+    <ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>
+</nz-card>

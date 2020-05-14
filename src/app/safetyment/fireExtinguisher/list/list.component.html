@@ -1,0 +1,480 @@
+<!-- 灭火器有效期 -->
+<nz-card nzTitle="灭火器列表">
+  <nz-row nzType="flex">
+    <nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>巡查区域</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            style="width: 120px;"
+            [(ngModel)]="queryParams.ffdAreaId"
+            (nzScrollToBottom)="queryLoadAreaMore()"
+            nzAllowClear
+            (ngModelChange)="queryLoadPointMore(true)"
+          >
+            <nz-option
+              *ngFor="let area of ffdArea"
+              [nzValue]="area.id"
+              [nzLabel]="area.name"
+            ></nz-option>
+            <nz-option *ngIf="isLoadinngArea" nzDisabled nzCustomContent>
+              <i nz-icon type="loading" class="loading-icon"></i> 加载中...
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>巡查点</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            style="width: 120px;"
+            [(ngModel)]="queryParams.ffdId"
+            (nzScrollToBottom)="queryLoadPointMore()"
+            nzAllowClear
+          >
+            <nz-option
+              *ngFor="let areaPoint of ffdAreaPoint"
+              [nzValue]="areaPoint.id"
+              [nzLabel]="areaPoint.name"
+            ></nz-option>
+            <nz-option *ngIf="isLoadingPoint" nzDisabled nzCustomContent>
+              <i nz-icon type="loading" class="loading-icon"></i> 加载中...
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>出厂日期</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker
+            name="chooseQueryDate"
+            (ngModelChange)="onChooseQueryDateChange($event)"
+            [(ngModel)]="queryParams.choosedDateRange"
+          ></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>绑定状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            style="width: 120px;"
+            [(ngModel)]="queryParams.isLinked"
+            nzPlaceHolder="全部"
+          >
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="1" nzLabel="已绑定"></nz-option>
+            <nz-option nzValue="0" nzLabel="未绑定"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>报废状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            style="width: 120px;"
+            [(ngModel)]="queryParams.isScrap"
+            nzPlaceHolder="全部"
+          >
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="1" nzLabel="已报废"></nz-option>
+            <nz-option nzValue="0" nzLabel="未报废"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col>
+      <button
+        nz-button
+        [nzType]="'default'"
+        [nzLoading]="isTableLoading"
+        style="margin-top:3px"
+        (click)="reset()"
+      >
+        重置
+      </button>
+      <button
+        nz-button
+        [nzType]="'primary'"
+        [nzLoading]="isTableLoading"
+        style="margin-top:3px;margin-left: 8px;"
+        (click)="loadingDataArray(true)"
+      >
+        查询
+      </button>
+      <button
+        nz-button
+        [nzType]="'primary'"
+        style="margin-top:3px;margin-left: 8px;"
+        (click)="showAddDialog()"
+      >
+        添加
+      </button>
+    </nz-col>
+  </nz-row>
+
+  <div style="margin-bottom: 16px;">
+    <button
+      style="margin-left: 8px;"
+      nz-button
+      nzType="default"
+      (click)="link()"
+    >
+      批量绑定
+    </button>
+    <button
+      style="margin-left: 8px;"
+      nz-button
+      nzType="default"
+      (click)="unlink()"
+    >
+      批量解绑
+    </button>
+    <button
+      style="margin-left: 8px;"
+      nz-button
+      nzType="default"
+      (click)="scrap()"
+    >
+      批量报废
+    </button>
+    <button
+      style="margin-left: 8px;"
+      nz-button
+      nzType="default"
+      (click)="del()"
+    >
+      批量删除
+    </button>
+  </div>
+
+  <nz-table
+    #basicTable
+    [nzData]="arrayData"
+    [nzBordered]="'true'"
+    nzShowSizeChanger
+    [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements"
+    [nzShowTotal]="totalTit"
+    [(nzPageIndex)]="queryParams.page"
+    [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th
+          nzShowCheckbox
+          [(nzChecked)]="allChecked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="checkAll($event)"
+        ></th>
+        <th class="textCenter">消防区域</th>
+        <th class="textCenter">巡查点</th>
+        <th class="textCenter">灭火器种类</th>
+        <th class="textCenter">出厂日期</th>
+        <th class="textCenter">报废年限</th>
+        <th class="textCenter">失效日期</th>
+        <th class="textCenter">状态</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of arrayData">
+        <td
+          nzShowCheckbox
+          [(nzChecked)]="data.checked"
+          (nzCheckedChange)="refreshStatus()"
+        ></td>
+        <td>{{ data.ffdAreaName }}</td>
+        <td>{{ data.ffdName }}</td>
+        <td>{{ data.fireType }}</td>
+        <td>{{ data.productionDate | date: "yyyy-MM-dd" }}</td>
+        <td>{{ data.expiry }}</td>
+        <td>{{ data.expiryDate | date: "yyyy-MM-dd" }}</td>
+        <td>
+          <span *ngIf="data.state == '失效'" style="color: red">{{
+            data.state
+          }}</span>
+          <span *ngIf="data.state == '临期'" style="color: peru">{{
+            data.state
+          }}</span>
+          <span *ngIf="data.state == '有效'" style="color: black">{{
+            data.state
+          }}</span>
+          <span *ngIf="data.state == '已报废'" style="color: red">{{
+            data.state
+          }}</span>
+        </td>
+        <td>
+          <a
+            *ngIf="data.state == '已报废'"
+            href="javascript:void(0)"
+            (click)="chackDiscardReasonDetails(data)"
+            >查看</a
+          >
+          <a
+            *ngIf="
+              data.state == '失效' ||
+              data.state == '临期' ||
+              data.state == '有效'
+            "
+            href="javascript:void(0)"
+            (click)="showEditDialog(data)"
+            >编辑</a
+          >
+          <!-- <nz-divider nzType="vertical"></nz-divider> -->
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTit
+  >共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template
+>
+
+<!-- 添加灭火器对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowAddDialog"
+  nzTitle="添加灭火器"
+  nzWidth="600"
+  (nzOnCancel)="isShowAddDialog = false"
+  (nzOnOk)="saveFireExtinguisher()"
+  [nzOkLoading]="isSaveBtnLoading"
+>
+  <label class="labelStyle"
+    >数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</label
+  >
+  <nz-input-number
+    [(ngModel)]="saveParams.fireExtinguisherNum"
+    [nzMin]="1"
+    [nzStep]="1"
+    style="width: 171px"
+  ></nz-input-number>
+  <br />
+  <label class="labelStyle"
+    >种&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类</label
+  >
+  <nz-radio-group
+    [(ngModel)]="saveParams.dosageType"
+    (ngModelChange)="choosedDosageType()"
+  >
+    <label *ngFor="let type of dosageType" nz-radio nzValue="{{type}}">{{
+      type
+    }}</label> </nz-radio-group
+  ><br />
+
+  <label class="labelStyle" *ngIf="saveParams.dosageType == '其他'"
+    >其他种类</label
+  >
+  <input
+    nz-input
+    type="text"
+    [(ngModel)]="saveParams.dosageTypeOther"
+    placeholder="请输入种类"
+    style="width: 171px"
+    maxlength="10"
+    *ngIf="saveParams.dosageType == '其他'"
+  />
+  <br *ngIf="saveParams.dosageType == '其他'" />
+
+  <label class="labelStyle">移动方式</label>
+  <nz-radio-group [(ngModel)]="saveParams.moveType">
+    <label *ngFor="let type of moveType" nz-radio nzValue="{{type}}">{{
+      type
+    }}</label> </nz-radio-group
+  ><br />
+
+  <label class="labelStyle">出厂日期</label>
+  <nz-date-picker
+    [nzFormat]="'yyyy-MM-dd'"
+    [(ngModel)]="saveParams.productionDate"
+    [nzDisabledDate]="disabledDate"
+  ></nz-date-picker
+  ><br />
+  <label class="labelStyle">报废年限</label>
+  <nz-input-number
+    [(ngModel)]="saveParams.expiry"
+    [nzMin]="1"
+    [nzStep]="1"
+    style="width: 171px"
+  ></nz-input-number>
+</nz-modal>
+
+<!-- 保费灭火器对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowScrapDialog"
+  nzTitle="报废确认"
+  nzWidth="600"
+  (nzOnCancel)="isShowScrapDialog = false"
+  [nzOkLoading]="isScrapBtnLoading"
+  (nzOnOk)="scrapFireExtinguisher()"
+>
+  <label class="labelStyle">报废原因</label><br />
+  <textarea
+    nz-input
+    placeholder="请编写报废原因，限50字以内"
+    [nzAutosize]="{ minRows: 2, maxRows: 10 }"
+    maxlength="50"
+    class="labelStyle"
+    style="width:80%"
+    [(ngModel)]="scrapParams.reason"
+  ></textarea>
+</nz-modal>
+
+<!-- 删除提示对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowDelDialog"
+  nzTitle="删除确认"
+  (nzOnCancel)="isShowDelDialog = false"
+  (nzOnOk)="delFireExtinguisher()"
+  [nzOkLoading]="isDelBtnLoading"
+>
+  <p>请确认是否删除当前选择的灭火器，删除后将无法恢复！</p>
+</nz-modal>
+
+<!-- 解绑提示对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowUnlinkDialog"
+  nzTitle="解绑确认"
+  (nzOnCancel)="isShowUnlinkDialog = false"
+  (nzOnOk)="unlinkFireExtinguisher()"
+  [nzOkLoading]="isUnlinkBtnLoading"
+>
+  <p>请确认是否解绑当前选择的灭火器！</p>
+</nz-modal>
+
+<!-- 绑定提示对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowLinkDialog"
+  nzTitle="绑定确认"
+  (nzOnCancel)="isShowLinkDialog = false"
+  (nzOnOk)="linkFireExtinguisher()"
+  [nzOkLoading]="isLinkBtnLoading"
+>
+  <label class="labelStyle">选择巡查区域</label><br />
+  <nz-select
+    class="labelStyle"
+    style="width: 80%;"
+    [(ngModel)]="linkParams.ffdAreaId"
+    (nzScrollToBottom)="loadAreaMore()"
+    nzPlaceHolder="Select users"
+    nzAllowClear
+    (ngModelChange)="loadPointMore(true)"
+  >
+    <nz-option
+      *ngFor="let area of ffdArea"
+      [nzValue]="area.id"
+      [nzLabel]="area.name"
+    ></nz-option>
+    <nz-option *ngIf="isLoadinngArea" nzDisabled nzCustomContent>
+      <i nz-icon type="loading" class="loading-icon"></i> 加载中...
+    </nz-option> </nz-select
+  ><br />
+  <label class="labelStyle">选择巡查点</label><br />
+  <nz-select
+    style="width: 80%;"
+    class="labelStyle"
+    [(ngModel)]="linkParams.ffdId"
+    (nzScrollToBottom)="loadPointMore()"
+    nzPlaceHolder="Select users"
+    nzAllowClear
+  >
+    <nz-option
+      *ngFor="let areaPoint of ffdAreaPoint"
+      [nzValue]="areaPoint.id"
+      [nzLabel]="areaPoint.name"
+    ></nz-option>
+    <nz-option *ngIf="isLoadingPoint" nzDisabled nzCustomContent>
+      <i nz-icon type="loading" class="loading-icon"></i> 加载中...
+    </nz-option> </nz-select
+  ><br />
+</nz-modal>
+
+<!-- 编辑灭火器对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowEditDialog"
+  nzTitle="编辑灭火器"
+  nzWidth="600"
+  (nzOnCancel)="isShowEditDialog = false"
+  [nzOkLoading]="isEditBtnLoading"
+  (nzOnOk)="updateFireExtinguisher()"
+>
+  <label class="labelStyle"
+    >种&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类</label
+  >
+  <nz-radio-group
+    [(ngModel)]="editParams.dosageType"
+    (ngModelChange)="choosedDosageType()"
+  >
+    <label *ngFor="let type of dosageType" nz-radio nzValue="{{type}}">{{
+      type
+    }}</label> </nz-radio-group
+  ><br />
+
+  <label class="labelStyle" *ngIf="editParams.dosageType == '其他'"
+    >其他种类</label
+  >
+  <input
+    nz-input
+    type="text"
+    [(ngModel)]="editParams.dosageTypeOther"
+    placeholder="请输入种类"
+    style="width: 171px"
+    maxlength="10"
+    *ngIf="editParams.dosageType == '其他'"
+  />
+  <br *ngIf="editParams.dosageType == '其他'" />
+
+  <label class="labelStyle">移动方式</label>
+  <nz-radio-group [(ngModel)]="editParams.moveType">
+    <label *ngFor="let type of moveType" nz-radio nzValue="{{type}}">{{
+      type
+    }}</label> </nz-radio-group
+  ><br />
+
+  <label class="labelStyle">出厂日期</label>
+  <nz-date-picker
+    [nzFormat]="'yyyy-MM-dd'"
+    [(ngModel)]="editParams.productionDate"
+    [nzDisabledDate]="disabledDate"
+  ></nz-date-picker
+  ><br />
+  <label class="labelStyle">报废年限</label>
+  <nz-input-number
+    [(ngModel)]="editParams.expiry"
+    [nzMin]="1"
+    [nzStep]="1"
+    style="width: 171px"
+  ></nz-input-number>
+</nz-modal>
+
+<!-- 查看灭火器对话框 -->
+<nz-modal
+  [(nzVisible)]="isCheckDetails"
+  nzTitle="查看报废原因"
+  nzWidth="600"
+  (nzOnCancel)="isCheckDetails = false"
+  (nzOnOk)="isCheckDetails = false"
+>
+  <label class="labelStyle">报废原因</label><br />
+  <textarea
+    nz-input
+    disabled
+    placeholder="请编写报废原因，限50字以内"
+    [nzAutosize]="{ minRows: 2, maxRows: 10 }"
+    maxlength="50"
+    class="labelStyle"
+    style="width:80%"
+    [(ngModel)]="Details"
+  ></textarea>
+</nz-modal>

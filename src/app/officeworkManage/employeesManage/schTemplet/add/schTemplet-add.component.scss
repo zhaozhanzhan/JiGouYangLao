@@ -1,0 +1,8 @@
+:host /deep/ .ant-input-search.ant-input-search-enter-button>.ant-input-suffix {
+  /* right: 0; */
+}
+
+:host /deep/ .ant-input-affix-wrapper .ant-input-suffix,
+.ant-input-search:not(.ant-input-search-small)>.ant-input-suffix {
+  /* right: 12px; */
+}

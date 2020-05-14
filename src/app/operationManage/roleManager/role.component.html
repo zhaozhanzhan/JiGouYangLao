@@ -1,0 +1,176 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>角色名</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            style="width:120px"
+            [(ngModel)]="reqObj.name"
+            placeholder="检索角色名"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left: 10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="showModifyRoleDialog(null)">
+    添加
+  </button>
+</ng-template>
+<nz-card nzTitle="角色列表" [nzExtra]="btnAdd">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzTitle]="serchArea"
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">排序号</th>
+        <th class="textCenter">名称</th>
+        <th class="textCenter">别名</th>
+        <th class="textCenter" nzWidth="250px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.num }}</td>
+        <td class="textCenter">{{ data?.name }}</td>
+        <td class="textCenter">{{ data?.tips }}</td>
+
+        <td class="textCenter" nzWidth="250px" nzRight="0px">
+          <a href="javascript:void(0)" (click)="showModifyRoleDialog(data)"
+            >编辑</a
+          >
+          <nz-divider nzType="vertical"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            (click)="showModifyMenuDialog(data.id, null)"
+            >配置权限</a
+          >
+          <nz-divider nzType="vertical"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            style="color: #f81d22 !important;"
+            (click)="delete(data?.id)"
+            >删除</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+
+<nz-modal
+  [(nzVisible)]="isShowModifyRoleDialog"
+  nzTitle="角色详情"
+  [nzStyle]="dialogStyle"
+  (nzOnCancel)="isShowModifyRoleDialog = false"
+  (nzOnOk)="doSaveModifyRole()"
+  nzWidth="900"
+  [nzOkLoading]="isRoleDialogBtnLoading"
+>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="dialog_label" nzRequired="true"
+          >角色名称</nz-form-label
+        >
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [(ngModel)]="modifyInfo.name"
+            maxlength="10"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="dialog_label" nzRequired="true"
+          >排序号</nz-form-label
+        >
+        <nz-form-control>
+          <nz-input-number
+            class="dialog_input"
+            [(ngModel)]="modifyInfo.num"
+            maxlength="10"
+            [nzMin]="1"
+            [nzStep]="1"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="dialog_label">别名</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [(ngModel)]="modifyInfo.tips"
+            maxlength="10"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>
+<nz-modal
+  [(nzVisible)]="isShowModifyMenuDialog"
+  nzTitle="配置权限"
+  [nzStyle]="dialogStyle"
+  (nzOnCancel)="isShowModifyMenuDialog = false"
+  (nzOnOk)="doSaveModifyMenu()"
+  nzWidth="900"
+  [nzOkLoading]="isMenuDialogBtnLoading"
+>
+  <div nz-col style="max-height: 500px;overflow: auto;">
+    <nz-form-item nzFlex>
+      <nz-form-label class="dialog_label" nzRequired="true"
+        >菜单树</nz-form-label
+      >
+      <nz-form-control>
+        <nz-tree
+          nzCheckable
+          nzCheckStrictly
+          [nzCheckedKeys]="modifyMenuInfo.selectedMenu"
+          [(ngModel)]="menuTreeList"
+          (nzCheckBoxChange)="checkedChange($event)"
+          (nzClick)="clickListener($event)"
+        >
+        </nz-tree>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</nz-modal>

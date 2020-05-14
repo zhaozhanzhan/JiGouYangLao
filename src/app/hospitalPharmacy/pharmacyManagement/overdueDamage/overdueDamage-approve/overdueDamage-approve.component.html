@@ -1,0 +1,177 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="过期破损药品详情" [nzExtra]="btnArea">
+    <nz-card nzType="inner">
+        <form nz-form>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="operator">操作人</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <input nz-input [(ngModel)]="listDetailInfo.operator" name="operator" class="form_input" readonly>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="odDate">操作时间</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <input nz-input [(ngModel)]="listDetailInfo.odDate" name="odDate" class="form_input" readonly>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="comment">备注</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <textarea class="form_input" rows="4" nz-input name="comment" id="comment" [(ngModel)]="listDetailInfo.comment" readonly></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+
+    <nz-card class="mt10" nzType="inner" nzTitle="过期破损药品">
+        <nz-table #goodsTable [nzData]="listDetailInfo.mdOverdueDamages" [nzHideOnSinglePage]="true" nzBordered [nzFrontPagination]="false">
+            <thead>
+                <tr>
+                    <th class="tac">药品名称</th>
+                    <th class="tac">批次号</th>
+                    <th class="tac">过期破损数量</th>
+                    <th class="tac">报废原因</th>
+                    <th class="tac">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of goodsTable.data; let num = index">
+                    <td class="maxW50 tac">{{ data?.medDrug?.drugName }}</td>
+                    <td class="maxW150 tac">{{ data?.batchNum }}</td>
+                    <td class="maxW80 tac"> {{ data?.odNum }} </td>
+                    <td class="maxW150 tac">{{ data?.reason }}</td>
+                    <td class="maxW50 tac">
+                        <a href="javascript:void(0)" (click)="check(data)">查看</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+
+
+    <nz-card class="mt10" nzType="inner" nzTitle="签名">
+        <nz-form-item>
+            <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="approvalUrl" nzRequired>审批人</nz-form-label>
+            <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                <input nz-input [(ngModel)]="objApproval.approve" name="approve" class="form_input">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="approvalUrl">审批人</nz-form-label>
+            <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                <mirr-electronicSign [imgUrl]="approvalUrl" [isShowSign]="true" #approvalSign>
+                </mirr-electronicSign>
+            </nz-form-control>
+        </nz-form-item>
+    </nz-card>
+
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm(approvalSign.imgUrl)" [nzLoading]="isBtnLoading">
+            审批
+        </button>
+    </div>
+</nz-card>
+
+<nz-modal [(nzVisible)]="isShowSaveGoodsDialog" nzTitle="过期破损药品详情" nzWidth="900" (nzOnCancel)="isShowSaveGoodsDialog = false" (nzOnOk)="isShowSaveGoodsDialog = false">
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>药品名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.drugName" name="drugName" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>批次号</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.batchNum" name="sectionOfbatchNumficeName" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>批号</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.mdBatchNum" name="mdBatchNum" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>药品规格</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.specification" name="specification" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>供应商</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.supplier" name="supplier" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>生产厂商</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="dialog_input" [(ngModel)]="expiredDrugDetails.manufacturers" name="manufacturers" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+
+
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>入库日期</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker class="dialog_input" [(ngModel)]="expiredDrugDetails.inDate" nzDisabled></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>剩余数量</nz-form-label>
+                <nz-form-control>
+                    <input class="dialog_input" nz-input readonly [(ngModel)]="expiredDrugDetails.quantity" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>过期破损数量</nz-form-label>
+                <nz-form-control>
+                    <input class="dialog_input" nz-input readonly [(ngModel)]="expiredDrugDetails.odNum" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>报废原因</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input class="dialog_areaInput" rows="2" [(ngModel)]="expiredDrugDetails.reason" readonly></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col style="margin-top:10px;">
+            <nz-form-item nzFlex>
+                <nz-form-label>备注</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input class="dialog_areaInput" rows="2" [(ngModel)]="expiredDrugDetails.odComment" readonly></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- 表单区域End -->

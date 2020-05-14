@@ -1,0 +1,82 @@
+:host /deep/ .ant-card-extra {
+    padding: 6.5px 0;
+}
+
+:host /deep/ #health .ant-form-item-label {
+    text-align: left;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+:host /deep/ .ant-select {
+    width: 100%;
+}
+
+
+/* #health nz-select {
+    width: 60px;
+} */
+
+#health div[nz-col] {
+    margin-bottom: 16px;
+}
+
+:host /deep/ #health input:hover {
+    border-color: #d9d9d9;
+}
+
+:host /deep/ #health input:focus {
+    border-color: #d9d9d9;
+    box-shadow: none;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+:host /deep/ #health [_nghost-c4] {
+    display: inline-block;
+}
+
+.marginBottom24 {
+    margin-bottom: 24px;
+}
+
+.textRight {
+    text-align: center
+}
+
+:host /deep/ label {
+    margin-bottom: 0;
+}
+
+.drugMemoOther {
+    display: inline-block;
+    width: 50%;
+    border: 0;
+    border-bottom: solid 1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#drugMemo {
+    height: 32px;
+}
+
+#drugMemo nz-checkbox-group {
+    padding: 5.5px 0;
+}
+
+.dib {
+    display: inline-block;
+}
+
+.outmodeClass {
+    width: 200px;
+}
+
+:host /deep/ .outmodeClass label{
+    margin: 8px;
+}

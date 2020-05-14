@@ -1,0 +1,62 @@
+.base {
+    border-radius: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 40px;
+    text-align: center;
+}
+
+.vacation {
+    background-color: #259B24;
+    color: #FFF;
+    font-size: 10px;
+    @extend .base;
+}
+
+.track {
+    color: #FFF;
+    border: 1px solid #FFF;
+    font-size: 10px;
+    border-radius: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: 40px;
+    @extend .base;
+}
+
+.careLevel {
+    width: 60px;
+    border: 1px solid #FFA521;
+    text-align: center;
+    color: #FFA521;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+:host /deep/ .ant-card-body {
+    padding: 16px 0px 16px 0px !important;
+}
+
+
+/* 卡片背景颜色 Begin */
+
+.cardPurple {
+    background-color: #9626B7;
+    color: #FFF;
+}
+
+.cardWhite {
+    background-color: #FFF;
+}
+
+.cardGreen {
+    background-color: #8BC34A;
+    color: #FFF;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+
+/* 卡片背景颜色 End */

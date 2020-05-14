@@ -1,0 +1,168 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-06 15:08:41
+ * @Description:
+ -->
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzFor="name">模板名称</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            id="name"
+            style="width:150px"
+            [(ngModel)]="queryParams.name"
+            placeholder="请输入名称"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            style="width: 150px;"
+            [(ngModel)]="queryParams.startStop"
+          >
+            <nz-option nzValue="0" nzLabel="全部"></nz-option>
+            <nz-option nzValue="1" nzLabel="启用"></nz-option>
+            <nz-option nzValue="2" nzLabel="停用"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="loadingDataArray(true)"
+            style="margin-left:10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="病历模板列表" [nzExtra]="extraTemplate">
+  <nz-table
+    #basicTable
+    [nzData]="dataArray"
+    [nzTitle]="serchArea"
+    [nzShowPagination]="true"
+    [nzBordered]="'true'"
+    [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements"
+    [nzShowTotal]="totalTit"
+    [(nzPageIndex)]="queryParams.page"
+    [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+    [nzScroll]="{ y: '500px', x: '800px' }"
+  >
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th nzWidth="140px">更新日期</th>
+        <th nzWidth="100px">编辑人</th>
+        <th nzWidth="100px">模板状态</th>
+        <th nzWidth="240px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data?.name }}</td>
+        <td>{{ data?.updateDate | date: "yyyy-MM-dd HH:mm" }}</td>
+        <td>{{ data?.modifier == null ? data.noteTaker : data.modifier }}</td>
+        <td>
+          <a
+            href="#"
+            (click)="toggerTemoState(data, false, $event)"
+            *ngIf="data?.startStop == 1"
+            >已发布</a
+          >
+          <a
+            href="#"
+            (click)="toggerTemoState(data, true, $event)"
+            class="red"
+            *ngIf="data?.startStop != 1"
+            >未启用</a
+          >
+        </td>
+        <td nzRight="0px">
+          <a href="#" (click)="showModifyDialog(data, $event)">修改名称</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="editContractTemplate(data, $event)">编辑模板</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="confirmDelContract(data, $event)" class="red"
+            >删除模板</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+  <!-- <a href="#" (click)="showAddDialog($event)">添加</a> -->
+  <button nz-button nzType="primary" (click)="showAddDialog($event)">
+    添加
+  </button>
+</ng-template>
+<ng-template #totalTit
+  >共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template
+>
+
+<nz-modal
+  [(nzVisible)]="isShowAddDialog"
+  nzTitle="病例名称"
+  [nzMaskClosable]="false"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="isShowAddDialog = false"
+>
+  <ng-template #modalContent>
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label nzRequired>病例名称</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nzAutosize
+            nz-input
+            formControlName="name"
+            placeholder="请输入病例名称"
+            maxLength="50"
+            [(ngModel)]="inputContractName"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="onSaveTemplate()"
+      [nzLoading]="isSaveLoading"
+    >
+      保存
+    </button>
+  </ng-template>
+</nz-modal>

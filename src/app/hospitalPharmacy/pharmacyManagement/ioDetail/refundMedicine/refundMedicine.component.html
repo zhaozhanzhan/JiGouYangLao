@@ -1,0 +1,118 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="科室退药详情" [nzExtra]="btnArea">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="professionalCategory">科室</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input   class="form_input" id="professionalCategory" readonly [(ngModel)]="result.sectionOffice.name"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="profession">药品名称</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input    class="form_input" readonly [(ngModel)]="result.medDrug.drugName"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="profession">本科室库存数量</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input  class="form_input"  readonly [(ngModel)]="result.quantity"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="backNum" nzRequired>退回数量</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-input-number
+            class="form_input"
+            [(ngModel)]="objInfo.backNum"
+            [nzMin]="1"
+            [nzMax]="result.quantity"
+            [nzStep]="1"
+            name="backNum"
+            [nzPrecision]="0"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzRequired nzFor="backDate">退药时间</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+            nzShowTime
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            name="backDate"
+            id="backDate"
+            class="form_input"
+            style="width:100%"
+            [(ngModel)]="NewbackDate"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="operator" nzRequired>操作人</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input  class="form_input" name="operator" id="operator" [(ngModel)]="objInfo.operator" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="backComment">备注</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+            <textarea
+            rows="4"
+            nz-input
+            name="backComment" 
+            id="backComment" 
+            [(ngModel)]="objInfo.backComment"
+            class="form_input"
+            ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveForm()"
+      [nzLoading]="isBtnLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+
+

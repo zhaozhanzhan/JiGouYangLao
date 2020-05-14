@@ -1,0 +1,159 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+<nz-card style="width: 100%;" nzTitle="出院登记详情" [nzExtra]="extraTemplate">
+
+  <div>
+    <table style="margin:0 auto;">
+      <tr>
+        <td>
+          <span>老人信息</span>
+        </td>
+        <td>
+          <div nz-row class="marginBottom24">
+            <input nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="discharged.roomName"
+              readonly>
+            <span>房间</span>
+            <input nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="discharged.bedName"
+              readonly>
+            <span>床</span>
+            <span>老人</span>
+            <!-- <nz-select *ngIf="isAdd" style="width: 150px;" [(ngModel)]="discharged.oldid" nzPlaceHolder="请选择老人" nzAllowClear nzShowSearch
+              [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" (ngModelChange)="onOldChange($event)" class="marginLR5">
+              <ng-container *ngFor="let o of elderlyList">
+                <nz-option *ngIf="!isLoading" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+              </ng-container>
+              <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                <i class="anticon anticon-loading anticon-spin loading-icon"></i> 加载数据中...
+              </nz-option>
+            </nz-select> -->
+            <input *ngIf="isAdd" nz-input placeholder="请选择老人" [(ngModel)]="oldName" (click)="showOldDialog()" style="display: inline-block;width: 150px;">
+            <input *ngIf="!isAdd" nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="oldman.name"
+              readonly>
+            <span>因下列原因出院。</span>
+          </div>
+          <div nz-row class="marginBottom24">
+            <nz-radio-group [(ngModel)]="discharged.leaveType" style="display:inline-block ">
+              <label nz-radio nzValue="1">退住</label>
+              <label nz-radio nzValue="2">死亡</label>
+            </nz-radio-group>
+
+            <div style="display:inline-block ">
+              <span class="outH">出院日期</span>
+              <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="discharged.leavetime"></nz-date-picker>
+            </div>
+          </div>
+
+          <div nz-row class="marginBottom24" class="marginBottom24">
+            <textarea nz-input rows="2" placeholder="请输入原因" [(ngModel)]="discharged.reason"></textarea>
+          </div>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>申请人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.applicantName" [isShowSign]="true" #applicant>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.applicantDate" style="margin:32px 0;"></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>护理部门</span>
+        </td>
+        <td>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>负责人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.huliName" [isShowSign]="true" #huliName>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.huliDate" style="margin:32px 0;"></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>财务部门</span>
+        </td>
+        <td>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>负责人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.caiwuName" [isShowSign]="true" #caiwuName>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.caiwuDate" style="margin:32px 0;"></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div nz-row class="textRight" style="text-align: center;margin-top:20px ">
+      <button nz-button nzType="primary" (click)="onSave(applicant.imgUrl,huliName.imgUrl,caiwuName.imgUrl)"
+        [nzLoading]="isTableLoading" class="saveBtn">保存</button>
+    </div>
+  </div>
+</nz-card>
+
+
+
+
+<!-- 选择老人弹出框 -->
+<nz-modal [nzFooter]="null" [(nzVisible)]="isShowOldDialog" [nzTitle]="oldModalTitle" [nzContent]="oldModalContent"
+  (nzOnCancel)="cancelOldDialog()">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 15px">
+      <input type="text" nz-input placeholder="按老人姓名检索" [(ngModel)]="searchOldName">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'"
+      [nzLoading]="isOldTableLoading" [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page"
+      [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()" (nzPageSizeChange)="loadingOldList(true)"
+      [nzShowSizeChanger]="false" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <!-- <th>身份证</th> -->
+          <th>床位</th>
+          <th>护理等级</th>
+          <th>入院时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data.id,data.name,data?.bed?.bedName,data?.bed?.room?.roomName)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <!-- <td>{{data?.cardno}}</td> -->
+          <td>{{data?.bed?.bedName}}</td>
+          <td>{{data?.careLevelCase?.levelName}}</td>
+          <td>{{data?.inDate | date:'yyyy-MM-dd'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>

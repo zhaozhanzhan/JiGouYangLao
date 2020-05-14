@@ -1,0 +1,29 @@
+<nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1000px' }">
+    <thead>
+        <tr>
+            <th class="textCenter" nzWidth="180px" nzLeft="0px">姓名</th>
+            <th class="textCenter">性别</th>
+            <th class="textCenter">年龄</th>
+            <th class="textCenter">康复类型</th>
+            <th class="textCenter" nzWidth="100px" nzRight="0px">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+            <td class="textCenter" nzWidth="180px" nzLeft="0px">{{ data?.name }}</td>
+            <td class="textCenter">
+                <span *ngIf="data?.sex=='0'">男</span>
+                <span *ngIf="data?.sex=='1'">女</span>
+            </td>
+            <td class="textCenter">{{ data?.age }}</td>
+            <td class="textCenter">
+                <span *ngIf="data?.type=='1'">智力残疾</span>
+                <span *ngIf="data?.type=='2'">肢体康复</span>
+            </td>
+            <td class="textCenter" nzWidth="100px" nzRight="0px">
+                <a href="javascript:void(0)" (click)="checkIn(data)">登记</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

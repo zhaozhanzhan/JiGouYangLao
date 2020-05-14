@@ -1,0 +1,236 @@
+<nz-layout style="height:100%; ">
+  <div
+    class="container"
+    id="flowContainer"
+    class="contentR"
+    style="padding-left:40px;padding-right:40px;background: white;width: 100%;"
+  >
+    <div
+      style="width: 1200px;height: calc(100vh - 112px);position: relative;overflow: auto;background: white;"
+    >
+      <div style="width: 100%; height: 100%;">
+        <div>
+          <div class="HospitalRegistrationContent">
+            <!-- 入院登记 -->
+            <div class="ConsultingPublic HospitalRegistration">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/ruyuandengji.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>入院登记</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >入院前需要登记长者信息、家属信息</span
+              >
+            </div>
+
+            <!-- 箭头 -->
+            <div class="iconPosition HospitalRegistrationIconTop">
+              <img src="assets/img/homePage/icon2.png" alt="" />
+            </div>
+            <!-- 信息调访 -->
+            <div class="ConsultingPublic InformationTransferI">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/xinxidiaofang.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>信息调访</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >对调访的长者信息、家属信息进行登记</span
+              >
+            </div>
+
+            <!-- 箭头 -->
+            <div class="iconPosition IconTop">
+              <img src="assets/img/homePage/icon2.png" alt="" />
+            </div>
+
+            <!-- 咨询入住 -->
+            <div class="ConsultingPublic ConsultingAt">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/zixunruzhu.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>咨询入住</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >为长者提供微信、电话现场咨询服务</span
+              >
+            </div>
+          </div>
+
+          <div class="HospitalRegistrationContent HospitalRegistrationMargin">
+            <!-- 入院评估 -->
+            <div class="ConsultingPublic HospitalRegistration">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/ruyuanpinggu.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>入院评估</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >为长者提供标准的入院评估服务</span
+              >
+            </div>
+
+            <!-- 箭头 -->
+            <div class="iconPosition AdmissionAssessment">
+              <img src="assets/img/homePage/Icon1.png" alt="" />
+            </div>
+          </div>
+
+          <div class="HospitalRegistrationContent HospitalRegistrationMargin">
+            <!-- 入院审核 -->
+            <div class="ConsultingPublic HospitalRegistration">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/ruyuanshenhe.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>入院审核</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >长者入住本院的最终确认环节</span
+              >
+            </div>
+
+            <!-- 箭头 -->
+            <div class="iconPosition AdmissionReview">
+              <img src="assets/img/homePage/Icon1.png" alt="" />
+            </div>
+
+            <!--  合同模板 -->
+            <div class="ConsultingPublic  contractManagement">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/hegongmoban.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>合同模板</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >可自定义的电子合同、协议生成器</span
+              >
+            </div>
+
+            <!--  合同管理 -->
+            <div class="ConsultingPublic contractTemplate">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/hegongguanli.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>合同管理</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >合同、协议电子化存档</span
+              >
+            </div>
+          </div>
+
+          <div class="HospitalRegistrationContent HospitalRegistrationMargin">
+            <!-- 箭头 -->
+            <div class="iconPosition AdmissionReviewS">
+              <img src="assets/img/homePage/Icon1.png" alt="" />
+            </div>
+
+            <!--  住院档案 -->
+            <div class="ConsultingPublic HospitalArchives">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/zhuyuandangan.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>住院档案</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >为长者提供永久保存的档案服务</span
+              >
+            </div>
+
+            <!--  评估管理 -->
+            <div class="ConsultingPublic Evaluation" (click)="showDrowMenu()">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/pinggu.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>评估管理</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >为长者提供定期健康评估、能力评估等评估服务</span
+              >
+            </div>
+
+            <div class="drowMenu" [hidden]="!showDrow">
+              <div class="arrow-left"></div>
+              <ul>
+                <li (click)="stepClick('capacityAssess', '能力评估')">
+                  能力评估
+                </li>
+                <li (click)="stepClick('nursingAssess', '护理评估')">
+                  护理评估
+                </li>
+                <li (click)="stepClick('tumble', '跌倒评估')">跌倒评估</li>
+                <li (click)="stepClick('bedsore', '压疮评估')">压疮评估</li>
+                <li (click)="stepClick('barthel', '巴氏评定')">巴氏评定</li>
+                <li (click)="stepClick('mmse', 'MMSE评估')">MMSE评估</li>
+                <li (click)="stepClick('createAssess', 'MMSE评估')">
+                  照护评估
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="HospitalRegistrationContent HospitalRegistrationMargin">
+            <!-- 箭头 -->
+            <div class="iconPosition AdmissionReviewGo">
+              <img src="assets/img/homePage/redIcon.png" alt="" />
+            </div>
+
+            <div class="iconPosition HospitalFile">
+              <div style="width: 1px; height: 30px; background: #ffbdbd"></div>
+            </div>
+
+            <div class="iconPosition HospitalFileD">
+              <div style="width:482px; height: 1px;background: #ffbdbd"></div>
+            </div>
+
+            <div class="iconPosition HospitalFilel">
+              <div style="width: 1px; height: 20px; background: #ffbdbd"></div>
+            </div>
+
+            <div class="iconPosition HospitalFileR">
+              <div style="width: 1px; height: 20px; background: #ffbdbd"></div>
+            </div>
+
+            <div class="iconPosition HospitalFileB">
+              <div style="width: 1px; height: 47px; background: #ffbdbd"></div>
+            </div>
+            <!--  办理出院 -->
+            <div class="ConsultingPublic HospitalDischarge">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/banlichuyuan.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>办理出院</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >为长者提供离院服务</span
+              >
+            </div>
+
+            <!--  服务异动 -->
+            <div class="ConsultingPublic Evaluation">
+              <div class="ConsultHead">
+                <div class="ConsultIcon">
+                  <img src="assets/img/homePage/fuwuyidong.png" alt="" />
+                </div>
+                <div class="ConsultContent"><span>服务异动</span></div>
+              </div>
+              <span style="text-align: right;display: inline-block"
+                >长者房间变动、服务等级变动的记录日志</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-layout>

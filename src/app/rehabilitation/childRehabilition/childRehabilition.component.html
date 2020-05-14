@@ -1,0 +1,186 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8">
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="old">姓名</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <input nz-input name="old" id="old" [(ngModel)]="reqObj.name" placeholder="请输入姓名">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="10" [nzXXl]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">登记日期</nz-form-label>
+                    <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                        <nz-range-picker name="date" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="儿童档案列表" [nzExtra]="extraTemplate">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">身份证号</th>
+                <th class="textCenter">登记日期</th>
+                <th class="textCenter">康复类型</th>
+                <th class="textCenter">状态</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter">{{data?.name}}</td>
+                <td class="textCenter">
+                    <span *ngIf="data?.sex == '0'">男</span>
+                    <span *ngIf="data?.sex == '1'">女</span>
+                </td>
+                <td class="textCenter">{{data?.age}}</td>
+                <td class="textCenter">{{data?.idCard}}</td>
+                <td class="textCenter">{{data?.createTime}}</td>
+                <td class="textCenter">
+                    <a href="#" (click)="turnToBrainsDetails(data, $event)" *ngIf="data?.type1 != '0'">智力残疾</a>
+                    <a href="#" (click)="turnToLimeDetails(data, $event)" *ngIf="data?.type2 != '0'" style="margin-left:10px;">肢体障碍</a>
+                </td>
+                <td class="textCenter">进行中</td>
+                <td class="textCenter">
+                    <a href="#" (click)="turnToAdd(data, $event)">编辑</a>
+                    <nz-divider nzType="vertical" *ngIf="data?.type1 == '0' || data?.type2 == '0'"></nz-divider>
+                    <a href="#" *ngIf="data?.type1 == '0' ||  data?.type2 == '0'" (click)="addChildRehabilition(data?.id, $event)">添加康复档案</a>
+
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data.id, $event)" style="color: red">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="turnToAdd('')">添加</button>
+</ng-template>
+<ng-template #totalTemplate let-total>共{{total}}条</ng-template>
+
+<!-- 添加儿童基本信息弹出框 -->
+<nz-modal [(nzVisible)]="isVisible" nzWidth="700" nzTitle="儿童基本信息" (nzOnCancel)="isVisible=false" (nzOnOk)="saveChildInfo()">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>姓名</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <input nz-input placeholder="请输入姓名" [(ngModel)]="addChildObj.name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>性别</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="addChildObj.sex" style="width: 185px;">
+                        <nz-option *ngFor="let option of sexList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">民族</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="addChildObj.folk" style="width: 185px;">
+                        <nz-option *ngFor="let option of folkList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>出生年月</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <nz-date-picker [(ngModel)]="addChildObj.bornTime" style="width: 185px;"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">身份证号</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <input nz-input placeholder="请输入身份证号" [(ngModel)]="addChildObj.idCard" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">家长姓名</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <input nz-input placeholder="请输入家长姓名" [(ngModel)]="addChildObj.parentName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">与儿童关系</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <input nz-input [(ngModel)]="addChildObj.relation" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">联系电话</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <input nz-input placeholder="请输入联系电话" [(ngModel)]="addChildObj.phone" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">家庭地址</nz-form-label>
+                <nz-form-control [nzSm]="20">
+                    <textarea rows="4" nz-input [(ngModel)]="addChildObj.address"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24" style="margin-top:10px;">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">备注</nz-form-label>
+                <nz-form-control [nzSm]="20">
+                    <textarea rows="4" nz-input [(ngModel)]="addChildObj.remark"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- 添加康复档案弹窗口 -->
+<nz-modal [(nzVisible)]="childRehabilitionIsVisible" nzWidth="600" nzTitle="添加康复档案" (nzOnCancel)="childRehabilitionIsVisible=false" (nzOnOk)="saveChildRehabilition()">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>康复类型</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                    <nz-select style="width: 220px" nzMode="tags" [(ngModel)]="typesList">
+                        <nz-option nzValue="1" nzLabel="智力残疾"></nz-option>
+                        <nz-option nzValue="2" nzLabel="肢体障碍"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>

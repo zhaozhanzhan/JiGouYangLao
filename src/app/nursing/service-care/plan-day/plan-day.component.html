@@ -1,0 +1,364 @@
+<div style="background:#fff;position: relative;height:100%;">
+  <nz-spin [nzSpinning]="loading">
+    <nz-card style="font-size:15px;">
+      <div nz-row>
+        <!-- 左侧时间线 -->
+        <div nz-col [nzSpan]="4" style="height: calc(100vh - 230px);overflow: auto;padding-right: 10px;">
+          <div (click)="addTimeLine()"
+            style="color:#1890ff;height: 50px;text-align: center;line-height: 50px;border: 2px solid #1890ff;border-radius: 10px;margin-bottom: 15px;cursor: pointer;">
+            <i nz-icon type="plus-circle" theme="fill"></i>
+            新增时段
+          </div>
+          <nz-timeline>
+            <nz-timeline-item *ngFor="let item of timeLine" class="delTimeParent">
+              <span style="cursor:pointer;" (click)="getInTimeInfo(item)">{{item?.startTime+'-'+item?.endTime}}</span>
+              <i class="delTime animated fadeIn" nz-icon type="close-circle" theme="fill" nz-popconfirm
+                nzTitle="确认删除该时间段吗?" (nzOnConfirm)="deleltTime(item)"></i>
+            </nz-timeline-item>
+          </nz-timeline>
+        </div>
+        <!-- 右侧信息 -->
+        <div nz-col [nzSpan]="20">
+          <nz-card style="font-size:15px;" nzTitle="{{InTimeInfo?.startTime+'-'+InTimeInfo?.endTime}}"
+            [nzExtra]="addServiceTem" *ngIf="InTimeInfo">
+            <nz-table #basicTable [nzData]="InTimeInfoProject" [nzLoading]="inTimeInfoLoading" nzBordered
+              [nzShowPagination]="false">
+              <thead>
+                <tr>
+                  <th class="center">排序号</th>
+                  <th class="center">服务图标</th>
+                  <th class="center">服务项目</th>
+                  <th class="center">服务类别</th>
+                  <th class="center">服务对象</th>
+                  <th class="center">护理等级</th>
+                  <th class="center">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicTable.data;let i = index">
+                  <td class="center">{{data.orderNum}}</td>
+                  <td class="center">
+                    <span *ngIf="data.picEl?.mode === 'diy'"
+                      style="display:inline-block;width: 40px;height: 40px;border-radius: 5px;line-height: 40px;font-size: 1.8em;text-align: center;"
+                      [ngStyle]="{'background': data.picEl.bacColor}">
+                      <span style="font-weight: bold;"
+                        [ngStyle]="{'color': data.picEl.fontColor}">{{data.picEl.word}}</span>
+                    </span>
+                    <span *ngIf="data.picEl?.mode === 'local'">
+                      <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+                    </span>
+                    <span *ngIf="data.picEl?.mode === 'sysIcon'">
+                      <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+                    </span>
+                  </td>
+                  <td class="center">{{data.project}}</td>
+                  <td class="center">{{data.classifyName}}</td>
+                  <td class="center">{{data.object}}</td>
+                  <td class="center">{{data.careLevel}}</td>
+                  <td class="center">
+                    <a href="javascript:void(0)" (click)="check(data.id)">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a style="color:red;" href="javascript:void(0)" (click)="delete(data.id,data.project)">删除</a>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+      </div>
+    </nz-card>
+  </nz-spin>
+</div>
+
+
+
+<!-- 新增时间段 -->
+<nz-modal [(nzVisible)]="addTimeLineModelIsVisible" nzTitle="新增时段" nzOkText="确认" nzCancelText="取消"
+  (nzOnOk)="addTimeLineModelOk()" (nzOnCancel)="addTimeLineModelCancel()">
+  <p></p>
+  开始时间：
+  <nz-time-picker [(ngModel)]="startTime" nzFormat="HH:mm"></nz-time-picker>
+  <p></p>
+  结束时间：
+  <nz-time-picker [(ngModel)]="endTime" nzFormat="HH:mm"></nz-time-picker>
+  <p></p>
+  <p></p>
+</nz-modal>
+
+<!-- 新增服务项目 -->
+<nz-modal [(nzVisible)]="addServiceModelIsVisible" nzWidth="900" [nzTitle]="addProMode === 'addPro' ? '添加服务' : '导入计划'"
+  nzOkText="确认" nzCancelText="取消" (nzOnOk)="addServiceModelOk()" (nzOnCancel)="addServiceModelCancel()">
+
+  <nz-table #basicTable2 [nzData]="listOfData" [nzLoading]="addServiceModelLoading" [nzTitle]="serchArea" nzBordered
+    nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate"
+    [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"
+    (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+    <thead>
+      <tr>
+        <th nzShowCheckbox [nzIndeterminate]="isPartSel" [nzChecked]="allChecked"
+          (nzCheckedChange)="checkBoxAllChange()"><span
+            style="display:block;position:absolute;;top:-1px;left:10px;"></span></th>
+        <th class="center">排序号</th>
+        <th class="center">服务图标</th>
+        <th class="center">服务项目</th>
+        <th class="center">服务类别</th>
+        <th class="center">服务周期</th>
+        <th class="center">服务对象</th>
+        <th class="center">护理等级</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable2.data;let i = index">
+        <td nzShowCheckbox [nzChecked]="data.checked" (nzCheckedChange)="checkBoxChange(data)"></td>
+        <td class="center">{{data.orderNum}}</td>
+        <td class="center">
+
+          <!-- 自定义图标 -->
+          <span *ngIf="data.picEl?.mode === 'diy'"
+            style="display:inline-block;width: 40px;height: 40px;border-radius: 5px;line-height: 40px;font-size: 1.8em;text-align: center;"
+            [ngStyle]="{'background': data.picEl.bacColor}">
+            <span style="font-weight: bold;" [ngStyle]="{'color': data.picEl.fontColor}">{{data.picEl.word}}</span>
+          </span>
+          <!-- 本地 -->
+          <span *ngIf="data.picEl?.mode === 'local'">
+            <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+          </span>
+          <!-- 系统图标 -->
+          <span *ngIf="data.picEl?.mode === 'sysIcon'">
+            <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+          </span>
+
+        </td>
+        <td class="center">{{data.project}}</td>
+        <td class="center">{{data.classifyName}}</td>
+        <td class="center">{{data.cycle}}</td>
+        <td class="center">{{data.object}}</td>
+        <td class="center">{{data.careLevel}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>
+
+
+</nz-modal>
+
+<!-- 查看 -->
+<nz-modal [(nzVisible)]="checkProModelIsVisible" nzWidth="900" nzTitle="项目详情" nzOkText="确认" nzCancelText="取消"
+  [nzFooter]="null" (nzOnCancel)="checkProModelIsVisible=false">
+
+  <div style="background:#fff;position: relative;">
+    <div style="position:absolute;z-index:99;width:100%;height:100%;"></div>
+    <nz-spin [nzSpinning]="checkLoading">
+      <!-- 基本配置 -->
+      <nz-card style="width:100%;font-size:15px;" nzTitle="基本配置" [nzLoading]="false">
+        <div
+          style="padding-left:60px; display: flex; flex-direction: row;flex-wrap: wrap;justify-content: space-between;align-content:space-between;">
+          <div style="line-height: 32px;width: 33%;" class="animated">
+            <span style="color:red;font-size:16px;">*</span>
+            项目名称：
+            <input nz-input style="width:200px" [(ngModel)]="formData.project" />
+          </div>
+          <div style="line-height: 32px;width: 33%;" class="animated">
+            <span style="color:red;font-size:16px;">*</span>
+            项目类别：
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择项目类别" [(ngModel)]="formData.classify">
+              <nz-option *ngFor="let item of sysProClassify" [nzLabel]="item.categoryName" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <!-- <input nz-input style="width:200px" [(ngModel)]="formData.classify" /> -->
+          </div>
+          <div style="line-height: 32px;width: 33%;">
+            系统项目：
+            <!-- <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择系统项目" [(ngModel)]="formData.systemPro">
+              <nz-option *ngFor="let item of sysProject" [nzLabel]="item.caseName" [nzValue]="item.id"></nz-option>
+            </nz-select> -->
+            <input nz-input style="width:200px" readonly [(ngModel)]="formData.systemProName"/>
+          </div>
+          <div style="width: 99%">
+            <div style="line-height: 32px;margin-top: 10px;" class="animated">
+              <span style="color:red;font-size:16px;">*</span>
+              服务对象：
+              <nz-radio-group [(ngModel)]="formData.object">
+                <label nz-radio nzValue="房间">房间</label>
+                <label nz-radio nzValue="人">人</label>
+                <label nz-radio nzValue="清洁区域">清洁区域</label>
+              </nz-radio-group>
+            </div>
+          </div>
+          <div style="width: 99%">
+            <div *ngIf="showCareLevel" style="line-height: 32px;" class="animated">
+              <span style="color:red;font-size:16px;">*</span>
+              护理等级：
+              <nz-checkbox-group [(ngModel)]="formData.level" (ngModelChange)="levelChange($event)"></nz-checkbox-group>
+            </div>
+          </div>
+          <div style="margin-top:15px;position: relative;width: 99%;">
+            <span style="margin-right:20px;margin-left: 10px;display:inline-block;position: absolute;">工作标准：</span>
+            <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="formData.standard"
+              maxlength="500" style="display:inline-block;width:86%;left: 90px;"></textarea>
+          </div>
+          <div style="width: 99%;">
+            <div style="line-height: 32px;margin-top: 10px;" class="animated">
+              <span style="color:red;font-size:16px;">*</span>
+              服务周期：
+              <nz-radio-group [(ngModel)]="formData.cycle">
+                <label nz-radio nzValue="即时">即时</label>
+                <label nz-radio nzValue="每日">每日</label>
+                <label nz-radio nzValue="每周">每周</label>
+                <label nz-radio nzValue="每月">每月</label>
+              </nz-radio-group>
+            </div>
+          </div>
+          <div style="line-height: 32px;width: 99%; margin-left: 25px;margin-top: 10px;">
+            排序号：
+            <input nz-input maxlength="6" style="width:200px" [(ngModel)]="formData.orderNum"
+              oninput="value=value.replace(/[^\d]/g,'')" />
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- 服务登记配置 -->
+      <nz-card *ngIf="formData.needGoods || formData.diy.length"
+        style="width:100%;font-size:15px;font-size:15px;margin-top:15px;" nzTitle="服务登记配置" [nzLoading]="false">
+        <div
+          style="padding-left:60px; display: flex; flex-direction: row;flex-wrap: wrap;justify-content: space-between;align-content:space-between;">
+          <div *ngIf="formData.needGoods" style="line-height: 32px;width: 99%;">
+            <label nz-checkbox [(ngModel)]="formData.needGoods">需要使用物品</label>
+            <input *ngIf="formData.needGoods" placeholder="请输入物品名称" nz-input style="width:200px;margin-right: 20px;"
+              [(ngModel)]="formData.goods" />
+            <span *ngIf="formData.needGoods">每次使用件数：</span>
+            <input *ngIf="formData.needGoods" maxlength="5" nz-input style="width:60px" [(ngModel)]="formData.pieces"
+              oninput="value=value.replace(/[^\d]/g,'')" />
+          </div>
+
+          <nz-card *ngIf="formData.diy.length" nzType="inner" nzTitle="自定义项" [nzExtra]="extraTemplate"
+            style="width:92%;margin-top:10px;">
+            <div *ngFor="let item of formData.diy; let i = index;" style="margin-top:15px;">
+              <!-- 单选 -->
+              <div *ngIf="item.classify == '单选'" style="position: relative;">
+                {{ item.title }}：
+                <nz-radio-group [(ngModel)]="item.value">
+                  <label *ngFor="let x of item.option" nz-radio [nzValue]="x">{{x}}</label>
+                </nz-radio-group>
+              </div>
+              <!-- 多选 -->
+              <div *ngIf="item.classify == '多选'" style="position: relative;">
+                {{ item.title }}：
+                <nz-checkbox-group [(ngModel)]="item.value"></nz-checkbox-group>
+              </div>
+              <!-- 文字输入 -->
+              <div *ngIf="item.classify == '文字输入'" style="position: relative;">
+                {{ item.title }}：
+                <input nz-input maxlength="50" style="width:70%" placeholder="请输入自定义内容" [(ngModel)]="item.value" />
+              </div>
+            </div>
+          </nz-card>
+        </div>
+      </nz-card>
+    </nz-spin>
+  </div>
+
+</nz-modal>
+
+
+<ng-template #addServiceTem>
+  <div style="position:relative;z-index:100;">
+    <button nz-button (click)="addService('importPro')" style="margin-right:20px;">导入计划</button>
+    <button nz-button (click)="addService('addPro')">添加服务</button>
+  </div>
+</ng-template>
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div *ngIf="addProMode === 'addPro'" style="padding: 20px 0;">
+    <div nz-row nzType="flex">
+      <div nz-col style="margin-right:10px;margin-left: 20px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>服务项目</nz-form-label>
+          <nz-form-control>
+            <input nz-input style="width:150px" placeholder="按服务项目名称检索" [(ngModel)]="sendData.project" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>服务类别</nz-form-label>
+          <nz-form-control>
+            <input nz-input style="width:150px" placeholder="按服务类别检索" [(ngModel)]="sendData.classify" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>服务周期</nz-form-label>
+                    <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="服务周期" [(ngModel)]="sendData.cycle" (ngModelChange)="getList(true)">
+                          <nz-option nzValue="" nzLabel="全部"></nz-option>
+                          <nz-option nzValue="日" nzLabel="日"></nz-option>
+                          <nz-option nzValue="周" nzLabel="周"></nz-option>
+                          <nz-option nzValue="月" nzLabel="月"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+            </div> -->
+      <!-- <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>服务对象</nz-form-label>
+                    <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="服务对象" [(ngModel)]="sendData.object" (ngModelChange)="getList(true)">
+                          <nz-option nzValue="" nzLabel="全部"></nz-option>
+                          <nz-option nzValue="人" nzLabel="人"></nz-option>
+                          <nz-option nzValue="房间" nzLabel="房间"></nz-option>
+                          <nz-option nzValue="消毒区域" nzLabel="消毒区域"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+            </div> -->
+      <div nz-col style="margin-right:10px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>护理等级</nz-form-label>
+          <nz-form-control>
+            <nz-select style="width: 200px;" nzPlaceHolder="护理等级" [(ngModel)]="sendData.level"
+              (ngModelChange)="getList(true)">
+              <nz-option nzValue="" nzLabel="全部"></nz-option>
+              <nz-option nzValue="自理" nzLabel="自理"></nz-option>
+              <nz-option nzValue="介助" nzLabel="介助"></nz-option>
+              <nz-option nzValue="介护" nzLabel="介护"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="addProMode === 'importPro'" style="padding: 20px 0;">
+    <div nz-row nzType="flex">
+      <div nz-col style="margin-right:10px;margin-left: 20px;">
+        <nz-form-item nzFlex>
+          <nz-form-label>计划名称</nz-form-label>
+          <nz-form-control>
+            <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="选择计划名称" [(ngModel)]="sendData.planId">
+              <nz-option *ngFor="let item of listOfService" [nzLabel]="item.planName" [nzValue]="item.id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button nz-button nzType="primary" style="margin-left:10px;" (click)="getServiceList(true)">
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->

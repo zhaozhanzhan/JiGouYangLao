@@ -1,0 +1,124 @@
+
+<div style="padding:20px;margin-left: 60px;font-size:15px;position: relative;">
+  <!-- 遮罩 -->
+  <div *ngIf="sendData.status == '未完成' || sendData.status == '已完成'" style="position: absolute;width: 100%;height:100%;z-index: 99;" ></div>
+  <nz-spin [nzSpinning]="loading">
+  <!-- 基本信息 不可修改 -->
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="6">
+      <div >姓名：{{sendData.name}}</div>
+    </div>
+    <div nz-col nzSpan="6">
+      <div >性别：{{sendData.sex}}</div>
+    </div>
+    <div nz-col nzSpan="6">
+      <div >年龄: {{sendData.age}}</div>
+    </div>
+    <div nz-col nzSpan="6">
+      <div >入住时间：{{sendData.inDate}}</div>
+    </div>
+    <div nz-col nzSpan="6" style="margin-top:15px;">
+      <div>房间号：{{sendData.room}}</div>
+    </div>
+    <div nz-col nzSpan="6" style="margin-top:15px;">
+      <div>护理等级：{{sendData.levelOfCare}}</div>
+    </div>
+  </div>
+
+  <!-- 基本信息 可修改 -->
+  <div style="margin-top:15px;">
+    <div>
+      <span style="margin-right:20px;">传染病：</span>
+      <nz-radio-group [(ngModel)]="sendData.contagion" (ngModelChange)="contagion($event,contagion2)">
+        <label nz-radio nzValue="是">是</label>
+        <label nz-radio nzValue="否">否</label>
+      </nz-radio-group>
+      <input nz-input #contagion2 style="width:50%;" [hidden]="sendData.contagion == '否'" maxlength="100" type="text" [disabled]="sendData.contagion == '否'" [(ngModel)]="sendData.contagion2">
+    </div>
+    <div style="margin-top:15px;">
+      <span style="margin-right:20px;">过敏史：</span>
+      <nz-radio-group [(ngModel)]="sendData.allergic" (ngModelChange)="allergic($event)">
+        <label nz-radio nzValue="是">是</label>
+        <label nz-radio nzValue="否">否</label>
+      </nz-radio-group>
+      <nz-checkbox-group [nzDisabled]="sendData.allergic == '否'" [(ngModel)]="sendData.allergic2" [hidden]="sendData.allergic == '否'" (ngModelChange)="allergic2($event,allergic3)"></nz-checkbox-group>
+      <input nz-input #allergic3 style="width:30%;" [hidden]="sendData.allergic == '否' || otherInput" maxlength="100" type="text" [disabled]="sendData.allergic == '否' || otherInput" [(ngModel)]="sendData.allergic3">
+    </div>
+    <div style="margin-top:15px;position: relative;">
+      <span style="margin-right:20px;display:inline-block;position: absolute;">病史：</span>
+      <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="sendData.historyOfNow" maxlength="500" style="display:inline-block;width:92%;left: 80px;"></textarea>
+    </div>
+    <div style="margin-top:20px;position: relative;">
+      <span style="margin-right:20px;display:inline-block;position: absolute;">药物：</span>
+      <nz-card nzType="inner" nzTitle="正在使用的药物" [nzExtra]="extraTemplate" style="width:92%;left: 80px;">
+        <nz-table [nzNoResult]="sendData.takingMeds.length > 0 ? '&nbsp;' : '暂无数据'">
+          <thead>
+            <tr>
+              <th class="center">序号</th>
+              <th class="center">药物的名称与剂量</th>
+              <th class="center">用法</th>
+              <th class="center">每次用量</th>
+              <th class="center">频率</th>
+              <th class="center">备注</th>
+              <th class="center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of sendData.takingMeds; let i = index">
+              <td class="center">{{i+1}}</td>
+              <td class="center">
+                <nz-mention [nzSuggestions]="medNameList" (nzOnSearchChange)="onSearchNameChange($event,i)" (nzOnSelect)="selMedName($event,i)"
+                  [nzNotFoundContent]="'无匹配结果'" 
+                  [nzPrefix]="medName.value[0]?medName.value[0]:''"
+                  [nzLoading]="inputSuggestLoading">
+                  <input style="min-width:150px;" #medName placeholder="请输入药品名称" nzMentionTrigger nz-input
+                    [(ngModel)]="sendData.takingMeds[i].drugsAndDosage" (keyup)="profix(medName)" />
+                </nz-mention>
+              </td>
+              <td class="center">
+                <nz-select style="min-width:150px;" nzPlaceHolder="请选择/输入用法" nzShowSearch
+                  [(ngModel)]="sendData.takingMeds[i].usage">
+                  <nz-option *ngFor="let option of listOfUsages" [nzLabel]="option.label" [nzValue]="option.label">
+                  </nz-option>
+                </nz-select>
+              </td>
+              <td class="center">
+                <input style="min-width:50px;" nz-input [(ngModel)]="sendData.takingMeds[i].perUse" />
+              </td>
+              <td class="center">
+                <nz-select style="min-width:150px;" nzPlaceHolder="请选择/输入频率" nzShowSearch
+                  [(ngModel)]="sendData.takingMeds[i].frequency">
+                  <nz-option *ngFor="let option of listOfFrequency" [nzLabel]="option.label" [nzValue]="option.label">
+                  </nz-option>
+                </nz-select>
+              </td>
+              <td class="center">
+                <input style="min-width:90px;" nz-input [(ngModel)]="sendData.takingMeds[i].comment" />
+              </td>
+              <td class="center" style="min-width:70px;">
+                <a class="colorF00" nz-popconfirm nzTitle="确认删除本药品吗?" (nzOnConfirm)="deleteMed(i)">删除</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+    </div>
+    <ng-template #extraTemplate>
+        <button nz-button nzType="dashed" (click)="addMed()">
+        <i class="anticon anticon-plus"></i> 添加药物</button>
+    </ng-template>
+    <div style="margin-top:15px;position: relative;">
+      <span style="margin-right:20px;display:inline-block;position: absolute;">备注：</span>
+      <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="sendData.remark" maxlength="500" style="display:inline-block;width:92%;left: 80px;"></textarea>
+    </div>
+  </div>
+  <br />
+  <br />
+  <!-- 按钮 -->
+  <div style="text-align:center;">
+    <!-- 未完成或已完成时，无法进行保存操作 -->
+    <button style="width:100px;height:40px;margin-right:20px;" *ngIf="!(sendData.status == '未完成' || sendData.status == '已完成')" nz-button [nzSize]="large" nzType="primary" (click)="saveForm()">保存</button>
+    <button style="width:100px;height:40px;" *ngIf="sendData.status == '跟进中'" nz-button [nzSize]="large" nzType="danger" (click)="dropForm()">放弃</button>
+  </div>
+</nz-spin>
+</div>

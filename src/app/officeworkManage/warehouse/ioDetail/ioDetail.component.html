@@ -1,0 +1,193 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>操作日期</nz-form-label>
+                <nz-form-control>
+                    <nz-range-picker name="date" style="width:250px" [(ngModel)]="selectedDates" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>库房</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzPlaceHolder="请选择" [(ngModel)]="queryParams.warehouseId" style="width:150px" nzAllowClear>
+                        <nz-option *ngFor="let storehouse of storehouseList" [nzLabel]="storehouse.name" [nzValue]="storehouse.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="whGoodsId">物品</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear style="width:150px" nzPlaceHolder="请选择" [(ngModel)]="queryParams.goodName">
+                        <nz-option *ngFor="let goods of goodsList" [nzLabel]="goods.name" [nzValue]="goods.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>物品类别</nz-form-label>
+                <nz-form-control>
+                    <nz-tree-select style="width:150px" [nzNodes]="goodsClassificationNodes" nzShowSearch [nzPlaceHolder]="reqObjGoodName" [(ngModel)]="queryParams.goodCategory">
+                    </nz-tree-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="whGoodsId">方式</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear style="width:150px" nzPlaceHolder="请选择" [(ngModel)]="queryParams.inOutWay">
+                        <nz-option nzLabel="入库" [nzValue]="1"></nz-option>
+                        <nz-option nzLabel="出库" [nzValue]="2"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="derivedTable()" style="margin-left: 10px;">
+                        导出
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="print_div" [printCSS]="printCSS" (printComplete)="printComplete()">
+            </e-ngx-print>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="onPrint($event)" style="margin-left: 10px;">
+                        打印
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="出入库明细列表">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1400px' }">
+        <thead>
+            <tr>
+                <th class="textCenter" *ngIf="userIs==false">批次号</th>
+                <th class="textCenter" *ngIf="userIs==true">代码</th>
+                <th class="textCenter">物品</th>
+                <th class="textCenter">数量</th>
+                <th class="textCenter">单位</th>
+                <th class="textCenter">规格型号</th>
+                <th class="textCenter">物品类别</th>
+                <th class="textCenter">库房</th>
+                <th class="textCenter">方式</th>
+                <th class="textCenter">总价</th>
+                <th class="textCenter">来源/去向</th>
+                <th class="textCenter">操作时间</th>
+                <th class="textCenter">操作人</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter" *ngIf="userIs==false">{{ data?.batchNum }}</td>
+                <td class="textCenter" *ngIf="userIs==true">{{ data?.code }}</td>
+                <td class="textCenter">{{ data?.goodname }}</td>
+                <td class="textCenter">{{ data?.num }}</td>
+                <td class="textCenter">{{ data?.unit }}</td>
+                <td class="textCenter">{{ data?.model }}</td>
+                <td class="textCenter">{{ data?.goodCategoryName }}</td>
+                <td class="textCenter">{{ data?.inOutWarehouseName }}</td>
+
+                <td class="textCenter" *ngIf="data?.inOutWay == 1">入库</td>
+                <td class="textCenter" *ngIf="data?.inOutWay == 2">出库</td>
+                <td class="textCenter">{{ data?.money }}</td>
+                <td class="textCenter">{{ data?.reason }}</td>
+
+                <td class="textCenter">
+                    {{ data?.operateDate | date: "yyyy-MM-dd HH:mm:ss" }}
+                </td>
+                <td class="textCenter">{{ data?.operator }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+</nz-card>
+
+<div [hidden]="!disabled" #print_div>
+    <div style="width:98%;text-align: center;margin: 0 auto">
+        <h1>出入库明细列表</h1>
+        <div style="text-align:right;margin-bottom:15px;">{{queryParams.btime | date:'yyyy-MM-dd' +'~'}}{{queryParams.etime | date:'yyyy-MM-dd'}}</div>
+    </div>
+    <table style="border-collapse:collapse;width: 98%;margin: 0 auto;font-size: 12px;" border="1" id="printTable">
+        <thead>
+            <tr>
+                <th class="textCenter" style="width:120px" *ngIf="userIs==false">批次号</th>
+                <th class="textCenter" style="width:120px" *ngIf="userIs==true">代码</th>
+                <th class="textCenter">物品</th>
+                <th class="textCenter" style="width:40px">数量</th>
+                <th class="textCenter" style="width:40px">单位</th>
+                <th class="textCenter">规格型号</th>
+                <th class="textCenter" style="width:80px">物品类别</th>
+                <th class="textCenter">库房</th>
+                <th class="textCenter" style="width:40px">方式</th>
+                <th class="textCenter">总价</th>
+                <th class="textCenter">来源/去向</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of list">
+                <td class="textCenter" *ngIf="userIs==false">{{ data?.batchNum }}</td>
+                <td class="textCenter" *ngIf="userIs==true">{{ data?.code }}</td>
+                <td style="text-align:center;">{{ data?.goodname }}</td>
+                <td style="text-align:center;">{{ data?.num }}</td>
+                <td style="text-align:center;">{{ data?.unit }}</td>
+                <td style="text-align:center;">{{ data?.model }}</td>
+                <td style="text-align:center;">{{ data?.goodCategoryName }}</td>
+                <td class="textCenter">{{ data?.inOutWarehouseName }}</td>
+                <td style="text-align:center;" *ngIf="data?.inOutWay == 1">入库</td>
+                <td style="text-align:center;" *ngIf="data?.inOutWay == 2">出库</td>
+                <td class="textCenter">{{ data?.money }}</td>
+                <td class="textCenter">{{ data?.reason }}</td>
+            </tr>
+            <tr>
+                <td class="textCenter" colspan="2">物品总计</td>
+                <td class="textCenter">{{totalNum}}</td>
+                <td class="textCenter" colspan="5">物品总价</td>
+                <td class="textCenter">{{totalMoney}}</td>
+                <td class="textCenter"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="width:100%;margin: 0 auto;float: right;" *ngIf="queryParams.inOutWay=='1'">
+        <div style="width:33.3%;float:left">
+            <span>采购人：</span>
+        </div>
+        <div style="width:33.3%;float:right">
+            <span>入库人：</span>
+        </div>
+        <div style="width:33.3%;float:right">
+            <span>审核人：</span>
+        </div>
+    </div>
+
+    <div style="width:100%;margin: 0 auto;float: right;" *ngIf="queryParams.inOutWay=='2'">
+        <div style="width:50%;float:left" *ngFor="let item of outboundDetailsList">
+            <span>{{item.dictTag}}：</span>
+        </div>
+    </div>
+</div>

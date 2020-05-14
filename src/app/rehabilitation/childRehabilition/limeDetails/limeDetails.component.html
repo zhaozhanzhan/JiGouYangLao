@@ -1,0 +1,3036 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>肢体障碍档案详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="primary" (click)="add()" *ngIf="disabled==false">添加</button>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-tabset ([nzSelectedIndex])="bigIndex" (nzSelectChange)="clickBigTab($event.index)">
+        <nz-tab nzTitle="概览">
+            <app-brainsOverview [name]="evaluationObj"></app-brainsOverview>
+        </nz-tab>
+        <div *ngFor="let item of assessArr;let i=index">
+            <nz-tab [nzTitle]="item.name">
+                <nz-tabset ([nzSelectedIndex])="index" (nzSelectChange)="clickTab($event.index)">
+                    <nz-tab nzTitle="卧位与翻身">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>评估项目</b></th>
+                                        <th><b>测评方案</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.仰卧位：头正中位：在四肢保持对称的情况下旋转头部</td>
+                                        <td rowspan="4">位置：头位于中线，有可能的话手臂放松且对称放置 <br>
+                                            方法：引导孩子的头从一侧转向另一侧，或跟随物体从一侧转至另一侧。孩子能在引导下保持手臂不动，或者可以在较小孩子尽力去得到物体的时候，观察其上肢运动是否对称。
+                                        </td>
+                                        <td>0</td>
+                                        <td>头不能维持于中线</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[0].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>头能维持于中线1~3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>头能维持在中线，转头时四肢不对称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2. 仰卧位：双手纠正道中位，手指相接触</td>
+                                        <td rowspan="4">位置：头位于中线且手臂放松。 <br>
+                                            方法：引导孩子将手放在一起或模仿你的示范，较小的孩子常常会将手自发地放在一起，尤其是在关注玩具的时候。“手指相对”指孩子必需保持两手在一起足够长的时间，从而显示出有一只手或双手指尖的接触（可以是一个手指碰到另一只手，但不能是两个拳头的短暂接触）。
+                                        </td>
+                                        <td>0</td>
+                                        <td>双手没有向中线移动</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[1].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>双手开始时向中线移动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手能放在身体前面，不能手指相对</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">3. 仰卧位：抬头45度</td>
+                                        <td rowspan="4">位置：头头位于中线 <br>
+                                            方法：试用孩子感兴趣的玩具来吸引他们，当他们把注意力放在玩具上时，渐渐地将玩具朝他们脚的方向移动并离开他们的视线，希望他们为追逐玩具而抬头。也可以假装抱孩子期望他能抬头。
+                                        </td>
+                                        <td>0</td>
+                                        <td>颈部没有屈曲</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[2].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>颈部有屈曲，但不抬头，抬不起来</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>抬头小于45度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">4. 仰卧位：右侧髋、膝关节能在全关节范围</td>
+                                        <td rowspan="4">位置：头位于中线、腿舒适地伸展 <br>
+                                            方法：要求大年龄孩子其将膝尽量靠近胸部。小年龄孩子在玩耍中自然完成，指导者拿一只有趣的玩具放在一只或2只脚上从而诱导小年龄孩子屈髋或膝。全关节范围是指膝触及胸，大腿触及小腿。
+                                        </td>
+                                        <td>0</td>
+                                        <td>右侧髋、膝关节没有屈曲</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[3].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>右侧髋、膝关节有屈曲</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>局部屈曲右髋、膝关节</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">5. 仰卧位：左侧髋、膝关节能在全关节范围内屈曲</td>
+                                        <td rowspan="4">位置：头位于中线、腿舒适地伸展 <br>
+                                            方法：要求大年龄孩子其将膝尽量靠近胸部。小年龄孩子在玩耍中自然完成，指导者拿一只有趣的玩具放在一只或2只脚上从而诱导小年龄孩子屈髋或膝。全关节范围是指膝触及胸，大腿触及小腿。
+                                        </td>
+                                        <td>0</td>
+                                        <td>左侧髋、膝关节没有屈曲</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[4].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>左侧髋、膝关节有屈曲</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>局部屈曲左髋、膝关节</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">6. 仰卧位：右上肢过中线抓玩具</td>
+                                        <td rowspan="4">位置：头位于中线、手臂放松（只要双手不过中线，在中线上或任何位置都可）玩具放置胸部水平使孩子容易得到且又离胸足部够远、引导孩子手伸向空中取物。<br>
+                                            方法：要求孩子去拿放在中线位的一个小玩具，然后逐渐把玩具向孩子左侧移动以使孩子的右手越过中线，玩具的位置视孩子的能力而定。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有像中线移动的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[5].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始伸手向中线移动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>伸出右臂、但手不能过中线</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">7. 仰卧位：左上肢过中线抓玩具</td>
+                                        <td rowspan="4">位置：头位于中线、手臂放松（只要双手不过中线，在中线上或任何位置都可）玩具放置胸部水平使孩子容易得到且又离胸足部够远、引导孩子手伸向空中取物。<br>
+                                            方法：要求孩子去拿放在中线位的一个小玩具，然后逐渐把玩具向孩子右侧移动以使孩子的左手越过中线，玩具的位置视孩子的能力而定。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有像中线移动的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[6].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始伸手向中线移动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>伸出左臂、但手不能过中线</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8. 仰卧位：向右翻身成俯卧位</td>
+                                        <td rowspan="4">位置：头位于中线、手臂和下肢舒适地放松<br>
+                                            方法：大年龄孩子简单地要求翻身至俯卧，小年龄孩子经常会向玩具方向翻身。如果孩子完翻身至俯卧、但右手臂仍压在下面、可以给于3分。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有翻身的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[7].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始翻</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分翻、不成俯卧</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9. 仰卧位：向左翻身成俯卧位</td>
+                                        <td rowspan="4">位置：头位于中线、手臂和下肢舒适地放松<br>
+                                            方法：大年龄孩子简单地要求翻身至俯卧，小年龄孩子经常会向玩具方向翻身。如果孩子完翻身至俯卧、但左手臂仍压在下面、可以给于3分。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有翻身的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[8].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始翻</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分翻、不成俯卧</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10. 俯卧位：竖直抬头</td>
+                                        <td rowspan="4">位置：头在垫子上、手臂、腿舒适地放置（腹部、骨盆必需与垫子接触）头可以面朝下或转向一边。<br>
+                                            方法：大孩子可要求其抬头并朝前看。小孩子可以在他们面前放一些玩具或叫他的名字来吸引他们。并不要求头位于正中线。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有抬头迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[9].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始抬头、但下巴不能离垫</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>抬头、下巴能离垫、头不能竖起</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.肘支撑成俯卧位：头抬高，肘部伸展，胸部离开床</td>
+                                        <td rowspan="4">位置：俯卧位手臂放在前臂可以承重的位置上，如果觉得可能抬头有困难，就必须让孩子头放在垫子上。腿舒适地伸展。<br>
+                                            方法：鼓励孩子抬头于垂直位并伸手臂。大孩子可以对言语的要求或示范有反应。小孩子则更喜欢在对他面前举起并逐渐抬高的玩具，看有无反应。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有抬头迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[10].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>抬头、下巴不能离垫</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>抬头、没有竖起、前臂承重</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.肘支撑俯卧位：右肘支撑躯体，朝前完全伸展左臂</td>
+                                        <td rowspan="4">位置：头可以处于任何位置、手臂放在可以前臂负重的位置、腿舒适的伸展。<br>
+                                            方法：在孩子面前约一手臂长度的地方放一个玩具大约在视线水平鼓励其伸出左臂离开垫子向前取玩具。完全伸展是指肘部完全伸展且肩向前臂屈曲。
+                                        </td>
+                                        <td>0</td>
+                                        <td>右前臂没有支撑体重的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[11].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>右前臂承重、左臂不支撑，但没有向前伸展</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>右前臂承重、左臂部分向前伸展</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.肘支撑俯卧位：左肘支撑躯体，朝前完全伸右手</td>
+                                        <td rowspan="4">位置：头可以处于任何位置、手臂放在可以前臂负重的位置、腿舒适的伸展。<br>
+                                            方法：在孩子面前约一手臂长度的地方放一个玩具大约在视线水平鼓励其伸出右臂离开垫子向前取玩具。完全伸展是指肘部完全伸展且肩向前臂屈曲。
+                                        </td>
+                                        <td>0</td>
+                                        <td>左前臂没有支撑体重的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[12].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>左前臂承重、右臂不支撑，但没有向前伸展</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>左前臂承重、右臂部分向前伸展</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.俯卧位：向右翻身成仰卧位</td>
+                                        <td rowspan="4">位置：俯卧位，手臂、舒适地放置最好头向下。<br>
+                                            方法：鼓励孩子在要求或示范下向右翻至仰卧。小孩子可能朝着玩具或照料者翻身。不可以通过摆放手臂使孩子不用抬头只需轻轻用力即可繁至仰卧位，例如右臂屈曲在头下面。虽然下肢保持交叉但能完全翻身可以给3分。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有翻身的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[13].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有翻身</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分向仰卧位翻身</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.俯卧位：向左翻身成仰卧位</td>
+                                        <td rowspan="4">位置：俯卧位，手臂、舒适地放置最好头向下<br>
+                                            方法：鼓励孩子在要求或示范下向左翻至仰卧。小孩子可能朝着玩具或照料者翻身。不可以通过摆放手臂使孩子不用抬头只需轻轻用力即可繁至仰卧位，例如左臂屈曲在头下面。虽然下肢保持交叉但能完全翻身可以给3分。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有翻身的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[14].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有翻身</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分向仰卧位翻身</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">16.俯卧位：使用四肢向右侧旋转90度</td>
+                                        <td rowspan="4">位置：孩子舒适地俯卧位、头朝下<br>
+                                            方法：放一个玩具在孩子右面并鼓励其旋转。如果你期望孩子能转动90度，则玩具应放在90度以外处。玩具放在90度处的时候，一些孩子会部分旋转后伸右手来够玩具这种情况可以认为是已完成动作。如孩子通过爬或翻身来完成此测试的话，可以在开始阶段将玩具放在孩子的右边，通过逐渐移动玩具引导孩子完成
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向右旋转的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[15].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始用肢体向右旋转</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>用四肢向右旋转＜90度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td rowspan="4">17.俯卧位：使用四肢向左侧旋转90度</td>
+                                        <td rowspan="4">位置：孩子舒适地俯卧位、头朝下<br>
+                                            方法：放一个玩具在孩子左面并鼓励其旋转。如果你期望孩子能转动90度，则玩具应放在90度以外处。玩具放在90度处的时候，一些孩子会部分旋转后伸左手来够玩具这种情况可以认为是已完成动作。如孩子通过爬或翻身来完成此测试的话，可以在开始阶段将玩具放在孩子的左边，通过逐渐移动玩具引导孩子完成
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向左旋转的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[16].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始用肢体向左旋转</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>用四肢向左旋转＜90度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input placeholder="Basic usage" [(ngModel)]="assessArr[i].assessAthleticList[17].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="坐位">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>评估项目</b></th>
+                                        <th><b>测评方案</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.仰卧位：检查者握孩子双手，拉自己到坐位，头部控制好（头与脊柱成直线或稍向前倾）</td>
+                                        <td rowspan="4">位置：仰卧位，头放于中线、手臂和腿自然伸展 <br>
+                                            方法：检查者的位置应给于孩子坐起所需足够的空间、同时能安全地抓住孩子的手。测试孩子时检查者可以位于其一边，但测试大孩子时需要骑跨在他们的腿上方（小心不能固定他们的腿）
+                                        </td>
+                                        <td>0</td>
+                                        <td>拉到坐位时，头不能控制</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[0].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>拉到坐位时，头部有控制的迹象</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>拉到坐位时，头能控制部分时间</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.仰卧位：向右侧翻身，坐起</td>
+                                        <td rowspan="4">位置：仰卧位，头放至中线、手臂、腿舒适伸展。<br>
+                                            方法：指导孩子先翻至右侧然后坐起，对于那些已经用这种方法来坐孩子来说，这个很容易明白，但对于那些不用这种方法去坐的孩子来说，需要更多的解释。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向右翻身坐起的迹象（先成俯卧然后坐起不给分）</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[1].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向右侧翻，开始有坐起的动作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向右侧翻，部分坐起</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.仰卧位：向左侧翻身，坐起</td>
+                                        <td rowspan="4">位置：仰卧位，头放至中线、手臂、腿舒适伸展。<br>
+                                            方法：指导孩子先翻至左侧然后坐起，对于那些已经用这种方法来坐孩子来说，这个很容易明白，但对于那些不用这种方法去坐的孩子来说，需要更多的解释。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向左翻身坐起的迹象（先成俯卧然后坐起不给分）</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[2].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向左侧翻，开始有坐起的动作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向左侧翻，部分坐起</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.坐于垫子上：检查者支撑孩子胸部，头部竖直保持3秒</td>
+                                        <td rowspan="4">位置：孩子位于任何舒适的坐位、头屈曲向前。<br>
+                                            方法：检查者位于孩子后面、将双手放于孩子胸部、另一人在孩子前面举着一个玩具在孩子眼睛水平。如果只有一个人的话可以用一面墙镜来帮助引起孩子的注意。
+                                        </td>
+                                        <td>0</td>
+                                        <td>头部没有抬起的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[3].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有抬头的迹象</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>抬头但不能竖直维持3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（头部到垂直位并维持3秒）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.坐于垫子上：检查者支撑孩子胸部，头正中位保持10秒</td>
+                                        <td rowspan="4">位置：孩子位于任何舒适的坐位、头屈曲向前。<br>
+                                            方法：指导孩子抬头向前看玩具、希望孩子抬头位于中线、“中线”是指“头位于中间”。也就是说矢状面和额状面都垂直。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有抬头的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[4].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始抬头，但不在中线</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>头抬起位于中线，保持小于10秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.用上肢支撑坐于垫子上，保持5秒</td>
+                                        <td rowspan="4">位置：孩子坐垫子上，可以取任何舒适位，手臂放于最有利支撑的地方。包括前面、旁边或放在身体上，如大腿上。孩子也可以用一个手臂支撑或一手放在另一手臂上。<br>
+                                            方法：检查者位于能使孩子表现最好的地方，对于较小的或较重的孩子，检查者可以站在孩子的后面，另一个人能在前面鼓励孩子、孩子面对一面镜子也是有帮助的。对于大孩子可以简单地要求其保存姿势达到要求的时间。
+                                        </td>
+                                        <td>0</td>
+                                        <td>手臂不能支撑</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[5].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>保持小于1秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>保持1~4秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">8.坐于垫子上：没有上肢支撑保持坐位3秒</td>
+                                        <td rowspan="4">位置：舒适地坐在垫子上、手臂任意放置。<br>
+                                            方法：检查者可以位于孩子前面或后面。许多孩子可以在开始时用手臂支撑、随后依据动作要求或示范抬起一个或双手。小孩子可以开始手臂支撑、然后诱导其为得到他们面前举着的玩具而抬起一个或双手臂，或通过游戏如：拍手，来抬起双手。“手臂放松”是指手臂不会因为要达到或保持坐位而承重。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能保持坐位、除非手臂支撑</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[6].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>单个手臂支撑下保持坐位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>没有上肢支撑保持坐位小于3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">9.坐于垫子上：前面放置小玩具，身体前倾触摸玩具，没有上肢支持返回直立坐位</td>
+                                        <td rowspan="4">位置：舒适地坐在垫子上、手的位置可以根据孩子能力而变化但孩子必需能稳定于坐位从而完成该测试。<br>
+                                            方法：使玩具离开孩子足够远以致必需倾斜向前触摸。这将取决于许多因素（如最初坐的位置、伸臂的运动范围等）。可允许至少一次尝试来判断玩具是否在孩子前倾够得着的地方。对于较小的孩子，可用较大的玩具，使其双手均不承重。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向前倾的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[7].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>倾向前，但不返回</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>倾向前，触摸玩具，在手臂支持下回到直立坐位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">10.坐于垫子上：触摸右后方45度放置的玩具，返回开始姿势</td>
+                                        <td rowspan="4">位置：孩子舒适坐在垫子（包括W坐）手臂的位置可以变化、但孩子必需能够坐稳尝试该题。<br>
+                                            方法：在孩子右边后方45度处放置玩具，距离等于孩子伸出手臂其臀部的长度。检查者尽量在他右面放置玩具来引起他的注意、然后将其放于大概的位置、引诱孩子得到它、使注意力在玩具上是很重要的。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有触摸玩具的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[8].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始伸手，但不达到后面</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>伸到后面，但没有触及玩具或没有回到原地（手伸到大转子外）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">11.坐于垫子上：触摸左后方45度放置的玩具，返回开始姿势</td>
+                                        <td rowspan="4">位置：孩子舒适坐在垫子（包括W坐）手臂的位置可以变化、但孩子必需能够坐稳尝试该题。<br>
+                                            方法：在孩子左边后方45度处放置玩具，距离等于孩子伸出手臂其臀部的长度。检查者尽量在他左面放置玩具来引起他的注意、然后将其放于大概的位置、引诱孩子得到它、使注意力在玩具上是很重要的。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有触摸玩具的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[9].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始伸手，但不达到后面</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>伸到后面，但没有触及玩具或没有回到原地（手伸到大转子外）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">12.右侧横坐：没有上肢支持保持5秒</td>
+                                        <td rowspan="4">位置：孩子右侧横坐于垫子、开始时可以双手支撑、然后右手臂支撑或双手放松。<br>
+                                            方法：指导孩子抬起左臂或双臂。一旦你确定其达到了三种之一的姿势时就计时5秒，如果孩子不能保持姿势5秒，则尝试在低一级水平计5秒。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能保持右侧横坐</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[10].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>右侧横坐、双手支撑5秒（肘部必需离开垫子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>右侧横坐、右臂支撑5秒（肘部必需离开垫子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">13.左侧横坐：没有上肢支持保持5秒</td>
+                                        <td rowspan="4">位置：孩子左侧横坐于垫子、开始时可以双手支撑、然后左手臂支撑或双手放松。<br>
+                                            方法：指导孩子抬起右臂或双臂。一旦你确定其达到了三种之一的姿势时就计时5秒，如果孩子不能保持姿势5秒，则尝试在低一级水平计5秒。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能保持左侧横坐</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[11].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>左侧横坐、双手支撑5秒（肘部必需离开垫子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>左侧横坐、右臂支撑5秒（肘部必需离开垫子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.坐于垫子上：有控制地降低身体成俯卧位</td>
+                                        <td rowspan="4">位置：舒适地坐在垫子上。<br>
+                                            方法：引诱孩子在控制下将他们的手臂放低。“控制下”暗示动作是规则的或有方向性。可以简单地要求大孩子趴着躺下。“碰撞”不包括突然摔下，然后翻到俯卧位。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有在控制下降低身体至俯卧位的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[12].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>有在控制下降低身体至俯卧位的迹象</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>降低身体至俯卧位，但有碰撞（失去控制的动作）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">15.足向前坐于垫子上：身体向右侧旋转成四点支撑位</td>
+                                        <td rowspan="4">位置：坐于垫子上、腿舒适地放在前面。（不允许W坐）。<br>
+                                            方法：这些孩子通过不同的右侧横坐位转换到四点跪位，或者先向前移动然后向右转越过右腿变成四点跪位。希望他们可以通过上臂承重的方式来完成这项任务，他们先是用前臂承重后伸直肘部还是直接就用双手承重并不重要，但不可以先转到俯卧位再转成四点位。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有转成四点位的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[13].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有向右转成四点位的动作出现</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分完成向右翻成四点位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">16.足向前坐于垫子上：身体向左侧旋转成四点支撑位</td>
+                                        <td rowspan="4">位置：坐于垫子上、腿舒适地放在前面。（不允许W坐）<br>
+                                            方法：这些孩子通过不同的左侧横坐位转换到四点跪位，或者先向前移动然后向左转越过左腿变成四点跪位。希望他们可以通过上臂承重的方式来完成这项任务，他们先是用前臂承重后伸直肘部还是直接就用双手承重并不重要，但不可以先转到俯卧位再转成四点位。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有转成四点位的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[14].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有向左转成四点位的动作出现</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分完成向左翻成四点位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">17.坐于垫子上：不使用上肢帮助旋转90度</td>
+                                        <td rowspan="4">位置：孩子可以以任何姿势坐在垫子上。<br>
+                                            方法：指导孩子向左或右旋转（任何方向都可以）。孩子可在追逐玩具中旋转、象在俯卧位旋转一样。将玩具置于90度以外但仍在他们的视线之中，不幸的是许多孩子将呈4点位而不是旋转。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有开始旋转的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[15].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始旋转</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>靠手臂帮助旋转90度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">18.坐于凳上：上肢及双足不支撑保持10秒</td>
+                                        <td rowspan="4">位置：孩子位于凳子上、膝盖在边缘、脚悬空、手臂的姿势和脚的支撑能力而定。<br>
+                                            方法：放置孩子在大凳子上（脚悬着无支撑），如果达到坐稳则要求孩子抬起手臂而达到手臂放松的姿势，当孩子呈现（手臂放松）之前或之后，记时10秒。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能在凳子上保持坐势</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[16].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>保持，手臂支撑，脚支撑10秒（坐于凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>保持，手臂放松，脚支撑10秒（坐于凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（坐于椅子）</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">19.站立位：落坐小凳子</td>
+                                        <td rowspan="4">位置：孩子站在小凳前、面朝小凳或背朝或平行。可以无支撑或用1~2只手抓住凳子，但躯体不能靠凳子。<br>
+                                            方法：希望孩子以任何方式坐到凳子上，可以爬至凳子上并转身或可以下蹲至坐位、大孩子可以在语言的指导下坐到凳子上，小孩子可能对动作示范反应更好，或者用玩具鼓励小孩子坐到凳子上会更好。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有坐上小凳子的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[17].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始坐凳子（有上凳子的企图）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分坐上凳子</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">20.从地面：坐落小凳子</td>
+                                        <td rowspan="4">位置：孩子可以面朝凳子。开始的姿势可以包括在地板上卧、坐、四点位或跪位等任何姿势，但是除外站立位。<br>
+                                            方法：和35不同，本项测试试图证明孩子是否能从地板上坐起来坐到小凳子上和35一样孩子可以选择任何方式坐到小凳子上。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有坐上小凳子的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[18].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始坐凳子（有上凳子的企图）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分坐上凳子（靠凳子站立或以凳子为支撑基本达到站立位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">21.从地面：落坐大椅子</td>
+                                        <td rowspan="4">位置：把孩子放置在大凳子前的地板上。“在地板上”指不包括站的任何姿势、它包括躺、坐、4点位或跪。<br>
+                                            方法：孩子是否能从地板起来而坐在大凳子上，与 35、36一样、孩子可以选择任何方式，要求孩子爬到凳子上。在凳子上可以采取任何坐姿。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有坐上大凳子的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[19].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始坐凳子（有上凳子的企图）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分坐凳子（靠凳子站立或以凳子为支撑基本达到站立位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input [(ngModel)]="assessArr[i].perceptionList[20].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="爬与跪">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>评估项目</b></th>
+                                        <th><b>测评方案</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.俯卧位：向前方腹爬1.8米</td>
+                                        <td rowspan="4">位置：孩子舒适地俯卧在一块2.4米垫子的一头。<br>
+                                            方法：指导孩子腹部贴地，靠手臂及腿向前移。放置一件玩具在垫子上，从而为孩子提供一个爬的目标，玩具应该放在1.8米以外以免孩子没爬到1.8米就能抓到它，用孩子身体的某一部分来判断其移动距离。建立一个低的通道可以阻止孩子使用四点爬来完成此项测试。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有匍匐向前的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[0].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>匍匐向前小于0.6米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>匍匐向前0.6~1.5米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.四点支持位：用手与膝支撑身体10秒</td>
+                                        <td rowspan="4">位置：孩子舒适地在垫子上呈四点位，头、躯干和骨盆必须离开垫子，也不能放在小腿上。<br>
+                                            方法：指导孩子保持姿势来达到所要求的时间。用玩具吸引他们的注意力，有助于完成测试。
+                                        </td>
+                                        <td>0</td>
+                                        <td>手与膝不能持续承重</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[1].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>手与膝能承重，维持小于3秒（有企图保持姿势现象）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手与膝能承重，维持3~9秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.四点位：不用上肢支撑成坐位</td>
+                                        <td rowspan="4">位置：将孩子舒适地置于四点位，放在垫子上（孩子必须能够保持4点位）<br>
+                                            方法：指导孩子去坐。孩子在自己尝试前的过渡期中需要示范或身体的帮助。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有坐的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[2].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始尝试成坐位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>成坐位、但需手臂支撑（1~2个手臂支撑）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.俯卧位：成四点位，手和膝承重</td>
+                                        <td rowspan="4">位置：孩子放在垫子上、舒适地俯卧。<br>
+                                            方法：指导孩子摆出四点位，记住四点位的排列可能多种多样，小孩子经常会自发地转成四点位，其他孩子可能需要用语言鼓励或用玩具逐步引导来转成四点位。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有成四点位的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[3].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有成四点位的动作（＜10%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>部分成四点位（10%~90%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.四点位：右上肢向前伸出，手的位置高于肩部</td>
+                                        <td rowspan="4">位置：孩子在垫子上、舒适地位于四点位、孩子必须保持四点位并尝试该题。<br>
+                                            方法：可以简单要求大孩子伸出右手向前在肩水平之上、许多孩子需要鼓励其向前伸向治疗者的手或玩具。当要求孩子伸展右臂向前达到肩水平以上时，必须在适当的高度放置玩具。
+                                        </td>
+                                        <td>0</td>
+                                        <td>右手臂没有伸出向前的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[4].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>右手臂开始向前伸出（＜10%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>右手臂部分向前伸出（10%~90%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.四点位：左上肢向前伸出，手的位置高于肩部</td>
+                                        <td rowspan="4">位置：孩子在垫子上、舒适地位于四点位、孩子必须保持四点位并尝试该题。<br>
+                                            方法：可以简单要求大孩子伸出左手向前在肩水平之上、许多孩子需要鼓励其向前伸向治疗者的手或玩具。当要求孩子伸展左臂向前达到肩水平以上时，必须在适当的高度放置玩具。
+                                        </td>
+                                        <td>0</td>
+                                        <td>左手臂没有伸出向前的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[5].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>左手臂开始向前伸出（＜10%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>左手臂部分向前伸出（10%~90%）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">7.四点位：向前四点爬或蛙跳1.8米</td>
+                                        <td rowspan="4">位置：将孩子放于2.4米的垫子一端，呈四点位，孩子至少能保持四点位片刻。<br>
+                                            方法：指导孩子用手和膝朝前爬或移动至垫子的另一端，“爬”是指用手、膝移动。可以不交替。“蛙跳”是指“突然地移动”可以包括“兔子跳”。可以用玩具逐步诱导孩子接近目标。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向前膝手爬或蛙跳的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[6].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向前四点爬或蛙跳小于0.6米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向前四点爬或蛙跳0.6~1.5米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">8.四点位：向前交替性四点爬1.8米</td>
+                                        <td rowspan="4">位置：令孩子成四点位放在2.4米的垫子一端。孩子必须能够维持四点位。<br>
+                                            方法：指导孩子向前交互爬至尽头。“交替爬”是指当手和膝向前移动时为双手臂及腿的交替运动。这些交替运动不需要很协调。但不能蛙跳
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有向前交替性四点爬的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[7].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向前交替四点爬小于0.6米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向前交替四点爬0.6~1.5米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.四点位：用手和膝/脚爬上四级台阶</td>
+                                        <td rowspan="4">位置：四点位。4~6级标准尺寸（18厘米高）的台阶，也可以从站立位开始。<br>
+                                            方法：指导孩子向上爬，孩子可通过示范或进一步用玩具来引发。检查者应该在孩子后面从而减少摔下来受伤的可能。向上移动时孩子向后坐下是不可以的。双手臂和腿必须达到第四级才能得3分。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有爬台阶的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[8].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>用手和膝/脚爬1级</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>用手和膝/脚爬2~3级</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.四点位：用手和膝/脚退着爬下四级台阶</td>
+                                        <td rowspan="4">位置：孩子取四点位，放在4~6级楼梯的顶端<br>
+                                            方法：指导孩子一步一格向下爬。采用腹爬和四点爬的方式均可。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有退着爬下楼梯的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[9].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>退着爬下1级</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>退着爬下2~3级</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.坐垫子上：先使用上肢帮助孩子成高跪位，然后不用上肢支撑保持10秒</td>
+                                        <td rowspan="4">位置：各级评分的开始位置均不相同<br>
+                                            方法：需要先做几次测试来了解孩子是否能够从坐位到高跪以及是否需要使用凳子。 指导孩子通过手臂协助来完成高跪位。在凳子上放置玩具有助于达到测试要求的时间。臀部与小腿或垫子相接触是不标准的。
+                                        </td>
+                                        <td>0</td>
+                                        <td>当被放置在高跪位时，孩子能抓着凳子维持该姿势</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[10].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>当被放置在高跪位时，孩子能抓着凳子维持10秒（开始位置：把孩子放置在高跪位并抓住凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>孩子抓着凳子成高跪位并维持10秒（开始位置：坐于垫子，前面放凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（从垫子上的任何坐姿开始）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12. 高跪位：先使用上肢帮助成右膝半跪位，然后不用上肢支撑保持10秒</td>
+                                        <td rowspan="4">位置：各级评分的开始位置均不相同<br>
+                                            方法：需要先做几次测试来了解孩子是否能够从高跪位到右膝半跪以及是否需要使用凳子。
+                                            半跪是指重量位于一个膝和对面的脚上、当臀部接触小腿或垫子是不标准的。
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>当被放置在半跪位置，孩子不能抓着凳子维持该姿势</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[11].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>当被放置在半跪位置，孩子能抓着凳子维持10秒（开始位置：把孩子放置在右膝半跪位并抓住凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>孩子抓着凳子成半跪位置，并维持10秒（开始位置：跪于垫子，前面放凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td> 完成（开始位置：在垫子上成高跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13. 跪立位：先使用上肢帮助成左膝半跪位，然后不用上肢支撑保持10秒</td>
+                                        <td rowspan="4">位置：各级评分的开始位置均不相同<br>
+                                            方法：需要先做几次测试来了解孩子是否能够从高跪位到左膝半跪以及是否需要使用凳子。
+                                            半跪是指重量位于一个膝和对面的脚上、当臀部接触小腿或垫子是不标准的。
+
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>当被放置在半跪位置，孩子不能抓着凳子维持该姿势</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[12].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>当被放置在半跪位置，孩子能抓着凳子维持10秒（开始位置：把孩子放置在左膝半跪位并抓住凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>孩子抓着凳子成半跪位置，并维持10秒（开始位置：跪于垫子，前面放凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td> 完成（开始位置：在垫子上成高跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14. 高跪位：不用上肢支撑向前跪走10步</td>
+                                        <td rowspan="4">位置：令孩子跪于垫子上<br>
+                                            方法：指导孩子用膝盖向前至少走10步、向前一步是指一条腿从离开地板到与之接触的整个运动
+
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有跪着向前走的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[13].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需两手拉着向前跪走10步，（可以使用本测试中任何器械用来抓握，如小凳子或者平行杆，但不可以拉着人跪走）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需单手拉着向前跪走10步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td> 完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input [(ngModel)]="assessArr[i].perceiveList[14].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="站立位">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>评估项目</b></th>
+                                        <th><b>测评方案</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.地面：抓着大凳子拉自己站起</td>
+                                        <td rowspan="4">位置：孩子位于大凳子前的垫子上，可以是除了站立以外的任何姿势。<br>
+                                            方法：指导孩子拉着凳子自己站起来。可以使用示范、言语鼓励、玩具诱导等方法。主要测试孩子拉着站起来的能力而不是站的质量。
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[0].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>完成10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>完成10%~90%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.站立：不用上肢支持保持3秒</td>
+                                        <td rowspan="4">位置：孩子舒适地站立在地板上。（不同姿势开始）<br>
+                                            方法：指导孩子脱离任何支撑保持站立，手臂放开达3秒即可得3分
+                                        </td>
+                                        <td>0</td>
+                                        <td>不能抓着凳子等维持站立</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[1].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两手抓着，维持站立位3秒（可以前臂靠器械或部分躯体碰到器械）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>一手抓着，维持站立位3秒（除了单手以外躯体任何部分不能靠器械）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.站立：单手抓住大凳子，抬起右脚，保持3秒</td>
+                                        <td rowspan="4">位置：孩子位于凳子的旁边，站在地上而不是垫子上，拉着大凳子。面对凳子（不同姿势开始）<br>
+                                            方法：孩子是否开始时能用一只手或两只手抓住凳子、抬起的脚必需完全靠近地板。孩子也可以通过站在一件玩具上也可穿裤子使其抬腿。前臂可以靠器械。
+                                        </td>
+                                        <td>0</td>
+                                        <td>右脚没有抬起的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[2].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两手支持，抬起右脚小于3秒（开始位置：两手拉着凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>两手支持，抬起右脚达到3秒（开始位置：两手拉着凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.站立：单手抓住椅子，抬起左脚，保持3秒</td>
+                                        <td rowspan="4">位置：孩子位于凳子的旁边，站在地上而不是垫子上，拉着大凳子。面对凳子（不同姿势开始）<br>
+                                            方法：孩子是否开始时能用一只手或两只手抓住凳子、抬起的脚必需完全靠近地板。孩子也可以通过站在一件玩具上也可穿裤子使其抬腿。前臂可以靠器械。
+                                        </td>
+                                        <td>0</td>
+                                        <td>左脚没有抬起的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[3].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两手支持，抬起左脚小于3秒（开始位置：两手拉着凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>两手支持，抬起左脚达到3秒（开始位置：两手拉着凳子）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.站立：不用上肢支持保持20秒</td>
+                                        <td rowspan="4">位置：孩子舒适地站立在地板上而不是垫子上，可以有支持或没有支持。<br>
+                                            方法：此题只要观察孩子站立的时间。孩子可以调节他们的姿势。但不可以向任何方向跨步，可以使用言语鼓励或玩具诱导的方法使孩子维持站立位。
+                                        </td>
+                                        <td>0</td>
+                                        <td>手臂不支撑时不能保持站立</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[4].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>手臂不支撑，维持站立位小于3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手臂不支撑，维持站立位3~19秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.站立：抬起左脚，不用上肢支持保持10秒</td>
+                                        <td rowspan="4">位置：孩子站立在地板上，手臂不支撑<br>
+                                            方法：指导孩子抬起左脚离开地面，用右脚站立保持10秒。可以使用垫子以减少摔伤的可能，但是这样会增加此项测试的难度。
+                                        </td>
+                                        <td>0</td>
+                                        <td>手臂不支撑时不抬左脚</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[5].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>手臂不支撑，抬左脚小于3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手臂不支撑，抬左脚3~9秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.站立：抬起右脚，不用上肢支持保持10秒</td>
+                                        <td rowspan="4">位置：孩子站立在地板上，手臂不支撑<br>
+                                            方法：指导孩子抬起右脚离开地面，用左脚站立保持10秒。可以使用垫子以减少摔伤的可能，但是这样会增加此项测试的难度。
+                                        </td>
+                                        <td>0</td>
+                                        <td>手臂不支撑时不抬右脚</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[6].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>手臂不支撑，抬右脚小于3秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手臂不支撑，抬右脚3~9秒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.坐在小凳子上：不用上肢帮助站起</td>
+                                        <td rowspan="4">位置：孩子坐在小凳子上、小凳子高度合适、孩子坐着时脚可以平放在地板上，膝盖屈曲90度。<br>
+                                            方法：指导孩子站起、用一玩具放在前面的桌上来鼓励他们站起来，而不是趴向地板上。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有站起的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[7].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有站起的动作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>上肢支持在凳子上站起来（达到站立位时手要放开）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（在姿势转换过程中不能有手、臂的帮助）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.高跪位：通过右侧半跪位站起，不用上肢帮助</td>
+                                        <td rowspan="4">位置：使孩子舒适地跪于垫子上，手臂不承重<br>
+                                            方法：指导孩子从高跪位成站位，不用任何外来支撑如家具或地板。可能需要示范。可以通过几次预试观察孩子是否需要使用手臂，或者观察在从高跪位到站立的过程中是否使用半跪位。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有站的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[8].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有站的动作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>上肢支持下站起来（可以不使用半跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（手臂不能放在垫子或身体上进行协助，在从高跪到站立的转换过程中必须使用半跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.高跪位：通过左侧半跪位站起，不用上肢帮助</td>
+                                        <td rowspan="4">位置：使孩子舒适地跪于垫子上，手臂不承重<br>
+                                            方法：指导孩子从高跪位成站位，不用任何外来支撑如家具或地板。可能需要示范。可以通过几次预试观察孩子是否需要使用手臂，或者观察在从高跪位到站立的过程中是否使用半跪位。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有站的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[9].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有站的动作</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>上肢支持下站起来（可以不使用半跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（手臂不能放在垫子或身体上进行协助，在从高跪到站立的转换过程中必须使用半跪位）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.站立位：有控制地降低身体坐到地面，不用上肢帮助</td>
+                                        <td rowspan="4">位置：孩子舒适地站在地板上或者垫子上，孩子必须能够在手臂不支撑情况下站立。<br>
+                                            方法：指导孩子降低身体坐到地板上，可以包括任何坐的姿势。可能需要几次预试来判断孩子是否需要手臂的帮助或者抓着器械。坐下后可以抓住任何器械。
+                                        </td>
+                                        <td>0</td>
+                                        <td>拉着器械不能降低身体到地面</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[10].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能够降低身体到地面，但是有撞击（中途失去控制）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在手臂帮助下或者拉着器械降低身体坐到地面（手臂可以用来维持平衡或者撑在地面或身体上）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（运动有规律，有方向性）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.站立位：成蹲位，不用上肢帮助</td>
+                                        <td rowspan="4">位置：站在地板上或者垫子上，孩子必须能够在手臂不支撑情况下站立。<br>
+                                            方法：指导孩子降低身体蹲下来，“蹲”是指接近地面的蜷或弯膝坐在脚后跟上。可能需要几次预试来判断孩子是否需要手臂的帮助或者需要抓着器械。
+                                        </td>
+                                        <td>0</td>
+                                        <td>没有蹲的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[11].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始有蹲的动作（可以依靠手臂或器械帮助）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在手臂帮助下或者拉着东西蹲（手臂可以用来维持平衡或者撑在地面或身体上）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.站立位：不用上肢帮助，从地面拾物再返回成站立位</td>
+                                        <td rowspan="4">位置：站立，手臂不支撑。<br>
+                                            方法：在孩子面前的地上放一小玩具，指导孩子拾起玩具并重新站立。可能需要几次预试来判断孩子是否需要手臂的帮助或者需要抓着器械。
+                                        </td>
+                                        <td>0</td>
+                                        <td>不从地面上拾物</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[12].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>开始从地面上拾物（可以依靠器械帮助）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>手臂支持，从地面上拾物</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input [(ngModel)]="assessArr[i].languageList[13].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="行走、跑、跳">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>评估项目</b></th>
+                                        <th><b>测评方案</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.站立：两手扶大长凳，向右侧横走5步</td>
+                                        <td rowspan="4">位置：孩子面对大凳子站立并用双手抓住。臂腿承重，可用栏杆替代<br>
+                                            方法：允许孩子稍转身但必须横向跨步
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[0].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向右横走小于1步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向右横走1~4步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.站立：两手扶大长凳，向左侧横走5步</td>
+                                        <td rowspan="4">位置：孩子面对大凳子站立并用双手抓住。臂腿承重，可用栏杆替代<br>
+                                            方法：允许孩子稍转身但必须横向跨步
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[1].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td> 向左横走小于1步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td> 向左横走1~4步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.站立：牵两手向前走10步</td>
+                                        <td rowspan="4">位置：面对面站着、孩子扶住检查者双手，检查者在前面提供支持但绝大部分承重靠孩子自己<br>
+                                            方法：指导孩子尽可能地向前走，直至10步。行走应连续，可以有1~2秒的停顿，但不可以更长。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[2].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td> 向前走小于3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td> 向前走3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.站立：牵单手向前走10步</td>
+                                        <td rowspan="4">位置：孩子站着、一只手扶住检查者，检查者在孩子前面或旁边。<br>
+                                            方法：行走应连续，可有1~2秒的停顿，但不可以更长。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[3].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td> 向前走小于3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td> 向前走3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.站立：向前走10步</td>
+                                        <td rowspan="4">位置：孩子必须能独立站立<br>
+                                            方法：指导孩子尽可能向前走至10步。脚步必需连贯，之间可有1~2秒的停顿，但过长则考虑终止评估。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[4].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td> 向前走小于3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td> 向前走3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">6.站立：向前走10步，停止，转180度，返回</td>
+                                        <td rowspan="4">位置：站立<br>
+                                            方法：强调顺序、孩子必需先停后转身。3分强调转身180度和再开始返回，返回后不必计算步数。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 向前走10步，停止会摔倒</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[5].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>向前走10步，停下，没有开始转身</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>向前走10步，停下，转身小于180度</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.站立：后退10步</td>
+                                        <td rowspan="4">位置：站立<br>
+                                            方法：指导孩子尽可能向后退至10步。后退时步子的大小并不重要、步子必须连贯、可有1~2秒的停顿。但过长则要考虑终止评估。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不后退</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[6].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>后退3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>后退3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.站立：两手提大物向前走10步</td>
+                                        <td rowspan="4">位置：站立<br>
+                                            方法：大物体必须用两只手才能搬运的东西（足球或气球）小物指可用单手拿住的东西，小娃娃或小卡车。可以让孩子拿东西给他人。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 拿大物，不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[7].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>单手拿小物走10步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>双手拿小物走10步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.站立：在20厘米间隔的平行线之间连续向前走10步</td>
+                                        <td rowspan="4">位置：孩子站立在两条平行线的起始端、2厘米宽、20厘米间隔、6米长。<br>
+                                            方法：孩子必须能朝前走、在两线之间走、脚可以碰到线、但不能越线、脚步必须连贯，停顿不超过2秒、一旦脚越线、重新开始测试。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[8].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>连续向前走小于3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>连续向前走3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">10.站立：在2厘米宽的直线上连续向前走10步</td>
+                                        <td rowspan="4">位置：孩子站在一条2厘米宽、6米长的直线的起始端。<br>
+                                            方法：孩子向前走、脚的一部分必须在线上、脚步连贯，停顿不超过2秒、一旦越线、重新开始测试。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[9].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>连续向前走小于3步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>连续向前走3~9步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.站立：右脚领先跨越膝盖高度的木棒</td>
+                                        <td rowspan="4">位置：孩子站在地板上、检查者将在孩子前面或旁边拿着木棍水平放置。<br>
+                                            方法：指导孩子右脚起步跨越木棒、最初可以从较低的高度开始，孩子跨过木棒不跌倒。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不跨越</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[10].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>右脚领先跨过5~8厘米高度的木棒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>右脚领先跨过齐小腿中部高度的木棒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">12.站立：左脚领先跨越膝盖高度的木棒</td>
+                                        <td rowspan="4">位置：孩子站在地板上、检查者将在孩子前面或旁边拿着木棍水平放置。<br>
+                                            方法：指导孩子左脚起步跨越木棒、最初可以从较低的高度开始，孩子跨过木棒不跌倒。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不跨越</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[11].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>左脚领先跨过5~8厘米高度的木棒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>左脚领先跨过齐小腿中部高度的木棒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.站立：跑4。5米，停止，返回</td>
+                                        <td rowspan="4">位置：站在地板上<br>
+                                            方法：孩子必须能朝前走。指导孩子跑向一个4.5米远的目的地、停下并往回跑至起点。3分必须全部完成，1分必须快走至4.5米
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不启动</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[12].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>快走启动跑</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>跑小于4.5米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.站立：右脚踢球</td>
+                                        <td rowspan="4">位置：站在地板上<br>
+                                            方法：球的位置只在孩子脚前至少10厘米以外，指导孩子用右脚踢球。在球被接触时，足部必须离开地面，球必须移动。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不启动</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[13].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>抬右脚但不踢</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>用右脚踢球，但跌倒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（踢球时不倒下）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.站立：左脚踢球</td>
+                                        <td rowspan="4">位置：站在地板上<br>
+                                            方法：球的位置只在孩子脚前至少10厘米以外，指导孩子用左脚踢球。在球被接触时，足部必须离开地面，球必须移动。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不启动</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[14].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>抬左脚但不踢</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>用左脚踢球，但跌倒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成（踢球时不倒下）</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">16.站立：两脚同时跳高30厘米</td>
+                                        <td rowspan="4">位置：站在地板上<br>
+                                            方法：指导孩子两脚尽可能地跳到、“两脚同时”的标准是指两脚同时离开地板，可以不必同时落地，孩子不能跌倒。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[15].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两脚同时跳小于5厘米高</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>两脚同时跳5~28厘米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">17.站立：两脚同时跳高30厘米</td>
+                                        <td rowspan="4">位置：站在地板上<br>
+                                            方法：指导孩子两脚尽可能地跳到、“两脚同时”的标准是指两脚同时离开地板，可以不必同时落地，孩子不能跌倒。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[16].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两脚同时跳小于5厘米高</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>两脚同时跳5~28厘米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">18.站立：两脚同时跳远30厘米</td>
+                                        <td rowspan="4">位置：孩子站在地板上、脚尖触及地板上一条看得见的线<br>
+                                            方法：可以放置两条间隔30厘米的线，可以使孩子易于看到，指导孩子两脚一起尽其可能朝前跳、跳的距离即两脚离开的距离。不能跌倒。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 不向前跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[17].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>两脚同时向前跳小于5厘米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>两脚同时向前跳5~28厘米</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">19.右脚单立：60厘米直径的圆内，右脚跳10次</td>
+                                        <td rowspan="4">位置：孩子站在一个标志清楚的直径为60厘米的圈内<br>
+                                            方法：指导孩子站在圈子里时尽可能多跳（直至10次），部分右脚必须在圈内。跳必须连贯、停顿不超过2秒不能到圈外、任何时候左脚不能触及地板，不能跌倒，手不能扶持。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 右脚不跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[18].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>在60厘米圈内右脚跳小于3次</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在60厘米圈内右脚跳3~9次</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">20.左脚单立：60厘米直径的圆内，左脚跳10次</td>
+                                        <td rowspan="4">位置：孩子站在一个标志清楚的直径为60厘米的圈内<br>
+                                            方法：指导孩子站在圈子里时尽可能多跳（直至10次），部分左脚必须在圈内。跳必须连贯、停顿不超过2秒不能到圈外、任何时候右脚不能触及地板，不能跌倒，手不能扶持。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 左脚不跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[19].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>在60厘米圈内左脚跳小于3次</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在60厘米圈内左脚跳3~9次</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">21.站立，抓着扶手：上四级台阶，抓一侧扶手，交替出步</td>
+                                        <td rowspan="4">位置：孩子站在楼梯的底部、一只或两只手扶住栏杆，梯级必须标准尺寸，检查者在身后注意保护<br>
+                                            方法：孩子用手扶栏杆，但通过腿部承重
+                                        </td>
+                                        <td>0</td>
+                                        <td> 扶住栏杆，不向上跨步</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[20].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>扶住栏杆向上走2级，同一脚起步</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>扶住栏杆向上走4级，交替不稳定</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">21.站立，抓着扶手：下四级台阶，抓一侧扶手，交替出步</td>
+                                        <td rowspan="4">位置：孩子站立在标准尺寸楼梯的顶部，一只或两只抓着一侧扶手。孩子不需要能够双手不支撑下站立。检查者站在孩子的面前以防意外。<br>
+                                            方法：孩子每次移动一条腿，每走一步两腿都要向下移动。可以抓着一侧扶手，但要用下肢承受大部分体重。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 抓住一侧扶手，没有向下跨步的迹象</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[21].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>抓住一侧扶手走下2级，持续用同一只脚先下</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>抓住一侧扶手走下4级，不是一直两脚交替</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">22.站立，上四级台阶，交替出步</td>
+                                        <td rowspan="4">位置：孩子站立在楼梯的底部。孩子必需能够在手臂不支撑下站和走。<br>
+                                            方法：孩子不能用手触及扶手或台阶。孩子必须每次移动一条腿，每走一步两腿都要向上移动。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 手臂不支撑，不往上走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[22].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>往上走2级，持续用同一只脚先上</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>往上走4级，不是一直两脚交替</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">23.站立，下四级台阶，交替出步</td>
+                                        <td rowspan="4">位置：孩子站立在楼梯的顶部，手臂放松。<br>
+                                            方法：孩子不能用手触及扶手或台阶。孩子必须每次移动一条腿，每走一步两腿都要向下移动。
+                                        </td>
+                                        <td>0</td>
+                                        <td> 手臂不支撑，不往下走</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[23].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>往下走2级，持续用同一只脚先下</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>往下走4级，不是一直两脚交替</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">24.站在15厘米高的台阶上：两足同时跳下</td>
+                                        <td rowspan="4">位置：孩子站在15厘米高的台阶上或者楼梯的最后一级上<br>
+                                            方法：指导孩子双足同时从台阶上跳下
+                                        </td>
+                                        <td>0</td>
+                                        <td> 双足不同时往下跳</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[24].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>双足同时跳下，但跌倒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td> 双足同时跳下不跌倒，但需用手撑在地上防止跌倒</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input [(ngModel)]="assessArr[i].oneselfList[25].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+
+
+
+                    <nz-tab nzTitle="Barthel指数">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>评定内容</b></th>
+                                        <th><b>标准</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3">进食</td>
+                                        <td>可独立进食</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[0].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>可独立进食需部分帮助</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>需极大帮助或完全依赖他人</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">洗澡</td>
+                                        <td>准备好洗澡水后,可自己独立完成</td>
+                                        <td>5</td>
+                                        <td rowspan="2">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[1].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>在洗澡过程中需他人帮助</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="2">修饰</td>
+                                        <td>准备好洗澡水后,可自己独立完成</td>
+                                        <td>5</td>
+                                        <td rowspan="2">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[2].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需他人帮助</td>
+                                        <td>0</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3">穿衣</td>
+                                        <td>可独立完成</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[3].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需部分帮助(能自己穿或脱,但需他人帮助整理衣物,系扣子,拉拉链,系鞋带等)</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>需极大帮助或完全依赖他人</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">控制大便</td>
+                                        <td>可控制大便</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[4].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>偶尔失控</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>完全失控</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">控制小便</td>
+                                        <td>可控制小便</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[5].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>偶尔失控</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>完全失控</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">如厕</td>
+                                        <td>可独立完成</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[6].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需部分帮助(需他人搀扶,需他人帮忙冲水或整理衣裤等)</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>需极大帮助或完全依赖他人</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">床椅转移</td>
+                                        <td>可独立完成</td>
+                                        <td>15</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[7].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="15" nzLabel="15"></nz-option>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需部分帮助(需他人搀扶或使用拐杖)</td>
+                                        <td>10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>需极大帮助(较大程度上依赖他人搀扶和帮助)</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>完全依赖他人</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">平地行走</td>
+                                        <td>可独立在平地上行走45m</td>
+                                        <td>15</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[8].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="15" nzLabel="15"></nz-option>
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需部分帮助(需他人搀扶，或使用拐杖、助行器等辅助用具)</td>
+                                        <td>10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>需极大帮助（行走时较大程度上依赖他人搀扶，或坐在轮椅上自行在平地上移动）</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>完全依赖他人</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3">上下楼梯</td>
+                                        <td>独立，可使用辅助装置</td>
+                                        <td>10</td>
+                                        <td rowspan="3">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[9].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+
+                                                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                                                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>需要帮助和监督</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>不能</td>
+                                        <td>0</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td>
+                                            <input nz-input [(ngModel)]="assessArr[i].societyList[10].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+
+
+
+                    <nz-tab nzTitle="评估与总结">
+                        <nz-card nzType="inner" nzTitle="康复目标" class="marginBottom24">
+                            <div>
+                                <div class="recoveryTitle">实现康复目标情况：</div>
+                                <div class="checkMargin">
+                                    <label>1.运动能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.moveAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显改善">明显改善</label>
+                                        <label nz-radio nzValue="改善">改善</label>
+                                        <label nz-radio nzValue="无改善">无改善</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>2.感知能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.perceptionAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>3.认知能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.cognitiveAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>4.语言交往能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.languageAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>5.生活自理能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.lifeAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>6.社会适应能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.adaptSoAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                            </div>
+                        </nz-card>
+                        <nz-card nzType="inner" nzTitle="康复意见" class="marginBottom24">
+                            <div>
+                                <div class="marginBottom24">
+                                    <label>进一步康复意见:</label>
+                                    <nz-checkbox-group [(ngModel)]="assessArr[i].assessmentSummary.athleticAbility" [nzDisabled]="isVisabled"></nz-checkbox-group>
+                                </div>
+                                <div class="marginBottom24">
+                                    <label>转介：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.referral" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="社会救济">社会救济</label>
+                                        <label nz-radio nzValue="医疗">医疗</label>
+                                        <label nz-radio nzValue="护理">护理</label>
+                                        <label nz-radio nzValue="日间照料">日间照料</label>
+                                        <label nz-radio nzValue="托养">托养</label>
+                                    </nz-radio-group>
+                                </div>
+                            </div>
+
+                        </nz-card>
+                        <div style="width:100%;height:60px;">
+                            <div class="marginBottom24" style="width:50%;float:left">
+                                <label class="mLabel">康复训练人员签名: </label>
+                                <input nz-input class="mr20" [(ngModel)]="assessArr[i].assessmentSummary.obj.trainingName" [readonly]="isVisabled" style="    width: 160px;" />
+                            </div>
+                            <div class="marginBottom24" style="width:45%;float:left">
+                                <label class="mLabel" style="float:left;width:26%">评估日期: </label>
+                                <nz-date-picker style="float:right; width:40%;" [(ngModel)]="assessArr[i].assessmentSummary.obj.time" [nzDisabled]="isVisabled"></nz-date-picker>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isVisabled==false">
+                            <button nz-button nzType="primary" (click)="saveDetails(i)" [nzLoading]="isLoading" class="saveBtn">保存</button>
+                        </div>
+
+                    </nz-tab>
+                </nz-tabset>
+            </nz-tab>
+        </div>
+        <div *ngFor="let item of planList;let i=index">
+            <nz-tab [nzTitle]="item.name" [nzDisabled]="disabled">
+                <app-limePlan [name]="traningInfo"></app-limePlan>
+            </nz-tab>
+        </div>
+    </nz-tabset>
+</nz-card>
+
+
+
+<nz-modal [(nzVisible)]="nameIsVisible" nzTitle="添加名称" (nzOnCancel)="nameIsVisible=false" (nzOnOk)="handleOk()">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="10">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">名称</nz-form-label>
+                <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                    <input nz-input name="old" id="old" [(ngModel)]="assessName" placeholder="请输入评估名称">
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>

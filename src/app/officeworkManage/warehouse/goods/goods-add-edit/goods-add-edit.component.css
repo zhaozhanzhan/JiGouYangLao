@@ -1,0 +1,13 @@
+.editCategory {
+  position: absolute;
+  left: 100%;
+  z-index: 800;
+}
+
+.ant-form-item {
+  margin: 0px !important;
+}
+
+.form_input {
+  width: 200px;
+}

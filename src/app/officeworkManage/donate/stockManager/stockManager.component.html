@@ -1,0 +1,138 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>更新日期</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker
+            name="date"
+            style="width:250px"
+            [(ngModel)]="selectedDates"
+            (ngModelChange)="onRangerPickerChange($event)"
+          ></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>到期日期</nz-form-label>
+        <nz-form-control>
+          <nz-select  style="width:150px"
+          nzAllowClear
+          name="ChooseDate"  [(ngModel)]="ChooseDate" nzAllowClear nzPlaceHolder="请选择到期日期" (ngModelChange)="choose()">
+            <nz-option nzValue="全部" nzLabel="全部"></nz-option>
+            <nz-option nzValue="即将到期" nzLabel="即将到期"></nz-option>
+            <nz-option nzValue="已经到期" nzLabel="已经到期"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>库房</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzPlaceHolder="请选择"
+            [(ngModel)]="queryParams.whId"
+            style="width:150px"
+            nzAllowClear
+            name="whInId"
+          >
+            <nz-option
+              *ngFor="let storehouse of storehouseList"
+              [nzLabel]="storehouse.name"
+              [nzValue]="storehouse.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label nzFor="whGoodsId">物品</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            style="width:150px"
+            nzPlaceHolder="请选择"
+            [(ngModel)]="queryParams.goodsId"
+          >
+            <nz-option
+              *ngFor="let goods of goodsList"
+              [nzLabel]="goods.name"
+              [nzValue]="goods.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left: 10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="库存明细列表">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzTitle]="serchArea"
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+    [nzScroll]="{ x: '1400px' }"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">批次号</th>
+        <th class="textCenter" >物品</th>
+        <th class="textCenter">剩余数量</th>
+        <th class="textCenter">存放仓库</th>
+        <th class="textCenter">存放数量</th>
+        <th class="textCenter">到期日期</th>
+        <th class="textCenter">所属部门</th>
+        <th class="textCenter">更新时间</th>
+        <th class="textCenter" style="width:400px;">入库备注</th>
+        <th class="textCenter">操作人</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.batchNum }}</td>
+        <td class="textCenter" [ngClass]="{'red':  data.isExpire!=1 && data.isExpire!=2, 'hu':  data.isExpire==2}">{{ data?.goodName }}</td>
+        <td class="textCenter">{{ data?.allNum }}</td>
+        <td class="textCenter">{{ data?.warehousName }}</td>
+        <td class="textCenter">{{ data?.Num }}</td>
+        <td class="textCenter" [ngClass]="{'red':  data.isExpire!=1 && data.isExpire!=2, 'hu':  data.isExpire==2}">{{ data?.expireDate | date: "yyyy-MM-dd" }}</td>
+        <td class="textCenter">{{ data?.dept }}</td>
+        <td class="textCenter">
+          {{ data?.inDate | date: "yyyy-MM-dd HH:mm:ss" }}
+        </td>
+        <td class="textCenter">{{ data?.inWarehouseComment }}</td>
+        <td class="textCenter">{{ data?.operator }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+</nz-card>

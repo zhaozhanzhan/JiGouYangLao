@@ -1,0 +1,182 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div style="padding: 20px 0;">
+        <div nz-row nzType="flex">
+            <div nz-col style="margin-right:10px;margin-left: 20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="patient">病人</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="patient" id="search-box" style="width:150px" placeholder="按病人姓名或住院号检索" [(ngModel)]="sendData.patient" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药房</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择药房" [(ngModel)]="sendData.medRoomId">
+                            <nz-option *ngFor="let item of medRoomList;let key = index" [nzValue]="item.id" [nzLabel]="item.medRoomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>科室</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择科室" [(ngModel)]="sendData.sectionOfficeId" (ngModelChange)="findSickward()">
+                            <nz-option *ngFor="let item of officeList;let key = index" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>病区</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择病区" [(ngModel)]="sendData.sickWardId">
+                            <nz-option *ngFor="let item of sickWardList;let key = index" [nzValue]="item.id" [nzLabel]="item.sickWardName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="attendingDoc">主治医生</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="attendingDoc" id="attendingDoc" style="width:150px" placeholder="按医生姓名检索" [(ngModel)]="sendData.attendingDoc" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>医嘱类型</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择医嘱类型" [(ngModel)]="sendData.type">
+                            <nz-option nzValue="0" nzLabel="长期医嘱"></nz-option>
+                            <nz-option nzValue="1" nzLabel="临时医嘱"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;" *ngIf="sendData.type == 1">
+                <nz-form-item nzFlex>
+                    <nz-form-label>选择日期</nz-form-label>
+                    <nz-form-control>
+                        <nz-range-picker [ngModel]="selDate" (ngModelChange)="dateChange($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <!-- <div nz-col style="margin-right:10px;">
+                    <nz-form-item nzFlex>
+                        <nz-form-label>发药状态</nz-form-label>
+                        <nz-form-control>
+                            <nz-select style="width: 200px;" nzPlaceHolder="选择发药状态" [(ngModel)]="sendData.putMedicationType">
+                                <nz-option nzValue="1" nzLabel="已发"></nz-option>
+                                <nz-option nzValue="0" nzLabel="未发"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <e-ngx-print id="eprint" btnText="打执行单" [btnClass]="{'printBtn': true}" [printHTML]="getMedicine" [printCSS]="printCSS" (click)="printStart()"></e-ngx-print>
+                        <div id="printModel" style="width: 90px;height: 35px;position: absolute;top: -8px;left: -1px;" (click)="noSelnoPrint($event)"></div>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;">静脉用药单</div>
+<nz-tabset style="background: #fff;padding-top: 24px;">
+    <nz-tab nzTitle="显示页">
+        <div style="padding:0 50px;">
+            <nz-table #basicTable [nzData]="listOfData" [nzTitle]="serchArea" nzBordered [nzLoading]="isLoading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size"
+                [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]" (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+                <thead>
+                    <tr>
+                        <th nzShowCheckbox [nzIndeterminate]="isPartSel" [nzChecked]="allChecked" (nzCheckedChange)="checkBoxAllChange()"><span style="display:block;position:absolute;;top:-1px;left:10px;">状态</span></th>
+                        <th>住院号</th>
+                        <th>床号</th>
+                        <th>姓名</th>
+                        <th>项目</th>
+                        <th>规格/单位</th>
+                        <th>途径</th>
+                        <th>一次量</th>
+                        <th>次数</th>
+                        <th>用法</th>
+                        <th>总计</th>
+                        <th>开始日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of basicTable.data">
+                        <tr *ngFor="let data of item.medList;let i = index">
+                            <td [attr.rowspan]="item.medList.length" *ngIf="i == 0" nzShowCheckbox [nzChecked]="item.checked" (nzCheckedChange)="checkBoxChange2(item)"></td>
+                            <td [attr.rowspan]="item.medList.length" *ngIf="i == 0">{{item.admissionNo}}</td>
+                            <td [attr.rowspan]="item.medList.length" *ngIf="i == 0">{{item.bedNum}}</td>
+                            <td [attr.rowspan]="item.medList.length" *ngIf="i == 0">{{item.name}}</td>
+                            <td>{{data.drugName}}</td>
+                            <td>{{data.unitStr}}</td>
+                            <td>{{data.medUsage}}</td>
+                            <td>{{data.dosage}}</td>
+                            <td>{{data.times}}</td>
+                            <td>{{data.drugFrequencyStr}}</td>
+                            <td>{{data.dosageTimes}}</td>
+                            <td [attr.rowspan]="item.medList.length" *ngIf="i == 0">{{item.createDate}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </nz-table>
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="打印页">
+        <div style="width: 900px;position: relative;" #getMedicine>
+            <div style="text-align:center;width: 100%;">
+                <span class="ftz17 ftwB" style="    font-family: monospace;">静脉用药情况执行单</span>
+            </div>
+            <ng-container *ngFor="let item of westernMedicineOrdersIds;let i = index">
+                <div *ngFor="let time of item.timess;let j = index" style="width: 100%;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;margin-bottom: 30px;">
+                    <div style="width:50%;font-size: 18px;text-indent: 32px;">用药时间：{{date | date:"yyyy-MM-dd"}}</div>
+                    <div style="width:40%;font-size: 18px;">打印时间：{{date | date:"yyyy-MM-dd HH:mm"}}</div>
+                    <div style="width: 10%;">{{ j+1 +'/'+ item.timess.length }}</div>
+                    <table border="1" style="width:95%;margin: 0 auto;">
+                        <tr>
+                            <td style="width:50px;text-align:center;">床号</td>
+                            <th style="width:150px;text-indent: 10px;">{{ item.bedNum }}</th>
+                            <td style="width:50px;text-align:center;">姓名</td>
+                            <th style="width:100px;text-indent: 10px;">{{ item.name }}</th>
+                            <td style="width:100px;text-align:center;">总量</td>
+                            <th style="width:100px;"></th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">药 名</td>
+                            <td style="text-align:center;">滴速</td>
+                            <td style="text-align:center;">时间</td>
+                            <td style="text-align:center;">签名</td>
+                        </tr>
+                        <tr *ngFor="let x of item.medList">
+                            <td colspan="3" style="text-align:center;">{{ x.drugName }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </ng-container>
+        </div>
+    </nz-tab>
+</nz-tabset>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>

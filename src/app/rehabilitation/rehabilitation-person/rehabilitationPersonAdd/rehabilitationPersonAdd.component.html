@@ -1,0 +1,108 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p>
+      <span >康复个案详情</span>
+    </p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <nz-card nzType="inner" nzTitle="康复个案详情" class="marginBottom24" >
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired nzFor="name">姓名</nz-form-label>
+            <nz-form-control [nzSm]="18">
+              <nz-input-group nzSearch >
+                <input nz-input  class="oldName" placeholder="长者姓名"  [(ngModel)]="interview.name"  formControlName="name" id="name" disabled>
+                <div *ngIf="ShowDisabled">
+                  <button nz-button nzType="primary" nzSearch (click)="showOldDialog()" class="chooseOldMan">
+                      选择
+                  </button>
+                </div>
+                <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">姓名不能为空
+                </nz-form-explain>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired nzFor="recureName">康复训练名称</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <input nz-input  class="oldName" placeholder="康复训练名称"  [(ngModel)]="recureObj.recureName"  formControlName="recureName" id="recureName" >
+              <nz-form-explain *ngIf="validateForm.get('recureName').dirty && validateForm.get('recureName').errors">康复训练名称</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6"  nzRequired nzFor="applyDate">申请日期</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="recureObj.applyDate"  formControlName="applyDate" id="applyDate" style="width: 100%"></nz-date-picker>
+              <nz-form-explain *ngIf="validateForm.get('applyDate').dirty && validateForm.get('applyDate').errors">申请日期</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+
+
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonalInfo()" [nzLoading]="savePersonalBtnLoading">保存</button>
+  </div>
+
+</nz-card>
+<!-- 表单区域End -->
+<!-- 选择老人时，显示的弹窗 -->
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() " nzWidth="800">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按长者姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th class="tac ftwB">姓名</th>
+          <th class="tac ftwB">性别</th>
+          <th class="tac ftwB">出生年月</th>
+          <th class="tac ftwB">联系电话</th>
+          <th class="tac ftwB">咨询日期</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of basicTable.data; let idx = index;" (click)="chooseOld(x)">
+          <td class="tac">{{x.name}}</td>
+          <td class="tac">{{x.sex}}</td>
+          <td class="tac">{{x.birthYearMonth}}</td>
+          <td class="tac">{{x.phone}}</td>
+          <td class="tac">{{x.createDate | date:'yyyy-MM-dd'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>
+

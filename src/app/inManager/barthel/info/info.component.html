@@ -1,0 +1,348 @@
+<div class="animated fadeIn ">
+  <ng-template #extraTemplate>
+    <button (click)="back()" nz-button nzType="default">返回</button>
+  </ng-template>
+
+
+  <div >
+    <!-- <div class="card-header col-md-12">
+      <div class="pull-right">
+        <button (click)="back()" nz-button nzType="default">返回</button>
+      </div> 
+    </div> -->
+    <nz-card nzType="inner" nzTitle="一般情况"  [nzExtra]="extraTemplate" style="    border-bottom: 0px solid transparent;">
+    <div class="card-block">
+      <div nz-row  nzSpan="24">
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzFor="name" class="infoDisplay">姓名</nz-form-label>
+            <!-- <nz-form-control class="infoDisplay">
+              <input nz-input placeholder="请选择"  style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name == undefined ? '请选择长者' : olderInfo.name}}"
+              disabled>
+            </nz-form-control> -->
+
+            <nz-form-control class="infoDisplay" *ngIf="olderInfo.name==''">
+              <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="请选择老者"
+                >
+            </nz-form-control>
+            <nz-form-control class="infoDisplay" *ngIf="olderInfo.name !=''">
+              <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name}}"
+                disabled>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzFor="sex" class="infoDisplay">性别</nz-form-label>
+            <nz-form-control class="infoDisplay">
+              <input nz-input placeholder="" [value]="olderInfo?.sex" disabled >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzFor="name" class="infoDisplay">年龄</nz-form-label>
+            <nz-form-control class="infoDisplay">
+              <input nz-input placeholder="" [value]="olderInfo?.birthYearMonth | AgeCount" disabled >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzFor="name" class="infoDisplay">文化程度</nz-form-label>
+            <nz-form-control class="infoDisplay">
+              <input nz-input placeholder="" class="" [(ngModel)]="olderInfo.education" disabled >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzSpan="10">
+            <nz-form-item>
+              <nz-form-label nzFor="name" class="infoDisplay">诊断</nz-form-label>
+              <nz-form-control class="infoDisplay">
+                <input nz-input placeholder="" [(ngModel)]="barthelInfo.diagnose" class="barthelBorder" style="width:435px">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+      </div>
+
+        
+        <!-- <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-label nzFor="name">评定人</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="" [(ngModel)]="barthelInfo.adjuster">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="8">
+          <nz-form-item>
+            <nz-form-label nzFor="name">评定时间</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker [(ngModel)]="barthelInfo.assessmentDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+      
+    </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle=" 巴氏指数评定量表" class="marginBottom24">
+      <table border="1" class="dailyLife assessmentForm">
+        <thead>
+          <tr>
+            <th>
+              <b>序号</b>
+            </th>
+            <th>
+              <b>项目</b>
+            </th>
+            <th>
+              <b>评价标准</b>
+            </th>
+            <th>
+              <b>评分范围</b>
+            </th>
+            <th>
+              <b>得分</b>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>大便</td>
+            <td>0=失禁或昏迷
+              <br> 5=偶尔失禁（每周 &lt;1次）
+              <br> 10=能控制</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.shit">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>小便</td>
+            <td>0=失禁或昏迷或需他人导尿
+              <br> 5=偶尔失禁（每24小时 &lt;1次，每周>1次）
+              <br> 10=能控制</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.pee">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>修饰</td>
+            <td>0=需帮助
+              <br> 5=独立洗脸、梳头、刷牙、剃须</td>
+            <td>0~5</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.beautify">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>如厕</td>
+            <td>0=依赖别人
+              <br> 5=需部分帮助
+              <br> 10=自理</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.potty">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>吃饭</td>
+            <td>0=依赖别人
+              <br> 5=需部分帮助（夹饭、盛饭、切面包）
+              <br> 10=全面自理</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.eat">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>转移</td>
+            <td>0=完全依赖别人，不能坐
+              <br> 5=需大量帮助（2人），能坐
+              <br> 10=需少量帮助（1人）或指导
+              <br>15=自理
+              <br>注：指床-椅之间的转移</td>
+            <td>0~15</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.move">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                <nz-option nzValue="15" nzLabel="15"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>活动</td>
+            <td>0=不能动
+              <br> 5=在轮椅上独立行动
+              <br> 10=需1人帮忙步行（体力或语言指导）
+              <br>15=独立步行（可用辅助器）
+              <br>注：指在病房及其周围步行，不包括走远路</td>
+            <td>0~15</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.action">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+                <nz-option nzValue="15" nzLabel="15"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>穿衣</td>
+            <td>0=依赖
+              <br> 5=需一半帮助
+              <br> 10=自理（系开纽扣、关、开拉锁和穿鞋）</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.dress">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>上楼梯</td>
+            <td>0=不能
+              <br> 5=需帮助（体力或语言指导）
+              <br> 10=自理
+              <br>注：指上下一段楼梯，用手杖也算独立</td>
+            <td>0~10</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.floor">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+                <nz-option nzValue="10" nzLabel="10"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>洗澡</td>
+            <td>0=依赖
+              <br> 5=自理
+              <br> </td>
+            <td>0~5</td>
+            <td>
+              <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="barthelInfo.wash">
+                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                <nz-option nzValue="5" nzLabel="5"></nz-option>
+              </nz-select>分
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <span>
+                说明：此表是用来评定老年人日常生活活动（ADL）能力，是康复医学的特色及常用的量表之一。 可在老年人入院前、中、后对老年人进行评价。以老年人日常实际表现作为评价依据，而不以老年人可能具有的能力为准。
+                <br> 0~20分=极严重功能障碍
+                <br> 25~45分=严重功能障碍
+                <br> 50~70分=中度功能缺陷
+                <br> 75~95分=轻度功能缺陷
+                <br> 100分=ADL自理
+                <br>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">总分：</td>
+            <td style="text-align:left">
+              <input nz-input placeholder="" [(ngModel)]="barthelInfo.total" class="barthelBorder">
+            </td>
+            <td>评定结果：</td>
+            <td>
+              <input nz-input placeholder="" [value]="barthelInfo.total | BarthelLevel" class="barthelBorder">
+            </td>
+          </tr>
+          <tr>
+              <td colspan="2">评估人：</td>
+              <td style="text-align:left">
+                  <input nz-input placeholder="" [(ngModel)]="barthelInfo.adjuster" class="barthelBorder">
+              </td>
+              <td>评估时间：</td>
+              <td>
+                  <nz-date-picker [(ngModel)]="barthelInfo.assessmentDate" [nzFormat]="'yyyy-MM-dd'" ></nz-date-picker>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </nz-card>
+  </div>
+  <div  style="text-align:center">
+    <div  style="text-align:center">
+      <button nz-button nzType="primary" nzSize="large" [nzLoading]="saveBtnLoading" (click)="onSave();" class="saveBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() ">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按长者姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>身份证</th>
+          <th>入院时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <td>{{data?.cardno}}</td>
+          <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>

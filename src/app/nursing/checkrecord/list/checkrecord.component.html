@@ -1,0 +1,91 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSm]="24" [nzMd]="4" [nzLg]="4" [nzXl]="4" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">建筑</nz-form-label>
+        <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+          <nz-select [(ngModel)]="reqObj.building" (ngModelChange)="onBuildingChange()" class="width100">
+            <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+            <nz-option *ngFor="let buildingTemp of buildingList" [nzValue]="buildingTemp.id" [nzLabel]="buildingTemp.buildingName"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="4" [nzLg]="4" [nzXl]="4" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">楼层</nz-form-label>
+        <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+          <nz-select [(ngModel)]="reqObj.floor" (ngModelChange)="onFloorChange()" class="width100">
+            <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+            <nz-option *ngFor="let floorTemp of floorList" [nzValue]="floorTemp.id" [nzLabel]="floorTemp.floorName"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="4" [nzLg]="4" [nzXl]="4" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">房间</nz-form-label>
+        <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+          <nz-select [(ngModel)]="reqObj.room" (ngModelChange)="onRoomChange()" class="width100">
+            <nz-option nzValue="" nzLabel='全部' selected></nz-option>
+            <nz-option *ngFor="let roomTemp of roomList" [nzValue]="roomTemp.id" [nzLabel]="roomTemp.roomName"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">查房日期</nz-form-label>
+        <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+          <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSm]="2" [nzMd]="2" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="查房记录列表">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="loading"
+    [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="reqObj.page" [(nzPageSize)]="reqObj.size"
+    (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">楼</th>
+        <th class="textCenter">层</th>
+        <th class="textCenter">房间</th>
+        <th class="textCenter">查房时间</th>
+        <th class="textCenter">是否正常</th>
+        <th class="textCenter">包干人</th>
+        <th class="textCenter">班组</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of list">
+        <td class="textCenter">{{data?.room?.floor?.building?.buildingName}}</td>
+        <td class="textCenter">{{data?.room?.floor?.floorName}}</td>
+        <td class="textCenter">{{data?.room?.roomName}}</td>
+        <td class="textCenter">{{data?.createDate}}</td>
+        <td class="textCenter">
+          <span *ngIf="data?.abnormal==true">正常</span>
+          <span *ngIf="data?.abnormal==false">不正常</span>
+        </td>
+        <td class="textCenter">{{data?.employees?.name}}</td>
+        <td class="textCenter">{{data?.schedulingProgram?.name}}</td>
+        <td class="textCenter">
+          <a href="#" (click)="turnToCheck(data, $event)">查看</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{page.total}} 条</ng-template>

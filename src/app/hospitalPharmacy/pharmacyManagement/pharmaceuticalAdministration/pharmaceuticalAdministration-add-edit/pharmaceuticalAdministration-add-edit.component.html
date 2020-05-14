@@ -1,0 +1,230 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="药品详情" [nzExtra]="btnArea">
+    <form nz-form [formGroup]="validateForm">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugName" nzRequired>药品名称</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="drugName" id="drugName">
+                            <nz-option *ngFor="let item of drugList" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+                        </nz-select> -->
+                        <input nz-input formControlName="drugName" id="drugName" style="width:80%" />
+                        <button nz-button nzType="primary" style="width:20%" (click)="chooseDrug()">
+                            选择
+                        </button>
+                        <nz-form-explain *ngIf="validateForm.get('drugName').dirty && validateForm.get('drugName').errors" class="red">药品名称不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="commonName" nzRequired>通用名</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input formControlName="commonName" id="commonName" style="width:80%" />
+                        <nz-form-explain *ngIf="validateForm.get('commonName').dirty &&validateForm.get('commonName').errors" class="red">通用名不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugType" nzRequired>药品类别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select nzAllowClear nzPlaceHolder="请选择药品类别" formControlName="drugType" id="drugType">
+                            <nz-option nzValue="西药" nzLabel="西药"></nz-option>
+                            <nz-option nzValue="中成药" nzLabel="中成药"></nz-option>
+                            <nz-option nzValue="自制剂" nzLabel="自制剂"></nz-option>
+                            <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('drugType').dirty &&validateForm.get('drugType').errors">药品类别不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="isOtc" nzRequired>是否OTC</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-radio-group formControlName="isOtc" id="isOtc" (ngModelChange)="chooseIsOtc()">
+                            <label nz-radio nzValue="1">是</label>
+                            <label nz-radio nzValue="0">否</label>
+                        </nz-radio-group>
+                        <nz-form-explain *ngIf="validateForm.get('isOtc').dirty &&validateForm.get('isOtc').errors">是否OTC不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="dosageForm" nzRequired>剂型</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <!-- <input nz-input formControlName="dosageForm" id="dosageForm" readonly (click)="chooseDosageForm()" /> -->
+                        <nz-select nzShowSearch formControlName="dosageForm" id="dosageForm">
+                            <nz-option *ngFor="let option of dosageFormList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('dosageForm').dirty &&validateForm.get('dosageForm').errors">剂型不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="drugUsage">用法</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="drugUsage" id="drugUsage">
+                            <nz-option nzValue="p.o.-口服" nzLabel="p.o.-口服"></nz-option>
+                            <nz-option nzValue="ad us.int.-内服" nzLabel="ad us.int.-内服"></nz-option>
+                            <nz-option nzValue="ad us.ext.-外用" nzLabel="ad us.ext.-外用"></nz-option>
+                            <nz-option nzValue="H.-皮下注射" nzLabel="H.-皮下注射"></nz-option>
+                            <nz-option nzValue="im./M.-肌肉注射" nzLabel="im./M.-肌肉注射"></nz-option>
+                            <nz-option nzValue="iv./V.-静脉注射" nzLabel="iv./V.-静脉注射"></nz-option>
+                            <nz-option nzValue="iv gtt.-静脉滴注" nzLabel="iv gtt.-静脉滴注"></nz-option>
+                            <nz-option nzValue="Inhal.-吸入" nzLabel="Inhal.-吸入"></nz-option>
+                            <nz-option nzValue="CAPD-腹膜透析" nzLabel="CAPD-腹膜透析"></nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('drugUsage').dirty &&validateForm.get('drugUsage').errors">用法不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="limitLevel" nzRequired>限制等级</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select nzAllowClear nzPlaceHolder="limitLevel" formControlName="limitLevel" id="limitLevel">
+                            <nz-option nzValue="普通" nzLabel="普通"></nz-option>
+                            <nz-option nzValue="精I" nzLabel="精I" *ngIf="showlimitLevel == true"></nz-option>
+                            <nz-option nzValue="精II" nzLabel="精II" *ngIf="showlimitLevel == true"></nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('limitLevel').dirty &&validateForm.get('limitLevel').errors">限制等级不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="manufacturers">生产厂商</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input formControlName="manufacturers" id="manufacturers" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="specification">药品规格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input formControlName="specification" id="specification" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="largePackingUnit" nzRequired>大包装单位</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select nzShowSearch formControlName="largePackingUnit" id="largePackingUnit">
+                            <nz-option *ngFor="let option of unitList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('largePackingUnit').dirty &&validateForm.get('largePackingUnit').errors">大包装单位不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="minPackingQuantity" nzRequired>最小包装数量</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number style="width: 100%" formControlName="minPackingQuantity" id="minPackingQuantity" [nzMin]="0" [nzStep]="1" [nzMax]="1000"></nz-input-number>
+                        <nz-form-explain *ngIf="validateForm.get('minPackingQuantity').dirty &&validateForm.get('minPackingQuantity').errors">最小包装数量不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="minPackingUnit" nzRequired>最小包装单位</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select nzShowSearch formControlName="minPackingUnit" id="minPackingUnit">
+                            <nz-option *ngFor="let option of unitList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="validateForm.get('minPackingUnit').dirty &&validateForm.get('minPackingUnit').errors">最小包装单位不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="salePrice">售价</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number style="width: 100%" formControlName="salePrice" id="salePrice" [nzMin]="0" [nzStep]="1"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input formControlName="comment" id="comment"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+            保存
+        </button>
+    </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<!-- 选择剂型弹出框 -->
+<nz-modal [(nzVisible)]="isShowDialog" nzTitle="选择剂型" nzWidth="1000" (nzOnCancel)="close()" (nzOnOk)="isShowDialog = false">
+    <div style="height: 500px;overflow: auto">
+        <div *ngFor="let item of dosageList">
+            <h6>{{ item.name }}</h6>
+            <span *ngFor="let data of item.dosageNameList">
+                <button nz-button nzType="default" (click)="chooseName(data.name)" class="marginL">
+                    {{ data.name }}
+                </button>
+            </span>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- 选择药品弹出框 -->
+<nz-modal [(nzVisible)]="isDrug" nzTitle="选择药品名称" [nzOkText]="null" nzWidth="1000" (nzOnCancel)="isDrug = false">
+    <div nz-col [nzSpan]="10">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">药名</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <input nz-input placeholder="按药品名称检索" [(ngModel)]="drugObj.search" (keyup)="getDrug()" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="getDrug()" style="margin-left:10px;">
+                    查询
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div style="margin-top: 50px;">
+        <nz-table #drupInfo [nzData]="drugList" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="getDrug()" (nzPageSizeChange)="getDrug()" [nzShowSizeChanger]="false"
+            [nzFrontPagination]="false">
+            <thead>
+                <tr>
+                    <th>药品名称</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of drupInfo.data" (click)="drugDetails(data)">
+                    <td>{{ data?.name }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-modal>

@@ -1,0 +1,181 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>季度计划详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="primary" (click)="add()">添加</button>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <div nz-row>
+        <div nz-col nzSpan="6">姓名：{{obj.name}}</div>
+        <div nz-col nzSpan="6">性别：
+            <span *ngIf="obj.sex=='0'">男</span>
+            <span *ngIf="obj.sex=='1'">女</span>
+        </div>
+        <div nz-col nzSpan="6">年龄：{{obj.age}}</div>
+        <div nz-col nzSpan="6">身份证号：{{obj.idCard}}</div>
+    </div>
+    <nz-tabset *ngIf="planList.length>0">
+        <div *ngFor="let item of planList">
+            <nz-tab [nzTitle]="item.name">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="24" style="text-align: right">
+                        <button nz-button nzType="primary" (click)="checkCollect(item)">汇总</button>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="savePlan(item)">保存</button>
+                        <button nz-button nzType="danger" style="margin-left:10px;" (click)="delete(item.id)">删除</button>
+                    </div>
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4" nzRequired>季度计划名称</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <input nz-input maxlength="32" [(ngModel)]="item.name" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4" nzRequired> 训练时间</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <nz-date-picker [nzSize]="size" [(ngModel)]="item.startTime" style="width:190px;display:inline-block"></nz-date-picker>
+                                <span>到</span>
+                                <nz-date-picker [nzSize]="size" [(ngModel)]="item.endTime" style="width:200px;display:inline-block;text-align: right;"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4">训练康复师</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <input nz-input maxlength="32" [(ngModel)]="item.therapist" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4">康复目标</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <textarea rows="4" nz-input [(ngModel)]="item.target"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" class="marginBottom24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4">康复项目</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <textarea rows="4" nz-input [(ngModel)]="item.project"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" class="marginBottom24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4">存在问题</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <textarea rows="4" nz-input [(ngModel)]="item.problem"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="24" class="marginBottom24">
+                        <nz-form-item>
+                            <nz-form-label [nzSpan]="4">进一步康复计划</nz-form-label>
+                            <nz-form-control [nzSpan]="10">
+                                <textarea rows="4" nz-input [(ngModel)]="item.plan"></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-tab>
+        </div>
+
+
+    </nz-tabset>
+    <div *ngIf="planList.length==0" style="    text-align: center;
+    padding: 20px;
+    font-size: 16px;">无季度计划，请添加</div>
+</nz-card>
+
+
+
+<!-- 添加计划列表的名称和时间 -->
+<nz-modal [(nzVisible)]="isVisible" nzWidth="700" nzTitle="添加计划" (nzOnCancel)="isVisible=false" (nzOnOk)="saveNewPlan()">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzRequired>季度计划名称</nz-form-label>
+                <nz-form-control [nzSm]="10">
+                    <input nz-input [(ngModel)]="addPlanObj.name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzRequired>日期</nz-form-label>
+                <nz-form-control [nzSm]="10">
+                    <nz-range-picker name="date" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+
+
+<!-- 汇总得列表 -->
+<nz-modal [(nzVisible)]="collectVisible" nzWidth="900" nzTitle="汇总列表" [nzOkText]="null" (nzOnCancel)="collectVisible=false">
+    <!-- 表格查询条件Begin -->
+    <ng-template #serchArea>
+        <form nz-form>
+            <div nz-row [nzGutter]="8">
+                <div nz-col [nzSm]="24" [nzMd]="10">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">康复师</nz-form-label>
+                        <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                            <input nz-input name="old" id="old" [(ngModel)]="reqObj.therapist" placeholder="请输入康复师姓名">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSm]="24" [nzMd]="10">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">训练日期</nz-form-label>
+                        <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                            <nz-range-picker name="date" [(ngModel)]="dateMore" (ngModelChange)="onRangerChange($event)"></nz-range-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSm]="4" [nzMd]="4">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <!-- 表格查询条件End -->
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+        <thead>
+            <tr>
+                <th class="textCenter">训练时间</th>
+                <th class="textCenter">训练项目</th>
+                <th class="textCenter">训练表现</th>
+                <th class="textCenter">训练类型</th>
+                <th class="textCenter">康复训练师</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter">{{data?.time}}</td>
+                <td class="textCenter">{{data?.project}}</td>
+                <td class="textCenter">{{data?.perfermence}}</td>
+                <td class="textCenter">
+                    <span *ngIf="data.type=='1'">个人训练</span>
+                    <span *ngIf="data.type=='2'">小组训练</span>
+                </td>
+                <td class="textCenter">{{data?.therapist}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <ng-template #totalTemplate let-total>共{{total}}条</ng-template>
+</nz-modal>

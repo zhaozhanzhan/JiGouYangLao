@@ -1,0 +1,51 @@
+<ng-template #btnResCaseBaseAdd>
+    <button nz-button nzType="default" (click)="changeState()">修改</button>
+</ng-template>
+<nz-card nzTitle="服务分配" [nzExtra]="btnResCaseBaseAdd">
+    <nz-table #ajaxTable nzBordered [nzFrontPagination]="false" [nzShowPagination]="false" [nzLoading]="isTableLoading" [nzData]="resCaseBaseList">
+        <thead>
+            <tr>
+                <th class="textCenter">服务项目</th>
+                <!-- <th class="textCenter">系统项目</th> -->
+                <th class="textCenter">服务类别</th>
+                <!-- <th class="textCenter">系统类别</th> -->
+                <th class="textCenter">服务图标</th>
+                <th class="textCenter">服务频次</th>
+                <th>服务分配</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+
+                <!--
+          <td class="textCenter">{{ data.resCaseBaseInfo?.caseName }}</td>
+        -->
+                <td class="textCenter">{{ data.resCaseBaseInfo?.alias }}</td>
+                <td class="textCenter">
+                    {{ data.resCaseBaseInfo?.rcbCustomInfo?.categoryName }}
+                </td>
+
+                <!--
+          <td class="textCenter">{{ data.resCaseBaseInfo?.parent?.caseName }}</td>
+        -->
+                <td>
+                    <img src="{{data.resCaseBaseInfo?.photoUrl}}" alt="" width="25px" />
+                </td>
+                <td class="textCenter">
+                    <span *ngIf="data.danwei !== '即时'">{{ data.num }}</span>{{ data.danwei }}
+                </td>
+                <td>
+                    <label nz-checkbox *ngFor="let nursingGrade of nursingGradeList" [(ngModel)]="nursingGradeSelect[data.id + '-' + nursingGrade.id]" class="mr15" [nzDisabled]="!canEdit">{{ nursingGrade.levelName }}</label>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="tac mt30" [hidden]="!canEdit">
+        <button class="saveBtn mr15" nz-button nzType="primary" nzSize="large" (click)="save()" [nzLoading]="isSaveBtnLoading">
+            保存
+        </button>
+        <button class="saveBtn" nz-button nzType="default" nzSize="large" (click)="cancel()" [nzLoading]="isSaveBtnLoading">
+            取消
+        </button>
+    </div>
+</nz-card>

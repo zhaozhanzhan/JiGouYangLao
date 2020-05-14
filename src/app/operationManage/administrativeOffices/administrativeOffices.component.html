@@ -1,0 +1,94 @@
+<!-- 表格查询条件Begin -->
+<!-- <ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>角色名</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            style="width:120px"
+            [(ngModel)]="reqObj.name"
+            placeholder="检索角色名"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left: 10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template> -->
+<!-- 表格查询条件End -->
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="addAdministrative()">
+    添加
+  </button>
+</ng-template>
+<nz-card nzTitle="科室列表" [nzExtra]="btnAdd">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">科室名称</th>
+        <th class="textCenter">所属部门</th>
+        <th class="textCenter" nzWidth="250px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.name }}</td>
+        <td class="textCenter">{{ data?.department?.name }}</td>
+        <td class="textCenter" nzWidth="250px" nzRight="0px">
+          <a href="javascript:void(0)" roleBtnControll
+          [roleBtnKey]="'EditMenuBtn'" (click)="editAdministrative(data,$event)"
+            >编辑</a
+          >
+          <nz-divider nzType="vertical"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            (click)="toCheck(data,$event)"
+            roleBtnControll
+            [roleBtnKey]="'CheckMenuBtn'"
+            >查看</a
+          >
+          <nz-divider nzType="vertical"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            style="color: #f81d22 !important;"
+            (click)="delete(data?.id)"
+            roleBtnControll
+            [roleBtnKey]="'delMenuBtn'"
+            >删除</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+

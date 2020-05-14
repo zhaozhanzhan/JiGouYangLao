@@ -1,0 +1,17 @@
+:host /deep/ .ant-table-tbody>tr>td {
+  padding: 8px 4px;
+}
+
+nz-form-label {
+  width: 100px;
+  text-align: right
+}
+
+.dialog_input {
+  width: 150px;
+  max-width: 150px;
+}
+
+nz-form-control {
+  width: 100%
+}

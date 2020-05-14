@@ -1,0 +1,385 @@
+<!-- 主体内容 Begin -->
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div id="diabetesOrder" style="page-break-after: always;" class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13">
+                            <span class="ftwB ftzPt16">糖&nbsp;尿&nbsp;病&nbsp;记&nbsp;录&nbsp;单</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!inHospitalInfoId" class="posAbs r0 t0">
+                        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="clickPrint($event)">打印当前</button>
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="printAll()" [nzLoading]="serAll">
+                            <span *ngIf="!serAll">打印全部</span>
+                            <span *ngIf="serAll">正在查询</span>
+                        </button>
+                        <!-- <button nz-button nzType="default" class="ml20" *ngIf="!isAdd && !isPrintNow" (click)="cancelAdd()">取消新增</button>
+                        <button nz-button nzType="default" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="addData()">新增</button>
+                        <button nz-button nzType="primary" class="ml20" *ngIf="!isAdd && !isDisable" (click)="saveForm()">保存</button> -->
+                        <button nz-button nzType="default" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="showModal('add')">新增</button>
+                        <button nz-button nzType="primary" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="saveForm()">保存</button>
+                    </div>
+                </div>
+                <div class="mt10">
+                    <table class="w100p cusTable" style="border: none !important;">
+                        <thead class="w100p" style="display:table-header-group;border: none !important;">
+                            <tr class="w100p" style="border: none !important;">
+                                <td class="w100p pb10" colspan="14" style="border: none !important;">
+                                    <div class="w100p borBSB8C0CD h30 pb10">
+                                        <div class="w100p disFlex justConSB">
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>姓名：</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.name" [(ngModel)]="formInfo.basicInfo.name">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>科室</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.sectionOffice.name" [(ngModel)]="formInfo.sectionOffice.name">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>床号</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.bedName" [(ngModel)]="formInfo.bedName">
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>住院号数</span>
+                                                </div>
+                                                <div>
+                                                    <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.admissionNo" [(ngModel)]="formInfo.admissionNo">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="14">
+                                    <div class="w100p disFlex justConSB">
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>年龄</span>
+                                            </div>
+                                            <div>
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.age" [(ngModel)]="formInfo.basicInfo.age">
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>性别</span>
+                                            </div>
+                                            <div>
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [disabled]="true" [attr.value]="formInfo.basicInfo.sex" [(ngModel)]="formInfo.basicInfo.sex">
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>身高</span>
+                                            </div>
+                                            <div class="disFlex">
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.height" [(ngModel)]="formData.height">
+                                                <span>厘米</span>
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>体重</span>
+                                            </div>
+                                            <div class="disFlex">
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.weight" [(ngModel)]="formData.weight">
+                                                <span>公斤</span>
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>标准体重</span>
+                                            </div>
+                                            <div class="disFlex">
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.weightStandard" [(ngModel)]="formData.weightStandard">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <td colspan="14">
+                                    <div class="w100p disFlex justConSB">
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>体重指数</span>
+                                            </div>
+                                            <div>
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.weightIndex" [(ngModel)]="formData.weightIndex">
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>热量需要</span>
+                                            </div>
+                                            <div class="disFlex">
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.kilocaloricRequire" [(ngModel)]="formData.kilocaloricRequire">
+                                                <span>千卡(</span>
+                                                <div class="disFlex">
+                                                    <div class="disFlex">
+                                                        <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.caloricKgRequire" [(ngModel)]="formData.caloricKgRequire">
+                                                        <span>卡公斤)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="disFlex">
+                                            <div>
+                                                <span>胰岛素类型</span>
+                                            </div>
+                                            <div class="disFlex">
+                                                <input nz-input placeholder="" class="cusLineInput w80 h20 tac" [attr.value]="formData.insulinType" [(ngModel)]="formData.insulinType">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" class="tac">
+                                    <span>日期</span>
+                                </td>
+                                <td colspan="6" class="tac">血糖&nbsp;mmol/L</td>
+                                <td colspan="7" class="tac">胰岛素注射量（单位）</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <td class="tac">空腹</td>
+                                <td class="tac">餐后</td>
+                                <td class="w40">&emsp;&emsp;&emsp;&emsp;</td>
+                                <td class="w40">&emsp;&emsp;&emsp;&emsp;</td>
+                                <td class="w40">&emsp;&emsp;&emsp;&emsp;</td>
+                                <td class="w40">&emsp;&emsp;&emsp;&emsp;</td>
+                                <td class="tac">早</td>
+                                <td class="tac">
+                                    <span>执行者</span><br><span>签名</span>
+                                </td>
+                                <td class="tac">中</td>
+                                <td class="tac">
+                                    <span>执行者</span><br><span>签名</span>
+                                </td>
+                                <td class="tac">夜</td>
+                                <td class="tac">
+                                    <span>执行者</span><br><span>签名</span>
+                                </td>
+                                <td class="tac">其它</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td *ngIf="isAdd && !isPrintNow && !isDisable"></td>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <tr *ngFor="let x of formData.recordexecInfo">
+                                <td class="w150 tac" *ngIf="!isPrintNow">
+                                    <nz-date-picker class="w150" *ngIf="!isPrintNow" [attr.value]="x.recordDate" [(ngModel)]="x.recordDate"></nz-date-picker>
+                                    <span *ngIf="isPrintNow">{{x.recordDate}}</span>
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.fastingGlucose" [(ngModel)]="x.fastingGlucose">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.postprandialGlucose" [(ngModel)]="x.postprandialGlucose">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.glucoseExtend1" [(ngModel)]="x.glucoseExtend1">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.glucoseExtend2" [(ngModel)]="x.glucoseExtend2">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.glucoseExtend3" [(ngModel)]="x.glucoseExtend3">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.glucoseExtend4" [(ngModel)]="x.glucoseExtend4">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.morningInsulinInjection" [(ngModel)]="x.morningInsulinInjection">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.morningSign" [(ngModel)]="x.morningSign">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.middayInsulinInjection" [(ngModel)]="x.middayInsulinInjection">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.middaySign" [(ngModel)]="x.middaySign">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.nightInsulinInjection" [(ngModel)]="x.nightInsulinInjection">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.nightSign" [(ngModel)]="x.nightSign">
+                                </td>
+                                <td class="" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput w100p h20 tac" [attr.value]="x.otherInsulin" [(ngModel)]="x.otherInsulin">
+                                </td>
+                            </tr> -->
+                            <tr *ngFor="let x of tabList;let i = index;">
+                                <td class="w150 tac">{{x?.recordDate}}</td>
+                                <td class="w100 tac">{{x?.fastingGlucose}}</td>
+                                <td class="w100 tac">{{x?.postprandialGlucose}}</td>
+                                <td class="w100 tac">{{x?.glucoseExtend1}}</td>
+                                <td class="w100 tac">{{x?.glucoseExtend2}}</td>
+                                <td class="w100 tac">{{x?.glucoseExtend3}}</td>
+                                <td class="w100 tac">{{x?.glucoseExtend4}}</td>
+                                <td class="w100 tac">{{x?.morningInsulinInjection}}</td>
+                                <td class="w100 tac">{{x?.morningSign}}</td>
+                                <td class="w100 tac">{{x?.middayInsulinInjection}}</td>
+                                <td class="w100 tac">{{x?.middaySign}}</td>
+                                <td class="w100 tac">{{x?.nightInsulinInjection}}</td>
+                                <td class="w100 tac">{{x?.nightSign}}</td>
+                                <td class="w100 tac">{{x?.otherInsulin}}</td>
+                                <ng-container *ngIf="!inHospitalInfoId">
+                                    <td class="w100 tac" *ngIf="isAdd && !isPrintNow && !isDisable">
+                                        <button nz-button nzSize="'small'" nzGhost nzType="primary" (click)="showModal('edit',x)">修改</button>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-container *ngIf="!inHospitalInfoId">
+                    <div class="disFlex justConC mt30" *ngIf="!isPrintNow">
+                        <span *ngIf="isMore" class="color09F" (click)="loadingMore()">
+                            <nz-spin nzSimple [nzSize]="'small'" *ngIf="isLoading"></nz-spin>
+                            <i nz-icon type="down" theme="outline" *ngIf="!isLoading"></i>
+                            &emsp;加载更多
+                        </span>
+                        <span *ngIf="!isMore" class="color09F">没有更多数据</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主体内容 End -->
+
+<!-- 新增数据弹出框 Begin -->
+<nz-modal [(nzVisible)]="isVisible" nzWidth="600" [nzTitle]="modalTit" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="recordDate">日期</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker class="w150" name="recordDate" id="recordDate" [(ngModel)]="newAddData.recordDate"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex" class="pl10">
+        <div nz-col>血糖 mmol/L</div>
+    </div>
+    <div nz-row nzType="flex" class="mt10 pl20">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="fastingGlucose">空腹</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="fastingGlucose" id="fastingGlucose" placeholder="请输入血糖量" [(ngModel)]="newAddData.fastingGlucose" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="postprandialGlucose">餐后</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="postprandialGlucose" id="postprandialGlucose" placeholder="请输入血糖量" [(ngModel)]="newAddData.postprandialGlucose" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex" class="pl10">
+        <div nz-col>胰岛素注射量（单位）</div>
+    </div>
+    <div nz-row nzType="flex" class="mt10 pl20">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="morningInsulinInjection">早</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="morningInsulinInjection" id="morningInsulinInjection" placeholder="请输入胰岛素注射量" [(ngModel)]="newAddData.morningInsulinInjection" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="morningSign">执行者签名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="morningSign" id="morningSign" placeholder="请输入姓名" [(ngModel)]="newAddData.morningSign" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex" class="mt10 pl20">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="middayInsulinInjection">中</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="middayInsulinInjection" id="middayInsulinInjection" placeholder="请输入胰岛素注射量" [(ngModel)]="newAddData.middayInsulinInjection" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="middaySign">执行者签名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="middaySign" id="middaySign" placeholder="请输入姓名" [(ngModel)]="newAddData.middaySign" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex" class="mt10 pl20">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="nightInsulinInjection">夜</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="nightInsulinInjection" id="nightInsulinInjection" placeholder="请输入胰岛素注射量" [(ngModel)]="newAddData.nightInsulinInjection" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="nightSign">执行者签名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="nightSign" id="nightSign" placeholder="请输入姓名" [(ngModel)]="newAddData.nightSign" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzType="flex" class="mt10 pl20">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="otherInsulin">其它</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" name="otherInsulin" id="otherInsulin" [(ngModel)]="newAddData.otherInsulin" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+<!-- 新增数据弹出框 End -->

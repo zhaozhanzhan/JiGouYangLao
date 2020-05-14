@@ -1,0 +1,40 @@
+<ng-template #btnResCaseBaseAdd>
+    <button nz-button nzType="primary" (click)="doShowAddDialog('', '')">
+        添加
+    </button>
+</ng-template>
+<nz-card nzTitle="服务类别列表" [nzExtra]="btnResCaseBaseAdd">
+    <!-- <nz-table
+    nzBordered
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+  > -->
+    <nz-table nzVirtualScroll [nzData]="list" [nzFrontPagination]="false" [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th class="textCenter">类别名称</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of list">
+                <td class="textCenter">{{ data?.categoryName }}</td>
+
+                <td class="textCenter">
+                    <a href="javascript:void(0)" (click)="doShowAddDialog(data?.id, data?.categoryName)">修改</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="delResCaseBase(data.id)" style="color: #f81d22 !important;">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+
+<!-- 编辑服务列表对话框 -->
+<nz-modal [(nzVisible)]="isEditDialogShow" nzTitle="编辑服务类别" (nzOnCancel)="isEditDialogShow = false" (nzOnOk)="doDialogSave()" [nzOkLoading]="isSaveLoading">
+    <div>
+        <span>服务类别名称</span>
+        <input nz-input placeholder="请输入服务类别名称" [(ngModel)]="saveParams.categoryName" style="width: 60%;margin-left:20px" maxlength="8" />
+    </div>
+</nz-modal>

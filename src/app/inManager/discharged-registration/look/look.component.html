@@ -1,0 +1,95 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+<nz-card style="width: 100%;" nzTitle="出院登记详情" [nzExtra]="extraTemplate">
+  <div>
+    <table style="margin:0 auto;">
+      <tr>
+        <td>
+          <span>老人信息</span>
+        </td>
+        <td>
+          <div nz-row class="marginBottom24">
+            <input nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="discharged.roomName"
+              disabled>
+            <span>房间</span>
+            <input nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="discharged.bedName"
+              disabled>
+            <span>床</span>
+            <span>老人</span>
+            <input nzSpan="6" type="text" nz-input class="inputBottom textCenter" [ngModel]="oldman.name" disabled>
+            <span>因下列原因出院。</span>
+          </div>
+          <div nz-row class="marginBottom24">
+            <nz-radio-group [(ngModel)]="discharged.leaveType" nzDisabled style="display:inline-block ">
+              <label nz-radio nzValue="1">退住</label>
+              <label nz-radio nzValue="2">死亡</label>
+            </nz-radio-group>
+
+            <div style="display:inline-block ">
+              <span class="outH">出院日期</span>
+              <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="discharged.leavetime" nzDisabled></nz-date-picker>
+            </div>
+          </div>
+          <div nz-row class="marginBottom24" class="marginBottom24">
+            <textarea nz-input rows="2" placeholder="请输入原因" [(ngModel)]="discharged.reason" disabled></textarea>
+          </div>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>申请人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.applicantName" [isShowSign]="false" #applicant>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.applicantDate" style="margin:32px 0;" nzDisabled></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>护理部门</span>
+        </td>
+        <td>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>负责人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.huliName" [isShowSign]="false" #huliName>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.huliDate" style="margin:32px 0;" nzDisabled></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>财务部门</span>
+        </td>
+        <td>
+          <div nz-row [nzGutter]="8">
+            <div nz-col [nzSpan]="12">
+              <span>负责人签名:</span>
+              <div style="display:inline-block;">
+                <mirr-electronicSign [imgUrl]="discharged.des.caiwuName" [isShowSign]="false" #caiwuName>
+                </mirr-electronicSign>
+              </div>
+            </div>
+            <div nz-col [nzSpan]="12">
+              <span>日期:</span>
+              <nz-date-picker [(ngModel)]="discharged.des.caiwuDate" style="margin:32px 0;" nzDisabled></nz-date-picker>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</nz-card>

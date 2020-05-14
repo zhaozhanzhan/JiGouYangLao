@@ -1,0 +1,375 @@
+<div nz-row nzGutter="16">
+  <div nz-col nzMd="6" nzLg="6" nzXl="4" nzXXl="4">
+    <nz-card
+      nzTitle="菜单树"
+      style="height: calc(100vh - 112px);overflow: auto;"
+    >
+      <nz-tree
+        [(ngModel)]="nodes"
+        [nzShowLine]="true"
+        [nzDefaultExpandedKeys]="expandKeys"
+        (nzExpandChange)="mouseAction('expand', $event)"
+        (nzClick)="mouseAction('click', $event)"
+        nzExpandAll="true"
+        nzShowIcon="false"
+      >
+      </nz-tree>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="18" nzLg="18" nzXl="20" nzXXl="20">
+    <div>
+      <!-- 表格查询条件Begin -->
+      <ng-template #serchArea>
+        <form nz-form>
+          <div nz-row [nzGutter]="8">
+            <div
+              nz-col
+              [nzSm]="24"
+              [nzMd]="8"
+              [nzLg]="8"
+              [nzXl]="6"
+              [nzXXl]="6"
+            >
+              <nz-form-item nzFlex>
+                <nz-form-label nzFor="name">菜单名字</nz-form-label>
+                <nz-form-control>
+                  <input
+                    nz-input
+                    id="name"
+                    name="name"
+                    nz-input
+                    placeholder="菜单名字"
+                    [(ngModel)]="queryParams.name"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div
+              nz-col
+              [nzSm]="24"
+              [nzMd]="8"
+              [nzLg]="8"
+              [nzXl]="6"
+              [nzXXl]="6"
+            >
+              <nz-form-item nzFlex>
+                <nz-form-label nzFor="levels">层级</nz-form-label>
+                <nz-form-control>
+                  <nz-input-number
+                    [nzMin]="1"
+                    [nzStep]="1"
+                    id="levels"
+                    name="levels"
+                    placeholder="层级"
+                    [(ngModel)]="queryParams.levels"
+                  ></nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+              <nz-form-item nzFlex>
+                <nz-form-control>
+                  <button nz-button nzType="primary" (click)="updateList(true)">
+                    查询
+                  </button>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+      <!-- 表格查询条件End -->
+
+      <nz-card
+        nzTitle="{{ selectedMenuTitle + '菜单列表' }}"
+        [nzExtra]="extraTemplate"
+      >
+        <nz-table
+          #basicTable
+          [nzData]="dataArray"
+          [nzTitle]="serchArea"
+          [nzShowPagination]="true"
+          [nzBordered]="'true'"
+          [nzLoading]="isTableLoading"
+          [nzTotal]="resultData.totalElements"
+          [(nzPageIndex)]="queryParams.page"
+          [(nzPageSize)]="queryParams.size"
+          (nzPageIndexChange)="updateList()"
+          (nzPageSizeChange)="updateList(true)"
+          [nzShowSizeChanger]="true"
+          [nzFrontPagination]="false"
+          [nzShowTotal]="totalTemplate"
+        >
+          <thead>
+            <tr>
+              <th class="textCenter">菜单名称</th>
+              <th class="textCenter">菜单图标</th>
+              <th class="textCenter">菜单编号</th>
+              <th class="textCenter">菜单父编号</th>
+              <th class="textCenter">请求地址</th>
+              <th class="textCenter">排序</th>
+              <th class="textCenter">层级</th>
+              <th class="textCenter">是否是菜单</th>
+              <th class="textCenter">状态</th>
+              <th class="textCenter">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicTable.data">
+              <td class="textCenter">{{ data?.name }}</td>
+              <td class="textCenter">
+                <i nz-icon [iconfont]="data?.icon"></i>
+              </td>
+              <td class="textCenter">{{ data?.code }}</td>
+              <td class="textCenter">{{ data?.pcode }}</td>
+              <td class="textCenter">{{ data?.url }}</td>
+              <td class="textCenter">{{ data?.num }}</td>
+              <td class="textCenter">{{ data?.levels }}</td>
+              <td class="textCenter">{{ data?.ismenu == 1 ? "是" : "否" }}</td>
+              <td class="textCenter">
+                {{ data?.isuse == 1 ? "启用" : "禁用" }}
+              </td>
+              <td class="textCenter">
+                <a
+                  href="javascript:void(0);"
+                  (click)="showModifyDialog(data)"
+                  roleBtnControll
+                  [roleBtnKey]="'editMenuBtn'"
+                  >编辑</a
+                >
+                <nz-divider nzType="vertical"></nz-divider>
+                <a
+                  href="javascript:void(0)"
+                  (click)="showEnDisableConfirm(data, $event)"
+                  [ngStyle]="{ color: data.isuse == 1 ? 'red' : '#20a8d8' }"
+                  roleBtnControll
+                  [roleBtnKey]="'editIsUseBtn'"
+                  >{{ data.isuse == 1 ? "禁用" : "启用" }}</a
+                >
+                <nz-divider nzType="vertical"></nz-divider>
+                <a
+                  href="#"
+                  (click)="showDeleteConfirm(data.id, $event)"
+                  class="red"
+                  roleBtnControll
+                  [roleBtnKey]="'delMenuBtn'"
+                  >删除</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+      <ng-template #extraTemplate>
+        <button nz-button nzType="primary" (click)="showModifyDialog(null)">
+          添加
+        </button>
+      </ng-template>
+      <ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isShowModifyDialog"
+  nzTitle="菜单详情"
+  [nzStyle]="dialogStyle"
+  (nzOnCancel)="isShowModifyDialog = false"
+  (nzOnOk)="doSaveModify()"
+  nzWidth="900"
+  [nzOkLoading]="isDialogBtnLoading"
+>
+  <div nz-row nzGutter="24">
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="code"
+          nzRequired
+          >菜单编号</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <input nz-input [(ngModel)]="menuInfo.code" id="code" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="pcode"
+          nzRequired
+          >菜单父编号</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <nz-tree-select
+            class="dialog_input"
+            id="pcode"
+            [nzNodes]="menuTreeList"
+            nzShowSearch
+            [nzPlaceHolder]="menuInfo?.pcode"
+            [(ngModel)]="menuInfo.pcode"
+            [nzDropdownStyle]="{ 'max-height': '400px' }"
+          >
+          </nz-tree-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="name"
+          nzRequired
+          >菜单名称</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <input nz-input [(ngModel)]="menuInfo.name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="url"
+          >请求地址</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <input nz-input [(ngModel)]="menuInfo.url" id="url" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="num"
+          nzRequired
+          >排序号</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <nz-input-number
+            nz-input
+            [(ngModel)]="menuInfo.num"
+            id="num"
+            maxlength="10"
+            [nzMin]="1"
+            [nzStep]="1"
+            style="width:100px"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="ismenu"
+          >是否菜单</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <nz-select
+            style="width: 100%;"
+            [(ngModel)]="menuInfo.ismenu"
+            id="ismenu"
+            name="ismenu"
+          >
+            <nz-option nzValue="1" nzLabel="是"></nz-option>
+            <nz-option nzValue="0" nzLabel="否"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          nzFor="name"
+          >菜单图标</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="19"
+          [nzSm]="20"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+        >
+          <input
+            nz-input
+            [(ngModel)]="menuInfo.icon"
+            id="icon"
+            style="width:100px"
+          />
+          <i nz-icon [iconfont]="menuInfo.icon"></i>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>

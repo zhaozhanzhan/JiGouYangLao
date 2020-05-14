@@ -1,0 +1,431 @@
+
+
+
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+
+<nz-tabset nzSize="large">
+  <nz-tab>
+      <nz-card nzType="inner" nzTitle="长者跌倒风险评估量表" class="marginBottom24" [nzExtra]="extraTemplate" style="border-bottom: 1px solid transparent;margin-top: -53px;">
+          <div class="card-block">
+              <div nz-row nzGutter="24">
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">姓名</nz-form-label>
+                    <!-- <nz-form-control>
+                      <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()" value="{{olderInfo.name == undefined ? '请选择长者' : olderInfo.name}}"
+                        readonly>
+                    </nz-form-control> -->
+                    <nz-form-control *ngIf="olderInfo.name==''">
+                      <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()"
+                        value="请选择老者">
+                    </nz-form-control>
+                    <nz-form-control *ngIf="olderInfo.name !=''">
+                      <input nz-input placeholder="请选择" style="min-width:60px" [(ngModel)]="olderInfo.name" (click)="showOldDialog()"
+                        value="{{olderInfo.name}}" disabled>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                    <nz-form-label nzFor="sex">性别</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="" [value]="olderInfo?.sex" disabled>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+        
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">年龄</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="" [value]="olderInfo?.birthYearMonth | AgeCount" disabled>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+        
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">文化程度</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="" [(ngModel)]="olderInfo.education" disabled>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+        
+              </div>
+              <div nz-row style="margin-top:10px" nzGutter="8">
+        
+                <div nz-col nzSpan="10">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">诊断</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="" [(ngModel)]="tumbleInfo.diagnose">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">评定人</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="" [(ngModel)]="saveInfo.asser">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="8">
+                  <nz-form-item>
+                    <nz-form-label nzFor="name">评定时间</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker [(ngModel)]="saveInfo.assDate" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+          </div>
+          <table border="1" class="dailyLife assessmentForm">
+            <thead>
+              <tr>
+                <th>
+                  <b>项目</b>
+                </th>
+                <th>
+                  <b>参数</b>
+                </th>
+                <th>
+                  <b>分值</b>
+                </th>
+                <th>
+                  <b>测评结果</b>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="3">
+                  <b>下肢肌无力</b>
+                </td>
+                <td> 3~4级</td>
+                <td> 1</td>
+                <td rowspan="3">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.muscleWeakness">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                    <nz-option nzValue="3" nzLabel="3"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 0~2级</td>
+                <td> 2</td>
+              </tr>
+              <tr>
+                <td>5级</td>
+                <td> 3</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>平衡协调</b>
+                </td>
+                <td> 功能障碍</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.balanceCoordination">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+      
+              </tr>
+              <tr>
+                <td> 功能正常</td>
+                <td> 2</td>
+              </tr>
+      
+      
+              <tr>
+                <td rowspan="3">
+                  <b>年龄和性别</b>
+                </td>
+                <td> ≥60岁女性</td>
+                <td> 1</td>
+                <td rowspan="3">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.ageAndSex">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                    <nz-option nzValue="3" nzLabel="3"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> ≥60岁男性</td>
+                <td> 2</td>
+              </tr>
+              <tr>
+                <td>60岁</td>
+                <td> 3</td>
+              </tr>
+              <tr>
+                <td rowspan="3">
+                  <b>营养</b>
+                </td>
+                <td> 不良</td>
+                <td> 1</td>
+                <td rowspan="3">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.nutrition">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                    <nz-option nzValue="3" nzLabel="3"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+      
+                <td> 中等</td>
+                <td> 2</td>
+              </tr>
+              <tr>
+                <td>良好</td>
+                <td> 3</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>慢性病</b>
+                </td>
+                <td> 有</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.chronicDisease">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 无</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>下肢骨折</b>
+                </td>
+                <td> 有</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.fracture">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 无</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>睡眠</b>
+                </td>
+                <td> 失眠</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.sleep">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 正常</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>视力</b>
+                </td>
+                <td> 下降</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.vision">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 正常</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>药物因素</b>
+                </td>
+                <td> 有</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.drugFactors">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 无</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="3">
+                  <b>助行器械</b>
+                </td>
+                <td> 无</td>
+                <td> 1</td>
+                <td rowspan="3">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.equipment">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 拐杖</td>
+                <td> 2</td>
+              </tr>
+              <tr>
+                <td> 轮椅</td>
+                <td> 3</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>跌倒史</b>
+                </td>
+                <td> 有</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.historyOfFalls">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 无</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td rowspan="2">
+                  <b>陪护</b>
+                </td>
+                <td> 无</td>
+                <td> 1</td>
+                <td rowspan="2">
+                  <nz-select (ngModelChange)="gradeChange()" style="width: 120px;" [(ngModel)]="tumbleInfo.chaperonage">
+                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                  </nz-select>分
+                </td>
+              </tr>
+              <tr>
+                <td> 持续有</td>
+                <td> 2</td>
+              </tr>
+      
+              <tr>
+                <td>
+                  <b>总分</b>
+                </td>
+                <td> {{tumbleInfo.total}}</td>
+                <td>
+                  <b>等级</b>
+                </td>
+                <td>{{tumbleInfo.total | TumbleLevel}}</td>
+              </tr>
+      
+              <tr>
+                <td colspan="4" style="text-align: left">
+                  <span>
+                    评分在23~24分提示轻度危险；
+                    <br>评分在21~22分提示中度危险；
+                    <br>评分在18~20分提示高度危险；
+                    <br>评分≤17分提示极度危险，要求上报。
+                    <br> 老年人或亲属意见：以上评估情况属实，签名为证。
+                  </span>
+                </td>
+              </tr>
+      
+              <tr>
+                <td>
+                  <span>
+                    老年人或亲属签字：
+                  </span>
+                </td>
+                <td>
+                  <input nz-input [(ngModel)]="tumbleInfo.signatureName" style="width: 200px">
+                </td>
+                <td>
+                  <span>
+                    日期：
+                  </span>
+                </td>
+                <td>
+                  <nz-date-picker [(ngModel)]="tumbleInfo.date" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                </td>
+              </tr>
+      
+            </tbody>
+          </table>
+          <label>注：入住养老机构的老年人当出现行走、平衡异常时应接受老年人跌倒风险评估。</label>
+      </nz-card>
+      <div class="textRight" style="text-align:center">
+        <button nz-button nzType="primary" (click)="onSave()" style="margin-left: 10px" [nzLoading]="saveBtnLoading" class="saveBtn">保存</button>
+      </div>
+  </nz-tab>
+</nz-tabset>
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      "
+  (nzOnCancel)="cancelOldDialog() ">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按老年人姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'"
+      [nzLoading]="isOldTableLoading" [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page"
+      [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()" (nzPageSizeChange)="loadingOldList(true)"
+      nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>身份证</th>
+          <th>入院时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <td>{{data?.cardno}}</td>
+          <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>

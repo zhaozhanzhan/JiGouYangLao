@@ -1,0 +1,204 @@
+.details span:nth-child(odd) {
+    display: inline-block;
+    width: 60px;
+    margin-left: 2%;
+}
+
+.details {
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.publicName {
+    text-align: center;
+    margin: 10px 0px;
+    letter-spacing: 15px;
+}
+
+.adviceName {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.lettSpan {
+    display: inline-block;
+    text-align: left;
+}
+
+.docName {
+    font-size: 20px;
+}
+
+.marginTop {
+    margin-top: 10px;
+}
+
+.textCenter {
+    text-align: center
+}
+
+.sickDetails {
+    color: #000;
+    margin-bottom: 9px;
+    margin-top: -16px;
+    font-size: 15px;
+}
+
+.cusTable td.noBorder {
+    border-top: 1px solid transparent !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}
+
+:host /deep/ .ant-modal-body {
+    padding: 15px !important;
+}
+
+.detailsSice {
+    display: inline-block;
+    margin-left: 10%;
+}
+
+.first {
+    width: 160px !important;
+    /*这里需要自己调整，根据自己的需求调整宽度*/
+    position: relative;
+    overflow: hidden;
+}
+
+.xieLine {
+    display: inline-block;
+    position: absolute;
+    top: -64px;
+    left: 58px;
+    height: 265px;
+    width: 1px;
+    background: #e8e8e8;
+    -webkit-transform: rotate(42deg);
+    transform: rotate(57deg);
+}
+
+.executiveSignature {
+    position: absolute;
+    top: 11px;
+    left: 25px;
+}
+
+.signature {
+    position: absolute;
+    top: 79px;
+    left: 72px;
+}
+
+.xieLineStop {
+    display: inline-block;
+    position: absolute;
+    top: -87px;
+    left: 100px;
+    height: 214px;
+    width: 1px;
+    background: #e8e8e8;
+    -webkit-transform: rotate(42deg);
+    transform: rotate(72deg);
+}
+
+.executiveSignatureStop {
+    position: absolute;
+    top: 6px;
+    left: 13px;
+}
+
+.signatureStop {
+    position: absolute;
+    top: 30px;
+    left: 72px;
+}
+
+.borderTop {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+.borderBottom {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+.borderOther {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: #000;
+}
+
+.marginLeft {
+    margin-left: 1%;
+    display: inline-block
+}
+
+.left {
+    width: 75%;
+    float: left
+}
+
+.right {
+    display: inline-block;
+    width: 25%;
+    float: right;
+    text-align: left;
+}
+
+.cusTable {
+    border-collapse: collapse;
+    border: 1px solid black !important;
+}
+
+.cusTable td,
+.cusTable th {
+    border: 1px solid black !important;
+    height: 30px !important;
+}
+
+
+/* 表格 */
+
+.tabRelative {
+    position: relative;
+}
+
+.tabAbsolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden !important;
+    width: 100%;
+    height: 100%;
+}
+
+.widthImg {
+    height: 100%;
+    width: 100%;
+}
+
+.poTop {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+}
+
+.poBottom {
+    position: absolute;
+    bottom: 2px;
+    right: 3px;
+}

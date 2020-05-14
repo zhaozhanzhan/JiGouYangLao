@@ -1,0 +1,69 @@
+:focus {
+  outline: -webkit-focus-ring-color auto 0px;
+}
+
+.content {
+  padding: 5px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.container {
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%;
+}
+
+.drowMenu {
+  position: absolute;
+  top: 49%;
+  z-index: 100;
+  background: #fff;
+  left: 64%;
+  background: #fef3f2;
+  box-shadow: 0px 0px 7px 0px #fff6f7;
+  border: 1px solid #f3e9e9;
+}
+.drowMenu ul {
+  padding: 0;
+  margin: 0;
+}
+.drowMenu ul li {
+  list-style: none;
+  color: rgba(0, 0, 0, 0.65);
+  padding: 5px 10px;
+  margin: 0;
+}
+
+.drowMenu ul li:hover {
+  cursor: pointer;
+  background-color: #e6f7ff;
+}
+
+.ant-layout-footer {
+  padding: 15px 50px !important;
+}
+
+
+::-webkit-scrollbar  
+{  
+    width: 3px;  
+    height: 5px;  
+    background-color: #fff;  
+}  
+
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+    border-radius: 10px;  
+    background-color: lightgray;  
+}  
+
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #efefef;  
+}  

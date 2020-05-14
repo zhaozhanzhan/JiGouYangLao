@@ -1,0 +1,60 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="护理等级详情" [nzExtra]="btnArea">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="levelName">等级名称</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input formControlName="levelName" id="levelName">
+        <nz-form-explain [hidden]="!(validateForm.get('levelName').dirty && validateForm.get('levelName').errors)">等级名称不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="memo">等级说明</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <nz-select  nzAllowClear nzPlaceHolder="请选择" formControlName="memo" id="memo">
+          <nz-option nzValue="国标介护" nzLabel="国标介护"></nz-option>
+          <nz-option nzValue="国标介助" nzLabel="国标介助"></nz-option>
+          <nz-option nzValue="国标自理" nzLabel="国标自理"></nz-option>
+        </nz-select>
+        <nz-form-explain [hidden]="!(validateForm.get('memo').dirty && validateForm.get('memo').errors)">等级说明不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">保存</button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<!-- 
+<button type="button" class="btn btn-info add-button" (click)="back()">返回</button>
+<br/>
+<hr/>
+<div class="animated fadeIn ">
+  <div class="card">
+    <div class="card-header col-md-12">
+      护理等级
+      <div class="pull-right">
+        <button type="button" class="btn btn-outline-primary" (click)="onSave();">保存</button>
+      </div>
+    </div>
+    <div class="card-block">
+      <div class="form-group">
+        <label>等级名称</label>
+        <input type="text" class="form-control" [(ngModel)]="nursingGrade.levelName">
+      </div>
+
+      <div class="form-group">
+        <label>等级描述</label>
+        <input type="text" class="form-control" [(ngModel)]="nursingGrade.memo">
+      </div>
+    </div>
+  </div>
+</div> -->

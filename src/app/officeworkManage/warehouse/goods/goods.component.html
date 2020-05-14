@@ -1,0 +1,82 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">物品类别</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                    <nz-tree-select class="w100p" [nzNodes]="goodsClassificationNodes" nzShowSearch [nzPlaceHolder]="reqObjGoodName" [(ngModel)]="reqObj.categoryInfo">
+                    </nz-tree-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="whGoodsId">物品</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear style="width:150px" nzPlaceHolder="请选择" [(ngModel)]="reqObj.name" name="whGoodsId" id="whGoodsId">
+                        <nz-option *ngFor="let goods of goodsList" name="name" id="name" [nzLabel]="goods.name" [nzValue]="goods.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="物品列表" [nzExtra]="btnAdd">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1600px' }">
+        <thead>
+            <tr>
+                <th nzWidth="150px" nzLeft="0px" class="textCenter">物品名称</th>
+                <th class="textCenter">物品类别</th>
+                <th class="textCenter">库存总量</th>
+                <th class="textCenter">规格型号</th>
+                <th class="textCenter">计量单位</th>
+                <th class="textCenter">标准价格</th>
+                <th class="textCenter">最近购价</th>
+                <th class="textCenter">最低库存</th>
+                <th class="textCenter">备注</th>
+                <th nzWidth="200px" nzRight="0px" class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td nzWidth="150px" nzLeft="0px" class="textCenter">
+                    {{ data?.name }}
+                </td>
+                <td class="textCenter">{{ data?.goodsCategory?.name }}</td>
+                <td class="textCenter" [ngClass]="{ colorF81D22: data.allQuantity < data.minQuantity }">
+                    {{ data?.allQuantity }}
+                </td>
+                <td class="textCenter">{{ data?.model }}</td>
+                <td class="textCenter">{{ data?.unit }}</td>
+                <td class="textCenter">{{ data?.stdPrice }}</td>
+                <td class="textCenter">{{ data?.recentInPrice }}</td>
+                <td class="textCenter">{{ data?.minQuantity }}</td>
+                <td class="textCenter">{{ data?.comment }}</td>
+                <td class="textCenter" nzWidth="200px" nzRight="0px">
+                    <a href="javascript:void(0)" (click)="turnToEdit(data)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="delete(data.id)" style="color: #f81d22 !important;">删除</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="turnToStock(data)">库存明细</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

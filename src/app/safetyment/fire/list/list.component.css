@@ -1,0 +1,71 @@
+td, th {
+  text-align: center !important;
+}
+
+.red {
+  color: #f81d22 !important;
+}
+
+nz-form-item {
+  margin-bottom: 0px;
+}
+
+.ant-select-selection--single {
+  height: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.fireAreaM {
+  margin-left: 10%
+}
+
+.labelStyle {
+  margin-right: 10px;
+  margin-left: 27px
+}
+
+.checkboxCheck label {
+  width: 65px !important
+}
+
+.PatrolCycle {
+  background: #fff;
+  padding: 15px;
+  position: relative;
+}
+
+.PatrolCycleSpan {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.PatrolCycleEdit {
+  position: absolute;
+  right: 24px;
+}
+
+.selectedRow_true {
+  background: #1890ff33 !important;
+}
+
+.selectedRow_false {
+  background: white !important;
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all .3s;
+}
+
+.dynamic-delete-button:hover {
+  color: #777;
+}
+
+[nz-form] {
+  max-width: 600px;
+}

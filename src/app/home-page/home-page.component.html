@@ -1,0 +1,179 @@
+<div id="homePage">
+  <!-- 头部 -->
+
+  <div class="homePageContent">
+    <!-- 详细信息 -->
+    <div class="detailedInformation ">
+      <!-- 床位信息 -->
+      <div class="bedsInformation publicInformation">
+        <img src="assets/img/hP/1.png" alt="" class="publicImg" />
+        <div class="bedsInformationContent">
+          <h3>床位信息</h3>
+          <div class="informationContent">
+            <div class="publicDiv">
+              <span class="publicName">总床位数</span>
+              <span class="bedsColor"
+                >{{ bedsInformationNumber.totalBeds }}张</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">使用床位数</span>
+              <span class="bedsColor"
+                >{{ bedsInformationNumber.numberOfBeds }}张</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">入住率</span>
+              <span class="bedsColor">{{
+                bedsInformationNumber.occupancyRate
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 老人信息 -->
+      <div class="oldManInformation publicInformation">
+        <img src="assets/img/hP/2.png" alt="" class="publicImg" />
+        <div class="bedsInformationContent">
+          <h3>老人信息</h3>
+          <div class="informationContent">
+            <div class="publicDiv">
+              <span class="publicName">总服务人数</span>
+              <span class="oldManColor"
+                >{{ oldManInformationNumber.totalNumberOfService }}人</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">出院人数</span>
+              <span class="oldManColor"
+                >{{
+                  oldManInformationNumber.numberOfDischargedPatients
+                }}人</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">目前入住人数</span>
+              <span class="oldManColor"
+                >{{ oldManInformationNumber.currentOccupancy }}人</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 护工信息 -->
+      <div class="nursingWorkersInformation publicInformation">
+        <img src="assets/img/hP/3.png" alt="" class="publicImg" />
+        <div class="bedsInformationContent">
+          <h3>护工信息</h3>
+          <div class="informationContent">
+            <div class="publicDiv">
+              <span class="publicName">护工总数</span>
+              <span class="nursingWorkersColor"
+                >{{ careInformationNumber.carNumber }}人</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">班组数</span>
+              <span class="nursingWorkersColor"
+                >{{ careInformationNumber.teamNumber }}个</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName"></span>
+              <span class="nursingWorkersColor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 护理信息 -->
+      <div class="nursingInformation publicInformation">
+        <img src="assets/img/hP/4.png" alt="" class="publicImg" />
+        <div class="bedsInformationContent">
+          <h3>护理信息</h3>
+          <div class="informationContent">
+            <div class="publicDiv">
+              <span class="publicName">服务总数</span>
+              <span class="nursingColor"
+                >{{ nursingInformationNumber.serviceNumber }}次</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">当月服务总数</span>
+              <span class="nursingColor"
+                >{{ nursingInformationNumber.monthServiceNumber }}次</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName">今日服务总数</span>
+              <span class="nursingColor"
+                >{{ nursingInformationNumber.todayServiceNumber }}次</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 消防设施 -->
+      <div class="nursingInformation publicInformation">
+        <img src="assets/img/hP/2.png" alt="" class="publicImg" />
+        <div class="bedsInformationContent">
+          <h3>消防设施</h3>
+          <div class="informationContent">
+            <div class="publicDiv">
+              <span class="publicName">设施数量</span>
+              <span class="firePatrolColor"
+                >{{ fireFightingNumber.facilitiesSum }}个</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName"
+                >{{ fireFightingNumber.patrolCycle }}消防巡查</span
+              >
+              <span class="firePatrolColor"
+                >{{ fireFightingNumber.todayFireInspection }}次</span
+              >
+            </div>
+            <div class="publicDiv">
+              <span class="publicName"
+                >{{ fireFightingNumber.patrolCycle }}防火巡查</span
+              >
+              <span class="firePatrolColor"
+                >{{ fireFightingNumber.everydayFireInspection }}次</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 图表信息 -->
+    <div class="chartInformation ">
+      <!-- 入住老人护理统计表格 -->
+      <div class="careForTheElderly publicChart">
+        <div class="publicTitle">
+          <img src="assets/img/hP/oldMan.png" alt="" />
+          <span class="title">护理等级统计</span>
+        </div>
+        <div echarts [options]="chartOption" class="chart"></div>
+      </div>
+      <!-- 护理服务趋势 -->
+      <div class="nursingServices publicChart">
+        <div class="publicTitle">
+          <img src="assets/img/hP/huli.png" alt="" />
+          <span class="title">护理服务趋势</span>
+        </div>
+        <div echarts [options]="nursingServicesContainer" class="chart"></div>
+      </div>
+      <!-- 今日服务统计 -->
+      <div class="serviceStatisticsToday publicChart">
+        <div class="publicTitle">
+          <img src="assets/img/hP/oldMan.png" alt="" />
+          <span class="title">今日服务统计</span>
+        </div>
+        <div
+          echarts
+          [options]="TodaynursingServicesContainer"
+          class="chart"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

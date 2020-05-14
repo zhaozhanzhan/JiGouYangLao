@@ -1,0 +1,107 @@
+<nz-card nzTitle="消防统计" [nzLoading]="isLoadingData">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+      <nz-form-item>
+        <nz-form-label
+          [nzSpan]="6"
+          [nzXs]="6"
+          [nzSm]="6"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="6"
+          [nzXXl]="6"
+          nzFor="employeesGroupId"
+          >巡查周期</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="18"
+          [nzSm]="18"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="18"
+          [nzXXl]="18"
+        >
+          <nz-radio-group [(ngModel)]="radioValue" nzDisabled>
+            <label nz-radio nzValue="1">日</label>
+            <label nz-radio nzValue="2">周</label>
+            <label nz-radio nzValue="3">月</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label
+          [nzSpan]="6"
+          [nzXs]="5"
+          [nzSm]="4"
+          [nzMd]="10"
+          [nzLg]="9"
+          [nzXl]="8"
+          [nzXXl]="8"
+          nzFor="employeesGroupId"
+          >区域</nz-form-label
+        >
+        <nz-form-control
+          [nzXs]="18"
+          [nzSm]="20"
+          [nzMd]="14"
+          [nzLg]="15"
+          [nzXl]="16"
+          [nzXXl]="16"
+        >
+          <nz-select
+            style="width: 150px;"
+            [(ngModel)]="params.ffdAreaId"
+            nzPlaceHolder="请选择区域"
+            nzAllowClear
+            nzShowSearch
+            [nzServerSearch]="true"
+            (nzOnSearch)="onSearch()"
+            (ngModelChange)="onSelectedAreaChange(params.ffdAreaId)"
+          >
+            <ng-container *ngFor="let o of employeesGroupList">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="o.id"
+                [nzLabel]="o.name"
+              ></nz-option>
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <nz-calendar
+    [nzFullscreen]="true"
+    [(ngModel)]="dateTime"
+    (ngModelChange)="onChange($event)"
+    [(nzMode)]="videoMode"
+  >
+    <ul *nzDateCell="let date" class="events">
+      <ng-container [ngSwitch]="date.getDate()">
+        <span *ngFor="let data of dataList">
+          <ng-container *ngSwitchCase="data.date.getDate()">
+            <nz-badge *ngIf="isShow(date, data.day)">
+              <span *ngIf="data.isQualified == false">巡查结果为:不合格</span>
+              <span *ngIf="data.isQualified == true">巡查结果为:合格</span>
+            </nz-badge>
+          </ng-container>
+        </span>
+      </ng-container>
+    </ul>
+
+    <ul *nzMonthCell="let month">
+      <ng-container [ngSwitch]="month.getMonth()">
+        <div *ngFor="let data of dataList" class="notes-month">
+          <ng-container *ngSwitchCase="data.date.getMonth()">
+            <!-- <section>{{ monthData }}</section> -->
+            <span *ngIf="data.isQualified == false">巡查结果为:不合格</span>
+            <span *ngIf="data.isQualified == true">巡查结果为:合格</span>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ul>
+  </nz-calendar>
+</nz-card>

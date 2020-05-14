@@ -1,0 +1,55 @@
+<nz-card nzTitle="合同模板列表" [nzExtra]="extraTemplate">
+  <nz-table #basicTable [nzData]="dataArray" [nzShowPagination]="true" [nzBordered]="'true'"  [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements" [nzShowTotal]="totalTit" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzScroll]="{ y: '500px',x:'800px'}">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th nzWidth="140px">更新日期</th>
+        <th nzWidth="100px">编辑人</th>
+        <th nzWidth="100px">模板状态</th>
+        <th nzWidth="240px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data?.name}}</td>
+        <td>{{data?.updateDate | date:'yyyy-MM-dd HH:mm'}}</td>
+        <td>{{data?.modifier == null ? data.noteTaker : data.modifier}}</td>
+        <td>
+          <a href="#" (click)="toggerTemoState(data,false, $event)" *ngIf="data?.startOrStop == 1">已发布</a>
+          <a href="#" (click)="toggerTemoState(data,true, $event)" class="red" *ngIf="data?.startOrStop != 1">未启用</a>
+        </td>
+        <td nzRight="0px">
+          <a href="#" (click)="showModifyDialog(data, $event)">修改名称</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="editContractTemplate(data, $event)">编辑模板</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="confirmDelContract(data, $event)" class="red">删除模板</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+  <a href="#" (click)="showAddDialog( $event)">添加</a>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{resultData.totalElements}}&nbsp;条</ng-template>
+
+<nz-modal [(nzVisible)]="isShowAddDialog" nzTitle="合同名称" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="isShowAddDialog = false">
+  <ng-template #modalContent>
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label nzSpan="4" nzRequired>合同名称</nz-form-label>
+        <nz-form-control nzSpan="14">
+          <textarea nzAutosize nz-input formControlName="name" placeholder="请输入协议名称" [(ngModel)]="inputContractName"></textarea>
+          <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">合同名称不能为空，且最大长度不能超过30个字符</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="onSaveTemplate()" [nzLoading]="isSaveLoading">保存</button>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,74 @@
+<ng-template #btnAdd>
+    <button nz-button (click)="save()" nzType="primary" style="margin-right: 20px;" [nzLoading]="isLoadingSave">保存</button>
+    <button nz-button (click)="back()">返回</button>
+  </ng-template>
+  <nz-card nzTitle="患者入院评估表" [nzExtra]="btnAdd" style="height: 100%;">
+    <div style="width: 800px; margin: 0 auto;padding: 30px 50px;">
+  
+      <div style="text-align: center">
+        <h2>无锡市滨湖区蠡园街道社区卫生服务中心</h2>
+        <h2>患者病情评估表</h2>
+      </div>
+      <h3>姓名：{{olderInfo?.name}} &emsp; 性别：{{olderInfo?.sex}} &emsp; 年龄：{{olderInfo?.age}} &emsp; 病区：{{olderInfo?.sickWardName}} &emsp; 住院号：{{olderInfo?.admissionNo}} &emsp; </h3>
+      <h3>诊断：{{ olderInfo?.judgement }}</h3>
+      <span>术前评估：</span>
+      <table style="width: 100%;text-align: center;border-collapse:collapse;" border="1px solid #000">
+        <tbody>
+          <tr style="height: 45px;">
+            <td>手术指针</td>
+            <td style="min-width: 80px;">风险</td>
+            <td>可能的并发症</td>
+            <td style="min-width: 80px;">心理状况</td>
+            <td style="min-width: 80px;">手术预后</td>
+            <td style="min-width: 120px;">手术耐受性</td>
+          </tr>
+          <tr style="height: 45px;">
+            <td>
+              <!-- <div id="symptom" class="text_box" contenteditable="true"></div> -->
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.surgeryPointer1"></textarea>
+            </td>
+            <td (click)="setFormVal('risk','高')">高<span *ngIf="formInfo.risk == '高'">√</span></td>
+            <td>
+              <!-- <div id="symdrome" class="text_box" contenteditable="true"></div> -->
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.complications1"></textarea>
+            </td>
+            <td (click)="setFormVal('psychologicalStatus','良好')">良好<span *ngIf="formInfo.psychologicalStatus == '良好'">√</span></td>
+            <td (click)="setFormVal('prognosis','好')">好<span *ngIf="formInfo.prognosis == '好'">√</span></td>
+            <td (click)="setFormVal('tolerance','好')">好<span *ngIf="formInfo.tolerance == '好'">√</span></td>
+          </tr>
+          <tr style="height: 45px;">
+            <td>
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.surgeryPointer2"></textarea>
+            </td>
+            <td (click)="setFormVal('risk','中')">中<span *ngIf="formInfo.risk == '中'">√</span></td>
+            <td>
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.complications2"></textarea>
+            </td>
+            <td (click)="setFormVal('psychologicalStatus','一般')">一般<span *ngIf="formInfo.psychologicalStatus == '一般'">√</span></td>
+            <td (click)="setFormVal('prognosis','中')">中<span *ngIf="formInfo.prognosis == '中'">√</span></td>
+            <td (click)="setFormVal('tolerance','中')">中<span *ngIf="formInfo.tolerance == '中'">√</span></td>
+          </tr>
+          <tr style="height: 45px;">
+            <td>
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.surgeryPointer3"></textarea>
+            </td>
+            <td (click)="setFormVal('risk','低')">低<span *ngIf="formInfo.risk == '低'">√</span></td>
+            <td>
+              <textarea style="width:100%; height:125px; border:0 none; outline:none;" [(ngModel)]="formInfo.complications3"></textarea>
+            </td>
+            <td (click)="setFormVal('psychologicalStatus','较差')">较差<span *ngIf="formInfo.psychologicalStatus == '较差'">√</span></td>
+            <td (click)="setFormVal('prognosis','差')">差<span *ngIf="formInfo.prognosis == '差'">√</span></td>
+            <td (click)="setFormVal('tolerance','差')">差<span *ngIf="formInfo.tolerance == '差'">√</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="text-align: end;padding: 20px 0;">
+        <span style="padding-right: 30px;">
+          评估者：<input nz-input style="width: 150px;" [(ngModel)]="formInfo.assessmentPerson" />
+        </span>
+        <span>
+          日期：<nz-date-picker [(ngModel)]="selDate" (ngModelChange)="onDateChange($event)"></nz-date-picker>
+        </span>
+      </div>
+    </div>
+  </nz-card>

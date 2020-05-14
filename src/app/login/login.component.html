@@ -1,0 +1,83 @@
+<div class="login">
+  <!-- 头部标签 -->
+  <div class="header">
+    <img id="sysLogo" src="assets/img/icon.png" alt="logo" class="headerImg" />
+    <div class="headerMargin">{{ title }}</div>
+  </div>
+
+  <!-- 登录模块 -->
+  <div class="loginwin">
+    <h3 class="theTitle">医养服务管理平台</h3>
+
+    <!-- 用户名 -->
+    <div class="form-group has-success">
+      <nz-input-group nzSize="large" [nzPrefix]="userIcon">
+        <input
+          type="text"
+          nz-input
+          placeholder="请输入用户名"
+          [(ngModel)]="data.num"
+        />
+      </nz-input-group>
+    </div>
+    <ng-template #userIcon><i nz-icon type="user"></i></ng-template>
+    <!-- 密码 -->
+    <div class="form-group has-success">
+      <nz-input-group nzSize="large" [nzPrefix]="lockIcon">
+        <input
+          type="text"
+          nz-input
+          placeholder="请输入密码"
+          [(ngModel)]="data.password"
+          type="password"
+        />
+      </nz-input-group>
+    </div>
+    <ng-template #lockIcon><i nz-icon type="lock"></i></ng-template>
+    <!-- 验证码 -->
+    <div style="margin-bottom: 10px">
+      <div class="example-input">
+        <input
+          nz-input
+          placeholder="请输入验证码"
+          nzSize="large"
+          class="ant-input"
+          [(ngModel)]="data.validateCode"
+        />
+        <img
+          src=""
+          id="img"
+          title="看不清，换一张"
+          style="width: 45%;cursor: pointer;"
+          (click)="code()"
+        />
+      </div>
+    </div>
+    <!-- 记住密码 -->
+    <div class="input-group">
+      <label>
+        <input type="checkbox" value="true" [(ngModel)]="isRemember" />
+        记住用户名
+      </label>
+    </div>
+
+    <!-- 登录按钮 -->
+    <button
+      id="loginBtn"
+      nz-button
+      nzType="primary"
+      class="btn btn-success btn-block btn-lg"
+      (click)="doLogin()"
+      [nzLoading]="isBtnLoging"
+      style="height:45px;"
+      nzBlock
+    >
+      登 录
+    </button>
+  </div>
+
+  <!-- 底部 -->
+  <div class="bottomMargin">
+    <label style="margin-top:20px"> {{ bottom }} </label>
+  </div>
+</div>

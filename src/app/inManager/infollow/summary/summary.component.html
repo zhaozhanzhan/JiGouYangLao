@@ -1,0 +1,86 @@
+<div style="position:relative;">
+  <div *ngIf="status == '未完成' || status == '已完成'" style="position: absolute;width: 100%;height:100%;z-index: 99;" ></div>
+  <nz-spin [nzSpinning]="loading">
+    <!-- 情况评估 -->
+    <nz-card style="width:100%;font-size:15px;" nzTitle="情况评估" [nzLoading]="false">
+      <div style="padding-left:60px;">
+        <div style="line-height: 32px;">
+          步行：<nz-checkbox-group [(ngModel)]="conditionAssessment.walk"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;">
+          用餐：<nz-checkbox-group [(ngModel)]="conditionAssessment.meal"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;margin-left: -15px;">
+          穿脱衣：<nz-checkbox-group [(ngModel)]="conditionAssessment.coat"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;">
+          排便：<nz-checkbox-group [(ngModel)]="conditionAssessment.shit"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;margin-left: -30px;">
+          思维能力：<nz-checkbox-group [(ngModel)]="conditionAssessment.think"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;margin-left: -60px;">
+          语言表达能力：<nz-checkbox-group [(ngModel)]="conditionAssessment.speak"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;margin-left: -30px;">
+          上肢活动：<nz-checkbox-group [(ngModel)]="conditionAssessment.limbActive"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;">
+          视力：<nz-checkbox-group [(ngModel)]="conditionAssessment.visual"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;">
+          听力：<nz-checkbox-group [(ngModel)]="conditionAssessment.hear"></nz-checkbox-group>
+        </div>
+        <div style="line-height: 32px;">
+          饮食：<nz-checkbox-group [(ngModel)]="conditionAssessment.diet"></nz-checkbox-group>
+        </div>
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;">备注：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="conditionAssessment.remark" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+      </div>
+    </nz-card>
+
+    <!-- 主要照护措施 -->
+    <nz-card style="width:100%;font-size:15px;margin-top:15px;" nzTitle="跟进总结" [nzLoading]="false">
+      <div style="padding-left:60px;">
+        <div style="line-height: 32px;margin-left: -70px;">
+          <span style="color:red;font-size:16px;">*</span>
+          最终护理等级：
+          <nz-radio-group [(ngModel)]="conditionAssessment.endCareLevel">
+            <label nz-radio nzValue="介助">介助</label>
+            <label nz-radio nzValue="介护">介护</label>
+            <label nz-radio nzValue="自理">自理</label>
+          </nz-radio-group>
+        </div>
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;">措施：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="conditionAssessment.measure" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;left: -30px;">食物禁忌：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="conditionAssessment.proFood" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;left: -30px;">行动能力：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="conditionAssessment.activity" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;left: -30px;">性格特点：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="conditionAssessment.trait" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+      </div>
+    </nz-card>
+
+    <div style="line-height: 32px;margin-top:15px;">
+      <span style="display:inline-block;">总结人：</span>
+      <input type="text" style="width:150px;margin-right:20px;" maxlength="50" type="text" nz-input [(ngModel)]="conditionAssessment.operator" />
+    </div>
+
+    <!-- 按钮 -->
+    <div *ngIf="!(status == '未完成' || status == '已完成')" style="text-align:center;margin-top:15px;">
+      <button style="width:100px;height:40px;margin-right:20px;" nz-button [nzSize]="large" nzType="primary" (click)="confirm()">完成跟进</button>
+    </div>
+  </nz-spin>
+</div>
+

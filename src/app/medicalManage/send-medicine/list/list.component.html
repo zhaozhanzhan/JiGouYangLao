@@ -1,0 +1,162 @@
+<!-- 顶部添加按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="primary" (click)="showModal()">批量发药</button>
+    <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+    <button nz-button class="ml20" nzType="primary" *ngIf="!isPrintNow" (click)="clickPrint($event)">打印</button>
+</ng-template>
+<!-- 顶部添加按钮End -->
+
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form *ngIf="!isPrintNow">
+        <div nz-row [nzGutter]="8">
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="6">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="6" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6">病人</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                        <input type="text" nz-input placeholder="按老人姓名、住院号模糊检索" [(ngModel)]="serValObj.name" [ngModelOptions]="{ standalone: true }" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">建筑</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择建筑" [(ngModel)]="serValObj.buildId" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeBuild(serValObj.buildId)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of buildArr;let key = index" [nzValue]="x.id" [nzLabel]="x.buildingName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">楼层</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择楼层" [(ngModel)]="serValObj.floorId" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeFloor(serValObj.floorId)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of floorArr;let key = index" [nzValue]="x.id" [nzLabel]="x.floorName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">房间</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择房间" [(ngModel)]="serValObj.roomId" [ngModelOptions]="{standalone: true}" (ngModelChange)="serFun(true)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of roomArr;let key = index" [nzValue]="x.id" [nzLabel]="x.roomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">状态</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择状态" [(ngModel)]="serValObj.hasSendOver" [ngModelOptions]="{standalone: true}" (ngModelChange)="serFun()">
+                            <nz-option nzValue="0" nzLabel="未发" selected></nz-option>
+                            <nz-option nzValue="1" nzLabel="已发"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+            <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" [nzXs]="8" [nzSm]="8" [nzMd]="8" [nzLg]="8" [nzXl]="8">咨询日期</nz-form-label>
+                    <nz-form-control [nzXs]="16" [nzSm]="16" [nzMd]="16" [nzLg]="16" [nzXl]="16" [nzXl]="16">
+                        <nz-range-picker name="date" [(ngModel)]="serValObj.date" (ngModelChange)="selDate(serValObj.date)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+            <div nz-col [nzSm]="4" [nzMd]="2" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="serFun(true)">查询</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<!-- 表格列表区域Begin -->
+<nz-card nzTitle="委托发药列表" [nzExtra]="btnArea">
+    <div #printArea>
+        <nz-table #dataTemp [nzShowSizeChanger]="!isPrintNow" [nzShowPagination]="!isPrintNow" [nzBordered]="true" [nzTitle]="serchArea" [nzShowTotal]="totalTit" [nzFrontPagination]="false" [(nzPageIndex)]="serValObj.page" [(nzTotal)]="serValObj.totalItem" [(nzPageSize)]="serValObj.size"
+            [(nzData)]="dataList" (nzPageIndexChange)="serFun()" [nzLoading]="isTableLoading">
+            <thead>
+                <tr>
+                    <th nzWidth="62px" nzShowCheckbox *ngIf="isShowOper" [(nzChecked)]="isSelAll" [nzIndeterminate]="indeState" (nzCheckedChange)="checkAll($event)"></th>
+                    <th class="tac ftwB">姓名</th>
+                    <th class="tac ftwB">床位</th>
+                    <th class="tac ftwB">药品</th>
+                    <th class="tac ftwB">规格</th>
+                    <th class="tac ftwB w150">作用</th>
+                    <th class="tac ftwB">剩余数量</th>
+                    <th class="tac ftwB">服用期限</th>
+                    <!-- <th class="tac ftwB">服药日期</th> -->
+                    <th class="tac ftwB">剂量（片/次）</th>
+                    <th class="tac ftwB">频次</th>
+                    <th class="tac ftwB">餐前</th>
+                    <th class="tac ftwB">餐后</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let x of dataTemp.data; let i = index">
+                <tr>
+                    <td nzShowCheckbox *ngIf="isShowOper" [nzChecked]="isChecked(x.id)" [attr.rowspan]="x.medList?(x.medList.length + 1):1" (nzCheckedChange)="checkSingle($event, x.id, x)"></td>
+                    <td class="tac" [attr.rowspan]="x.medList?(x.medList.length + 1):1">{{ x?.name }}</td>
+                    <td class="tac" [attr.rowspan]="x.medList?(x.medList.length + 1):1">
+                        {{ x?.bedName }}
+                    </td>
+                </tr>
+                <tr *ngFor="let y of x?.medList; let j = index">
+                    <td class="tac">{{ y?.medName }}</td>
+                    <td class="tac">{{ y?.specification }}</td>
+                    <td class="tac w150 curHelp">
+                        <span nz-tooltip [nzTitle]="y?.effect">{{ y?.effect | sliceStr : !isPrintNow : 7}}</span>
+                    </td>
+                    <td class="tac">{{ y?.medTotal }}</td>
+                    <td class="tac">{{ y?.limitDate | date: "yyyy-MM-dd" }}</td>
+                    <!-- <td class="tac">{{ y?.takeDate | date: "yyyy-MM-dd" }}</td> -->
+                    <td class="tac">{{ y?.dosage }}</td>
+                    <td class="tac">{{ y?.frequency }}</td>
+                    <td class="tac">
+                        <span *ngIf="y?.takeMedTime == '0'">✓</span>
+                    </td>
+                    <td class="tac">
+                        <span *ngIf="y?.takeMedTime == '1'">✓</span>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-card>
+<!-- 表格列表区域End -->
+
+<!-- 分页信息显示Begin -->
+<ng-template #totalTit *ngIf="!isPrintNow">共&nbsp;{{ serValObj.totalItem }}&nbsp;条</ng-template>
+<!-- 分页信息显示End -->
+
+<!-- 批量发药确认框 Begin -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="批量发药" [nzOkLoading]="isOkLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div class="">
+        <div class="mb10">是否要给以下所有老人发药？</div>
+        <div class="pl10">
+            <span *ngFor="let x of selObjArr;let i=index;">{{x?.name}} <strong *ngIf="i !== selObjArr.length - 1">、</strong></span>
+        </div>
+    </div>
+    <div nz-row nzType="flex" nzJustify="end">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>领用人</nz-form-label>
+                <nz-form-control>
+                    <input nz-input class="w150" placeholder="请输入领用人姓名" [(ngModel)]="formData.receiver" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+<!-- 批量发药确认框 End -->

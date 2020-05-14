@@ -1,0 +1,686 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+
+
+<nz-tabset nzSize="large">
+  <nz-tab>
+    <div id="dailyLife" class="tabseMargin">
+      <nz-card nzType="inner" nzTitle="一般情况" class="marginBottom24" [nzExtra]="extraTemplate" style="border-bottom: 1px solid transparent">
+        <div nz-row nzSpan="24">
+          <div nz-col nzSpan="8">
+            <label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+            <!-- <input type="text" class="form-control" [(ngModel)]="oldmanInfo.name"> -->
+            <input nz-input placeholder="请选择长者姓名" *ngIf="saveContractParams.name==''" class="PapAssessmentApply"
+              [(ngModel)]="saveContractParams.name" id="oldmanId" name="oldmanId" (click)="showOldDialog($event)" >
+            <input nz-input placeholder="请选择长者姓名" *ngIf="saveContractParams.name!=''" class="PapAssessmentApply"
+              [(ngModel)]="saveContractParams.name" id="oldmanId" name="oldmanId" (click)="showOldDialog($event)" 
+              disabled>
+          </div>
+          <div nz-col nzSpan="8">
+            <label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</label>
+            <input nz-input placeholder="" [(ngModel)]="saveContractParams.sex" class="PapAssessmentApply"
+              disabled>
+          </div>
+          <div nz-col nzSpan="8">
+            <label>出生年月：</label>
+            <input nz-input placeholder="" [(ngModel)]="saveContractParams.birthYearMonth" class="PapAssessmentApply"
+              disabled>
+          </div>
+        </div>
+        <div nz-row nzSpan="24" style="margin-top:10px">
+          <div nz-col nzSpan="8">
+            <label>民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族：</label>
+            <input nz-input placeholder="" [(ngModel)]="saveContractParams.nation" class="PapAssessmentApply"
+              disabled>
+          </div>
+          <div nz-col nzSpan="8">
+            <label>文化程度：</label>
+            <input nz-input placeholder="" [(ngModel)]="saveContractParams.education" class="PapAssessmentApply"
+              disabled>
+          </div>
+          <div nz-col nzSpan="8">
+            <label>婚姻状况：</label>
+            <nz-radio-group [(ngModel)]="saveContractParams.marriage" class="radioNusing" nzDisabled>
+              <label nz-radio nzValue="未婚">未婚</label>
+              <label nz-radio nzValue="已婚">已婚</label>
+              <label nz-radio nzValue="离婚">离婚</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div nz-row nzSpan="24" style="margin-top:10px">
+          <div nz-col nzSpan="16">
+            <label>宗&nbsp;教&nbsp;信&nbsp;仰&nbsp;：</label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="saveContractParams.religion" 
+              [style.width]="saveContractParams.religion == '有'?'30%':'60%'" nzDisabled class="radioNusing">
+              <nz-option nzLabel="无" nzValue="无"></nz-option>
+              <nz-option nzLabel="有" nzValue="有"></nz-option>
+            </nz-select>
+            <input nz-input [(ngModel)]="saveContractParams.religionMemo" placeholder="请输入宗教信仰" style="width: 30%;" 
+              *ngIf="saveContractParams.religion == '有'" maxlength="10" disabled>
+          </div>
+        </div>
+        <div nz-row nzSpan="24" style="margin-top:10px">
+          <div nz-col nzSpan="8">
+            <label>国&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;籍：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.nationality" class="PapAssessmentApply">
+          </div>
+          <div nz-col nzSpan="8">
+            <label>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.nativePlace" class="PapAssessmentApply">
+          </div>
+          <div nz-col nzSpan="8">
+            <label>原职业：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.occupation" class="PapAssessmentApply">
+          </div>
+        </div>
+        <div nz-row nzSpan="24" style="margin-top:10px">
+          <div nz-col nzSpan="8">
+            <label>紧急联系人：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.emergencyLiaison" class="PapAssessmentApply">
+          </div>
+          <div nz-col nzSpan="8">
+            <label>关&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.relationship" class="PapAssessmentApply">
+          </div>
+          <div nz-col nzSpan="8">
+            <label>电&nbsp;&nbsp;&nbsp;&nbsp;话：</label>
+            <input nz-input placeholder="" [(ngModel)]="careAssessParams.emergencyPhone" class="PapAssessmentApply">
+          </div>
+        </div>
+      </nz-card>
+      <nz-card nzType="inner" nzTitle="照护评估" class="marginBottom24">
+        <div>
+          <div class="checkMargin">
+            <label>入住方式：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.inType" class="radioNusing">
+              <label nz-radio nzValue="步行">步行</label>
+              <label nz-radio nzValue="扶行">扶行</label>
+              <label nz-radio nzValue="使用助行器">使用助行器</label>
+              <label nz-radio nzValue="轮椅">轮椅</label>
+              <label nz-radio nzValue="平车">平车</label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.inType=='其他'" [(ngModel)]="careAssessParams.inTypeOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div class="checkMargin">
+            <label>子女情况：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.childrens">
+              <label nz-radio nzValue="无">无 </label>
+              <label nz-radio nzValue="子">子</label>
+              <label nz-radio nzValue="女">女</label>
+              <label nz-radio nzValue="子和女">子和女</label>
+            </nz-radio-group>
+          </div>
+          <div class="checkMargin">
+            <label>家庭关系：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.familys">
+              <label nz-radio nzValue="良好">良好</label>
+              <label nz-radio nzValue="一般"> 一般</label>
+              <label nz-radio nzValue="欠佳">欠佳 </label>
+            </nz-radio-group>
+          </div>
+          <div class="checkMargin">
+            <div nz-col nzSpan="24">
+              <label>烟嗜好：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.smoke">
+                <label nz-radio nzValue="不吸烟">不吸烟</label>
+                <label nz-radio nzValue="吸烟"> 吸烟</label>
+              </nz-radio-group>
+              每日<input nz-input [(ngModel)]="smokeOther.daily"  class="AbnormalContent">支/包,
+              已吸<input nz-input [(ngModel)]="smokeOther.sucked"  class="AbnormalContent">年, 
+              已戒<input nz-input [(ngModel)]="smokeOther.quit"  class="AbnormalContent">年<br>
+            </div>
+          </div>
+          <div class="checkMargin">
+            <div nz-col nzSpan="24">
+              <label>酒嗜好：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.wine">
+                <label nz-radio nzValue="不饮酒">不饮酒</label>
+                <label nz-radio nzValue="偶尔">偶尔</label>
+                <label nz-radio nzValue="经常">经常</label>
+              </nz-radio-group>
+              每次<input nz-input [(ngModel)]="wineOther.daily" class="AbnormalContent">ml,
+              已饮<input nz-input [(ngModel)]="wineOther.drink"  class="AbnormalContent">年
+            </div>
+          </div>
+          <div class="checkMargin">
+            <div nz-col nzSpan="24">
+              <label>衣冠：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.clothes">
+                <label nz-radio nzValue="不整">不整</label>
+                <label nz-radio nzValue="整洁">整洁</label>
+                <label nz-radio nzValue="讲究">讲究</label>
+              </nz-radio-group>
+            </div>
+          </div>
+
+          <div class="checkMargin">
+            <div nz-col nzSpan="24">
+              <label>意识：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.consciousness">
+                <label nz-radio nzValue="清楚">清楚</label>
+                <label nz-radio nzValue="模糊">模糊</label>
+                <label nz-radio nzValue="嗜睡">嗜睡</label>
+                <label nz-radio nzValue="浅昏迷">浅昏迷</label>
+                <label nz-radio nzValue="深昏迷">深昏迷</label>
+              </nz-radio-group>
+            </div>
+            <div nz-col nzSpan="24">
+              <label>思维：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.thinking">
+                <label nz-radio nzValue="正常">正常</label>
+                <label nz-radio nzValue="异常">异常</label>
+              </nz-radio-group>
+              <label for="">认知功能评分</label>
+              <input nz-input placeholder="" [(ngModel)]="careAssessParams.thinkingOther" class="AbnormalContent">
+            </div>
+          </div>
+          <div class="checkMargin">
+            <label>语言交流：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.talking">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="不清">不清</label>
+              <label nz-radio nzValue="失语">失语</label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.talking=='其他'" [(ngModel)]="careAssessParams.talkingOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div class="checkMargin">
+            <label>语言：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.language" >
+              <label nz-radio nzValue="中文">中文</label>
+              <label nz-radio nzValue="普通话">普通话</label>
+              <label nz-radio nzValue="方言">方言</label>
+              <label nz-radio nzValue="英语">英语</label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.language=='其他'" [(ngModel)]="careAssessParams.languageOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div class="checkMargin">
+            <label>态度：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.emotion">
+              <label nz-radio nzValue="合作">合作</label>
+              <label nz-radio nzValue="较合作">较合作</label>
+              <label nz-radio nzValue="不合作">不合作</label>
+            </nz-radio-group>
+          </div>
+          <div class="checkMargin">
+            <label>性格类型：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.behavior">
+              <label nz-radio nzValue="安乐型">安乐型 </label>
+              <label nz-radio nzValue="进取型">进取型</label>
+              <label nz-radio nzValue="抑郁型">抑郁型</label>
+              <label nz-radio nzValue="易怒型">易怒型</label>
+              <label nz-radio nzValue="自责型">自责型</label>
+              <label nz-radio nzValue="偏执型">偏执型</label>
+              <label nz-radio nzValue="拘谨型">拘谨型</label>
+              <label nz-radio nzValue="混合型">混合型</label>
+            </nz-radio-group>
+          </div>
+          <div class="checkMargin">
+            <label>兴趣爱好：</label>
+            <nz-select style="width: 80%" nzAllowClear [(ngModel)]="communication"  nzMode="tags" nzPlaceHolder="请选择">
+              <nz-option nzValue="器乐演奏" nzLabel="器乐演奏"></nz-option>
+              <nz-option nzValue="唱歌" nzLabel="唱歌"></nz-option>
+              <nz-option nzValue="音乐欣赏" nzLabel="音乐欣赏"></nz-option>
+              <nz-option nzValue="跳舞" nzLabel="跳舞"></nz-option>
+              <nz-option nzValue="表演" nzLabel="表演"></nz-option>
+              <nz-option nzValue="健身功/拳" nzLabel="健身功/拳"></nz-option>
+              <nz-option nzValue="游泳" nzLabel="游泳"></nz-option>
+              <nz-option nzValue="绘画" nzLabel="绘画"></nz-option>
+              <nz-option nzValue="书法" nzLabel="书法"></nz-option>
+              <nz-option nzValue="摄影" nzLabel="摄影"></nz-option>
+              <nz-option nzValue="看电视/电影" nzLabel="看电视/电影"></nz-option>
+              <nz-option nzValue="聊天" nzLabel="聊天"></nz-option>
+              <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+            </nz-select>
+          </div>
+          <div class="checkMargin">
+            <label>视力：</label>
+            <nz-radio-group  [(ngModel)]="careAssessParams.vision">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="下降">下降 </label>
+              <label nz-radio nzValue="失明">失明</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>听力：</label>
+            <nz-radio-group  [(ngModel)]="careAssessParams.hearing">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="减退">减退</label>
+              <label nz-radio nzValue="失聪">失聪</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <div nz-col nzSpan="24">
+              <label>咀嚼功能：</label>
+              <nz-radio-group  [(ngModel)]="careAssessParams.chew">
+                <label nz-radio nzValue="正常">正常</label>
+                <label nz-radio nzValue="异常">异常</label>
+                <label nz-radio nzValue="假牙">假牙</label>
+              </nz-radio-group>
+            </div>
+            <div nz-col nzSpan="24">
+              <label>饮食：</label>
+              <nz-radio-group [(ngModel)]="careAssessParams.diet">
+                <label nz-radio nzValue="普食">普食</label>
+                <label nz-radio nzValue="软食">软食</label>
+                <label nz-radio nzValue="半流食">半流食</label>
+                <label nz-radio nzValue="流食"> 流食 </label>
+                <label nz-radio nzValue="禁食"> 禁食</label>
+                <label nz-radio nzValue="鼻饲">鼻饲</label>
+                <label nz-radio nzValue="特殊饮食">特殊饮食</label>
+                <label nz-radio nzValue="食物偏好">食物偏好</label>
+                <label nz-radio nzValue="忌食"> 忌食</label>
+              </nz-radio-group>
+            </div>
+          </div>
+
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>食欲：</label>
+            <nz-radio-group  [(ngModel)]="careAssessParams.appetite">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="增强">增强</label>
+              <label nz-radio nzValue="下降">下降</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>体型：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.shape">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="超重">超重 </label>
+              <label nz-radio nzValue="肥胖"> 肥胖</label>
+              <label nz-radio nzValue="消瘦">消瘦 </label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>体重：</label>
+            体重  <input nz-input placeholder="" [(ngModel)]="careAssessParams.weightOther" class="AbnormalContent">
+            <nz-radio-group [(ngModel)]="careAssessParams.weight">
+              <label nz-radio nzValue="增加">增加</label>
+              <label nz-radio nzValue="降低">降低</label>
+              <label nz-radio nzValue="无变化">无变化(近1个月)</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>舒适程度：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.comfort">
+              <label nz-radio nzValue="无不适">无不适</label>
+              <label nz-radio nzValue="疼痛"> 疼痛</label>
+            </nz-radio-group>
+            部位   <input nz-input placeholder="" [(ngModel)]="comfortOther.part" class="AbnormalContent">
+            性质   <input nz-input placeholder="" [(ngModel)]="comfortOther.nature" class="AbnormalContent">
+            规律   <input nz-input placeholder="" [(ngModel)]="comfortOther.law" class="AbnormalContent">
+            伴随症状   <input nz-input placeholder="" [(ngModel)]="comfortOther.simultaneous" class="AbnormalContent">
+            疼痛评分   <input nz-input placeholder="" [(ngModel)]="comfortOther.painScore" class="AbnormalContent">
+            其他    <input nz-input placeholder="" [(ngModel)]="comfortOther.other" class="AbnormalContent" >
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>皮肤黏膜：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.membrane">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="苍白">苍白</label>
+              <label nz-radio nzValue="黄染">黄染</label>
+              <label nz-radio nzValue="皮疹"> 皮疹</label>
+            </nz-radio-group>
+            压疮部位   <input nz-input placeholder="" [(ngModel)]="membraneOther.site" class="AbnormalContent">
+            大小    <input nz-input placeholder="" [(ngModel)]="membraneOther.size" class="AbnormalContent">
+            分期    <input nz-input placeholder="" [(ngModel)]="membraneOther.aging" class="AbnormalContent">
+            <a (click)="BradenPingfen()" style="color: #20a8d8;">压疮评分：</a>   
+            <input nz-input placeholder="" [(ngModel)]="membraneOther.BradenSum" class="AbnormalContent" disabled>
+            其他  <input nz-input placeholder="" [(ngModel)]="membraneOther.other" class="AbnormalContent">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>末梢循环：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.circulation">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="异常">异常</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.circulation=='异常'" [(ngModel)]="careAssessParams.circulationOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>呼吸形态：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.morphology">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="异常">异常</label>
+            </nz-radio-group>
+            <input nz-input placeholder=""  *ngIf="careAssessParams.morphology=='异常'" [(ngModel)]="careAssessParams.morphologyOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>辅助呼吸：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.respiration">
+              <label nz-radio nzValue="无">无 </label>
+              <label nz-radio nzValue="有">有</label>
+              <label nz-radio nzValue="气管插管">气管插管 </label>
+              <label nz-radio nzValue="气管切开">气管切开</label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            吸氧<input nz-input placeholder="" [(ngModel)]="careAssessParams.respirationOther" class="AbnormalContent">升/分
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>心律：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.rate">
+              <label nz-radio nzValue="齐">齐</label>
+              <label nz-radio nzValue="不齐">不齐</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>排尿：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.pee">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="尿失禁">尿失禁</label>
+              <label nz-radio nzValue="尿潴留">尿潴留 </label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.pee=='其他'" [(ngModel)]="careAssessParams.peeOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>排便：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.shit">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="腹泻">腹泻</label>
+              <label nz-radio nzValue="便秘">便秘 </label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.shit=='其他'" [(ngModel)]="careAssessParams.shitOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>睡眠习惯：</label>
+            睡眠时间 <input nz-input [(ngModel)]="habitsOther.sleepTime" class="AbnormalContent"> 小时/天,
+            晚睡时间 <input nz-input [(ngModel)]="habitsOther.lateTime" class="AbnormalContent">,
+            晨起时间 <input nz-input [(ngModel)]="habitsOther.morningTime" class="AbnormalContent"> 
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>睡眠形态：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.morphologic">
+              <label nz-radio nzValue="正常">正常</label>
+              <label nz-radio nzValue="早醒易醒">早醒易醒</label>
+              <label nz-radio nzValue="入睡困难">入睡困难</label>
+              <label nz-radio nzValue="多梦">多梦</label>
+              <label nz-radio nzValue="其他">其他</label>
+            </nz-radio-group>
+            <input nz-input placeholder="" *ngIf="careAssessParams.morphologic=='其他'" [(ngModel)]="careAssessParams.morphologicOther" class="AbnormalContent" style="width: 60%">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>自理能力：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.ability">
+              <label nz-radio nzValue="自理">自理</label>
+              <label nz-radio nzValue="部分自理">部分自理</label>
+              <label nz-radio nzValue="不能自理">不能自理</label>
+            </nz-radio-group>
+            自理能力评分<input nz-input placeholder="" [(ngModel)]="careAssessParams.abilityOther" class="AbnormalContent">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>跌倒风险：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.risk">
+              <label nz-radio nzValue="低危">低危</label>
+              <label nz-radio nzValue="中危">中危</label>
+              <label nz-radio nzValue="高危">高危</label>
+            </nz-radio-group>
+            跌倒风险评分<input nz-input [(ngModel)]="careAssessParams.riskOther" class="AbnormalContent">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>长者对自身健康状况的认知：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.selfcognition">
+              <label nz-radio nzValue="认知">认知</label>
+              <label nz-radio nzValue="部分认知">部分认知</label>
+              <label nz-radio nzValue="不认知">不认知</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>亲属对长者健康状况的认知：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.homecognition">
+              <label nz-radio nzValue="认知">认知</label>
+              <label nz-radio nzValue="部分认知">部分认知</label>
+              <label nz-radio nzValue="不认知">不认知</label>
+            </nz-radio-group>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>生命体征：</label>
+            体温  <input nz-input [(ngModel)]="signsOther.animalHeat" class="AbnormalContent">℃, 
+            脉搏  <input nz-input [(ngModel)]="signsOther.pulse" class="AbnormalContent">次/分, 
+            呼吸  <input nz-input [(ngModel)]="signsOther.breathe" class="AbnormalContent"> 次/分, 
+            血压  <input nz-input [(ngModel)]="signsOther.bloodPressure" class="AbnormalContent">mmHg, 
+            体重  <input nz-input [(ngModel)]="signsOther.weight" class="AbnormalContent">kg, 
+            身高  <input nz-input [(ngModel)]="signsOther.height" class="AbnormalContent">cm, 
+            血糖  <input nz-input [(ngModel)]="signsOther.glucose" class="AbnormalContent">mmol/L
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>过敏史：</label>
+            <nz-radio-group [(ngModel)]="careAssessParams.anaphylaxis">
+              <label nz-radio nzValue="无">无</label>
+              <label nz-radio nzValue="有">有</label>
+            </nz-radio-group>
+            食物  <input nz-input [(ngModel)]="anaphylaxisOther.food" class="AbnormalContent">
+            药物  <input nz-input [(ngModel)]="anaphylaxisOther.drug" class="AbnormalContent">
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>现存疾病：</label>
+            <textarea rows="4" nz-input [(ngModel)]="careAssessParams.history"></textarea>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>所用药物：</label>
+            <textarea rows="4" nz-input  [(ngModel)]="careAssessParams.drugs"></textarea>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>主要照护问题：</label>
+            <nz-select style="width: 100%" nzAllowClear [(ngModel)]="careq" nzMode="tags" nzPlaceHolder="请选择">
+              <nz-option nzValue="活动无耐力" nzLabel="活动无耐力"></nz-option>
+              <nz-option nzValue="有坠床的风险" nzLabel="有坠床的风险"></nz-option>
+              <nz-option nzValue="身体移动障碍" nzLabel="身体移动障碍"></nz-option>
+              <nz-option nzValue="尿潴留" nzLabel="尿潴留"></nz-option>
+              <nz-option nzValue="营养失调" nzLabel="营养失调"></nz-option>
+              <nz-option nzValue="恐惧" nzLabel="恐惧"></nz-option>
+              <nz-option nzValue="低效性呼吸形态" nzLabel="低效性呼吸形态"></nz-option>
+              <nz-option nzValue="有再次发生心梗的可能" nzLabel="有再次发生心梗的可能"></nz-option>
+              <nz-option nzValue="有饮食禁忌" nzLabel="有饮食禁忌"></nz-option>
+              <nz-option nzValue="有发生跌倒的风险" nzLabel="有发生跌倒的风险"></nz-option>
+              <nz-option nzValue="有疼痛的风险" nzLabel="有疼痛的风险"></nz-option>
+              <nz-option nzValue="尿失禁" nzLabel="尿失禁"></nz-option>
+              <nz-option nzValue="绝望" nzLabel="绝望"></nz-option>
+              <nz-option nzValue="口腔黏膜改变" nzLabel="口腔黏膜改变"></nz-option>
+              <nz-option nzValue="清理呼吸道无效" nzLabel="清理呼吸道无效"></nz-option>
+              <nz-option nzValue="集体生活难以融合" nzLabel="集体生活难以融合"></nz-option>
+              <nz-option nzValue="有发生噎呛的风险" nzLabel="有发生噎呛的风险"></nz-option>
+              <nz-option nzValue="有皮肤完整性受损的危险" nzLabel="有皮肤完整性受损的危险"></nz-option>
+              <nz-option nzValue="便秘" nzLabel="便秘"></nz-option>
+              <nz-option nzValue="焦虑" nzLabel="焦虑"></nz-option>
+              <nz-option nzValue="有再次发生脑栓塞的可能" nzLabel="有再次发生脑栓塞的可能"></nz-option>
+              <nz-option nzValue="家庭关系不良" nzLabel="家庭关系不良"></nz-option>
+              <nz-option nzValue="有烫伤的风险" nzLabel="有烫伤的风险"></nz-option>
+              <nz-option nzValue="因自理缺陷造成的体力不支" nzLabel="因自理缺陷造成的体力不支"></nz-option>
+              <nz-option nzValue="腹泻" nzLabel="腹泻"></nz-option>
+              <nz-option nzValue="预感的悲哀" nzLabel="预感的悲哀"></nz-option>
+              <nz-option nzValue="有再次发生脑梗的可能" nzLabel="有再次发生脑梗的可能"></nz-option>
+              <nz-option nzValue="睡眠障碍" nzLabel="睡眠障碍"></nz-option>
+            </nz-select>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <label>照护措施：</label>
+            <!-- <textarea rows="4" nz-input [(ngModel)]="careAssessParams.carem"></textarea> -->
+            <textarea-template
+                  [(inputModel)]="careAssessParams.carem"
+                  [templateType]="'care_measures'"
+                  [placeholder]="''"></textarea-template>
+          </div>
+          <div nz-col nzSpan="24" class="checkMargin">
+            <div nz-col nzSpan="12" class="checkMargin">
+              <label>护理员：</label>
+              <input nz-input placeholder="" [(ngModel)]="careAssessParams.employeesName" class="AbnormalContent" style="width:200px">
+            </div>
+            <div nz-col nzSpan="12" class="checkMargin">
+              <label>入住时间：</label>
+              <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="stayDate"></nz-date-picker>
+            </div>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+    <div class="textRight" style="text-align:center">
+      <button nz-button nzType="primary" (click)="save()" style="margin-left: 10px" [nzLoading]="saveIsLoadingOne" class="saveBtn">保存</button>
+    </div>
+  </nz-tab>
+</nz-tabset>
+
+
+
+<!-- 选择老人弹出框 -->
+<nz-modal [nzFooter]="null" [(nzVisible)]="isShowOldDialog" [nzTitle]="oldModalTitle" [nzContent]="oldModalContent"
+  (nzOnCancel)="cancelOldDialog()">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 15px">
+      <input type="text" nz-input placeholder="按长者姓名检索" [(ngModel)]="searchOldName">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'"
+      [nzLoading]="isOldTableLoading" [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page"
+      [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()" (nzPageSizeChange)="loadingOldList(true)"
+      [nzShowSizeChanger]="false" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>身份证</th>
+          <!-- <th>入院时间</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+          <td>{{data?.name}}</td>
+          <td>{{data?.sex}}</td>
+          <td>{{data?.cardno}}</td>
+          <!-- <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td> -->
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>
+
+
+
+<!-- 压疮危险性评估Braden评分表 -->
+  <div class="RiskAssessmentContentMarkSheet" [hidden]="!Braden">
+      <div class="RiskAssessmentContent">
+          <div class="card bedsoreM">
+              <div class="card-header col-md-12">
+                压疮发生危险因素量化评估(Braden评分表)
+              </div>
+    
+              <div class="card-block">
+                <table class="table table-bordered">
+                  <tr>
+                    <th>
+                      <label nzTitle="对压力导致的不适感觉的能力" nzPlacement="top" nz-tooltip>感觉</label>
+                    </th>
+                    <th>
+                      <nz-radio-group  nz-row nzType="flex"  nzSpan="24" nzJustify="space-around" [(ngModel)]="membraneOther.radioValue" style="width:100%">
+                        <label nzTitle="由于知觉减退或服用镇静剂而对疼痛刺激无反应或者是大部分接触床的表面只有很小感觉疼痛的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5"
+                          nzValue="1">完全受损1分</label>
+                        <label nzTitle="仅仅对疼痛有反应，除了呻吟或烦躁外不能表达不适，或者是身体的1/2由于感觉障碍而限制了感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5"
+                          nzValue="2">非常受损2分</label>
+                        <label nzTitle="对言语指挥有反应，但不是总能表达不适或需要翻身或者1-2个肢体有些感觉障碍从而感觉疼痛或不适的能力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5"
+                          nzValue="3">轻微受损3分</label>
+                        <label nzTitle="对言语指挥反应良好，无感觉障碍，感觉或表达疼痛不适的能力没有受限" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="4">无受损4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+    
+                  <tr>
+                    <th>
+                      <label nzTitle="皮肤潮湿的程度" nzPlacement="top" nz-tooltip>湿度</label>
+                    </th>
+                    <th>
+                      <nz-radio-group  nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="membraneOther.moist" style="width:100%">
+                        <label nzTitle="皮肤持续暴露在汗液或尿液等制造的潮湿中，老年人每次翻身或移动时都能发现潮湿" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="1">持续潮湿1分</label>
+                        <label nzTitle="皮肤经常但不是始终潮湿，至少每次移动时必须换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="2">经常潮湿2分</label>
+                        <label nzTitle="皮肤偶尔潮湿，每天需额外更换一次床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="3">偶尔潮湿3分</label>
+                        <label nzTitle="皮肤一般是干爽的，只需常规换床单" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="4">很少潮湿4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+    
+                  <tr>
+                    <th>
+                      <label nzTitle="身体的活动程度" nzPlacement="top" nz-tooltip>活动情况</label>
+                    </th>
+                    <th>
+                      <nz-radio-group  nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="membraneOther.mobility"  style="width:100%">
+                        <label nzTitle="限制卧床" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="1">卧床1分</label>
+                        <label nzTitle="行走能力严重受限或不存在，不能负荷自身重量和/或必须依赖椅子或轮椅" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="2">坐位2分</label>
+                        <label nzTitle="白天可短距离行走伴或不伴辅助，每次在床上或椅子上移动需耗费大半力" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="3">偶尔行走3分</label>
+                        <label nzTitle="醒着的时候每天至少可以在室外行走两次，室内每两小时活动一次" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="4">经常行走4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+    
+                  <tr>
+                    <th>
+                      <label nzTitle="改变和控制身体姿势的能力" nzPlacement="top" nz-tooltip>控制力</label>
+                    </th>
+                    <th>
+                      <nz-radio-group nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="membraneOther.locomotivity"  style="width:100%">
+                        <label nzTitle="没有辅助身体或肢体甚至不能够轻微地改变位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="1">完全不自主1分</label>
+                        <label nzTitle="可以偶尔轻微改变身体或肢体位置，但不能独立、经常或明显改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6" nzValue="2">非常受限2分</label>
+                        <label nzTitle="可以独立、经常、轻微改变身体或肢体位置" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="3">轻微受限3分</label>
+                        <label nzTitle="没有辅助可以经常进行大的改变" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="4">不受限4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+    
+                  <tr>
+                    <th>
+                      <label nzTitle="日常进食方式" nzPlacement="top" nz-tooltip>营养</label>
+                    </th>
+                    <th>
+                      <nz-radio-group  nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="membraneOther.nutrition"  style="width:100%">
+                        <label nzTitle="从未吃过完整的一餐，每餐很少吃完1/3的食物，每天吃两餐，而且缺少蛋白质（肉或奶制品）摄入液体量少，没有补充每日规定量以外的液体：或者是肠外营养和/或主要进清流食或超过5天是静脉输液" nzPlacement="top"
+                          nz-tooltip nz-col nz-radio nzSpan="5" nzValue="1">非常缺乏1分</label>
+                        <label nzTitle="很少吃完一餐，通常每餐只能吃完1/2的食物，蛋白质摄入仅仅是每日三餐中的肉或奶制品，偶尔进行每日规定量外的补充：或者少于最适量的液体食物或管饲" nzPlacement="top" nz-tooltip
+                          nz-col nz-radio nzSpan="5" nzValue="2">可能缺乏2分</label>
+                        <label nzTitle="能吃完半数餐次以上，每日吃四餐含肉或奶制品的食物，偶尔会拒吃一餐，但通常会接受补充食物：或者管饲或胃肠外营养提供大多数的营养需要" nzPlacement="top" nz-tooltip nz-col
+                          nz-radio nzSpan="5" nzValue="3">充足3分</label>
+                        <label nzTitle="吃完每餐食物，从不拒吃任一餐，通常每日吃四餐或更多次含肉或奶制品的食物，偶尔在两餐之间吃点食物，不需要额外补充营养" nzPlacement="top" nz-tooltip nz-col nz-radio
+                          nzSpan="5" nzValue="4">营养丰富4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+    
+                  <tr>
+                    <th>
+                      <label nzTitle="" nzPlacement="top" nz-tooltip>摩擦力和剪切力</label>
+                    </th>
+                    <th>
+                      <nz-radio-group  nz-row nzType="flex" nzJustify="space-around" [(ngModel)]="membraneOther.friction"  style="width:100%">
+                        <label nzTitle="移动时需要中等到大量的辅助，不能抬起身体避免在床单上滑动，常常需要人帮助才能复位。大脑麻痹，挛缩，激动不安导致不断的摩擦" nzPlacement="top" nz-tooltip nz-col nz-radio
+                          nzSpan="5" nzValue="1">有问题1分</label>
+                        <label nzTitle="可以虚弱地移动或需要小的辅助，移动时皮肤在某种程度上与床单、椅子、约束物或其他物品发生滑动，大部分时间可以在床上椅子上保持相对较好的姿势，但偶尔也会滑下来" nzPlacement="top" nz-tooltip
+                          nz-col nz-radio nzSpan="6" nzValue="2">潜在的问题2分</label>
+                        <label nzTitle="可以独自在床上或椅子上移动，肌肉的力量足以在移动时可以完全抬起身体，在任何时候都可在床上或椅子上保持良好姿势" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="6"
+                          nzValue="3">无明显问题3分</label>
+                        <label nzTitle="" nzPlacement="top" nz-tooltip nz-col nz-radio nzSpan="5" nzValue="4">无任何问题4分</label>
+                      </nz-radio-group>
+                    </th>
+                  </tr>
+                </table>
+                <div>
+                  <p>评分标准：轻度危险：15-18分；中度危险：13-14分；高度危险：10-12分；严重危险： &lt;9分</p>
+                  <p>评定周期：12-18分病情变化时评估，每两周评估；&le;12分每周评估；评分&le;18分应采取预防压疮的措施</p>
+                </div>
+              </div>
+            </div>
+        <div class="textRight">
+          <button nz-button nzType="default" class="cancel" (click)="cancel()">取消</button>
+          <button nz-button nzType="primary" class="sure" (click)="sure()" [nzLoading]="isLoadingOne">确定</button>
+        </div>
+      </div>
+    </div>

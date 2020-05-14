@@ -1,0 +1,40 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+<nz-card nzTitle="查房记录" [nzExtra]="extraTemplate">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="8">
+      <label>楼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+      <input nz-input [(ngModel)]="data.room.floor.building.buildingName" disabled class="dis">
+    </div>
+    <div nz-col [nzSpan]="8">
+      <label>楼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;层</label>
+      <input nz-input [(ngModel)]="data.room.floor.floorName" disabled class="dis">
+    </div>
+    <div nz-col [nzSpan]="8">
+      <label>房&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间</label>
+      <input nz-input [(ngModel)]="data.room.roomName" disabled class="dis">
+    </div>
+    <div nz-col [nzSpan]="8" class="marginTop">
+      <label>查房时间</label>
+      <input nz-input [(ngModel)]="data.createDate" disabled class="dis">
+    </div>
+    <div nz-col [nzSpan]="8" class="marginTop">
+      <label>情&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;况</label>
+      <span *ngIf="data?.abnormal" class="desTrue">正常</span>
+      <span *ngIf="!data?.abnormal" class="desTrue">不正常</span>
+    </div>
+    <div nz-col [nzSpan]="8" class="marginTop">
+      <label>包&nbsp;&nbsp;干&nbsp;&nbsp;人</label>
+      <input nz-input [(ngModel)]="data.employees.name" disabled class="dis">
+    </div>
+
+  </div>
+  <div nz-row [nzGutter]="8">
+
+    <div nz-col [nzSpan]="12" class="marginTop">
+      <label>详&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;情</label>
+      <textarea nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }" disabled [(ngModel)]="data.checkResult" style="width: 80%;margin-left: 10px;"></textarea>
+    </div>
+  </div>
+</nz-card>

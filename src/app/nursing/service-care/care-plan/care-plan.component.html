@@ -1,0 +1,52 @@
+<div style="background: white;position: relative;font-size:15px;">
+  <nz-card style="width:100%;" nzTitle="照护计划" [nzExtra]="back">
+  
+  <nz-spin [nzSpinning]="Loading">
+    <!-- 老人基本信息 -->
+    <div style="font-size: 16px;">
+      <div nz-row>
+          <div nz-col nzSpan="5">姓名：{{olderInfo.name}}</div>
+          <div nz-col nzSpan="4">性别：{{olderInfo.sex}}</div>
+          <div nz-col nzSpan="5">年龄：{{olderInfo.age}}</div>
+          <div nz-col nzSpan="5">床号：{{olderInfo.bedNum}}</div>
+          <div nz-col nzSpan="5">护理等级：{{olderInfo.level}}</div>
+      </div>
+      <div nz-row style="margin-top: 10px;">
+          <div nz-col nzSpan="10">既&ensp;往&ensp;史：{{olderInfo.pastMedHistory?olderInfo.pastMedHistory:'-'}}</div>
+          <div nz-col nzSpan="10">现&ensp;病&ensp;史：{{olderInfo.nowMedHistory?olderInfo.nowMedHistory:'-'}}</div>
+      </div>
+      <div nz-row style="margin-top: 10px;">
+          <div nz-col nzSpan="10">行动能力：{{olderInfo.actAbility?olderInfo.actAbility:'-'}}</div>
+          <div nz-col nzSpan="10">性格特点：{{olderInfo.character?olderInfo.character:'-'}}</div>
+      </div>
+      <div nz-row style="margin-top: 10px;">
+          <div nz-col nzSpan="12">食物禁忌：{{olderInfo.foodTaboo?olderInfo.foodTaboo:'-'}}</div>
+      </div>
+    </div>
+    <!-- 主要照护措施 -->
+    <nz-card style="width:100%;margin-top:15px;" nzTitle="服务详情" [nzLoading]="false">
+      <nz-tabset>
+        <nz-tab [nzTitle]="immediate">
+          <app-plan-immediate [planid]="oldmanId"></app-plan-immediate>
+        </nz-tab>
+        <nz-tab [nzTitle]="day">
+          <app-plan-day [planid]="oldmanId"></app-plan-day>
+        </nz-tab>
+        <nz-tab [nzTitle]="week">
+          <app-plan-week [planid]="oldmanId"></app-plan-week>
+        </nz-tab>
+        <nz-tab [nzTitle]="month">
+          <app-plan-month [planid]="oldmanId"></app-plan-month>
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+    
+  </nz-spin>
+</nz-card>
+</div>
+
+<ng-template #immediate><span style="font-size:16px; ">即时服务</span></ng-template>
+<ng-template #day><span style="font-size:16px; ">每日服务</span></ng-template>
+<ng-template #week><span style="font-size:16px; ">每周服务</span></ng-template>
+<ng-template #month><span style="font-size:16px; ">每月服务</span></ng-template>
+<ng-template #back><button nz-button nzType="default" (click)="goback()">返回</button></ng-template>

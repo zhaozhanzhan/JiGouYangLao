@@ -1,0 +1,179 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row nzType="flex">
+            <div nz-col nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item nzFlex>
+                    <nz-form-label>盘存月份</nz-form-label>
+                    <nz-form-control>
+                        <nz-month-picker nzFormat="yyyy-MM" [(ngModel)]="data" name="yearAndMonth" (ngModelChange)="onChangeDate(data)" nzPlaceHolder="请输入月份"></nz-month-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item nzFlex>
+                    <nz-form-label>物品类别</nz-form-label>
+                    <nz-form-control style="width:63%">
+                        <nz-tree-select class="w100p" [nzNodes]="goodsClassificationNodes" nzShowSearch [nzPlaceHolder]="reqObjGoodName" [(ngModel)]="reqObj.goodCategory" name="goodCategory">
+                        </nz-tree-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item nzFlex>
+                    <nz-form-label>物品名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="old" id="old" style="width:100%" [(ngModel)]="reqObj.goodName" placeholder="请填写名称" name="goodName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col>
+                <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="print_div" [printCSS]="printCSS" (printComplete)="printComplete()">
+                </e-ngx-print>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="onPrint($event)" style="margin-left: 10px;">
+                            打印
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="exportExcel()" style="margin-left: 10px;" [nzLoading]="isLoadingOne">
+                            导出
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="月度盘存列表">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th class="textCenter" nzWidth="180px" nzLeft="0px">物品名称</th>
+                <th class="textCenter">最近一次物品采购单价</th>
+                <th class="textCenter">规格型号</th>
+                <th class="textCenter">计量单位</th>
+                <th class="textCenter">物品分类</th>
+                <th class="textCenter">上月结存数量</th>
+                <th class="textCenter">上月结存金额</th>
+                <th class="textCenter">本月购进数量</th>
+                <th class="textCenter">本月购进金额</th>
+                <th class="textCenter">本月发出数量</th>
+                <th class="textCenter">本月发出金额</th>
+                <th class="textCenter">本月结存数量</th>
+                <th class="textCenter" nzWidth="140px" nzRight="0px">本月结存金额</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter" nzWidth="180px" nzLeft="0px">{{ data?.goods?.name }}</td>
+                <td class="textCenter">{{ data?.goods?.recentInPrice }}</td>
+                <td class="textCenter">{{ data?.goods?.model }}</td>
+                <td class="textCenter">{{ data?.goods?.unit }}</td>
+                <td class="textCenter">{{ data?.goods?.goodsCategory?.name }}</td>
+                <td class="textCenter">{{ data?.lastMonBalNum }}</td>
+                <td class="textCenter">{{ data?.lastMonBalAmount }}</td>
+                <td class="textCenter">{{ data?.thisMonPurNum }}</td>
+                <td class="textCenter">{{ data?.thisMonPurAmount }}</td>
+                <td class="textCenter">{{ data?.thisMonSendNum }}</td>
+                <td class="textCenter">{{ data?.thisMonSendAmount }}</td>
+                <td class="textCenter">{{ data?.thisMonBalNum }}</td>
+                <td class="textCenter" nzWidth="140px" nzRight="0px">{{ data?.thisMonBalAmount }}</td>
+            </tr>
+            <tr *ngIf="ajaxTable.data.length>0">
+                <td class="textCenter" nzWidth="400px" nzLeft="0px">合计</td>
+                <td class="textCenter"></td>
+                <td class="textCenter"></td>
+                <td class="textCenter"></td>
+                <td class="textCenter"></td>
+                <td class="textCenter"></td>
+                <td class="textCenter">{{ lastMonBalAmount }}</td>
+                <td class="textCenter"></td>
+                <td class="textCenter">{{ thisMonPurAmount }}</td>
+                <td class="textCenter"></td>
+                <td class="textCenter">{{ thisMonSendAmount }}</td>
+                <td class="textCenter"></td>
+                <td class="textCenter" nzWidth="140px" nzRight="0px">{{ thisMonBalAmount }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+
+
+
+<div [hidden]="!disabled" #print_div>
+    <div style="width:98%;text-align: center;margin: 0 auto">
+        <h1>{{tagName}}月度盘存表</h1>
+        <div style="text-align:right;margin-bottom:15px;">{{yearM}}年{{monthM}}月</div>
+    </div>
+    <table style="border-collapse:collapse;width: 98%;margin: 0 auto;" border="1" id="printTable">
+        <thead>
+            <tr>
+                <th class="textCenter" nzWidth="400px" nzLeft="0px" style="font-size:14px;padding-left: 2px;">品名</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">单价</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">上月结存数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">上月结存金额</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月购进数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月购进金额</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月发出数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月发出金额</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月结存数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;">本月结存金额</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of list">
+                <td class="textCenter" nzWidth="400px" nzLeft="0px" style="font-size:14px;padding-left: 2px;">{{ data?.goods?.name }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.goods?.stdPrice }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.lastMonBalNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.lastMonBalAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonPurNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonPurAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonSendNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonSendAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonBalNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ data?.thisMonBalAmount }}</td>
+            </tr>
+            <tr *ngIf="list.length>0">
+                <td class="textCenter" nzWidth="400px" nzLeft="0px" style="font-size:14px;padding-left: 2px;">合计</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;"></td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ lastMonBalNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ lastMonBalAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonPurNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonPurAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonSendNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonSendAmount }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonBalNum }}</td>
+                <td class="textCenter" style="font-size:14px;padding-left: 2px;">{{ thisMonBalAmount }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="width:60%;margin: 0 auto;margin-top:10px;float: right;">
+        <div style="width:50%;float:left">
+            <span>审核人：</span>
+        </div>
+        <div style="width:50%;float:right">
+            <span>盘库人：</span>
+        </div>
+    </div>
+</div>

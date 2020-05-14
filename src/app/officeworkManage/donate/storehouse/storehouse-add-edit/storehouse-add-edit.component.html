@@ -1,0 +1,58 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="库房详情" [nzExtra]="btnArea">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="name">库房名称</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input formControlName="name" id="name">
+        <nz-form-explain [hidden]="!(validateForm.get('name').dirty && validateForm.get('name').errors)">库房名称不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="deptId">所属部门</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <!-- <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="deptId">
+          <nz-option *ngFor="let department of departmentList" [nzLabel]="department.name" [nzValue]="department.id"></nz-option>
+        </nz-select> -->
+         <nz-tree-select
+            class="w100p"
+            [nzNodes]="goodsClassificationNodes"
+            nzShowSearch
+            [nzPlaceHolder]="reqObjGoodName"
+            formControlName="deptId" id="deptId"
+            (ngModelChange)="onSelectedDep($event)"
+          >
+           </nz-tree-select>
+        <nz-form-explain [hidden]="!(validateForm.get('deptId').dirty && validateForm.get('deptId').errors)">所属部门不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="account_ids">管理人员</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <nz-select nzMode="multiple" nzAllowClear nzPlaceHolder="请选择" formControlName="account_ids">
+          <nz-option *ngFor="let account of accountList" [nzLabel]="account.name" [nzValue]="account.id"></nz-option>
+        </nz-select>
+        <nz-form-explain [hidden]="!(validateForm.get('account_ids').dirty && validateForm.get('account_ids').errors)">管理人员不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="comment">备注</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <!-- <input nz-input formControlName="comment" id="comment"> -->
+
+        <textarea rows="4" nz-input formControlName="comment" id="comment"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">保存</button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->

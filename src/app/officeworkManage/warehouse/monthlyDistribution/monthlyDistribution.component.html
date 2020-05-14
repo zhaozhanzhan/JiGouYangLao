@@ -1,0 +1,110 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item nzFlex>
+                <nz-form-label>月份</nz-form-label>
+                <nz-form-control>
+                    <nz-month-picker nzFormat="yyyy-MM" [(ngModel)]="data" name="yearAndMonth" (ngModelChange)="onChangeDate(data)" nzPlaceHolder="请输入月份"></nz-month-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+
+        <div nz-col nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+            <nz-form-item nzFlex>
+                <nz-form-label>库房</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width: 200px;" [(ngModel)]="reqObj.warehouseId" (ngModelChange)="warehouseChange($event)">
+                        <nz-option *ngFor="let option of warehouseList" [nzLabel]="option.name" [nzValue]="option.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col>
+            <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="print_div" [printCSS]="printCSS" (printComplete)="printComplete()">
+            </e-ngx-print>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="onPrint($event)" style="margin-left: 10px;">
+                        打印
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="月度分配列表">
+    <nz-table #ajaxTable [nzTitle]="serchArea" [nzLoading]="isTableLoading" nzBordered [nzData]="list" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th class="textCenter" nzWidth="100px" nzLeft="0px" style="font-size:14px;padding-left: 2px;" rowspan="2">品名</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;text-align: center" [attr.colspan]="number">各部门分配数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" rowspan="2">总数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" rowspan="2" nzWidth="100px" nzRight="0px">备注</th>
+            </tr>
+            <tr>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" *ngFor="let item of departmentList">{{item.name}}</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter" nzWidth="100px" nzLeft="0px">{{ data?.goodName}}</td>
+                <td class="textCenter" *ngFor="let item of data.data">{{ item.num }}</td>
+                <td class="textCenter">{{ data?.totalNum }}</td>
+                <td class="textCenter" nzWidth="100px" nzRight="0px">{{ data?.comment }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+
+
+
+<div [hidden]="!disabled" #print_div>
+    <div style="width:98%;text-align: center;margin: 0 auto">
+        <h1>{{tagName}}{{warehouseName}}各科室采购用品分配月报表</h1>
+        <div style="text-align:right;margin-bottom:15px;">{{yearM}}年{{monthM}}月</div>
+    </div>
+    <table style="border-collapse:collapse;width: 98%;margin: 0 auto;" border="1" id="printTable">
+        <thead>
+            <tr>
+                <th class="textCenter" nzWidth="100px" nzLeft="0px" style="font-size:14px;padding-left: 2px;" rowspan="2">品名</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;text-align: center" [attr.colspan]="number">各部门分配数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" rowspan="2">总数量</th>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" rowspan="2" nzWidth="100px" nzRight="0px">备注</th>
+            </tr>
+            <tr>
+                <th class="textCenter" style="font-size:14px;padding-left: 2px;" *ngFor="let item of departmentList">{{item.name}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter" nzWidth="100px" nzLeft="0px">{{ data?.goodName}}</td>
+                <td class="textCenter" *ngFor="let item of data.data">{{ item.num }}</td>
+                <td class="textCenter">{{ data?.totalNum }}</td>
+                <td class="textCenter" nzWidth="100px" nzRight="0px">{{ data?.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <div style="width:60%;margin: 0 auto;margin-top:10px;float: right;">
+    <div style="width:50%;float:left">
+      <span>审核人：</span>
+    </div>
+    <div style="width:50%;float:right">
+      <span>盘库人：</span>
+    </div>
+  </div> -->
+</div>

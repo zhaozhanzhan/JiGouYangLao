@@ -1,0 +1,90 @@
+<nz-card nzType="inner" nzTitle="康复目标" class="marginBottom24">
+    <div>
+        <div class="checkMargin">
+            <!-- <label>康复目标：</label> -->
+            <textarea rows="4" nz-input [(ngModel)]="trainingObj.target" [readonly]="isVisabled"></textarea>
+        </div>
+    </div>
+</nz-card>
+
+<nz-card nzType="inner" nzTitle="训练项目" class="marginBottom24">
+    <div>
+        <div class="recoveryTitle">针对训练对象的主要功能障碍和困难，依据“训练评估”表确定的训练项目为：</div>
+        <div class="marginBottom24">
+            <!-- <label class="mLabel">1.训练项目：</label><br> -->
+            <nz-checkbox-group [(ngModel)]="athleticAbility" [nzDisabled]="isVisabled"></nz-checkbox-group>
+        </div>
+
+    </div>
+</nz-card>
+<nz-card nzType="inner" nzTitle="训练指导材料" class="marginBottom24">
+    <div>
+        <div class="marginBottom24">
+            <label class="mLabel wLabel">1．《智力残疾儿童系统康复训练》</label>
+            <nz-radio-group [(ngModel)]="trainingObj.directMaterials1" [nzDisabled]="isVisabled">
+                <label nz-radio nzValue="中国残联编">（中国残联编）</label>
+            </nz-radio-group>
+        </div>
+        <div class="marginBottom24">
+            <label class="mLabel wLabel">2．智力残疾康复普及读物、康复指导丛书</label>
+            <nz-radio-group [(ngModel)]="trainingObj.directMaterials2" [nzDisabled]="isVisabled">
+                <label nz-radio nzValue="中国残联编">（中国残联编）</label>
+            </nz-radio-group>
+        </div>
+        <div class="marginBottom24">
+            <label class="mLabel wLabel">3．智力残疾康复训练音像制品</label>
+            <nz-radio-group [(ngModel)]="trainingObj.directMaterials3" [nzDisabled]="isVisabled">
+                <label nz-radio nzValue="中国残联编">（中国残联编）</label>
+            </nz-radio-group>
+        </div>
+        <div class="marginBottom24">
+            <label class="mLabel wLabel">4．省残联认定的训练指导材料</label>
+            <nz-radio-group [(ngModel)]="trainingObj.directMaterials4" [nzDisabled]="isVisabled">
+                <label nz-radio nzValue="c"></label>
+            </nz-radio-group>
+        </div>
+    </div>
+</nz-card>
+<nz-card nzType="inner" nzTitle="康复方法" class="marginBottom24">
+    <div class="marginBottom24">
+        <!-- <label class="mLabel">康复方法：</label><br> -->
+        <nz-checkbox-group [(ngModel)]="methods" [nzDisabled]="isVisabled"></nz-checkbox-group>
+    </div>
+</nz-card>
+
+
+<div class="marginBottom24" style="width:33%;float:left;height:60px;">
+    <label class="mLabel">康复训练人员签名: </label>
+    <input nz-input class="mr20" [(ngModel)]="trainingObj.childrenName" [readonly]="isVisabled" style="    width: 160px;" />
+    <!-- <div *ngIf="isVisabled==false">
+        <mirr-electronicSign [imgUrl]="operatorUrl" [isShowSign]="true" #operatorSign (refreshUrl)="trainingObj.childrenName">
+        </mirr-electronicSign>
+    </div>
+
+    <div *ngIf="isVisabled==true">
+        <mirr-electronicSign [imgUrl]="trainingObj.childrenName" [isShowSign]="false" #operatorSign (refreshUrl)="trainingObj.childrenName">
+        </mirr-electronicSign>
+    </div> -->
+</div>
+<div class="marginBottom24" style="width:33%;float:left">
+    <label class="mLabel">家长签名: </label>
+    <input nz-input class="mr20" [(ngModel)]="trainingObj.parentName" [readonly]="isVisabled" style="    width: 160px;" />
+    <!-- <div *ngIf="isVisabled==false">
+        <mirr-electronicSign [imgUrl]="receiverUrl" [isShowSign]="true" #receiverSign (refreshUrl)="trainingObj.parentName">
+        </mirr-electronicSign>
+    </div>
+
+    <div *ngIf="isVisabled==true">
+        <mirr-electronicSign [imgUrl]="trainingObj.parentName" [isShowSign]="false" #receiverSign (refreshUrl)="trainingObj.parentName">
+        </mirr-electronicSign>
+    </div> -->
+</div>
+<div class="marginBottom24" style="width:33%;float:left;height:60px;">
+    <label class="mLabel">制定计划日期: </label>
+    <!-- <input nz-input class="mr20" style="    width: 160px;" /> -->
+    <nz-date-picker style="width: 160px;" [(ngModel)]="trainingObj.time" [nzDisabled]="isVisabled"></nz-date-picker>
+</div>
+
+<div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+    <button nz-button nzType="primary" (click)="saveDetails()" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</div>

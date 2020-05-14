@@ -1,0 +1,2994 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>智力档案详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="primary" (click)="add()" *ngIf="disabled==false && isVisabled==false">添加</button>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-tabset [nzSelectedIndex]="bigIndex" (nzSelectChange)="clickBigTab($event.index)">
+        <nz-tab nzTitle="概览">
+            <app-brainsOverview [name]="evaluationObj"></app-brainsOverview>
+        </nz-tab>
+        <div *ngFor="let item of assessArr;let i=index">
+            <nz-tab [nzTitle]="item.name">
+                <nz-tabset [nzSelectedIndex]="index" (nzSelectChange)="clickTab($event.index)">
+                    <nz-tab nzTitle="运动能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.翻身</td>
+                                        <td rowspan="4">儿童仰卧位，从一侧逗引其翻身</td>
+                                        <td rowspan="4">彩色玩具或带响玩具、垫子</td>
+                                        <td>3</td>
+                                        <td>能自己连续翻身</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[0].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.坐</td>
+                                        <td rowspan="4">请看着我坐好</td>
+                                        <td rowspan="4">床、椅子、垫子</td>
+                                        <td>3</td>
+                                        <td>自己独立坐好并保持</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[1].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.爬</td>
+                                        <td rowspan="4">请你爬过来！（教师爬行示范）</td>
+                                        <td rowspan="4">垫子</td>
+                                        <td>3</td>
+                                        <td>独立用双手、双膝支撑爬行</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[2].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.站</td>
+                                        <td rowspan="4">来，站起来！</td>
+                                        <td rowspan="4">椅子、垫子</td>
+                                        <td>3</td>
+                                        <td>从坐位，跪位（半跪位）或手扶双杠自己能站起</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[3].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.步行</td>
+                                        <td rowspan="4">扶着走过来。<br>把小车推来。<br>自己走过来。<br></td>
+                                        <td rowspan="4">有扶手的小助力车</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[4].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.上下台阶</td>
+                                        <td rowspan="4">咱们一起上楼，再下楼！</td>
+                                        <td rowspan="4">有扶手的楼梯</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[5].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.跑</td>
+                                        <td rowspan="4">请你向老师这边跑过来</td>
+                                        <td rowspan="4">宽敞场地</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[6].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.跳</td>
+                                        <td rowspan="4">请你像我一样跳！</td>
+                                        <td rowspan="4">宽敞场地</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[7].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.推</td>
+                                        <td rowspan="4">请你把球推给我，小心不要推到桌子外面</td>
+                                        <td rowspan="4">球、桌子</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[8].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.端</td>
+                                        <td rowspan="4">请你用托盘把那杯水送到那边的桌上</td>
+                                        <td rowspan="4">塑料水杯、托盘</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[9].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.抛</td>
+                                        <td rowspan="4">请你像我一样把球抛出去</td>
+                                        <td rowspan="4">球</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[10].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.接</td>
+                                        <td rowspan="4">请你接住我抛给你的球</td>
+                                        <td rowspan="4">球</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[11].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.踢</td>
+                                        <td rowspan="4">请你像我一样把球踢出去</td>
+                                        <td rowspan="4">球</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[12].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.拍</td>
+                                        <td rowspan="4">请你像我一样用手拍球</td>
+                                        <td rowspan="4">球</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[13].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.伸手取物</td>
+                                        <td rowspan="4">请你伸出手，把玩具拿过来</td>
+                                        <td rowspan="4">玩具</td>
+                                        <td>3</td>
+                                        <td>能独立伸手将玩具拿过来</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[14].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">16.捏取</td>
+                                        <td rowspan="4">请你把积木拿过来</td>
+                                        <td rowspan="4">米花、糖果、积木</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[15].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">17.拧盖</td>
+                                        <td rowspan="4">你能把瓶盖拧开吗？</td>
+                                        <td rowspan="4">有盖的大小瓶子</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[16].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">18.叠积木</td>
+                                        <td rowspan="4">请你像我一样搭一座高楼</td>
+                                        <td rowspan="4">积木10块</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[17].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">19.穿鞋带</td>
+                                        <td rowspan="4">请你像我一样做</td>
+                                        <td rowspan="4">有一排孔的纸板、鞋带</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[18].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">20.系扣子</td>
+                                        <td rowspan="4">请你系上扣子</td>
+                                        <td rowspan="4">大衣、外衣、衬衫</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[19].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">21.穿珠子</td>
+                                        <td rowspan="4">用线把珠子穿起来</td>
+                                        <td rowspan="4">穿珠子玩具</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[20].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">22.折纸</td>
+                                        <td rowspan="4">你能像老师这样折纸吗?</td>
+                                        <td rowspan="4">纸</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[21].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">23.连线</td>
+                                        <td rowspan="4">请你将这两个点连起来</td>
+                                        <td rowspan="4">笔，纸</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[22].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">24.仿画</td>
+                                        <td rowspan="4">请你像我一样画一个圆/十字/正方形等</td>
+                                        <td rowspan="4">笔，纸</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[23].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">25.涂色</td>
+                                        <td rowspan="4">请你把这张画涂满颜色</td>
+                                        <td rowspan="4">彩色笔、画有图画的纸</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[24].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">26.剪纸</td>
+                                        <td rowspan="4">请你把这张纸剪小</td>
+                                        <td rowspan="4">纸、剪刀</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[25].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">27.贴纸</td>
+                                        <td rowspan="4">请你把图形贴到相对应的图案上</td>
+                                        <td rowspan="4">各类形状卡、形状图案、胶棒</td>
+                                        <td>3</td>
+                                        <td>独立完成</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].assessAthleticList[26].score" (ngModelChange)="getScore(0,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input placeholder="Basic usage" [(ngModel)]="assessArr[i].assessAthleticList[27].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="感知能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.注视物体</td>
+                                        <td rowspan="4">那是什么？<br>
+                                            那是谁？
+                                        </td>
+                                        <td rowspan="4">物体、人</td>
+                                        <td>3</td>
+                                        <td>能注视人</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[0].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能注视物3秒以上</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能看，不能保持注视</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.追视移动物体</td>
+                                        <td rowspan="4">请你注意看！</td>
+                                        <td rowspan="4">手电筒、彩色玩具</td>
+                                        <td>3</td>
+                                        <td>能用目光追视移动物体</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[1].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.分辨味道</td>
+                                        <td rowspan="4">尝尝这是什么味道？</td>
+                                        <td rowspan="4">醋、糖、黄连、盐、辣味食品</td>
+                                        <td>3</td>
+                                        <td>能分辨酸甜苦咸4种味道</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[2].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能分辨2-3种味道</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能分辨1种味道</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.分辨气味</td>
+                                        <td rowspan="4">闻闻这是什么味道？</td>
+                                        <td rowspan="4">香水、墨汁</td>
+                                        <td>3</td>
+                                        <td>能闻出气味，分辨香臭</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[3].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能分辨多数特定气味</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能分辨少数特定气味</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>无法分辨气味</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.分辨常见生活环境声音</td>
+                                        <td rowspan="4">听一听这是什么声音？</td>
+                                        <td rowspan="4">电话铃、门铃、敲门声、汽车声、狗叫声</td>
+                                        <td>3</td>
+                                        <td>能分辨3种以上类似声音</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[4].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能分辨1-3种以上类似声音</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能分辨特定或熟悉的声音</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能分辨声音</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.触觉分辨</td>
+                                        <td rowspan="4">用手摸一摸，这是什么？</td>
+                                        <td rowspan="4">冷水、热水、蒙眼布、干毛巾、湿毛巾、软硬糖果</td>
+                                        <td>3</td>
+                                        <td>能分辨出冷热、干湿、软硬6项</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceptionList[5].score" (ngModelChange)="getScore(1,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能分辨出6项中的3-5 项</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能分辨出6项中的1-2 项</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能分辨</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input [(ngModel)]="assessArr[i].perceptionList[6].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="认知能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.认识物体的存在</td>
+                                        <td rowspan="4">老师把这些东西换个地方，你能找到吗？</td>
+                                        <td rowspan="4">玩具、糖果</td>
+                                        <td>3</td>
+                                        <td>当物品更换位置时，能全部找到</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[0].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>当物品更换位置时，会一一寻找</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>当物品更换位置时，会短暂寻找</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不寻找或追视</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.认识自己的身体部位</td>
+                                        <td rowspan="4">1.说出“这是什么”<br> 2.指一指×× </td>
+                                        <td rowspan="4"></td>
+                                        <td>3</td>
+                                        <td>能正确说出各个身体部位名称</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[1].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能认识大部分身体部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能认识少部分身体部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识身体部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.认识蔬菜、水果等食品</td>
+                                        <td rowspan="4">这个叫什么？你喜欢吃什么？</td>
+                                        <td rowspan="4">西红柿、白菜、芹菜、黄瓜、苹果、橘子</td>
+                                        <td>3</td>
+                                        <td>能说出常见水果、蔬菜名称</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[2].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能说出大部分常见水果、蔬菜名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能说出少数常见水果、蔬菜名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道水果、蔬菜名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.认识常见的动物</td>
+                                        <td rowspan="4">这个是什么动物？<br>它是怎么叫的？</td>
+                                        <td rowspan="4">动物卡片或模型</td>
+                                        <td>3</td>
+                                        <td>能说出常见动物名称，及动物相应的叫声</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[3].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能说出大部分常见动物名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能说出少数动物名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道动物名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.认识常见的物品</td>
+                                        <td rowspan="4">1.说出“这是什么”<br> 2.指一指××</td>
+                                        <td rowspan="4">日常用品、衣物等卡片或实物</td>
+                                        <td>3</td>
+                                        <td>能正确说出各个物品名称</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[4].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能认识大部分物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能认识少部分物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.明白常见物品的用途</td>
+                                        <td rowspan="4">“这是用来做什么的？”</td>
+                                        <td rowspan="4">日常用品卡片或实物</td>
+                                        <td>3</td>
+                                        <td>能正确说出日常物品的用途</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[5].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能说出大部分物品用途</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能说出少部分物品用途</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能说出物品用途</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.物品配对</td>
+                                        <td rowspan="4">请你把相同东西放在一起</td>
+                                        <td rowspan="4">文具、洗漱用具、玩具、水果</td>
+                                        <td>3</td>
+                                        <td>能准确分出相同物品</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[6].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能模仿分出大部分物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能模仿分出个别物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能模仿分出物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.认识物体常见的关系</td>
+                                        <td rowspan="4">你看看哪两种物品在一起可以完成一件事？</td>
+                                        <td rowspan="4">牙膏、牙刷，笔、本、毛巾、脸盆、碗、筷（任选3样）</td>
+                                        <td>3</td>
+                                        <td>能分出3种有关系物品</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[7].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能分出2种有关系物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能分出1种有关系物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能分出有关系物品</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.认识基本颜色</td>
+                                        <td rowspan="4">你能找出红色、白色、绿色……?</td>
+                                        <td rowspan="4">红、白、绿、黄、蓝、黑色等画片、彩球</td>
+                                        <td>3</td>
+                                        <td>会认识3种以上颜色</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[8].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会认识2-3种颜色</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会认识1种颜色</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会认色</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.认识多种颜色</td>
+                                        <td rowspan="4">你能找出橙色、棕色、紫色……?</td>
+                                        <td rowspan="4">橙色、棕色、褐色、紫色、灰色等卡片或彩球</td>
+                                        <td>3</td>
+                                        <td>会认识3种以上颜色</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[9].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会认识2-3种颜色</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会认识1种颜色</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会认色</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.认识方位</td>
+                                        <td rowspan="4">你在队伍前边、后边还是中间？坐在你左边是谁？右边是谁？ </td>
+                                        <td rowspan="4">教室座位、操场排队</td>
+                                        <td>3</td>
+                                        <td>会识别4个以上方位</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[10].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会识别2-4个方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会识别1个方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会识别方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.认识基本形状</td>
+                                        <td rowspan="4">请你说出它是什么形状？</td>
+                                        <td rowspan="4">圆形、三角形、正方形、长方形</td>
+                                        <td>3</td>
+                                        <td>认出3种以上形状</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[11].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认出2种形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>认出1种形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.认识多种形状</td>
+                                        <td rowspan="4">请你说出它是什么形状？</td>
+                                        <td rowspan="4">星形、半圆形、心形、六边形、梯形、椭圆形等</td>
+                                        <td>3</td>
+                                        <td>认出3种以上形状</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[12].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认出2种形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>认出1种形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.分辨有无</td>
+                                        <td rowspan="4">碗里面有东西吗？屋里有人吗？看到老师刚才做什么了？</td>
+                                        <td rowspan="4">碗、杯子、瓶子</td>
+                                        <td>3</td>
+                                        <td>会分辨有无事情发生</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[13].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会分辨指定地点有无人（屋里、车里）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会分辨容器内有无东西</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会分辨</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.分辨是不是</td>
+                                        <td rowspan="4">这个是不是××</td>
+                                        <td rowspan="4">常见物品实物或卡片</td>
+                                        <td>3</td>
+                                        <td>能正确分辨是与不是</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[14].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能分辨</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>少部分能分辨</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会分辨</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">16.知道天气情况</td>
+                                        <td rowspan="4">这是什么天气？<br>今天天气怎样？ </td>
+                                        <td rowspan="4">图片或录像片（下雨、刮风、下雪、阴天、晴天、打雷、闪电等）</td>
+                                        <td>3</td>
+                                        <td>知道各种天气</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[15].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>知道3-4种天气</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>知道1-2种天气</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道天气情况</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">17.知道季节</td>
+                                        <td rowspan="4">这是什么季节？</td>
+                                        <td rowspan="4">四季卡片</td>
+                                        <td>3</td>
+                                        <td>认识四季，并知道每个季节相应的特征</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[16].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认识2-3个季节</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>认识1个季节</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识季节</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">18.知道因果关系</td>
+                                        <td rowspan="4">鱼离开水会怎样？ 生病了怎么办？ 小朋友表现好，老师会怎样？</td>
+                                        <td rowspan="4">科普知识图片</td>
+                                        <td>3</td>
+                                        <td>知道3种情况</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[17].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>知道2种情况</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>知道1种情况</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">19.点数</td>
+                                        <td rowspan="4">你来数一数有多少？</td>
+                                        <td rowspan="4">木棍（30根）</td>
+                                        <td>3</td>
+                                        <td>点数1-30</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[18].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>点数1-20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>点数1-10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>点数1-3</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">20.认识数字</td>
+                                        <td rowspan="4">这是几？</td>
+                                        <td rowspan="4">1-30数字卡片</td>
+                                        <td>3</td>
+                                        <td>认识数字1-30</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[19].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认识数字1-20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>认识数字1-10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识数字</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">21.回答加减法问题</td>
+                                        <td rowspan="4">得数是多少？</td>
+                                        <td rowspan="4">计算器</td>
+                                        <td>3</td>
+                                        <td>能算出30以内加减法</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[20].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能算出20以内加减法</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能计算出10以内加减法</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会计算</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">22.认识时间</td>
+                                        <td rowspan="4">1今天是几月几日星期几？几点几分？ <br> 2一周有几天？</td>
+                                        <td rowspan="4">日历</td>
+                                        <td>3</td>
+                                        <td>知道年、月、日、星期的说法</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[21].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认识钟表，知道小时、分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>知道上午、下午、白天、黑夜</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>无时间观念</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">23.认识钱币</td>
+                                        <td rowspan="4">你知道这是多少钱吗？</td>
+                                        <td rowspan="4"></td>
+                                        <td>3</td>
+                                        <td>认识各种面值的钱币，知道钱的用途</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].perceiveList[22].score" (ngModelChange)="getScore(2,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分认识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>小部分认识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识钱币，不知道用途</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input [(ngModel)]="assessArr[i].perceiveList[23].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="语言交往能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.模仿单音（韵母、声母）</td>
+                                        <td rowspan="4">请你听好我说的话，跟着我念“a、o、e……”</td>
+                                        <td rowspan="4">拼音卡片</td>
+                                        <td>3</td>
+                                        <td>盯着评估者的口部，模仿口型并分别发出“a、o、e……”</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[0].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能够模仿大部分的音</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能够模仿小部分的音</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.模仿叠音词</td>
+                                        <td rowspan="4">请你听好我说的话，跟着我念“嘟嘟、叽叽等”</td>
+                                        <td rowspan="4">玩具</td>
+                                        <td>3</td>
+                                        <td>盯着评估者的口部，模仿口型并模仿发音</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[1].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能大部分模仿</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能小部分模仿</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.知道自己的名字</td>
+                                        <td rowspan="4">你叫什么名字？</td>
+                                        <td rowspan="4"></td>
+                                        <td>3</td>
+                                        <td>说出自己的名字</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[2].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>提示后说出自己的名字</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>对呼唤名字有反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道自己名字</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.服从简单指令</td>
+                                        <td rowspan="4">请坐下；请举手；请把玩具给老师；把眼睛闭上</td>
+                                        <td rowspan="4">椅子、玩具</td>
+                                        <td>3</td>
+                                        <td>会听从一般语言指令</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[3].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>稍加提示下听从简单指令</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>较多提示下听从简单指令</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.说出动作的名称</td>
+                                        <td rowspan="4">他在做什么？</td>
+                                        <td rowspan="4">洗手、扫地、洗澡、写字、睡觉、看电视等动作卡片</td>
+                                        <td>3</td>
+                                        <td>会准确表达动作名称</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[4].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会表达大部分动作名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会表达个别动作名称</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.说出反义词</td>
+                                        <td rowspan="4">说一说哪个大/小；多少、粗/细、长/短、高/矮、胖/瘦、脏/干净…</td>
+                                        <td rowspan="4">反义词卡片</td>
+                                        <td>3</td>
+                                        <td>能正确常用的说出反义词</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[5].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能说出大部分反义词</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能说出少部分反义词</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.说出程度副词“最”</td>
+                                        <td rowspan="4">哪个最大/最粗/最多/最高…</td>
+                                        <td rowspan="4">相应的卡片或实物</td>
+                                        <td>3</td>
+                                        <td>能正确表达</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[6].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能正确表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>少部分能正确表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.说出形容词短语</td>
+                                        <td rowspan="4">亮晶晶的、绿油油的、金灿灿的、胖嘟嘟的××……</td>
+                                        <td rowspan="4">形容词卡片</td>
+                                        <td>3</td>
+                                        <td>能正确表达形容词短语</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[7].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能正确表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>少部分能正确表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.说出描述情绪的形容词</td>
+                                        <td rowspan="4">请看看，这个人怎么了？</td>
+                                        <td rowspan="4">高兴、生气、伤心、害怕等图片</td>
+                                        <td>3</td>
+                                        <td>能正确表达人物的情绪</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[8].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>少部分能表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.说出由数词、量词名词组成的短语</td>
+                                        <td rowspan="4">数一数，有多少个/件/条/本……</td>
+                                        <td rowspan="4">不同数量的物拼</td>
+                                        <td>3</td>
+                                        <td>能正确表达数量词短语</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[9].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>大部分能表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>少部分能表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.表达需求</td>
+                                        <td rowspan="4">你想要什么？</td>
+                                        <td rowspan="4">水果、饭菜、玩具、画册</td>
+                                        <td>3</td>
+                                        <td>会准确表达自己需求</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[10].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会表达大部分需求</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会表达个别需求</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会表达需求</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.说简单的短句</td>
+                                        <td rowspan="4"></td>
+                                        <td rowspan="4">生活情景</td>
+                                        <td>3</td>
+                                        <td>能恰当运用简单句与他人沟通</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[11].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能正确说出自己愿望</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能含糊说出自己的愿望</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>能说出单字</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.语言交流</td>
+                                        <td rowspan="4"></td>
+                                        <td rowspan="4">合适、熟悉的环境</td>
+                                        <td>3</td>
+                                        <td>理解别人意思，能使用适当语言表达自己的意思</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[12].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>基本理解别人意思并说出表达自己意思的句子</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>不能正确表达自己意思</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会用语言交流</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.书写基本能力</td>
+                                        <td rowspan="4">你把笔拿好，像老师那样写出来。请你写出自己的名字</td>
+                                        <td rowspan="4">纸、笔、桌、椅</td>
+                                        <td>3</td>
+                                        <td>能写笔画较复杂的字</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[13].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能写简单笔画的字</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>会拿笔、画不直</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会握笔、乱画</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.复述</td>
+                                        <td rowspan="4">评估者先讲一个故事，讲完后让儿童复述</td>
+                                        <td rowspan="4">故事绘本</td>
+                                        <td>3</td>
+                                        <td>能够将表示故事线索的一些句子进行复述，而且注重对一些精彩句子的复述</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].languageList[14].score" (ngModelChange)="getScore(3,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能够复述故事中的一至三个句子</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>只能说出一些词或一句句子</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能复述</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input [(ngModel)]="assessArr[i].languageList[15].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="生活自理能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.拿着东西吃</td>
+                                        <td rowspan="4">请你品尝这些食品</td>
+                                        <td rowspan="4">食品、水果</td>
+                                        <td>3</td>
+                                        <td>会吃各种食品（剥皮、剥纸、吐籽）</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[0].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能吃不需剥皮、剥纸、吐籽的食品</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需帮助才能拿东西吃</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会拿东西吃</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.用餐具吃饭</td>
+                                        <td rowspan="4">请你用勺子吃饭、盛汤，用筷子夹菜</td>
+                                        <td rowspan="4">勺子、碗、筷</td>
+                                        <td>3</td>
+                                        <td>会用筷子、勺子吃</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[1].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>会用勺子、盛汤</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需协助用勺子吃饭</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不会用餐具吃饭</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.用杯、碗、喝水</td>
+                                        <td rowspan="4">你会用吸管（杯子、碗）喝水吗？</td>
+                                        <td rowspan="4">吸管、杯子、碗</td>
+                                        <td>3</td>
+                                        <td>会用吸管、杯子、碗喝水</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[2].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要少部分帮助喝水</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助喝水</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>会用吸管喝水</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.小便自理</td>
+                                        <td rowspan="4">你要小便吗？你自己去厕所小便好吗？</td>
+                                        <td rowspan="4">厕所</td>
+                                        <td>3</td>
+                                        <td>能独立找到正确的位置小便</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[3].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>稍加提示能正确入厕小便</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需他人协助小便</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.大便自理</td>
+                                        <td rowspan="4">你想大便吗？你自己去厕所大便好吗？</td>
+                                        <td rowspan="4">厕所、手纸</td>
+                                        <td>3</td>
+                                        <td>自己入厕大便，便后会用手纸擦屁股，冲水</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[4].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>稍加提示能完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需提示并协助完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.拉拉链</td>
+                                        <td rowspan="4">请你把拉链拉上或拉下</td>
+                                        <td rowspan="4">有拉链的开胸衣服</td>
+                                        <td>3</td>
+                                        <td>独立将拉链拉上或拉下</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[5].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.脱衣服</td>
+                                        <td rowspan="4">请你把衣服脱下来</td>
+                                        <td rowspan="4">衣物</td>
+                                        <td>3</td>
+                                        <td>能自己穿衣服</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[6].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.脱鞋袜</td>
+                                        <td rowspan="4">请你把鞋袜脱下来</td>
+                                        <td rowspan="4">鞋袜</td>
+                                        <td>3</td>
+                                        <td>能自己脱鞋袜</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[7].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.穿衣服</td>
+                                        <td rowspan="4">请你把衣服穿上</td>
+                                        <td rowspan="4">衣物</td>
+                                        <td>3</td>
+                                        <td>能自己穿衣服</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[8].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.穿鞋袜</td>
+                                        <td rowspan="4">先穿上袜子，再穿上鞋</td>
+                                        <td rowspan="4">袜子、鞋</td>
+                                        <td>3</td>
+                                        <td>能自己穿鞋袜</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[9].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>需要小部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>需要大部分帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.刷牙</td>
+                                        <td rowspan="4">水杯先接水，再把牙膏挤在牙刷上，拿好牙刷放在口中牙面上，上下刷，最后漱口</td>
+                                        <td rowspan="4">牙膏、牙刷、水杯</td>
+                                        <td>3</td>
+                                        <td>独立完成挤牙膏、刷牙、漱口</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[10].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖他人清洁口腔</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.洗脸</td>
+                                        <td rowspan="4">毛巾放在水盆里，取出拧一柠，打上肥皂，在脸上上下擦，再把毛巾放在水中刷洗后，提出拧干，往脸上擦，直到擦干净。</td>
+                                        <td rowspan="4">脸盆、毛巾、香皂</td>
+                                        <td>3</td>
+                                        <td>自己完成洗脸、并擦干净</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[11].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">13.洗手</td>
+                                        <td rowspan="4">把手放入水中，两手搓一搓，打上肥皂，再搓，然后放入水中，洗净双手，用毛巾擦干净</td>
+                                        <td rowspan="4">脸盆、毛巾、肥皂</td>
+                                        <td>3</td>
+                                        <td>自己完成洗手过程</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[12].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">14.洗脚</td>
+                                        <td rowspan="4">把脚放入水中，用手搓脚，打下肥皂，用水洗净，用脚巾擦干</td>
+                                        <td rowspan="4">脚盆、毛巾、肥皂</td>
+                                        <td>3</td>
+                                        <td>自己完成洗脚过程</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[13].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">15.盖被子</td>
+                                        <td rowspan="4">睡觉时要盖好被子，上边盖好双肩，下边盖好脚，不要露出后背和双臂</td>
+                                        <td rowspan="4">床、被子、枕头</td>
+                                        <td>3</td>
+                                        <td>自己会盖被子</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[14].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">16.叠被子</td>
+                                        <td rowspan="4">把被子里向上，拉平展开，两边对折，再对折起来</td>
+                                        <td rowspan="4">床、被子</td>
+                                        <td>3</td>
+                                        <td>自己会叠被子，整理床铺</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[15].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>小部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>大部分协助下完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>完全依赖帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">17.认识家居环境</td>
+                                        <td rowspan="4">你家周围有商店、车站、邮局、饭馆吗？</td>
+                                        <td rowspan="4">家居环境录像或现场</td>
+                                        <td>3</td>
+                                        <td>自己能够认识家居环境和周围机构</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].oneselfList[16].score" (ngModelChange)="getScore(4,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>认识大部分家居环境和周围机构</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>提示下认识部分家居环境和周围机构</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道家居周围有什么</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input [(ngModel)]="assessArr[i].oneselfList[17].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="社会适应能力">
+                        <div>
+                            <table border="1" class="dailyLife assessmentForm">
+                                <thead>
+                                    <tr>
+                                        <th><b>项目</b></th>
+                                        <th><b>指导语</b></th>
+                                        <th><b>器具及情景</b></th>
+                                        <th><b>分值</b></th>
+                                        <th><b>评分依据</b></th>
+                                        <th><b>估计评分</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4">1.知道自己</td>
+                                        <td rowspan="4">镜子里是你吗？指出你的头和四肢；指出你的眼、耳、鼻、口</td>
+                                        <td rowspan="4">镜子、自己、照片</td>
+                                        <td>3</td>
+                                        <td>认识自己，正确指出身体各部位</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[0].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>能认出自己，能大部分认识身体部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能认出自己，能小部分认识身体部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不能认出自己，不能认识身体各部位</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">2.认识熟悉的人</td>
+                                        <td rowspan="4">从照片中指出爸爸、妈妈，说出他们的名字，你家还有什么人？</td>
+                                        <td rowspan="4">全家照片</td>
+                                        <td>3</td>
+                                        <td>指出并说出父母姓名、工作及其他家庭成员</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[1].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>指出并说出父母姓名及其他家庭成员</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>提示下，能说出家庭主要成员</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>只认识父母</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">3.分享</td>
+                                        <td rowspan="4">“我们一起玩积木好不好？”</td>
+                                        <td rowspan="4">积木</td>
+                                        <td>3</td>
+                                        <td>看到并将评估者需要的积木给他</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[2].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>没有注意评估者的需要，但在评估者提出要积木后，把积木给他</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>没有注意评估者的需要，并在评估者提出要积木后，仍然不将手里的积木给评估者</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">4.打招呼</td>
+                                        <td rowspan="4">“小朋友你好”回应别人的问候</td>
+                                        <td rowspan="4"></td>
+                                        <td>3</td>
+                                        <td>盯着评估者，并与测试员握手，说：“叔叔好”或“阿姨好”等</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[3].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>盯着评估者，并与评估者握手</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>眼睛盯着评估者，无任何表情或语言</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">5.表示感谢</td>
+                                        <td rowspan="4">“这个给你”观察儿童反应</td>
+                                        <td rowspan="4">小食品或玩具</td>
+                                        <td>3</td>
+                                        <td>对评估者说：“谢谢老师”</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[4].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在老师的指示下，双手作揖，表示谢谢</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>拿到食品或玩具，要求打开吃或玩</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">6.表示抱歉</td>
+                                        <td rowspan="4">把折好的纸青蛙（纸很薄，容易破）“这个玩具给你玩”，儿童一拿就坏了</td>
+                                        <td rowspan="4">纸青蛙</td>
+                                        <td>3</td>
+                                        <td>表现出紧张的神色，眼睛盯着青蛙片刻后，说：“对不起”</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[5].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>表现出紧张的神色，眼睛盯着青蛙</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>拿起坏的青蛙开始扔</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">7.表示称赞</td>
+                                        <td rowspan="4">我们一起来画画，好不好？”</td>
+                                        <td rowspan="4">纸、笔</td>
+                                        <td>3</td>
+                                        <td>看了评估者画的画后会说：“画的真好”等，并竖起大拇指、鼓掌等</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[6].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>看了评估者的画会有使用动作称赞，如：竖起大拇指、鼓掌等</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>看自己的画和评估者的画后，在自己的画上继续画</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>自己乱画，不看评估者的画或没有任何反应</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">8.认识家庭环境</td>
+                                        <td rowspan="4">你家里有哪些房间？都干什么用？你能从车站回家吗？你家住址？</td>
+                                        <td rowspan="4">录像片、现场</td>
+                                        <td>3</td>
+                                        <td>能独自回家，说明家庭周围环境特点</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[7].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>知道家庭住址</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>能说出家庭内部环境</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道家庭内部环境及住址</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">9.知道居家安全</td>
+                                        <td rowspan="4">离开家时怎么办？大人不在家时，陌生人敲门怎么办？陌生人给东西怎么办？</td>
+                                        <td rowspan="4">图片、现场</td>
+                                        <td>3</td>
+                                        <td>知道不接受陌生人的东西，不跟陌生人走，不随便开家门，离开家知道告诉家人，外出时锁好门</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[8].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>知道大部分居家安全知识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>知道小部分居家安全知识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不知道居家安全知识</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">10.认识公共设施</td>
+                                        <td rowspan="4">常见的公共设施有哪些？</td>
+                                        <td rowspan="4">现场（医院、车站、餐馆、影剧院、公厕、邮局）</td>
+                                        <td>3</td>
+                                        <td>自己认识公共设施</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[9].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>提示下认识公共设施</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>提示下认识部分公共设施</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不认识公共设施</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">11.参加集体活动</td>
+                                        <td rowspan="4">你喜欢参加哪些集体活动？</td>
+                                        <td rowspan="4">幼儿园、学校活动场所；社区、家庭娱乐活动场所</td>
+                                        <td>3</td>
+                                        <td>独自参加集体活动</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[10].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>带领下参加集体活动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>带领下参加少数集体活动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不参加集体活动</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4">12.懂得安全常识</td>
+                                        <td rowspan="4">你知道用火、水、电安全常识吗？你知道怎样使用剪刀吗？你知道怎样遵守交通规则吗？</td>
+                                        <td rowspan="4">安全教育图片、录像带</td>
+                                        <td>3</td>
+                                        <td>懂得用水、用火、用电、用剪刀、过马路注意事项</td>
+                                        <td rowspan="4">
+                                            <nz-select style="width: 120px;" [nzDisabled]="isVisabled" [(ngModel)]="assessArr[i].societyList[11].score" (ngModelChange)="getScore(5,i)" nzAllowClear>
+                                                <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                            </nz-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>在提示下懂得大部分安全常识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>在提示下懂得用火、水、电安全常识</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>不懂得安全常识</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="font-weight: bold;font-size: 16px;">本领域得分</td>
+                                        <td rowspan="4">
+                                            <input nz-input [(ngModel)]="assessArr[i].societyList[12].score" readonly />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="textRight" style="text-align:center" *ngIf="isVisabled==false">
+                                <button nz-button nzType="primary" (click)="saveTabDetails(i)" style="margin-left: 10px;margin-top:10px;" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="评估与总结">
+                        <nz-card nzType="inner" nzTitle="康复目标" class="marginBottom24">
+                            <div>
+                                <div class="recoveryTitle">实现康复目标情况：</div>
+                                <div class="checkMargin">
+                                    <label>1.运动能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.moveAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显改善">明显改善</label>
+                                        <label nz-radio nzValue="改善">改善</label>
+                                        <label nz-radio nzValue="无改善">无改善</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>2.感知能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.perceptionAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>3.认知能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.cognitiveAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>4.语言交往能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.languageAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>5.生活自理能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.lifeAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                                <div class="checkMargin">
+                                    <label>6.社会适应能力：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.adaptSoAby" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="明显提高">明显提高</label>
+                                        <label nz-radio nzValue="提高">提高</label>
+                                        <label nz-radio nzValue="无提高">无提高</label>
+                                    </nz-radio-group>
+                                </div>
+                            </div>
+                        </nz-card>
+                        <nz-card nzType="inner" nzTitle="康复意见" class="marginBottom24">
+                            <div>
+                                <div class="marginBottom24">
+                                    <label>进一步康复意见:</label>
+                                    <nz-checkbox-group [(ngModel)]="assessArr[i].assessmentSummary.athleticAbility" [nzDisabled]="isVisabled"></nz-checkbox-group>
+                                </div>
+                                <div class="marginBottom24">
+                                    <label>转介：</label>
+                                    <nz-radio-group [(ngModel)]="assessArr[i].assessmentSummary.obj.referral" [nzDisabled]="isVisabled">
+                                        <label nz-radio nzValue="社会救济">社会救济</label>
+                                        <label nz-radio nzValue="医疗">医疗</label>
+                                        <label nz-radio nzValue="护理">护理</label>
+                                        <label nz-radio nzValue="日间照料">日间照料</label>
+                                        <label nz-radio nzValue="托养">托养</label>
+                                    </nz-radio-group>
+                                </div>
+                            </div>
+
+                        </nz-card>
+                        <div style="width:100%;height:60px;">
+                            <div class="marginBottom24" style="width:50%;float:left">
+                                <label class="mLabel">康复训练人员签名: </label>
+                                <input nz-input class="mr20" [(ngModel)]="assessArr[i].assessmentSummary.obj.trainingName" [readonly]="isVisabled" style="    width: 160px;" />
+                            </div>
+                            <div class="marginBottom24" style="width:45%;float:left">
+                                <label class="mLabel" style="float:left;width:26%">评估日期: </label>
+                                <nz-date-picker style="float:right; width:40%;" [(ngModel)]="assessArr[i].assessmentSummary.obj.time" [nzDisabled]="isVisabled"></nz-date-picker>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isVisabled==false">
+                            <button nz-button nzType="primary" (click)="saveDetails(i)" [nzLoading]="isLoading" class="saveBtn">保存</button>
+                        </div>
+
+                    </nz-tab>
+                </nz-tabset>
+            </nz-tab>
+        </div>
+        <div *ngFor="let item of planList;let i=index">
+            <nz-tab [nzTitle]="item.name" [nzDisabled]="disabled">
+                <app-intelligencePlan [name]="traningInfo"></app-intelligencePlan>
+            </nz-tab>
+        </div>
+    </nz-tabset>
+</nz-card>
+
+
+<nz-modal [(nzVisible)]="nameIsVisible" nzTitle="添加名称" (nzOnCancel)="nameIsVisible=false" (nzOnOk)="handleOk()">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="10">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">名称</nz-form-label>
+                <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                    <input nz-input name="old" id="old" [(ngModel)]="assessName" placeholder="请输入评估名称">
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>

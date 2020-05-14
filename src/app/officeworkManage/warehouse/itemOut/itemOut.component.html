@@ -1,0 +1,21 @@
+<!-- <ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template> -->
+
+<nz-card nzTitle="物品发放列表">
+  <nz-card-tab>
+      <nz-tabset
+      nzSize="large"
+      [(nzSelectedIndex)]="tabIndex"
+      (nzSelectChange)="clickTab($event)"
+    >
+      
+      <nz-tab nzTitle="发放中物品列表">
+        <app-checkOutList2></app-checkOutList2>
+      </nz-tab>
+      <nz-tab nzTitle="已发完物品列表">
+        <app-checkOutList1></app-checkOutList1>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

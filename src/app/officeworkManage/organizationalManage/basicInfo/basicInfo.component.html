@@ -1,0 +1,568 @@
+
+  <form nz-form [formGroup]="formData">
+    <nz-card nzType="inner" nzTitle="机构基本信息" class="marginBottom24">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="morgArea">所属地区</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="morgArea"
+                id="morgArea"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organName">机构名称</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="organName"
+                id="organName"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="engOrganName"
+              >机构名称（英文）</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="engOrganName"
+                id="engOrganName"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organPhone"
+              >机构电话</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="organPhone"
+                id="organPhone"
+              />
+              <nz-form-explain
+                [hidden]="
+                  !(
+                    formData.get('organPhone').dirty &&
+                    formData.get('organPhone').errors
+                  )
+                "
+                >固定电话或手机号格式不正确</nz-form-explain
+              >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="zipCode">邮编</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="zipCode"
+                id="zipCode"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="fax">传真</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input maxlength="32" formControlName="fax" id="fax" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="email">电子邮箱</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                type="email"
+                maxlength="32"
+                formControlName="email"
+                id="email"
+              />
+              <nz-form-explain
+                *ngIf="
+                  formData.get('email').dirty && formData.get('email').errors
+                "
+              >
+                <ng-container *ngIf="formData.get('email').hasError('email')">
+                  邮箱格式不对
+                </ng-container>
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organStatus"
+              >建设状态</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="organStatus"
+                id="organStatus"
+              >
+                <nz-option
+                  *ngFor="let option of organStatusList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organNature"
+              >机构性质</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzShowSearch
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="organNature"
+                id="organNature"
+              >
+                <nz-option
+                  *ngFor="let option of organNatureList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="createDate"
+              >建院日期</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-date-picker
+                nzFormat="yyyy-MM-dd"
+                class="w100p"
+                formControlName="createDate"
+                id="createDate"
+              ></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="runDate">运营日期</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-date-picker
+                nzFormat="yyyy-MM-dd"
+                class="w100p"
+                formControlName="runDate"
+                id="runDate"
+              ></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="bedNum">设置床位数</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                type="number"
+                oninput="if(value.length>32)value=value.slice(0,32)"
+                maxlength="32"
+                formControlName="bedNum"
+                id="bedNum"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organType"
+              >养老机构类别</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="organType"
+                id="organType"
+              >
+                <nz-option
+                  *ngFor="let option of organTypeList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="establishObject"
+              >兴办主体</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="establishObject"
+                id="establishObject"
+              >
+                <nz-option
+                  *ngFor="let option of establishObjectList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="establishType"
+              >建设形式</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="establishType"
+                id="establishType"
+              >
+                <nz-option
+                  *ngFor="let option of establishTypeList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="runType">运营方式</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="runType"
+                id="runType"
+              >
+                <nz-option
+                  *ngFor="let option of runTypeList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organRunnerName"
+              >机构运营单位名称</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                maxlength="32"
+                formControlName="organRunnerName"
+                id="organRunnerName"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organInvestAmount"
+              >机构投资总金额</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                type="number"
+                maxlength="32"
+                oninput="if(value.length>32)value=value.slice(0,32)"
+                formControlName="organInvestAmount"
+                id="organInvestAmount"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="organAllowanceType"
+              >机构补贴类型</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <nz-select
+                nzAllowClear
+                nzPlaceHolder="请选择"
+                formControlName="organAllowanceType"
+                id="organAllowanceType"
+              >
+                <nz-option
+                  *ngFor="let option of organAllowanceTypeList"
+                  [nzLabel]="option.dictTag"
+                  [nzValue]="option.dictValue"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="regCapital"
+              >注册资金</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                type="number"
+                maxlength="32"
+                oninput="if(value.length>32)value=value.slice(0,32)"
+                formControlName="regCapital"
+                id="regCapital"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="flowCapital"
+              >流动资金</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16">
+              <input
+                nz-input
+                type="number"
+                maxlength="32"
+                oninput="if(value.length>32)value=value.slice(0,32)"
+                formControlName="flowCapital"
+                id="flowCapital"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="organAdd">地址</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                <input
+                  nz-input
+                  maxlength="255"
+                  formControlName="organAdd"
+                  id="organAdd"
+                />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="养老机构信息" class="marginBottom">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="organLicenceCode" class="formLabel"
+            >养老机构设立许可证编号</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="organLicenceCode"
+              id="organLicenceCode"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="organLicenceDealName" class="formLabel"
+            >养老机构设立许可证办理人姓名</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="organLicenceDealName"
+              id="organLicenceDealName"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="organLicenceApplyTime" class="formLabel"
+            >养老机构设立许可证申请日期</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p"
+              formControlName="organLicenceApplyTime"
+              id="organLicenceApplyTime"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label
+            [nzSpan]="4"
+            nzFor="organLicenceDealCetino"
+            class="wrap"
+            >养老机构设立许可证办理人身份号码</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="organLicenceDealCetino"
+              id="organLicenceDealCetino"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="organSetApprovalCeti" class="formLabel"
+            >机构设置批准证书</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="organSetApprovalCeti"
+              id="organSetApprovalCeti"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="privateOrganCetiCode" class="formLabel"
+            >民办社会福利机构证书编号</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="privateOrganCetiCode"
+              id="privateOrganCetiCode"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="socialOrganCetiCode" class="formLabel"
+            >社会福利机构登记证书编号</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="socialOrganCetiCode"
+              id="socialOrganCetiCode"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="socialOrganTypeCode" class="formLabel"
+            >社会福利机构登记类型代码</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <input
+              nz-input
+              maxlength="32"
+              formControlName="socialOrganTypeCode"
+              id="socialOrganTypeCode"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="businessScope" class="formLabel"
+            >经营范围</nz-form-label
+          >
+          <nz-form-control [nzSpan]="20">
+            <textarea
+              rows="4"
+              nz-input
+              maxlength="255"
+              formControlName="businessScope"
+              id="businessScope"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="20" nzFor="comment" class="formLabel">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea
+              rows="4"
+              nz-input
+              maxlength="255"
+              formControlName="comment"
+              id="comment"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    </nz-card>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveBasicInformation()"
+      [nzLoading]="saveBasicInformationLoading"
+    >
+      保存
+    </button>
+  </div>

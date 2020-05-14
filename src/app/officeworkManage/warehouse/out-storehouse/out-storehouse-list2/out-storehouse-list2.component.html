@@ -1,0 +1,166 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8" nzType="flex">
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="whInId">出库库房</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="请选择"
+              [(ngModel)]="reqObj.whId"
+              style="width:150px"
+              name="whInId"
+            >
+              <nz-option
+                *ngFor="let storehouse of storehouseList"
+                [nzLabel]="storehouse.name"
+                [nzValue]="storehouse.id"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="whCategoryOutId">出库方式</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              style="width:150px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="reqObj.whCategoryOutId"
+              name="whCategoryOutId"
+              id="whCategoryOutId"
+            >
+              <nz-option
+                *ngFor="let whCategoryOut of whCategoryOutList"
+                [nzLabel]="whCategoryOut.name"
+                [nzValue]="whCategoryOut.id"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="whGoodsId">出库物品</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              style="width:150px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="reqObj.whGoodsId"
+              name="whGoodsId"
+              id="whGoodsId"
+            >
+              <nz-option
+                *ngFor="let goods of goodsList"
+                [nzLabel]="goods.name"
+                [nzValue]="goods.id"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="old">领用人员</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="old"
+              id="old"
+              style="width:150px"
+              [(ngModel)]="reqObj.receiver"
+              placeholder="请输入领用人员"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>领用日期</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker
+              name="date"
+              style="width:250px"
+              [(ngModel)]="selectedDates"
+              (ngModelChange)="onRangerPickerChange($event)"
+            ></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="updateList(true)"
+              style="margin-left: 10px;"
+            >
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-table
+  #ajaxTable
+  nzBordered
+  nzShowSizeChanger
+  [nzTitle]="serchArea"
+  [nzFrontPagination]="false"
+  [nzLoading]="isTableLoading"
+  [nzData]="list"
+  [nzTotal]="page.total"
+  [(nzPageIndex)]="page.index"
+  [(nzPageSize)]="page.size"
+  (nzPageIndexChange)="updateList()"
+  (nzPageSizeChange)="updateList(true)"
+  [nzShowTotal]="totalTemplate2"
+   [nzScroll]="{ x: '1600px' }"
+>
+  <thead>
+    <tr>
+      <th class="textCenter">出库单号</th>
+      <th class="textCenter">出库批次</th>
+      <th class="textCenter">出库库房</th>
+      <th class="textCenter">出库方式</th>
+      <th class="textCenter">调拨库房</th>
+      <th class="textCenter">出库物品</th>
+      <th class="textCenter">出库数量</th>
+      <th class="textCenter">领用部门</th>
+      <th class="textCenter">领用人员</th>
+      <th class="textCenter">领用时间</th>
+      <th class="textCenter">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of ajaxTable.data">
+      <td class="textCenter">{{ data?.outId }}</td>
+      <td class="textCenter">{{ data?.goodBatchNum }}</td>
+      <td class="textCenter">{{ data?.outWhName }}</td>
+      <td class="textCenter">{{ data?.whCategoryOut }}</td>
+      <td class="textCenter">{{ data?.whIn }}</td>
+      <td class="textCenter">{{ data?.goodName }}</td>
+      <td class="textCenter">{{ data?.goodNum }}</td>
+      <td class="textCenter">{{ data?.recDept }}</td>
+      <td class="textCenter">{{ data?.receiver }}</td>
+      <td class="textCenter">
+        {{ data?.recTime | date: "yyyy-MM-dd HH:mm:ss" }}
+      </td>
+      <td class="textCenter">{{ data?.outComment }}</td>
+    </tr>
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate2 let-total>共 {{ page.total }} 条</ng-template>

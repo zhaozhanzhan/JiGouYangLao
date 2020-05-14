@@ -1,0 +1,56 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-21 14:47:43
+ * @Description:
+ -->
+<div class="animated fadeIn">
+  <div style="width:160px">
+    <img
+      src="{{ imgUrl }}"
+      width="100px"
+      [hidden]="imgUrl == '' || imgUrl == undefined"
+    />
+    <button
+      nz-button
+      nzType="primary"
+      nz-popover
+      [(nzVisible)]="isShowBrCode"
+      nzTrigger="click"
+      [nzContent]="contentTemplate"
+      *ngIf="isShowSign"
+    >
+      {{ imgUrl == "" || imgUrl == undefined ? "签名" : "重签" }}
+    </button>
+  </div>
+
+  <ng-template #contentTemplate>
+    <div style="text-align: right;color: #f5222d">
+      <!-- <button
+        aria-label="Close"
+        class="close"
+        type="button"
+        (click)="isShowBrCode = false"
+      >
+        <span aria-hidden="true">×</span>
+      </button> -->
+      <i nz-icon type="close-circle" (click)="isShowBrCode = false"></i>
+    </div>
+    <div class="text-center" style="width:100%;margin:auto;">
+      <qr-code [value]="qrCode" [size]="100"></qr-code>
+      <label
+        style="display:block;width:100%;text-align:center;font-size:0.8rem;margin-top:5px"
+        >扫描二维码签名</label
+      >
+    </div>
+    <button
+      nz-button
+      [nzLoading]="isButtonLoading"
+      style="width:80%;margin:5px 10%;"
+      (click)="refreshImgList()"
+    >
+      刷新
+    </button>
+  </ng-template>
+</div>

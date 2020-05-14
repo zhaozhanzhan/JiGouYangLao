@@ -1,0 +1,52 @@
+td, th {
+  text-align: center !important;
+}
+
+.red {
+  color: #f81d22 !important;
+}
+
+nz-form-item {
+  margin-bottom: 0px;
+}
+
+.ant-select-selection--single {
+  height: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.fireArea {
+  width: 40%;
+  display: inline-block;
+}
+
+.fireAreaM {
+  /* top:-400px; */
+  margin-left: 10%;
+}
+
+.fireD {
+  margin-left: 10%;
+}
+
+.labelStyle {
+  margin-right: 10px;
+  margin-left: 27px
+}
+
+.checkboxCheck label {
+  width: 65px !important
+}
+
+.ant-modal-body {
+  padding-bottom: 10px !important;
+}
+
+.selectedRow_true {
+  background: #1890ff33 !important;
+}
+
+.selectedRow_false {
+  background: white !important;
+}

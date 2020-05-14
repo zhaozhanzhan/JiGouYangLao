@@ -1,0 +1,210 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>申请日期</nz-form-label>
+        <nz-form-control>
+          <nz-range-picker
+            name="date"
+            style="width:250px"
+            [(ngModel)]="selectedDates"
+            (ngModelChange)="onRangerPickerChange($event)"
+          ></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>部门</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzPlaceHolder="请选择"
+            [(ngModel)]="reqObj.departmentId"
+            style="width:150px"
+            nzAllowClear
+          >
+            <nz-option
+              *ngFor="let department of departmentList"
+              [nzLabel]="department.name"
+              [nzValue]="department.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>审批状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzPlaceHolder="请选择"
+            [(ngModel)]="reqObj.status"
+            style="width:150px"
+            nzAllowClear
+          >
+            <nz-option nzLabel="全部" [nzValue]=""></nz-option>
+            <nz-option nzLabel="未审批" [nzValue]="0"></nz-option>
+            <nz-option nzLabel="已审批" [nzValue]="1"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>入库状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzPlaceHolder="请选择"
+            [(ngModel)]="reqObj.inWhStatus"
+            style="width:150px"
+            nzAllowClear
+          >
+            <nz-option nzLabel="全部" [nzValue]=""></nz-option>
+            <nz-option nzLabel="未入库" [nzValue]="0"></nz-option>
+            <nz-option nzLabel="部分入库" [nzValue]="1"></nz-option>
+            <nz-option nzLabel="全部入库" [nzValue]="2"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>申请人</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            style="width:120px"
+            [(ngModel)]="reqObj.rOperator"
+            placeholder="检索申请人"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left: 10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="申请列表" [nzExtra]="btnAdd">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzTitle]="serchArea"
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+    [nzScroll]="{ x: '1500px' }"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter" class="textCenter" nzWidth="180px" nzLeft="0px">
+          单号
+        </th>
+        <th class="textCenter">申请概述</th>
+        <th class="textCenter">申请部门</th>
+        <th class="textCenter">申请人</th>
+        <th class="textCenter">申请时间</th>
+        <th class="textCenter">申请状态</th>
+        <th class="textCenter">入库状态</th>
+        <th class="textCenter">审批人</th>
+        <th class="textCenter">审批时间</th>
+        <th class="textCenter" nzWidth="250px" nzRight="0px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter" class="textCenter" nzWidth="180px" nzLeft="0px">
+          {{ data?.rid }}
+        </td>
+        <td class="textCenter">{{ data?.title }}</td>
+        <td class="textCenter">{{ data?.department?.name }}</td>
+        <td class="textCenter">{{ data?.rOperator }}</td>
+        <td class="textCenter">
+          {{ data?.createDate | date: "yyyy-MM-dd HH:mm:ss" }}
+        </td>
+        <td class="textCenter" *ngIf="data?.status == 0">未审批</td>
+        <td class="textCenter" *ngIf="data?.status == 1">已审批</td>
+        <td class="textCenter" *ngIf="data?.inWhStatus == 0">未入库</td>
+        <td class="textCenter" *ngIf="data?.inWhStatus == 1">部分入库</td>
+        <td class="textCenter" *ngIf="data?.inWhStatus == 2">全部入库</td>
+        <td class="textCenter">{{ data?.applyName }}</td>
+        <td class="textCenter">
+          {{ data?.applyDate | date: "yyyy-MM-dd HH:mm:ss" }}
+        </td>
+        <td class="textCenter" nzWidth="250px" nzRight="0px">
+          <!-- 入库操作之前进行查看跳转的申请单页面 -->
+          <a
+            href="javascript:void(0)"
+            (click)="turnToInfo(data?.id)"
+            *ngIf="data?.inWhStatus == 0"
+            >查看</a
+          >
+          <!-- 入库操作之后进行查看跳转的入库操作页面 -->
+          <a
+            href="javascript:void(0)"
+            (click)="turnToShowForAfterIn(data?.id)"
+            *ngIf="data?.inWhStatus == 1 || data?.inWhStatus == 2"
+            >查看</a
+          >
+          <nz-divider
+            nzType="vertical"
+            *ngIf="
+              (data?.inWhStatus == 0 || data?.inWhStatus == 1) &&
+              data?.status == 1
+            "
+          ></nz-divider>
+          <a
+            href="javascript:void(0)"
+            (click)="turnToInStorehouse(data?.id)"
+            *ngIf="
+              (data?.inWhStatus == 0 || data?.inWhStatus == 1) &&
+              data?.status == 1
+            "
+            >分配入库</a
+          >
+
+          <nz-divider nzType="vertical" *ngIf="data?.status == 0"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            (click)="turnToEdit(data?.id)"
+            *ngIf="data?.status == 0"
+            >编辑</a
+          >
+          <nz-divider nzType="vertical" *ngIf="data?.status == 0"></nz-divider>
+          <a
+            href="javascript:void(0)"
+            style="color: #f81d22 !important;"
+            (click)="delete(data?.id)"
+            *ngIf="data?.status == 0"
+            >删除</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

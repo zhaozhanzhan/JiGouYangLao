@@ -1,0 +1,457 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>消费登记详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-card nzType="inner" nzTitle="基本信息">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">姓名</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.name" readonly (click)="openOldMan()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">性别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.sex" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">年龄</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.age" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">身份证号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.cardno" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">房间号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.roomName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">入院日期</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.inDate" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">累计住院天数</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.days" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="账目信息" style="margin-top:10px">
+        <div nz-row style="margin-top: 20px;" *ngFor="let item of accountList">
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">缴存账目：{{item?.depositAccounts?.accountsName}}</div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">账目余额：{{item?.accountBalance}} 元</div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">账目累计缴存：{{item?.accountTotal}} 元</div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="消费信息" style="margin-top:10px">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费类别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" nzShowSearch [(ngModel)]="saveObj.expCategoryId" [nzDisabled]="disabled" (ngModelChange)="changeExpItem()">
+                            <nz-option *ngFor="let option of expCategoryList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费项目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" nzShowSearch nzAllowClear [(ngModel)]="saveObj.expItemId" (ngModelChange)="changeMode()" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of expItemList" [nzLabel]="option.itemName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费日期</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-date-picker [(ngModel)]="saveObj.consumptionTime" nzAllowClear [nzDisabled]="disabled" (ngModelChange)="onRangerPickerChange($event)"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">收费方式</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.chargeMode" nzAllowClear [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of chargeModeList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="saveObj.chargeMode=='2'">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">扣款账目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="saveObj.consumerRegistrationName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">计费方式</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.feeMode" nzAllowClear nzDisabled>
+                            <nz-option nzLabel="登记计费" nzValue="1"> </nz-option>
+                            <nz-option nzLabel="按月计费" nzValue="2"> </nz-option>
+                            <nz-option nzLabel="按日计费" nzValue="3"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="saveObj.feeMode=='1'">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">数量</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number [(ngModel)]="saveObj.costQuantity" [nzMin]="1" [nzStep]="1" (ngModelChange)="blur()"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">单价</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="saveObj.unitPrice" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">规格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="saveObj.specs" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">抵扣券</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.couponD" nzAllowClear [nzDisabled]="disabled" (ngModelChange)="changeDeductibleAmount()">
+                            <nz-option *ngFor="let option of rebateList" [nzLabel]="option.rebate.voucherName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">补价券</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.couponB" nzAllowClear [nzDisabled]="disabled" (ngModelChange)="changeSupplementAmount()">
+                            <nz-option *ngFor="let option of couponsList" [nzLabel]="option.supplementCoupons.supplementName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">支付价格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number [(ngModel)]="saveObj.costMoney" nzDisabled [nzMin]="0" [nzStep]="1"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4"> 备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input [(ngModel)]="saveObj.remark" [disabled]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" *ngIf="disabled == false" fnzSize="large" (click)="allInfo()">
+            保存
+        </button>
+    </div>
+</nz-card>
+
+
+<!-- 选择老人弹出框 -->
+<nz-modal [(nzVisible)]="oldManIsVisible" nzTitle="长者列表" nzWidth="800" (nzOnCancel)="oldManIsVisible=false" [nzOkText]="null">
+    <ng-template #serchArea>
+        <form nz-form>
+            <div nz-row [nzGutter]="8" nzType="flex">
+                <div nz-col>
+                    <nz-form-item nzFlex>
+                        <nz-form-label nzFor="namename">长者姓名</nz-form-label>
+                        <nz-form-control>
+                            <input type="text " name="name" id="name" nz-input placeholder="按长者姓名检索 " [(ngModel)]="oldManObj.name">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col>
+                    <nz-form-item nzFlex>
+                        <nz-form-label nzFor="cardno">身份证</nz-form-label>
+                        <nz-form-control>
+                            <input type="text " name="cardno" id="cardno" nz-input placeholder="按长者身份证检索 " [(ngModel)]="oldManObj.cardno">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="getOldManList(true)">
+                                查询
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <nz-table #basicTable [nzData]="oldManList" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading" [nzTotal]="totalElements" [(nzPageIndex)]="oldManObj.page" [(nzPageSize)]="oldManObj.size" (nzPageIndexChange)="getOldManList(true)" (nzPageSizeChange)="getOldManList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">身份证号码</th>
+                <th class="textCenter">房间号</th>
+                <th class="textCenter">入院日期</th>
+                <th class="textCenter">累计住院天数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of oldManList; let idx = index;" (click)="chooseOld(data)">
+                <td class="textCenter">{{data.name}}</td>
+                <td class="textCenter">{{data.sex}}</td>
+                <td class="textCenter">{{data.age}}</td>
+                <td class="textCenter">{{data.cardno}}</td>
+                <td class="textCenter">{{data.bedNo}}</td>
+                <td class="textCenter">{{data.inDate}}</td>
+                <td class="textCenter">{{data.days}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-modal>
+
+<!-- 保存时显示所有的信息弹出框 -->
+<nz-modal [(nzVisible)]="allInfoIsVisible" [nzOkLoading]="saveLoading" nzTitle="消费明细详情" nzWidth="800" (nzOnCancel)="allInfoIsVisible=false" (nzOnOk)="save()">
+    <nz-card nzType="inner" nzTitle="基本信息">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">姓名</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.name" readonly (click)="openOldMan()" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">性别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.sex" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">年龄</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.age" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">身份证号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.cardno" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">房间号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.roomName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">入院日期</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.inDate" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">累计住院天数</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="oldManObjInfo.days" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="账目信息" style="margin-top:10px">
+        <div nz-row style="margin-top: 20px;" *ngFor="let item of accountList">
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">缴存账目：{{item?.depositAccounts?.accountsName}}</div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">账目余额：{{item?.accountBalance}} 元</div>
+            <div nz-col nzSpan="8" style="border-bottom: 1px solid;padding-bottom: 10px;">账目累计缴存：{{item?.accountTotal}} 元</div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="消费信息" style="margin-top:10px">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费类别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" nzShowSearch [(ngModel)]="saveObj.expCategoryId" nzDisabled (ngModelChange)="changeExpItem()">
+                            <nz-option *ngFor="let option of expCategoryList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费项目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" nzShowSearch [(ngModel)]="saveObj.expItemId" (ngModelChange)="changeMode()" nzDisabled>
+                            <nz-option *ngFor="let option of expItemList" [nzLabel]="option.itemName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">消费日期</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-date-picker [(ngModel)]="saveObj.consumptionTime" nzDisabled (ngModelChange)="onRangerPickerChange($event)"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">收费方式</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.chargeMode" nzDisabled>
+                            <nz-option *ngFor="let option of chargeModeList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="saveObj.chargeMode=='2'">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">扣款账目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="saveObj.consumerRegistrationName" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">计费方式</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.feeMode" nzDisabled>
+                            <nz-option nzLabel="登记计费" nzValue="1"> </nz-option>
+                            <nz-option nzLabel="按月计费" nzValue="2"> </nz-option>
+                            <nz-option nzLabel="按日计费" nzValue="3"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="saveObj.feeMode=='1'">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">数量</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number [(ngModel)]="saveObj.costQuantity" nzDisabled [nzMin]="1" [nzStep]="1" (ngModelChange)="blur()"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">单价</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="saveObj.unitPrice" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">规格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input maxlength="32" [(ngModel)]="saveObj.specs" readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">抵扣券</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.couponD" nzDisabled (ngModelChange)="changeDeductibleAmount()">
+                            <nz-option *ngFor="let option of rebateList" [nzLabel]="option.rebate.voucherName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">补价券</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="saveObj.couponB" nzDisabled (ngModelChange)="changeSupplementAmount()">
+                            <nz-option *ngFor="let option of couponsList" [nzLabel]="option.supplementCoupons.supplementName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">支付价格</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number [(ngModel)]="saveObj.costMoney" nzDisabled [nzMin]="0" [nzStep]="1"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4"> 备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input [(ngModel)]="saveObj.remark" disabled></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+</nz-modal>

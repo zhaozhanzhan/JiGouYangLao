@@ -1,0 +1,88 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8" nzType="flex">
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="sectionOfficeOutId">领用科室</nz-form-label>
+                    <nz-form-control>
+                        <nz-select nzAllowClear nzPlaceHolder="请选择" name="sectionOfficeOutId" class="form_input" style="width:150px;" id="sectionOfficeOutId">
+                            <nz-option *ngFor="let item of setionOfficeList" [nzLabel]="item?.name" [nzValue]="item?.id"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="operator">操作人</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="operator" id="operator" style="width:150px" [(ngModel)]="reqObj.operator" placeholder="请输入操作人" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="medDrugName">药品名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="medDrugName" id="medDrugName" style="width:150px" [(ngModel)]="reqObj.medDrugName" placeholder="请输入药品名称" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="supplier">供应商</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="supplier" id="supplier" style="width:150px" [(ngModel)]="reqObj.supplier" placeholder="请输入供应商" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label>领用日期</nz-form-label>
+                    <nz-form-control>
+                        <nz-range-picker name="date" style="width:250px" [(ngModel)]="selectedDates" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate2" [nzScroll]="{ x: '1600px' }">
+    <thead>
+        <tr>
+            <th class="textCenter" nzWidth="180px" nzLeft="0px">药品名称</th>
+            <th class="textCenter">出库单号</th>
+            <th class="textCenter">批次号</th>
+            <th class="textCenter">药品规格</th>
+            <th class="textCenter">数量</th>
+            <th class="textCenter">供应商</th>
+            <th class="textCenter">操作员</th>
+            <th class="textCenter" nzWidth="100px" nzRight="0px">备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+            <td class="textCenter" nzWidth="180px" nzLeft="0px">{{ data?.medDrug?.drugName }}</td>
+            <td class="textCenter">{{ data?.outId }}</td>
+            <td class="textCenter">{{ data?.batchNum }}</td>
+            <td class="textCenter">{{ data?.medDrug?.specification }}</td>
+            <td class="textCenter">{{ data?.outNum }}</td>
+            <td class="textCenter">{{ data?.supplier }}</td>
+            <td class="textCenter">{{ data?.recorder }}</td>
+            <td class="textCenter" nzWidth="100px" nzRight="0px">{{ data?.comment }}</td>
+        </tr>
+    </tbody>
+</nz-table>
+<ng-template #totalTemplate2 let-total>共 {{ page.total }} 条</ng-template>

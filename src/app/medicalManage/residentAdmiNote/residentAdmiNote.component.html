@@ -1,0 +1,61 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-06 15:38:11
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="primary"
+    (click)="saveOrEditTemplate()"
+    *ngIf="user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    保存
+  </button>
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="primary"
+    class="marginLeft"
+    *ngIf="user.data.employees.personType == '0'"
+    (click)="chooseTemplate()"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    选择模板
+  </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="{{ caseTemplateObj?.name }}" [nzExtra]="btnArea">
+  <mirr-customform
+    [boundParams]="oldmanInfo"
+    [formMode]="'edit'"
+    [formName]="caseTemplateObj?.name"
+    [(formContent)]="templateContent"
+    [isShowModeController]="'false'"
+  ></mirr-customform>
+</nz-card>
+<!-- 表单区域End -->
+
+<!-- 需要选择的模板 -->
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  nzPlacement="right"
+  nzTitle="病历模板"
+  (nzOnClose)="close()"
+>
+  <ul>
+    <ng-container *ngFor="let item of caseList">
+      <li (click)="chooseCase(item)">{{ item.name }}</li>
+    </ng-container>
+  </ul>
+</nz-drawer>

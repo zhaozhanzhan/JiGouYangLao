@@ -1,0 +1,148 @@
+.details-views {
+    margin: 10px;
+    padding: 10px;
+    height: 238px;
+    background: #fff;
+    text-align: center;
+    margin-top: 0px;
+}
+
+.content {
+    margin-top: 20px;
+}
+
+.buttonLeft {
+    float: left;
+}
+
+.buttonRight {
+    float: right;
+}
+
+.marginBottom24 {
+    margin-top: 20px;
+}
+
+.heighAuto {
+    height: 600px;
+    overflow: auto;
+}
+
+.detailsPublic {
+    display: inline-block;
+    width: 65%;
+    text-align: left;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.detailsName {
+    font-size: 20px;
+}
+
+.healthCheckup {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    border: 1px solid #d9d9d9;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.marginBottom {
+    margin-bottom: 10px;
+}
+
+:host /deep/ .ant-drawer-body {
+    padding: 0px !important;
+}
+
+:host /deep/ .ant-card-body {
+    padding: 8px !important;
+}
+
+.marginLeft {
+    margin-left: 10px;
+}
+
+.marginTop {
+    margin-top: 10px;
+}
+
+.marginTop5 {
+    margin-top: 5px;
+}
+
+.marginBottom5 {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.positionR {
+    position: relative
+}
+
+.positionA {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+
+.prescriptionDoctor {}
+
+:host /deep/ .ant-collapse-content>.ant-collapse-content-box {
+    padding: 10px 5px !important;
+}
+
+.contentsMedicalDetails {
+    /* border-bottom: 1px solid #d9d9d9; */
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.caseTitle {
+    font-size: 1.25em;
+    display: block;
+    text-align: center;
+}
+
+.contentsTitle {
+    font-weight: 900;
+}
+
+.prescriptionContent {
+    /* background: #e4e5e6; */
+    padding: 5px 10px;
+}
+
+.prescriptionDetails {
+    width: 100%;
+    display: inline-block;
+    border-bottom: 2px solid #b0bec5;
+    text-align: center;
+    padding-bottom: 6px;
+}
+
+.borderBottom {
+    border-bottom: 1px solid #b0bec5
+}
+
+.textAlignR {
+    text-align: right;
+}
+
+.colorF00 {
+    color: red
+}
+
+.border1s {
+    border: 1px solid;
+}
+
+.drug {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    padding: 2px 5px;
+    border: 1px solid;
+}

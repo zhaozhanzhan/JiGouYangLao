@@ -1,0 +1,215 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>姓名</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            id="name"
+            style="width:150px"
+            [(ngModel)]="reqObj.name"
+            placeholder="请输入姓名"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>身份证</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            id="name"
+            style="width:200px"
+            [(ngModel)]="reqObj.cardno"
+            placeholder="请输入身份证"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>建筑</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class=""
+            nzPlaceHolder="请选择建筑"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.buildingId"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="changeBuild(reqObj.buildingId)"
+          >
+            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+            <nz-option
+              *ngFor="let x of buildArr; let key = index"
+              [nzValue]="x.id"
+              [nzLabel]="x.buildingName"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>楼层</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class=""
+            nzPlaceHolder="请选择楼层"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.floorId"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="changeFloor(reqObj.floorId)"
+          >
+            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+            <nz-option
+              *ngFor="let x of floorArr; let key = index"
+              [nzValue]="x.id"
+              [nzLabel]="x.floorName"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>房间</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class=""
+            nzPlaceHolder="请选择房间"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.roomId"
+          >
+            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+            <nz-option
+              *ngFor="let x of roomArr; let key = index"
+              [nzValue]="x.id"
+              [nzLabel]="x.roomName"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col style="margin-right: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>状态</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.status"
+          >
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="1" nzLabel="未结算"></nz-option>
+            <nz-option nzValue="2" nzLabel="已结清"></nz-option>
+            <nz-option nzValue="3" nzLabel="拖欠中"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col style="margin-right: 15px;">
+      <nz-form-item nzFlex>
+        <nz-form-label>月份</nz-form-label>
+        <nz-form-control>
+          <nz-month-picker
+            [(ngModel)]="choosedMonth"
+            [nzAllowClear]="false"
+            [nzDisabledDate]="disabledDate"
+          ></nz-month-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left:10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="月度结算列表">
+  <nz-table
+    #basicTable
+    [nzData]="list"
+    [nzTitle]="serchArea"
+    [nzShowPagination]="true"
+    [nzBordered]="'true'"
+    [nzLoading]="isTableLoading"
+    [nzTotal]="total"
+    [(nzPageIndex)]="reqObj.page"
+    [(nzPageSize)]="reqObj.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+    [nzShowTotal]="totalTit"
+  >
+    <thead>
+      <tr>
+        <th style="text-align: center;">姓名</th>
+        <th style="text-align: center;">性别</th>
+        <th style="text-align: center;">年龄</th>
+        <th style="text-align: center;">身份证号</th>
+        <th style="text-align: center;">房间号</th>
+        <th style="text-align: center;">入院日期</th>
+        <th style="text-align: center;">累计住院天数</th>
+        <th style="text-align: center;">结算月份</th>
+        <th style="text-align: center;">结算状态</th>
+        <th style="text-align: center;">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td style="text-align: center;">{{ data?.name }}</td>
+        <td style="text-align: center;">{{ data?.sex }}</td>
+        <td style="text-align: center;">{{ data?.age }}</td>
+        <td style="text-align: center;">{{ data?.cardno }}</td>
+        <td style="text-align: center;">{{ data?.roomName }}</td>
+        <td style="text-align: center;">{{ data?.inDate }}</td>
+        <td style="text-align: center;">{{ data?.days }}</td>
+        <td style="text-align: center;">{{ data?.month }}</td>
+        <td style="text-align: center;">
+          {{
+            data?.status == 1
+              ? "未结算"
+              : data?.status == 2
+              ? "已结清"
+              : "拖欠中"
+          }}
+        </td>
+        <td style="text-align: center;">
+          <a href="javascript: void(0)" (click)="goto('closeAccount', data.id)">
+             {{
+            data?.status == 1
+              ? "结算"
+              : data?.status == 2
+              ? "查看"
+              : "结算"
+          }}
+            </a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #totalTit>共&nbsp;{{ total }}&nbsp;条</ng-template>

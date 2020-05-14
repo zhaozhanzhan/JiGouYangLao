@@ -1,0 +1,17 @@
+.oldCard {
+    max-width: 270px;
+    text-align: center;
+}
+
+:host /deep/ .ant-input-number {
+    width: 70%
+}
+
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}

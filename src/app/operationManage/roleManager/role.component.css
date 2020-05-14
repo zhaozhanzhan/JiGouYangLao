@@ -1,0 +1,9 @@
+.dialog_input {
+  width: 300px;
+  max-width: 300px;
+}
+
+.dialog_label {
+  width: 100px;
+  text-align: right
+}

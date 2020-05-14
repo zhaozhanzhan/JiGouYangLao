@@ -1,0 +1,20 @@
+<a href="javascript:void(0)" (click)="isVisible = true">{{
+  versionLog[0].code
+}}</a>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="更新日志"
+  (nzOnCancel)="isVisible = false"
+  (nzOnOk)="isVisible = false"
+  nzWidth="800"
+  [nzStyle]="dialogStyle"
+>
+  <div style="width:100%" *ngFor="let item of versionLog">
+    <h6>{{ item?.code }}</h6>
+    <nz-tag>{{ item?.date }}</nz-tag>
+    <p>{{ item?.describe }}</p>
+    <ul>
+      <li *ngFor="let log of item.logList">{{ log }}</li>
+    </ul>
+  </div>
+</nz-modal>

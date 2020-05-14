@@ -1,0 +1,62 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="康复小组列表" [nzExtra]="extraTemplate">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">服务项目</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter">{{data.name}}</td>
+                <td class="textCenter">{{data.age}} </td>
+                <td class="textCenter">{{data.project}}</td>
+                <td class="textCenter">
+                    <a href="#" (click)="turnToAdd(data, $event)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data.id, $event)" class="red">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="turnToAdd('')">添加</button>
+</ng-template>
+<ng-template #totalTemplate let-total>共{{total}}条</ng-template>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzWidth="700" nzTitle="康复小组详情" (nzOnCancel)="isVisible=false" (nzOnOk)="saveChildGroup()">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzRequired>姓名</nz-form-label>
+                <nz-form-control [nzSm]="18">
+                    <nz-select nzAllowClear nzMode="tags" nzPlaceHolder="请选择" [(ngModel)]="allChildArr" style="width: 100%;">
+                        <nz-option *ngFor="let option of allChildList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzRequired>服务项目</nz-form-label>
+                <nz-form-control [nzSm]="18">
+                    <nz-select nzAllowClear nzMode="tags" nzPlaceHolder="请选择" [(ngModel)]="conRehabiliArr" style="width: 100%;">
+                        <nz-option *ngFor="let option of conRehabilitationList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+    </div>
+
+</nz-modal>

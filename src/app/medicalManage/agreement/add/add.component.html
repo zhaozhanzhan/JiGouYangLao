@@ -1,0 +1,220 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-27 10:59:00
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button (click)="back()" *ngIf="!isModifyMode" nz-button nzType="default">
+    返回
+  </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>新增医患沟通</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <div class="container long-div scrollable-container" #divTarget>
+    <div nz-row nzGutter="24" style="padding-left:-24px;padding-right: -24px">
+      <div nz-col nzSpan="5">
+        <nz-card class="oldCard">
+          <div nz-row>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+            <div
+              nz-col
+              [nzXs]="{ span: 11, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            >
+              <img
+                src="assets/img/male-avatar.png"
+                class="img-avatar"
+                style="width:80px;height:80px;margin-left: auto;margin-right: auto"
+              />
+            </div>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+          </div>
+          <br />
+          <a href="javascript:void(0);" (click)="showOldDialog()">
+            {{ !oldInfo?.basicInfo ? "选择患者" : oldInfo?.basicInfo?.name }}</a
+          >
+          <div style="text-align: left;">
+            性别：
+            <span *ngIf="oldInfo?.basicInfo?.sex == '0'">男</span>
+            <span *ngIf="oldInfo?.basicInfo?.sex == '1'">女</span>
+            <br />
+            出生日期：
+            <span>{{ oldInfo?.basicInfo?.birthDay }}</span>
+            <br />
+            身份证号：
+            <span>{{ oldInfo?.basicInfo?.cardno }}</span>
+            <br />
+            医疗支付：
+            <span>{{ oldInfo?.basicInfo?.medicalPayment }}</span>
+            <br />
+            住院号：
+            <span>{{ oldInfo?.admissionNo }}</span>
+            <br />
+            入院日期：
+            <span>{{ oldInfo?.admissionDate | date: "yyyy-MM-dd" }}</span>
+          </div>
+        </nz-card>
+      </div>
+      <div nz-col nzSpan="19">
+        <nz-card nzTitle="{{ contractInfo?.name }}" [nzExtra]="extraTemplate">
+          <mirr-customform
+            [boundParams]="oldInfo?.basicInfo"
+            [formMode]="'edit'"
+            [formName]="contractInfo?.name"
+            [(formContent)]="templateContent"
+            [isShowModeController]="'false'"
+          ></mirr-customform>
+        </nz-card>
+        <ng-template #extraTemplate>
+          <a href="#" (click)="showContractDialog($event)" *ngIf="!isModifyMode"
+            >选择模板</a
+          >
+          <nz-divider nzType="vertical"></nz-divider>
+          <a
+            href="#"
+            (click)="saveContract($event)"
+            *ngIf="!isModifyMode"
+            nz-button
+            nzType="primary"
+            [nzLoading]="saveBtnLoading"
+            >保存</a
+          >
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <nz-back-top [nzTarget]="divTarget" [nzVisibilityHeight]="100"> </nz-back-top>
+
+  <nz-modal
+    [nzFooter]="null"
+    [(nzVisible)]="isShowOldDialog"
+    [nzTitle]="oldModalTitle"
+    [nzContent]="oldModalContent"
+    (nzOnCancel)="cancelOldDialog()"
+    [nzWidth]="700"
+  >
+    <ng-template #oldModalTitle>
+      请选择患者
+    </ng-template>
+
+    <ng-template #oldModalContent>
+      <nz-input-group
+        nzSearch
+        [nzSuffix]="suffixIconButton"
+        style="margin-bottom: 15px"
+      >
+        <input
+          type="text"
+          nz-input
+          placeholder="按患者姓名检索"
+          [(ngModel)]="searchOldName"
+          (change)="loadingOldList()"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="loadingOldList()">
+          <i class="anticon anticon-search"></i>
+        </button>
+      </ng-template>
+
+      <nz-table
+        #basicTable
+        [nzData]="oldDataArray"
+        [nzShowPagination]="false"
+        [nzBordered]="'true'"
+        [nzSize]="'middle'"
+        [nzLoading]="isOldTableLoading"
+        [nzShowSizeChanger]="false"
+        [nzFrontPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th>住院号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>身份证</th>
+            <th>入院时间</th>
+            <th>付费方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+            <td>{{ data?.basicInfo?.name }}</td>
+            <td>{{ data?.admissionNo }}</td>
+            <td>{{ data?.basicInfo?.sex === "0" ? "男" : "女" }}</td>
+            <td>{{ data?.basicInfo?.cardno }}</td>
+            <td>{{ data?.admissionDate | date: "yyyy-MM-dd" }}</td>
+            <td>{{ data?.basicInfo?.medicalPayment }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </ng-template>
+  </nz-modal>
+
+  <nz-modal
+    [nzFooter]="null"
+    [(nzVisible)]="isShowContractDialog"
+    [nzTitle]="contractModalTitle"
+    [nzContent]="contractModalContent"
+    (nzOnCancel)="cancelContractDialog()"
+  >
+    <ng-template #contractModalTitle>
+      请选择医患沟通模板
+    </ng-template>
+
+    <ng-template #contractModalContent>
+      <nz-table
+        #basicTable
+        [nzData]="contractDataArray"
+        [nzShowPagination]="true"
+        [nzBordered]="'true'"
+        [nzSize]="'middle'"
+        [nzLoading]="isContractTableLoading"
+        [nzTotal]="contractResultData.totalElements"
+        [(nzPageIndex)]="contractqueryParams.page"
+        [(nzPageSize)]="contractqueryParams.size"
+        (nzPageIndexChange)="loadingContractList()"
+        (nzPageSizeChange)="loadingContractList(true)"
+        [nzShowSizeChanger]="false"
+        [nzFrontPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th>模板名称</th>
+            <th>模板类型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of basicTable.data"
+            (click)="chooseContract(data)"
+          >
+            <td>{{ data?.name }}</td>
+            <td>{{ data?.templateType?.name }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </ng-template>
+  </nz-modal>
+</nz-card>
+<!-- 表单区域End -->

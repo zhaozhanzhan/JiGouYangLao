@@ -1,0 +1,120 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>创建日期</nz-form-label>
+                <nz-form-control>
+                    <nz-range-picker name="date" style="width:250px" [(ngModel)]="selectedDates" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col>
+      <nz-form-item  nzFlex>
+        <nz-form-label>科室药房</nz-form-label>
+        <nz-form-control>
+            <nz-select
+            nzAllowClear
+            style="width:150px;"
+            nzPlaceHolder="请选择科室药房"
+            [(ngModel)]="reqObj.sectionOfficeId"
+            class="form_input"
+          >
+            <nz-option
+              *ngFor="let storehouse of setionOfficeList"
+              [nzLabel]="storehouse?.name"
+              [nzValue]="storehouse?.id"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>审核状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width:150px;" [(ngModel)]="reqObj.status" nzAllowClear nzPlaceHolder="请选择审核状态">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="1" nzLabel="已审核"></nz-option>
+                        <nz-option nzValue="0" nzLabel="未审核"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="过期破损列表" [nzExtra]="btnAdd">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th nzWidth="200px" nzLeft="0px" class="textCenter">单号</th>
+                <th class="textCenter">创建日期</th>
+                <th class="textCenter">操作员</th>
+                <th class="textCenter">药品名称</th>
+                <th class="textCenter">过期破损数量</th>
+                <th class="textCenter">过期破损原因</th>
+                <th class="textCenter">状态</th>
+                <th class="textCenter">备注</th>
+                <th nzWidth="200px" nzRight="0px" class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td nzWidth="200px" nzLeft="0px" class="textCenter">
+                    {{ data?.odId }}
+                </td>
+                <td class="textCenter">{{ data?.createDate}}</td>
+                <td class="textCenter">{{ data?.recorder }}</td>
+                <td class="textCenter">
+                    <span *ngFor="let item of data?.mdOverdueDamages;let num=index">
+                        <span>
+                            {{item?.medDrug?.drugName}}
+                            <span *ngIf=" num < data.mdOverdueDamages.length-1">,</span>
+                    </span>
+                    </span>
+
+                </td>
+                <td class="textCenter">
+                    <span *ngFor="let item of data?.mdOverdueDamages;let num=index">
+                        <span> {{item?.medDrug?.drugName}}:{{item?.odNum}}
+                            <span *ngIf=" num < data.mdOverdueDamages.length-1">,</span>
+                    </span>
+                    </span><br>
+                </td>
+                <td class="textCenter">
+                    <span *ngFor="let item of data?.mdOverdueDamages;let num=index">
+                        <span>{{item?.medDrug?.drugName}}:{{item?.reason}}
+                            <span *ngIf=" num < data.mdOverdueDamages.length-1">,</span>
+                    </span>
+                    </span>
+                </td>
+                <td class="textCenter">
+                    {{ data?.status == 0 ? "未审批" : "已审批" }}
+                </td>
+                <td class="textCenter">{{ data?.comment }}</td>
+                <td nzWidth="200px" nzRight="0px" class="textCenter">
+                    <a href="javascript:void(0)" *ngIf="data?.status=='0'" (click)="turnToApprove(data.id)" roleBtnControll [roleBtnKey]="'approveMenuBtn'">审批</a>
+                    <a href="javascript:void(0)" *ngIf="data?.status=='1'" (click)="turnToApproveCheck(data)" roleBtnControll [roleBtnKey]="'checkApproveMenuBtn'">查看审批</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="turnToCheck(data?.id)" roleBtnControll [roleBtnKey]="'CheckMenuBtn'">查看</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

@@ -1,0 +1,36 @@
+.components-table-demo-control-bar {
+  margin-bottom: 12px;
+}
+
+.nz-form-item {
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+.lineStyle2 {
+  border-bottom: 2px solid #333;
+  padding-bottom: 2px;
+  padding-left: 15px;
+  padding-bottom: 4px;
+}
+
+.lineStyle1_noPaddingLeft {
+  border-bottom: 1px solid #555;
+  position: relative;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}
+
+/* .lineStyle1::after{
+  position: absolute;
+  width: 100%;
+  content: "";
+  height: 1px;
+  background: #000;
+  left: 0;
+  bottom: -4px;
+} */
+
+.noBorder {
+  border: none;
+}

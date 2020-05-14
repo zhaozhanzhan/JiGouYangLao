@@ -1,0 +1,93 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-05 14:35:20
+ * @Description:
+ -->
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>项目代码</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="queryParams.itemCode" placeholder="请输入项目代码" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>项目名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="queryParams.itemName" placeholder="请输入项目名称" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>消费类别</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width: 200px" [(ngModel)]="queryParams.expCategoryId">
+                        <ng-container *ngFor="let item of feeCategory">
+                            <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                        </ng-container>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="loadingDataArray(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+
+<!-- 表格查询条件End -->
+<nz-card nzTitle="消费项目列表" [nzExtra]="extraTemplate">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [nzShowTotal]="totalTit" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false">
+        <thead>
+            <tr>
+                <th>项目代码</th>
+                <th>项目名称</th>
+                <th>消费类别</th>
+                <th>单价</th>
+                <th>规格</th>
+                <th>收费方式</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td>{{ data?.itemCode }}</td>
+                <td>{{ data?.itemName }}</td>
+                <td>{{ data?.expCategoryInfo?.name }}</td>
+                <td>{{ data?.unitPrice }}</td>
+                <td>{{ data?.specs }}</td>
+                <td>
+                    <div *ngFor="let item of data?.chargeMode">
+                        <span *ngIf="item=='1'">现结</span>
+                        <span *ngIf="item=='2'">代付</span>
+                    </div>
+                <td>
+                    <a href="javascript:void(0);" (click)="turnToEdit(data)">修改</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="confirmDelContract(data, $event)" class="red">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="turnToEdit({})">
+        添加
+    </button>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条
+</ng-template>

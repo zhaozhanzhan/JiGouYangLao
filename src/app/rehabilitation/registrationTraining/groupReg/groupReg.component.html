@@ -1,0 +1,21 @@
+<nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1000px' }">
+    <thead>
+        <tr>
+            <th class="textCenter">姓名</th>
+            <th class="textCenter">年龄</th>
+            <th class="textCenter">服务项目</th>
+            <th class="textCenter">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+            <td class="textCenter">{{data.name}}</td>
+            <td class="textCenter">{{data.age}} </td>
+            <td class="textCenter">{{data.project}}</td>
+            <td class="textCenter">
+                <a href="javascript:void(0)" (click)="checkIn(data)">登记</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

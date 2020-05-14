@@ -1,0 +1,25 @@
+.page {
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    padding-top: 50px;
+    margin: 20px auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    page-break-before: always;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+.formTitle {
+    width: 21cm;
+    line-height: 15px;
+    font-size: 16pt;
+    text-align: center;
+    margin: 10px auto;
+}

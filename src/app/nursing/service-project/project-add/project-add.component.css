@@ -1,0 +1,20 @@
+/* 验证样式 */
+.err{
+    /* background: rgba(333,33,3,0.2); */
+    /* border:1px solid red; */
+    border-radius: 5px;
+}
+.err::after{
+    content: '该项为必填字段';
+    color: red;
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+/* DIY添加标签 */
+.editable-tag ::ng-deep .ant-tag {
+background: rgb(255, 255, 255);
+border-style: dashed;
+}
+

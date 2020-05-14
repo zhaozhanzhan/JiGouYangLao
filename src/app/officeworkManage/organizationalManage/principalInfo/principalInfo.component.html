@@ -1,0 +1,121 @@
+<nz-card nzType="inner" nzTitle="法人及负责人信息" class="marginBottom24">
+  <form nz-form [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"  nzFor="chargePerson">机构负责人姓名</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="chargePerson" id="chargePerson">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="cetiCode">公民身份号码</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="cetiCode" id="cetiCode">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="chargePersonPhone">电话</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="chargePersonPhone" id="chargePersonPhone">
+            <nz-form-explain [hidden]="!(formData.get('chargePersonPhone').dirty && formData.get('chargePersonPhone').errors)">固定电话或手机号格式不正确</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="chargePersonPosition">机构内职务</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="chargePersonPosition" id="chargePersonPosition">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"  nzFor="chargePersonFolk">民族</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="chargePersonFolk" id="chargePersonFolk">
+              <nz-option *ngFor="let option of folkList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="chargePersonBirthday">出生年月</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker nzFormat="yyyy-MM-dd" class="w100p" formControlName="chargePersonBirthday" id="chargePersonBirthday"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"  nzFor="chargePersonSex">性别</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="chargePersonSex" id="chargePersonSex">
+              <nz-option *ngFor="let option of sexList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"  nzFor="chargePersonPolitics">政治面貌</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="chargePersonPolitics" id="chargePersonPolitics">
+              <nz-option *ngFor="let option of politicsList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="chargePersonEdu">学历</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" formControlName="chargePersonEdu" id="chargePersonEdu">
+              <nz-option *ngFor="let option of educationtList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="legalPerson">法定代表人</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="legalPerson" id="legalPerson">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="legalPersonPhone">法人联系电话</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="legalPersonPhone" id="legalPersonPhone">
+            <nz-form-explain [hidden]="!(formData.get('legalPersonPhone').dirty && formData.get('legalPersonPhone').errors)">法人联系电话格式不正确</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveOrganCorporationInfo()" [nzLoading]="saveBasicInformationLoading">保存</button>
+  </div>
+</nz-card>

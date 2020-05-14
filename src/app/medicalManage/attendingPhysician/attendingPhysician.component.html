@@ -1,0 +1,159 @@
+<!-- 主体内容 Begin -->
+<object id="factory" style="display:none" viewastext classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=5,60,0,360"></object>
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13">
+                            <span class="ftwB ftzPt16">变&nbsp;更&nbsp;主&nbsp;治&nbsp;医&nbsp;生&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="posAbs r0 t0">
+                        <!-- <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <button nz-button nzType="default" class="ml20" (click)="clickPrint($event)">打印</button> -->
+
+                        <button nz-button nzType="primary" class="ml20" (click)="addData()" *ngIf="user.data.employees.personType=='2'">添加</button>
+                    </div>
+                </div>
+                <div class="mt10">
+                    <table class="w100p cusTable" style="border: none !important;">
+                        <thead class="w100p" style="display:table-header-group;border: none !important;">
+                            <tr class="w100p" style="border: none !important;">
+                                <td class="w100p" colspan="4" style="border: none !important;">
+                                    <div class="w100p h30">
+                                        <div class="w100p disFlex justConSB">
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>姓名：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.name}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>科别：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.sectionOfficeName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>病区：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.sickWardName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>床号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.bedName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>住院号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.admissionNo}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tac">变更时间</td>
+                                <td class="tac">原主治医生</td>
+                                <td class="tac">现在主治医生</td>
+                                <td class="tac">变更原因</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of changeAttendingList">
+                                <td class="w100 tac">{{item.operateDate}}</td>
+                                <td class="w100 tac">{{item.lastInfo}}</td>
+                                <td class="pl10">{{item.nowInfo}}</td>
+                                <td class="w100 tac">{{item.reason}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 End -->
+</div>
+<!-- 表格查询条件Begin -->
+
+
+
+
+<!-- 变更主治医生弹出框 -->
+<nz-modal [(nzVisible)]="attendingDoctorVisible" nzTitle="变更主治医生详情" nzOkText="确定变更" (nzOnCancel)="attendingDoctorVisible=false" (nzOnOk)="saveAttending()" nzWidth="700">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">住院号</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input readonly [(ngModel)]="patientsBasicInfo.admissionNo" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">患者姓名</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input readonly [(ngModel)]="patientsBasicInfo.name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">护理级别</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input readonly [(ngModel)]="patientsBasicInfo.careLevelCase" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">原主治医生</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input readonly [(ngModel)]="patientsBasicInfo.attendingDoc" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div class="lineD"></div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">变更原因</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <textarea rows="4" nz-input [(ngModel)]="attendingObj.reason"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">现主治医生</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="attendingObj.changeEmployeeId">
+                        <nz-option *ngFor="let item of attendingDoctorsList" [nzLabel]="item.name" [nzValue]="item.id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>

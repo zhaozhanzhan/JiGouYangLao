@@ -1,0 +1,82 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8">
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="name">长者姓名</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <input nz-input name="name" id="name" [(ngModel)]="reqObj.name" placeholder="请输入长者姓名">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="recureStatus">康复状态</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select [(ngModel)]="reqObj.recureStatus" nzAllowClear nzPlaceHolder="请选择" name="recureStatus" id="recureStatus">
+                            <nz-option nzValue="未开始" nzLabel="未开始"></nz-option>
+                            <nz-option nzValue="进行中" nzLabel="进行中"></nz-option>
+                            <nz-option nzValue="已完成" nzLabel="已完成"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="10" [nzXXl]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="6" [nzLg]="5" [nzXl]="5">申请日期</nz-form-label>
+                    <nz-form-control [nzXs]="19" [nzSm]="20" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXl]="18">
+                        <nz-range-picker name="date" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<nz-card nzTitle="末期评价列表">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">护理等级</th>
+                <th class="textCenter">康复训练名称</th>
+                <th class="textCenter">申请日期</th>
+                <th class="textCenter">康复训练状态</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td class="textCenter">{{data.recureCase?.name}}</td>
+                <td class="textCenter">{{data.recureCase?.sex}}</td>
+                <td class="textCenter">{{data.recureCase?.age}}</td>
+                <td class="textCenter">{{data.recureCase?.careLevel}}</td>
+                <td class="textCenter">{{data.recureCase?.recureName}}</td>
+                <td class="textCenter">{{data.recureCase?.createDate | date:"yyyy-MM-dd"}}</td>
+                <td class="textCenter">{{data.recureCase?.recureStatus}}</td>
+                <td class="textCenter">
+                    <a href="#" (click)="turnToEdit(data, $event)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="turnToCheck(data, $event)">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data.id, $event)" class="red">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<!-- <ng-template #extraTemplate>
+    <button nz-button nzType="primary"  (click)="turnToAdd()">添加</button>
+  </ng-template> -->
+<ng-template #totalTemplate let-total>共{{total}}条</ng-template>

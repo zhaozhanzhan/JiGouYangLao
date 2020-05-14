@@ -1,0 +1,76 @@
+.sw10 {
+    display: inline-block;
+    width: 10%
+}
+
+.fz {
+    font-size: 17px;
+}
+
+.allButton {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+:host /deep/ .ant-table-tbody>tr>td {
+    padding: 8px 4px;
+}
+
+:host /deep/ .ant-table-thead>tr>th {
+    padding: 10px !important;
+}
+
+/* :host /deep/ .ant-table-placeholder {
+    border: 0px solid transparent !important;
+} */
+
+.ant-form-item {
+    margin: 0px !important;
+}
+
+nz-form-label {
+    width: 100px;
+    text-align: right
+}
+
+.dialog_input {
+    width: 150px;
+    max-width: 150px;
+}
+
+.dialog_areaInput {
+    width: 722px;
+    /* max-width: 500px; */
+}
+
+.form_input {
+    width: 400px;
+}
+
+.wp {
+    width: 174px;
+}
+
+.mt {
+    margin-top: 10px;
+}
+
+.center {
+    text-align: center
+}
+
+.red {
+    color: red;
+}
+
+.over5WordHidden {
+    max-width: 5em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: help;
+}

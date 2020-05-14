@@ -1,0 +1,133 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div style="padding: 20px 0;">
+      <div nz-row nzType="flex">
+          <div nz-col style="margin-right:10px;margin-left: 20px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>服务项目</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input style="width:150px" placeholder="按服务项目名称检索" [(ngModel)]="sendData.project" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>服务类别</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input style="width:150px" placeholder="按服务类别检索" [(ngModel)]="sendData.classify" />
+                </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>服务周期</nz-form-label>
+                  <nz-form-control>
+                    <nz-select style="width: 200px;" nzPlaceHolder="服务周期" [(ngModel)]="sendData.cycle" (ngModelChange)="getList(true)">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="日" nzLabel="日"></nz-option>
+                        <nz-option nzValue="周" nzLabel="周"></nz-option>
+                        <nz-option nzValue="月" nzLabel="月"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>服务对象</nz-form-label>
+                  <nz-form-control>
+                    <nz-select style="width: 200px;" nzPlaceHolder="服务对象" [(ngModel)]="sendData.object" (ngModelChange)="getList(true)">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="人" nzLabel="人"></nz-option>
+                        <nz-option nzValue="房间" nzLabel="房间"></nz-option>
+                        <nz-option nzValue="清洁区域" nzLabel="清洁区域"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>护理等级</nz-form-label>
+                  <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="护理等级" [(ngModel)]="sendData.level" (ngModelChange)="getList(true)">
+                          <nz-option nzValue="" nzLabel="全部"></nz-option>
+                          <nz-option nzValue="自理" nzLabel="自理"></nz-option>
+                          <nz-option nzValue="介助" nzLabel="介助"></nz-option>
+                          <nz-option nzValue="介护" nzLabel="介护"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-control>
+                      <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                          查询
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+      </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;position:relative;">
+  服务项目
+  <div style="position:absolute;right:20px;top:0;">
+      <button nz-button nzType="primary" style="margin-left:10px;" (click)="goAddPage('add')">
+          添加
+      </button>
+  </div>
+</div>
+<div style="padding:0 50px;padding-top: 24px;background: #fff;">
+  <nz-table #basicTable [nzData]="listOfData" [nzLoading]="Loading" [nzTitle]="serchArea" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"
+  (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+      <thead>
+          <tr>
+            <th class="center">排序号</th>
+            <th class="center">服务图标</th>
+            <th class="center">服务项目</th>
+            <th class="center">服务类别</th>
+            <th class="center">服务周期</th>
+            <th class="center">服务对象</th>
+            <th class="center">护理等级</th>
+            <th class="center">操作</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data;let i = index">
+          <td class="center">{{data.orderNum}}</td>
+          <td class="center">
+              
+            <!-- 自定义图标 -->
+            <span *ngIf="data.picEl?.mode === 'diy'" style="display:inline-block;width: 40px;height: 40px;border-radius: 5px;line-height: 40px;font-size: 1.8em;text-align: center;" [ngStyle]="{'background': data.picEl.bacColor}">
+                <span style="font-weight: bold;" [ngStyle]="{'color': data.picEl.fontColor}">{{data.picEl.word}}</span>
+            </span>
+            <!-- 本地 -->
+            <span *ngIf="data.picEl?.mode === 'local'">
+                <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+            </span>
+            <!-- 系统图标 -->
+            <span *ngIf="data.picEl?.mode === 'sysIcon'">
+                <img [src]="data.picEl.picUrl" alt="" width="40px;" height="40px;" style="border-radius: 5px;">
+            </span>
+
+          </td>
+          <td class="center">{{data.project}}</td>
+          <td class="center">{{data.classifyName}}</td>
+          <td class="center">{{data.cycle}}</td>
+          <td class="center">{{data.object}}</td>
+          <td class="center">{{data.careLevel}}</td>
+          <td class="center">
+            <a href="javascript:void(0)" (click)="goAddPage('check',data.id)">查看</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a href="javascript:void(0)" (click)="goAddPage('edit',data.id)">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a href="javascript:void(0)" (click)="goPicPage(data)">修改图标</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a style="color:red;" href="javascript:void(0)" (click)="delete(data.id,data.project)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+</div>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>

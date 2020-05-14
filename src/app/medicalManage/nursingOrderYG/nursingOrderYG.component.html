@@ -1,0 +1,444 @@
+<!-- 主体内容 Begin -->
+<object id="factory" style="display:none" viewastext classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=5,60,0,360"></object>
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12" style="text-align: center">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13" style="text-align: center">
+                            <span class="ftwB ftzPt16">护&nbsp;理&nbsp;记&nbsp;录&nbsp;单&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="posAbs r0 t0">
+                        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="clickPrint()" [nzLoading]="serAll">
+                            <span *ngIf="!serAll">打印</span>
+                        </button>
+                        <button nz-button nzType="primary" class="ml20" (click)="addData()" *ngIf="disabled==true">新增</button>
+                    </div>
+                </div>
+                <nz-card>
+                    <div>
+                        <table class="w100p cusTable">
+                            <thead>
+                                <tr>
+                                    <td colspan="17" class="noBorder">
+                                        <div class="details">
+                                            <span>姓名：</span><span>{{formInfo?.basicInfo?.name}}</span>
+                                            <span>科室：</span><span>{{formInfo?.sectionOffice?.name}}</span>
+                                            <span>病区：</span><span>{{formInfo?.sickWard?.sickWardName}}</span>
+                                            <span>床号：</span><span>{{formInfo?.bedName}}</span>
+                                            <span>住院号：</span><span>{{formInfo?.admissionNo}}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="tac">
+                                    <td class="textCenter paddingAll" colspan="2">2019</td>
+                                    <td class="textCenter paddingAll" colspan="5">生命体征</td>
+                                    <td class="textCenter paddingAll" colspan="2">入量</td>
+                                    <td class="textCenter paddingAll" colspan="3">出量</td>
+                                    <td class="textCenter paddingAll" rowspan="2">末梢血糖<br>(mmol/L)</td>
+                                    <td class="textCenter paddingAll" rowspan="2">心率<br>(次/分)</td>
+                                    <td class="textCenter paddingAll" rowspan="2">风险评估</td>
+                                    <td class="textCenter paddingAll" rowspan="2" style="width:150px;">病情观察及<br>护理措施</td>
+                                    <td class="textCenter paddingAll" rowspan="2">护士签名</td>
+                                    <td class="textCenter paddingAll" rowspan="2" *ngIf="disabled==true">操作</td>
+                                </tr>
+                                <tr>
+                                    <td class="textCenter paddingAll">日/月</td>
+                                    <td class="textCenter paddingAll">时间</td>
+                                    <td class="textCenter paddingAll">体温<br>(℃)</td>
+                                    <td class="textCenter paddingAll">脉搏<br>(次/分)</td>
+                                    <td class="textCenter paddingAll">呼吸<br>(次/分)</td>
+                                    <td class="textCenter paddingAll">血压<br>(mmHg)</td>
+                                    <td class="textCenter paddingAll">血氧<br>饱和度%</td>
+                                    <td class="textCenter paddingAll">名称</td>
+                                    <td class="textCenter paddingAll">量<br>(ml)</td>
+                                    <td class="textCenter paddingAll">名称</td>
+                                    <td class="textCenter paddingAll">颜色<br>形状</td>
+                                    <td class="textCenter paddingAll">量<br>(ml)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of listAll;let i=index">
+                                    <td class="textCenter paddingAll" style="width: 40px;">{{data?.createDate}}</td>
+                                    <td class="textCenter paddingAll">{{data?.createTime}}</td>
+                                    <td class="textCenter paddingAll">{{data?.bodyTemperature}}</td>
+                                    <td class="textCenter paddingAll" style="width: 24px;">{{data?.pulse}}</td>
+                                    <td class="textCenter paddingAll" style="width: 24px;">{{data?.breathing}}</td>
+                                    <td class="textCenter paddingAll">
+                                        <span *ngIf="data?.bloodPressureHigh!='' || data?.bloodPressureLow!=''"> {{data?.bloodPressureHigh}}/{{data?.bloodPressureLow}}</span>
+                                    </td>
+                                    <td class="textCenter paddingAll" style="width: 20px;">{{data?.blooOxygen}}</td>
+                                    <td class="textJustify paddingAll" style="width: 60px;">{{data?.intakeName}}</td>
+                                    <td class="textCenter paddingAll">{{data?.intakeAmount}}</td>
+                                    <td class="textJustify paddingAll" style="width: 60px;">{{data?.outtakeName}}</td>
+                                    <td class="textJustify paddingAll" style="width: 60px;">{{data?.colorShape}}</td>
+                                    <td class="textCenter paddingAll">{{data?.outtakeAmount}}</td>
+                                    <td class="textCenter paddingAll">{{data?.bloodSugar}}</td>
+                                    <td class="textCenter paddingAll">{{data?.heartRate}}</td>
+                                    <td class="textJustify paddingAll" style="width: 40px;">{{data?.morse}}
+
+                                        <!-- <span *ngIf="data?.morse!=''">Morse{{data?.morse}}/</span>
+                                        <span *ngIf="data?.branden!=''">Branden{{data?.branden}}/</span><br>
+                                        <span *ngIf="data?.autar!=''">Autar{{data?.autar}}/</span>
+                                        <span *ngIf="data?.barthe!=''">Barthe{{data?.barthe}}</span> -->
+                                    </td>
+                                    <td class="textJustify paddingAll">{{data?.measures}}</td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll" *ngIf="disabled==true">
+                                        <a href="javascript:void(0)" *ngIf="data?.createDate !=''" (click)="turnToEdit(data?.id, $event)">编辑</a>
+                                        <nz-divider nzType="vertical" *ngIf="data?.createDate !=''"></nz-divider>
+                                        <a href="javascript:void(0)" *ngIf="data?.createDate !=''" (click)="delete(data?.id, $event)" style="color: #f81d22 !important;">删除</a>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let data of nullList;let i=index">
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll"></td>
+                                    <td class="textCenter paddingAll" *ngIf="disabled==true"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </nz-card>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主体内容 End -->
+
+
+<!-- 新增数据 -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="护理记录详情" nzWidth="1280" (nzOnCancel)="isVisible=false" (nzOnOk)="svarNursingInfo()">
+    <div nz-row [nzGutter]="24" class="marginTop">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">日期</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <nz-date-picker [(ngModel)]="saveInfo.createDate"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">时间</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <!-- <nz-time-picker nzFormat="HH:mm" [(ngModel)]="saveInfo.createTime"></nz-time-picker> -->
+                    <nz-time-picker class="w100p" nzFormat="HH:mm" [attr.value]="saveInfo.createTime" [(ngModel)]="saveInfo.createTime" [nzAddOn]="addOnTemplate" #timePicker></nz-time-picker>
+                    <ng-template #addOnTemplate>
+                        <button nz-button nzSize="small" nzType="primary" (click)="timePicker.close()">确定</button>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">体温(℃)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <!-- <input nz-input [(ngModel)]="saveInfo.bodyTemperature" /> -->
+                    <nz-input-number class="form_input" nz-input [(ngModel)]="saveInfo.bodyTemperature" [nzMin]="34" [nzMax]="42.6" [nzStep]="0.2"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">脉搏(次/分)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <!-- <input nz-input [(ngModel)]="saveInfo.pulse" /> -->
+                    <nz-input-number class="form_input" nz-input [(ngModel)]="saveInfo.pulse" [nzMin]="20" [nzMax]="190" [nzStep]="4"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">呼吸(次/分)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <!-- <input nz-input [(ngModel)]="saveInfo.breathing" /> -->
+                    <nz-input-number class="form_input" nz-input [(ngModel)]="saveInfo.breathing" [nzMin]="10" [nzMax]="50" [nzStep]="2"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">血压(mmHg)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.bloodPressureHigh" class="w5" />/ <input nz-input [(ngModel)]="saveInfo.bloodPressureLow" class="w5" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">血氧饱和度% </nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.blooOxygen" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">入量名称</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.intakeName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">入量量(ml)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.intakeAmount" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">出量名称</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.outtakeName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">颜色形状</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.colorShape" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">出量量(ml)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.outtakeAmount" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">末梢血糖(mmol/L)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.bloodSugar" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">心率(次/分)</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <!-- <input nz-input [(ngModel)]="saveInfo.heartRate" /> -->
+                    <nz-input-number class="form_input" nz-input [(ngModel)]="saveInfo.heartRate" [nzMin]="20" [nzMax]="190" [nzStep]="4"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">Morse总分</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input (click)="onChangeMore()" [(ngModel)]="saveInfo.morse" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">Branden总分</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.branden" (click)="onChangeBranden()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">Autar总分</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.autar" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">Barthe总分</nz-form-label>
+                <nz-form-control [nzSpan]="15">
+                    <input nz-input [(ngModel)]="saveInfo.barthe" />
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="4">病情观察及护理措施</nz-form-label>
+                <nz-form-control [nzSpan]="19">
+                    <textarea rows="6" nz-input [(ngModel)]="saveInfo.measures"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-modal>
+
+<!-- Morse评估表 -->
+<nz-modal [(nzVisible)]="isMorseVisible" nzTitle="Morse评分表" nzWidth="800" (nzOnCancel)="isMorseVisible=false" (nzOnOk)="saveMorse()">
+    <div class="RiskAssessmentContentTitle">跌倒/坠床危险因素量化评估Morse评分表</div>
+    <table border="1" class="RiskAssessment " style="text-align: left;background: #fff">
+        <tbody>
+            <tr>
+                <td style="width: 40%">
+                    <b>跌倒/坠床史</b>
+                </td>
+                <td style="width: 60%">
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.fallBed">
+                        <label nz-radio nzValue="25">有 25分</label>
+                        <label nz-radio nzValue="0">无 0分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>超过一个医学诊断</b>
+                </td>
+                <td>
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.medicalDiagnosis">
+                        <label nz-radio nzValue="15">有 15分</label>
+                        <label nz-radio nzValue="0">无 0分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <b>使用助行器</b>
+                </td>
+                <td>
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.walkingAid">
+                        <label nz-radio nzValue="30">家具 30分</label>
+                        <label nz-radio nzValue="15">拐杖/手杖/步行器 15分</label>
+                        <label nz-radio nzValue="0">无/卧床/护士协助 0分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>静脉治疗</b>
+                </td>
+                <td>
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.intravenousTherapy">
+                        <label nz-radio nzValue="20">有 20分</label>
+                        <label nz-radio nzValue="0">无 0分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <b>步态</b>
+                </td>
+                <td>
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.gait">
+                        <label nz-radio nzValue="20">缺失（残疾和功能障碍） 20分</label>
+                        <label nz-radio nzValue="10">虚弱（双下肢乏力） 10分</label>
+                        <label nz-radio nzValue="0">正常/卧床/不能活动 0分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <b>认知状态</b>
+                </td>
+                <td>
+                    <nz-radio-group [(ngModel)]="saveInfo.morseTemp.cognitiveStatus">
+                        <label nz-radio nzValue="0">正确认识自我能力，能量力而行 0分</label>
+                        <label nz-radio nzValue="15">认知障碍，忘记能力有限 15分</label>
+                    </nz-radio-group>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</nz-modal>
+
+
+<!-- Braden压疮评估表 -->
+<nz-modal [(nzVisible)]="isBradenVisible" nzTitle="压疮危险性评估Braden评分表" nzWidth="800" (nzOnCancel)="isBradenVisible=false" (nzOnOk)="saveBraden()">
+    <!-- <div class="RiskAssessmentContentTitle">压疮危险性评估Braden评分表</div> -->
+    <div style="height: 200px;">
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>感&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;觉：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.feeling">
+                <label nz-radio nzValue="1">1分 完全受限</label>
+                <label nz-radio nzValue="2">2分 非常受限</label>
+                <label nz-radio nzValue="3">3分 轻度受限</label>
+                <label nz-radio nzValue="4">4分 没有改变</label>
+            </nz-radio-group>
+        </div>
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>潮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;湿：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.wet">
+                <label nz-radio nzValue="1">1分 持久潮湿</label>
+                <label nz-radio nzValue="2">2分 非常潮湿</label>
+                <label nz-radio nzValue="3">3分 偶尔浸湿</label>
+                <label nz-radio nzValue="4">4分 很少浸湿</label>
+            </nz-radio-group>
+        </div>
+
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>活&nbsp;&nbsp;动&nbsp;&nbsp;能&nbsp;&nbsp;力：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.activity">
+                <label nz-radio nzValue="1">1分 卧床不起</label>
+                <label nz-radio nzValue="2">2分 局限于轮椅</label>
+                <label nz-radio nzValue="3">3分 偶尔步行</label>
+                <label nz-radio nzValue="4">4分 很少浸湿</label>
+            </nz-radio-group>
+        </div>
+
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>移&nbsp;&nbsp;动&nbsp;&nbsp;能&nbsp;&nbsp;力：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.movement">
+                <label nz-radio nzValue="1">1分 完全受限</label>
+                <label nz-radio nzValue="2">2分 严重受限</label>
+                <label nz-radio nzValue="3">3分 轻度受限</label>
+                <label nz-radio nzValue="4">4分 不受限</label>
+            </nz-radio-group>
+        </div>
+
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>营养&nbsp;&nbsp;&nbsp;&nbsp;(摄入)：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.nutrition">
+                <label nz-radio nzValue="1">1分 严重不足</label>
+                <label nz-radio nzValue="2">2分 摄入不足</label>
+                <label nz-radio nzValue="3">3分 摄入适当</label>
+                <label nz-radio nzValue="4">4分 摄入良好</label>
+            </nz-radio-group>
+        </div>
+        <div nz-col nzSpan="24" class="checkMargin">
+            <label>摩擦/剪切力&nbsp;：</label>
+            <nz-radio-group [(ngModel)]="saveInfo.bardenTemp.friction">
+                <label nz-radio nzValue="1">1分 已存在</label>
+                <label nz-radio nzValue="2">2分 有潜在危险</label>
+                <label nz-radio nzValue="3">3分 无</label>
+            </nz-radio-group>
+        </div>
+
+    </div>
+</nz-modal>

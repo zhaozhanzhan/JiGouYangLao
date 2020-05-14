@@ -1,0 +1,88 @@
+<nz-card nzTitle="终端配置列表">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">护理等级</th>
+        <th class="textCenter">配置项</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.levelName }}</td>
+        <td class="textCenter">
+            <label
+            nz-checkbox
+            [ngModel]="data?.isProvideShPeForApp  == '1'"
+            class="mr15"
+            nzDisabled = "true"
+            >二便登记</label>
+
+            <label
+            nz-checkbox
+            [ngModel]="data?.isProvideRollForApp == '1'"
+            class="mr15"
+            nzDisabled = "true"
+            >翻身登记</label>
+        </td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" (click)="showEditDialog(data)"
+            >编辑</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+
+<!-- 编辑终端配置对话框 -->
+<nz-modal
+  [(nzVisible)]="isEditDialogShow"
+  nzTitle="编辑巡查点"
+  (nzOnCancel)="isEditDialogShow = false"
+  (nzOnOk)="save()"
+  [nzOkLoading]="isSaveLoading"
+>
+  <div nz-row nzAlign="middle" nzType="flex" nzGutter="16">
+    <div nz-col nzSpan="4" style="text-align: right;">护理等级</div>
+    <div nz-col nzSpan="18">
+      <b>
+          {{saveParams?.levelName}}
+      </b>
+
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;">是否需要</div>
+    <div nz-col nzSpan="18">
+      <label nz-checkbox [(ngModel)]="saveParams.isProvideShPeForApp">二便登记</label>
+    </div>
+
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+        <label nz-checkbox [(ngModel)]="saveParams.isProvideRollForApp">翻身登记</label>
+      </div>
+  </div>
+
+</nz-modal>

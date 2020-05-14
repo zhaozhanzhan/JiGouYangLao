@@ -1,0 +1,297 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="物品发放详情" [nzExtra]="btnArea">
+  <nz-card class="mt10" nzType="inner">
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="whOutName"
+        >出库库房</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="outStorehouse?.donatedWarehouseOut?.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="recTime"
+        >出库时间</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="outStorehouse?.createDate | date: 'yyyy-MM-dd HH:mm:ss'"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="6"
+        [nzLg]="6"
+        [nzXl]="6"
+        [nzXXl]="6"
+        nzRequired
+        nzFor="toSche"
+        >是否分配到班组</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <nz-radio-group
+          id="toSche"
+          [ngModel]="outStorehouse?.toSche"
+
+          [nzDisabled]="true"
+        >
+          <label nz-radio nzValue="false">否</label>
+          <label nz-radio nzValue="true">是</label>
+        </nz-radio-group>
+
+        <!-- <input
+        class="form_input"
+        nz-input
+        [ngModel]="outStorehouse?.createDate | date: 'yyyy-MM-dd HH:mm:ss'"
+        readonly
+      /> -->
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="recDeptName"
+        >领用部门</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          class="form_input"
+          nz-input
+          [(ngModel)]="outStorehouse?.recDept.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="toScheDisplay == true">
+      <nz-form-label
+        [nzMd]="6"
+        [nzLg]="6"
+        [nzXl]="6"
+        [nzXXl]="6"
+        >
+        <span style="color:#f5222d;margin-right: 4px;    font-size: 14px;"
+          >*</span
+        >领用班组</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <!-- <nz-select
+          class="form_input"
+          nzShowSearch
+          id="schedulingId"
+          nzAllowClear
+          nzPlaceHolder="请选择领用班组"
+          (ngModelChange)="getSchedlingPeople($event)"
+        >
+          <nz-option
+            *ngFor="let option of schedulingIdList"
+            [nzLabel]="option.name"
+            [nzValue]="option.id"
+          ></nz-option>
+        </nz-select> -->
+        <input
+          class="form_input"
+          nz-input
+          [(ngModel)]="outStorehouse?.schedulingProgram.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="toScheDisplay == true">
+      <nz-form-label
+        [nzMd]="6"
+        [nzLg]="6"
+        [nzXl]="6"
+        [nzXXl]="6"
+        nzFor="recSchEmployee"
+      >
+        <span style="color:#f5222d;margin-right: 4px;    font-size: 14px;"
+          >*</span
+        >
+        班组领用人员</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="outStorehouse?.recorder"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="toScheDisplay == false">
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="receiver"
+        >领用人员</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.receiver"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="recTime"
+        >领用时间</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.recTime | date: 'yyyy-MM-dd HH:mm:ss'"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="recTime"
+        >领用用途</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <input
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.useFor"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+      [nzMd]="6"
+      [nzLg]="6"
+      [nzXl]="6"
+      [nzXXl]="6"
+        nzFor="outComment"
+        >备注</nz-form-label
+      >
+      <nz-form-control [nzMd]="10" [nzLg]="10" [nzXl]="10" [nzXXl]="10">
+        <textarea
+          rows="4"
+          nz-input
+          class="form_input"
+          [ngModel]="outStorehouse?.outComment"
+          readonly
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+
+  <nz-card class="mt10" nzType="inner" nzTitle="发放物品">
+    <nz-table
+      #drugTable
+      [nzData]="outStorehouse?.outDonatedWarehouseGoods"
+      [nzHideOnSinglePage]="true"
+      nzBordered
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>批次号</th>
+          <th>物品名称</th>
+          <th>捐赠用途</th>
+          <th>物品类别</th>
+          <th>数量</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of drugTable.data; let num = index">
+          <td class="maxW50 tac">{{ num + 1 }}</td>
+          <td class="minW150">{{ data?.batchNum }}</td>
+          <td class="minW150">{{ data?.donatedGoods?.name }}</td>
+          <td class="maxW80">{{ data?.useFor }}</td>
+          <td class="maxW150">
+            {{ data?.donatedGoods?.donatedGoodsCategory?.name }}
+          </td>
+          <td class="maxW80">{{ data?.outNum }}</td>
+          <td>{{ data?.goodsComment }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <nz-card class="mt10" nzType="inner" nzTitle="签名">
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="outComment"
+        >经办人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="outStorehouse.operatorUrl"
+          [isShowSign]="false"
+          #operatorUrl
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="outComment"
+        >领用人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="outStorehouse.receiverUrl"
+          [isShowSign]="false"
+          #receiverUrl
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+</nz-card>
+<!-- 表单区域End -->

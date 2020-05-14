@@ -1,0 +1,290 @@
+<!-- 顶部添加按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="primary" (click)="showModal('add')">药品拆零</button>
+    <!-- <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print> -->
+    <!-- <button nz-button class="ml20" nzType="primary" *ngIf="!isPrintNow" (click)="clickPrint($event)">打印</button> -->
+</ng-template>
+<!-- 顶部添加按钮End -->
+
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="6">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" [nzXs]="8" [nzSm]="8" [nzMd]="8" [nzLg]="8" [nzXl]="6">申请日期</nz-form-label>
+                    <nz-form-control [nzXs]="16" [nzSm]="16" [nzMd]="16" [nzLg]="16" [nzXl]="16" [nzXl]="18">
+                        <nz-range-picker name="date" [(ngModel)]="serValObj.date" (ngModelChange)="selDate(serValObj.date)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>名称</nz-form-label>
+                <nz-form-control>
+                    <input class="w300" type="text" nz-input placeholder="按药品名称、通用名首字母拼音模糊检索" [(ngModel)]="serValObj.medName" [ngModelOptions]="{ standalone: true }" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="5" [nzMd]="10" [nzLg]="9" [nzXl]="10" [nzXXl]="8">入库状态</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="14" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择状态" [(ngModel)]="serValObj.inStatus" [ngModelOptions]="{standalone: true}" (ngModelChange)="serFun()">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option nzValue="0" nzLabel="未入库"></nz-option>
+                            <nz-option nzValue="1" nzLabel="已部分入库"></nz-option>
+                            <nz-option nzValue="2" nzLabel="已全部入库"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        <!--<div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">建筑</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择建筑" [(ngModel)]="serValObj.buildId" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeBuild(serValObj.buildId)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of buildArr;let key = index" [nzValue]="x.id" [nzLabel]="x.buildingName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">楼层</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择楼层" [(ngModel)]="serValObj.floorId" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeFloor(serValObj.floorId)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of floorArr;let key = index" [nzValue]="x.id" [nzLabel]="x.floorName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">房间</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择房间" [(ngModel)]="serValObj.roomId" [ngModelOptions]="{standalone: true}" (ngModelChange)="serFun(true)">
+                            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                            <nz-option *ngFor="let x of roomArr;let key = index" [nzValue]="x.id" [nzLabel]="x.roomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="6" [nzXl]="4" [nzXXl]="4">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8">状态</nz-form-label>
+                    <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                        <nz-select class="" nzPlaceHolder="请选择状态" [(ngModel)]="serValObj.hasSendOver" [ngModelOptions]="{standalone: true}" (ngModelChange)="serFun()">
+                            <nz-option nzValue="0" nzLabel="未发" selected></nz-option>
+                            <nz-option nzValue="1" nzLabel="已发"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        <!-- <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8" [nzXs]="8" [nzSm]="8" [nzMd]="8" [nzLg]="8" [nzXl]="8">咨询日期</nz-form-label>
+                    <nz-form-control [nzXs]="16" [nzSm]="16" [nzMd]="16" [nzLg]="16" [nzXl]="16" [nzXl]="16">
+                        <nz-range-picker name="date" [(ngModel)]="serValObj.date" (ngModelChange)="selDate(serValObj.date)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        <div nz-col class="ml20">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="serFun(true)">查询</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<!-- 表格列表区域Begin -->
+<nz-card nzTitle="分装药品列表" [nzExtra]="btnArea">
+    <div #printArea>
+        <nz-table #dataTemp [nzShowSizeChanger]="!isPrintNow" [nzShowPagination]="!isPrintNow" [nzBordered]="true" [nzTitle]="serchArea" [nzShowTotal]="totalTit" [nzFrontPagination]="false" [(nzPageIndex)]="serValObj.page" [(nzTotal)]="serValObj.totalItem" [(nzPageSize)]="serValObj.size" [(nzData)]="dataList" (nzPageIndexChange)="serFun()" [nzLoading]="isTableLoading" [nzScroll]="{ x: '1300px' }">
+            <thead>
+                <tr>
+                    <!-- <th nzWidth="62px" nzShowCheckbox *ngIf="isShowOper" [(nzChecked)]="isSelAll" [nzIndeterminate]="indeState" (nzCheckedChange)="checkAll($event)"></th> -->
+                    <th nzWidth="200px" nzLeft="0px" class="tac ftwB w150">药品名称</th>
+                    <th class="tac ftwB">小包装单位</th>
+                    <th class="tac ftwB">规格</th>
+                    <th class="tac ftwB">数量</th>
+                    <th class="tac ftwB">售价</th>
+                    <!-- <th class="tac ftwB">生产日期</th> -->
+                    <th class="tac ftwB">保质期</th>
+                    <th class="tac ftwB">创建时间</th>
+                    <th class="tac ftwB">备注</th>
+                    <th class="tac ftwB">操作人</th>
+                    <!-- <th class="tac ftwB" nzWidth="170px" nzRight="0px">操作</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of dataTemp.data; let i = index">
+                    <!-- <td nzShowCheckbox *ngIf="isShowOper" [nzChecked]="isChecked(x.id)" [attr.rowspan]="x.medList?(x.medList.length + 1):1" (nzCheckedChange)="checkSingle($event, x.id, x)"></td> -->
+                    <td nzWidth="200px" nzLeft="0px" class="tac w150 curHelp">
+                        <span nz-tooltip [nzTitle]="x?.medDrug?.drugName">{{ x?.medDrug?.drugName | sliceStr : !isPrintNow : 7}}</span>
+                    </td>
+                    <td class="tac">{{ x?.medDrug?.minPackingUnit}}</td>
+                    <td class="tac">{{ x?.medDrug?.specification }}</td>
+                    <td class="tac">{{ x?.quantity }}</td>
+                    <td class="tac">{{ x?.medDrug?.salePrice }}</td>
+                    <!-- <td class="tac">{{x?.productionDate | date:'yyyy-MM-dd'}}</td> -->
+                    <td class="tac">{{x?.expireDate | date:'yyyy-MM-dd'}}</td>
+                    <td class="tac">{{x?.createDate | date:'yyyy-MM-dd'}}</td>
+                    <td class="tac">{{x?.medDrug?.comment}}</td>
+                    <td class="tac">{{x?.recorder}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-card>
+<!-- 表格列表区域End -->
+
+<!-- 分页信息显示Begin -->
+<ng-template #totalTit *ngIf="!isPrintNow">共&nbsp;{{ serValObj.totalItem }}&nbsp;条</ng-template>
+<!-- 分页信息显示End -->
+
+<!-- 编辑模版 Begin -->
+<nz-modal [(nzVisible)]="isVisible" nzWidth="900" nzTitle="药品拆零" [nzOkLoading]="isOkLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div>
+        <div nz-row nzType="flex">
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="medId">药品名称</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="dialog_input" nzShowSearch nzAllowClear id="medId" nzPlaceHolder="请选择" (ngModelChange)="selDrug($event)" (nzOnSearch)="serDrug($event)" [(ngModel)]="selDrugObj">
+                            <nz-option *ngFor="let x of drugList" [nzLabel]="x.medName" [nzValue]="x"></nz-option>
+                        </nz-select>
+                        <!-- <input class="dialog_input" *ngIf="formData.id" style="cursor:not-allowed;" nz-input [(ngModel)]="formData.medId" [attr.disabled]="formData?.id" /> -->
+                        <nz-form-explain class="colorF00" [hidden]="formData.medId">药品名称不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="templateId">拆分模版</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="dialog_input" nzShowSearch nzAllowClear id="templateId" nzPlaceHolder="请选择" (nzOnSearch)="serDrug($event)" [(ngModel)]="formData.templateId">
+                            <nz-option *ngFor="let x of tempList" [nzLabel]="x.title" [nzValue]="x.id"></nz-option>
+                        </nz-select>
+                        <!-- <input class="dialog_input" *ngIf="formData.id" style="cursor:not-allowed;" nz-input [(ngModel)]="formData.medId" [attr.disabled]="formData?.id" /> -->
+                        <nz-form-explain class="colorF00" [hidden]="formData.templateId">模版不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="largePackingUnit">大单位</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="largePackingUnit" [(ngModel)]="formData.largePackingUnit" [attr.disabled]="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="minPackingUnit">小单位</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="minPackingUnit" [(ngModel)]="formData.minPackingUnit" [attr.disabled]="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="oldSalePrice">原售价</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="oldSalePrice" [(ngModel)]="formData.oldSalePrice" [attr.disabled]="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="totalNum">库存数量</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="totalNum" [(ngModel)]="formData.totalNum" [attr.disabled]="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="specification">规格</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="specification" [(ngModel)]="formData.specification" [attr.disabled]="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="divNum">拆零数量</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input" nz-input id="divNum" [(ngModel)]="formData.divNum" />
+                        <nz-form-explain class="colorF00" [hidden]="formData.divNum">拆零数量不能为空</nz-form-explain>
+                        <nz-form-explain class="colorF00" [hidden]="!(formData.divNum > formData.totalNum)">拆零数量不能大于库存数量</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="salePrice">拆零售价</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input" nz-input id="salePrice" [(ngModel)]="formData.salePrice" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-left:20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="shelfLife">拆分保质期</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input" nz-input id="shelfLife" [(ngModel)]="formData.shelfLife" />
+                        <span>&nbsp;(天)</span>
+                        <nz-form-explain class="colorF00" [hidden]="formData.shelfLife">拆分保质期不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="comment">新药备注</nz-form-label>
+                    <nz-form-control>
+                        <textarea nz-input class="dialog_areaInput" rows="3" maxlength="50" [(ngModel)]="formData.comment" id="comment"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <!-- <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="largePackingUnit">大包装单位</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="largePackingUnit" [attr.disabled]="true" [(ngModel)]="formData.largePackingUnit" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="minPackingUnit">小包装单位</nz-form-label>
+                    <nz-form-control>
+                        <input class="dialog_input curNotAllowed" nz-input id="minPackingUnit" [attr.disabled]="true" [(ngModel)]="formData.minPackingUnit" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="copies">大包装份数</nz-form-label>
+                    <nz-form-control>
+                        <nz-input-number class="dialog_input" [nzMin]="0" [nzStep]="1" id="copies" [(ngModel)]="formData.copies"></nz-input-number>
+                        <nz-form-explain class="colorF00" [hidden]="formData.copies">份数不能为空</nz-form-explain>
+                        <nz-form-explain class="colorF00" [hidden]="!(goodsData.get('inNum').value > goodsData.get('leftNum').value)">入库数量不能大于未入库数量</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div> -->
+        </div>
+    </div>
+</nz-modal>
+<!-- 编辑模版 End -->
+
+<!-- 启用或停用模版确认框 Begin -->
+<nz-modal [(nzVisible)]="confirmBox" nzIconType nzTitle="提示" nzOkText="确认" nzCancelText="取消" (nzOnOk)="confirmOk()" (nzOnCancel)="confirmCancel()" [nzOkLoading]="isOkLoading">
+    <p *ngIf="confirmState == false">是否要&nbsp;<span class="colorF00">停用</span>&nbsp;该模版？</p>
+    <p *ngIf="confirmState == true">是否要&nbsp;<span class="color0F0">启用</span>&nbsp;该模版？</p>
+</nz-modal>
+<!-- 启用或停用模版确认框 End -->

@@ -1,0 +1,470 @@
+<div class="w100p pr10 pb50 pr100">
+    <div *ngIf="!inHospitalInfoId" style="position: absolute;right: 20px;" class="zIndex100">
+        <!-- <button nz-button nzType="primary" (click)="Print($event)">打印</button> -->
+        <e-ngx-print class="posAbs zIndex101 r100" id="eprint" btnText="打印" [btnClass]="{'printBtn': true}" [printHTML]="firstCareForm" [printCSS]="printCSS" (printComplete)="printComplete()">
+        </e-ngx-print>
+        <button nz-button nzType="primary" class="posAbs zIndex101 r30" *ngIf="!isDisable" (click)="saveForm()">保存</button>
+    </div>
+    <div id="firstCare" class="posRel" #firstCareForm style="page-break-after: always;">
+        <div class="posAbs zIndex99 l0 t100 w100p h100p" *ngIf="isDisable"></div>
+        <div style="text-align:center;">
+            <span class="ftz12">{{ systemInfo.sysTitle }}</span>
+        </div>
+        <div style="text-align:center;">
+            <span class="ftz20 ftwB" (click)="lookFormData()">病 人 入 院 护 理 评 估 单</span>
+        </div>
+        <div>
+            <div nz-row class="lineStyle2">
+                <div nz-col nzSpan="4">科别 <input [attr.value]="formData.sectionOfficeName" [(ngModel)]="formData.sectionOfficeName" nz-input type="text" class=" w60p h20 noBorder"></div>
+                <div nz-col nzSpan="5">病区 <input [attr.value]="formData.sickWardName" [(ngModel)]="formData.sickWardName" nz-input type="text" class=" w70p h20 noBorder"></div>
+                <div nz-col nzSpan="4">床号 <input [attr.value]="formData.bedNumber" [(ngModel)]="formData.bedNumber" nz-input type="text" class=" w65p h20 noBorder"></div>
+                <div nz-col nzSpan="6">入院时间 <input [attr.value]="formData.inHospitalDate" [(ngModel)]="formData.inHospitalDate" nz-input type="text" class=" w50p h20 noBorder"></div>
+                <div nz-col nzSpan="4">住院号 <input [attr.value]="formData.inHospitalNumber" [(ngModel)]="formData.inHospitalNumber" nz-input type="text" class=" w55p h20 noBorder"></div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <span class="ftz10 ftwB">（一）一般资料</span>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="4">姓名 <input [attr.value]="formData.name" [(ngModel)]="formData.name" nz-input type="text" class=" w60p h20 noBorder"></div>
+                <div nz-col nzSpan="3">性别 <input [attr.value]="formData.sex" [(ngModel)]="formData.sex" nz-input type="text" class=" w30p h20 noBorder"></div>
+                <div nz-col nzSpan="3">年龄 <input [attr.value]="formData.age" [(ngModel)]="formData.age" nz-input type="text" class=" w30p h20 noBorder"></div>
+                <div nz-col nzSpan="4">职业 <input [attr.value]="formData.profession" [(ngModel)]="formData.profession" nz-input type="text" class=" w60p h20 noBorder"></div>
+                <div nz-col nzSpan="3">民族 <input [attr.value]="formData.nation" [(ngModel)]="formData.nation" nz-input type="text" class=" w40p h20 noBorder"></div>
+                <div nz-col nzSpan="4">籍贯 <input [attr.value]="formData.nativePlace" [(ngModel)]="formData.nativePlace" nz-input type="text" class=" w60p h20 noBorder"></div>
+                <div nz-col nzSpan="3">婚姻 <input [attr.value]="formData.marriage" [(ngModel)]="formData.marriage" nz-input type="text" class=" w50p h20 noBorder"></div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="5">文化程度 <input [attr.value]="formData.education" [(ngModel)]="formData.education" nz-input type="text" class=" w40p h20 noBorder"></div>
+                <div nz-col nzSpan="9">联系地址[电话] <input [attr.value]="formData.contactAddress" [(ngModel)]="formData.contactAddress" nz-input type="text" class=" w50p h20 noBorder"></div>
+                <!-- <div nz-col nzSpan="8">资料收集时间 <input [(ngModel)]="formData.dataCollectionDate" nz-input type="text" class=" w60p h20 noBorder"></div> -->
+                <div nz-col nzSpan="10">资料收集时间
+                    <nz-date-picker [(ngModel)]="formData.dataCollectionDate" (ngModelChange)="onDateChange($event)" [nzPlaceHolder]="formData.dataCollectionDate" nzSize="small" class="noBorder"></nz-date-picker>
+                </div>
+
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">入院处置：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.inHospitalDispose" (ngModelChange)="log(formData.inHospitalDispose)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">入院方式：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.inHospitalWay" (ngModelChange)="log(formData.inHospitalWay)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">入院介绍：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.inHospitalIntroduce" (ngModelChange)="log(formData.inHospitalIntroduce)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div class="lineStyle1">
+                <span style="display: inline-block; width:110px">入院医疗诊断：</span><input [attr.value]="formData.medicalDiagnosis" [(ngModel)]="formData.medicalDiagnosis" #diagnode nz-input type="text" style="width:calc(100% - 110px)" class=" h20 noBorder" (keyup.enter)="enterDiagnose(diagnode.value)">
+            </div>
+            <div class="lineStyle1" *ngIf="false">
+                <textarea rows="4" nz-input type="text" class=" w100p noBorder"></textarea>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">过&ensp;敏&ensp;史：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.allergicHistory" (ngModelChange)="removaAllCheck(formData.allergicHistory,'allergicHistory2')">
+                        <label nz-radio nzValue="无">无</label>
+                        <label nz-radio nzValue="有">有</label>
+                    </nz-radio-group>
+                    <span style="display:inline-block;position: relative;left: -10px;">（</span>
+                    <nz-checkbox-group [(ngModel)]="formData.allergicHistory2" (ngModelChange)="changeHaveOrNo(formData.allergicHistory2,'allergicHistory')"></nz-checkbox-group>）
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">既&ensp;往&ensp;史：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.previousHistory" (ngModelChange)="removaAllCheck(formData.previousHistory,'previousHistory2')">
+                        <label nz-radio nzValue="无">无</label>
+                        <label nz-radio nzValue="有">有</label>
+                    </nz-radio-group>
+                    <span style="display:inline-block;position: relative;left: -10px;">（</span>
+                    <nz-checkbox-group [(ngModel)]="formData.previousHistory2" (ngModelChange)="changeHaveOrNo(formData.previousHistory2,'previousHistory')"></nz-checkbox-group>）
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <span class="ftz10 ftwB">（二）生活及自理程度</span>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">饮食习惯：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.dietaryHabit" (ngModelChange)="log(formData.dietaryHabit)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">食&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欲：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.appetite" (ngModelChange)="changeAppetite()">
+                        <label nz-radio nzValue="正常">正常</label>
+                        <label nz-radio nzValue="亢进">亢进</label>
+                        <input [attr.value]="formData.appetite2" [(ngModel)]="formData.appetite2" nz-input type="text" class=" w10p h20 noBorder tac">天
+                        <label nz-radio nzValue="下降/厌食" style="margin-left:30px;">下降/厌食</label>
+                        <input [attr.value]="formData.appetite3" [(ngModel)]="formData.appetite3" nz-input type="text" class=" w10p h20 noBorder tac">天
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="12">
+                    <div nz-row>
+                        <div nz-col nzSpan="6">咀嚼困难：</div>
+                        <div nz-col nzSpan="18">
+                            <nz-radio-group [(ngModel)]="formData.dysmasesia" (ngModelChange)="selNone(formData.dysmasesia,'dysmasesia2')">
+                                <label nz-radio nzValue="无">无</label>
+                                <label nz-radio nzValue="有">有</label>
+                            </nz-radio-group>
+                            <span style="display:inline-block;position: relative;left: -10px;">（原因</span><input [attr.value]="formData.dysmasesia2" [(ngModel)]="formData.dysmasesia2" (keyup)="radioChangeToYes('dysmasesia')" nz-input type="text" [disabled]="formData.dysmasesia == '无'" class=" w30p h20 noBorder">）
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzSpan="12">
+                    <div nz-row>
+                        <div nz-col nzSpan="6">吞咽困难：</div>
+                        <div nz-col nzSpan="18">
+                            <nz-radio-group [(ngModel)]="formData.dysphagia" (ngModelChange)="selNone(formData.dysphagia,'dysphagia2')">
+                                <label nz-radio nzValue="无">无</label>
+                                <label nz-radio nzValue="有">有</label>
+                            </nz-radio-group>
+                            <span style="display:inline-block;position: relative;left: -10px;">（原因</span><input [attr.value]="formData.dysphagia2" [(ngModel)]="formData.dysphagia2" (keyup)="radioChangeToYes('dysphagia')" nz-input type="text" [disabled]="formData.dysphagia == '无'" class=" w30p h20 noBorder">）
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">睡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;眠：</div>
+                <div nz-col nzSpan="11">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-checkbox-group [(ngModel)]="formData.sleep" (ngModelChange)="log(formData.sleep)"></nz-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzSpan="3">辅助睡眠：</div>
+                <div nz-col nzSpan="7">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-radio-group [(ngModel)]="formData.sleepAid">
+                                <label nz-radio nzValue="无">无</label>
+                                <label nz-radio nzValue="药物">药物</label>
+                                <label nz-radio nzValue="其他">其他</label>
+                            </nz-radio-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="5">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;泄：大便：</div>
+                <div nz-col nzSpan="19">
+                    <nz-radio-group [(ngModel)]="formData.shit" (ngModelChange)="shitChange(formData.shit)">
+                        <label nz-radio nzValue="正常">正常</label>
+                        <label nz-radio nzValue="便秘">便秘</label>
+                        <span style="display:inline-block;position: relative;left: -10px;">（1 次/</span><input [attr.value]="formData.shit2" [(ngModel)]="formData.shit2" nz-input (keyup)="noShit()" type="text" class=" w5p h20 noBorder tac">天）
+                        <label nz-radio nzValue="腹泻">腹泻</label>
+                        <span style="display:inline-block;position: relative;left: -10px;">（</span><input [attr.value]="formData.shit3" [(ngModel)]="formData.shit3" nz-input (keyup)="lotShit()" type="text" class=" w5p h20 noBorder tac">次/天）
+                        <label nz-radio nzValue="失禁">失禁</label>
+                        <label nz-radio nzValue="其他">其他</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="5">&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&nbsp;&nbsp;&nbsp;小便：</div>
+                <div nz-col nzSpan="19">
+                    <nz-radio-group [(ngModel)]="formData.pee" (ngModelChange)="peeChange(formData.pee)">
+                        <label nz-radio nzValue="正常">正常</label>
+                        <input [attr.value]="formData.pee3" [(ngModel)]="formData.pee3" nz-input type="text" class=" w5p h20 noBorder tac">次/天
+                        <input [attr.value]="formData.pee4" [(ngModel)]="formData.pee4" nz-input type="text" class=" w5p h20 noBorder tac">色
+                        <i style="margin-right:10px;"></i>
+                        <nz-checkbox-group [(ngModel)]="formData.pee2" (ngModelChange)="peeChange2(formData.pee2)"></nz-checkbox-group>
+                        <label nz-radio style="display: inline-block;position: absolute;" nzValue="其他">其他</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">自理能力：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.abilityOfSelf" (ngModelChange)="abilityOfSelfChange(formData.abilityOfSelf)">
+                        <label nz-radio nzValue="全部">全部</label>
+                        <label nz-radio nzValue="障碍">障碍</label>
+                        <label nz-radio nzValue="需协助">需协助</label>
+                        <span style="display:inline-block;position: relative;left: -10px;">(</span>
+                        <nz-checkbox-group [(ngModel)]="formData.abilityOfSelf2" (ngModelChange)="abilityOfSelfChange2(formData.abilityOfSelf2)"></nz-checkbox-group>)
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">活动能力：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.activityOfLiving" (ngModelChange)="activityOfLivingChange(formData.activityOfLiving)">
+                        <label nz-radio nzValue="下床活动">下床活动</label>
+                        <label nz-radio nzValue="坐椅子">坐椅子</label>
+                        <label nz-radio nzValue="卧床">卧床</label>
+                        <span style="display:inline-block;position: relative;left: -10px;">（</span>
+                        <nz-checkbox-group [(ngModel)]="formData.activityOfLiving2" (ngModelChange)="activityOfLivingChange2(formData.activityOfLiving2)"></nz-checkbox-group>）
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">健康意识：</div>
+                <div nz-col nzSpan="7">
+                    <nz-radio-group [(ngModel)]="formData.healthConsciousness" (ngModelChange)="healthConsciousnessChange(formData.healthConsciousness)">
+                        <label nz-radio nzValue="良好">良好</label>
+                        <label nz-radio nzValue="一般">一般</label>
+                        <label nz-radio nzValue="差">差</label>
+                    </nz-radio-group>
+                </div>
+                <div nz-col nzSpan="3">
+                    原因<input [attr.value]="formData.healthConsciousness2" [(ngModel)]="formData.healthConsciousness2" nz-input (keyup)="healthConsciousnessChange2()" type="text" class=" w50p h20 noBorder">
+                </div>
+                <div nz-col nzSpan="5">
+                    吸烟
+                    <nz-radio-group [(ngModel)]="formData.smoking">
+                        <label nz-radio nzValue="有">有</label>
+                        <label nz-radio nzValue="无">无</label>
+                    </nz-radio-group>
+                </div>
+                <div nz-col nzSpan="6">
+                    <span style="display:inline-block;display: inline-block;position: absolute;left: -15px;">饮酒</span>
+                    <nz-radio-group [(ngModel)]="formData.drink" style="position: relative;left:20px;">
+                        <label nz-radio nzValue="有">有</label>
+                        <label nz-radio nzValue="无">无</label>
+                        <label nz-radio nzValue="其他">其他</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <span class="ftz10 ftwB">（三）心理与社会</span>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">心理状态：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.psychologicalStates" (ngModelChange)="log(formData.psychologicalStates)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">社会能力：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.socialCompetence">
+                        <label nz-radio nzValue="希望与更多的人交往">希望与更多的人交往</label>
+                        <label nz-radio nzValue="不愿与人交往">不愿与人交往</label>
+                        <label nz-radio nzValue="其他">其他</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">住院顾虑：</div>
+                <div nz-col nzSpan="21">
+                    <nz-radio-group [(ngModel)]="formData.inHospitalScruple" (ngModelChange)="removaAllCheck(formData.inHospitalScruple,'inHospitalScruple2')">
+                        <label nz-radio nzValue="无">无</label>
+                        <label nz-radio nzValue="有">有</label>
+                    </nz-radio-group>
+                    <span style="display:inline-block;position: relative;left: -10px;">（</span>
+                    <nz-checkbox-group [(ngModel)]="formData.inHospitalScruple2" (ngModelChange)="changeHaveOrNo(formData.inHospitalScruple2,'inHospitalScruple')"></nz-checkbox-group>）
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1 ftz10 ftwB">
+                <div nz-col nzSpan="4">（四）子女：</div>
+                <div nz-col nzSpan="4">
+                    <nz-radio-group [(ngModel)]="formData.children" (ngModelChange)="childrenChange(formData.children)">
+                        <label nz-radio nzValue="无">无</label>
+                        <label nz-radio nzValue="有">有</label>
+                    </nz-radio-group>
+                </div>
+                <div nz-col nzSpan="4">
+                    子<input [attr.value]="formData.children2" [(ngModel)]="formData.children2" (keyup)="childrenChange2()" nz-input type="text" class=" w30p h20 noBorder tac">个
+                </div>
+                <div nz-col nzSpan="4">
+                    女<input [attr.value]="formData.children3" [(ngModel)]="formData.children3" (keyup)="childrenChange2()" nz-input type="text" class=" w30p h20 noBorder tac">个
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="4">T <input [attr.value]="formData.letterT" [(ngModel)]="formData.letterT" nz-input type="text" class=" w30p h20 noBorder tac">℃</div>
+                <div nz-col nzSpan="4">P <input [attr.value]="formData.letterP" [(ngModel)]="formData.letterP" nz-input type="text" class=" w33p h20 noBorder tac">次/分</div>
+                <div nz-col nzSpan="4">R <input [attr.value]="formData.letterR" [(ngModel)]="formData.letterR" nz-input type="text" class=" w33p h20 noBorder tac">次/分</div>
+                <div nz-col nzSpan="7">BP <input [attr.value]="formData.letterBP" [(ngModel)]="formData.letterBP" nz-input type="text" class=" w30p h20 noBorder tac">/<input [attr.value]="formData.letterBP2" [(ngModel)]="formData.letterBP2" nz-input type="text" class=" w30p h20 noBorder">mmHg</div>
+                <div nz-col nzSpan="4">体重 <input [attr.value]="formData.weight" [(ngModel)]="formData.weight" nz-input type="text" class=" w30p h20 noBorder tac">kg</div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">神&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;志：</div>
+                <div nz-col nzSpan="12">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-checkbox-group [(ngModel)]="formData.mind" (ngModelChange)="log(formData.mind)"></nz-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzSpan="2">表情：</div>
+                <div nz-col nzSpan="7">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-radio-group [(ngModel)]="formData.face">
+                                <label nz-radio nzValue="正常">正常</label>
+                                <label nz-radio nzValue="淡漠">淡漠</label>
+                                <label nz-radio nzValue="痛苦">痛苦</label>
+                            </nz-radio-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">瞳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;孔：</div>
+                <div nz-col nzSpan="13">
+                    <nz-radio-group [(ngModel)]="formData.pupil" (ngModelChange)="pupilChange(formData.pupil)">
+                        <label nz-radio nzValue="等大">等大</label>
+                        <label nz-radio nzValue="散大">散大</label>
+                        <label nz-radio nzValue="缩小">缩小</label>
+                        <label nz-radio nzValue="不等大">不等大</label> 左
+                        <input [attr.value]="formData.pupil2" [(ngModel)]="formData.pupil2" nz-input (ngModelChange)="pupilChange2()" type="text" class=" w6p h20 noBorder"> 右<input [attr.value]="formData.pupil3" [(ngModel)]="formData.pupil3" nz-input (ngModelChange)="pupilChange2()" type="text" class=" w6p h20 noBorder">
+                    </nz-radio-group>
+                </div>
+                <!-- <div nz-col nzSpan="2">对光反射：</div> -->
+                <div nz-col nzSpan="8">
+                    <span style="display: inline-block;position: absolute;left: -20px;">对光反射：</span>
+                    <nz-radio-group [(ngModel)]="formData.lightReflex" style="position: relative;left: 55px;">
+                        <label nz-radio nzValue="存在">存在</label>
+                        <label nz-radio nzValue="迟钝">迟钝</label>
+                        <label nz-radio nzValue="消失">消失</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="4">全身营养状况：</div>
+                <div nz-col nzSpan="20">
+                    <nz-checkbox-group [(ngModel)]="formData.nutriture" (ngModelChange)="log(formData.nutriture)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">皮肤粘膜：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.skinAndMucosa" (ngModelChange)="log(formData.skinAndMucosa)"></nz-checkbox-group>
+                    部位/范围：<input [attr.value]="formData.skinAndMucosa2" [(ngModel)]="formData.skinAndMucosa2" nz-input type="text" class=" w10p h20 noBorder">
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">五官功能：</div>
+                <div nz-col nzSpan="21">
+                    <nz-checkbox-group [(ngModel)]="formData.facialFeatures" (ngModelChange)="log(formData.facialFeatures)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">口&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;腔：</div>
+                <div nz-col nzSpan="8">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-checkbox-group [(ngModel)]="formData.oralCavity" (ngModelChange)="log(formData.oralCavity)"></nz-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzSpan="8">
+                    舌：
+                    <nz-checkbox-group [(ngModel)]="formData.tongue" (ngModelChange)="log(formData.tongue)"></nz-checkbox-group>
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">牙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龈：</div>
+                <div nz-col nzSpan="8">
+                    <div nz-row>
+                        <div nz-col>
+                            <nz-checkbox-group [(ngModel)]="formData.gingiva" (ngModelChange)="log(formData.gingiva)"></nz-checkbox-group>
+                        </div>
+                    </div>
+                </div>
+                <div nz-col nzSpan="7">
+                    牙：
+                    <nz-radio-group [(ngModel)]="formData.tooth">
+                        <label nz-radio nzValue="假牙">假牙</label>
+                        <label nz-radio nzValue="缺牙">缺牙</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div class="lineStyle1">
+                <div style="position: relative;top: -1px;">
+                    <span style="display: inline-block; width:80px;">伤口情况：</span><input [attr.value]="formData.woundCondition" [(ngModel)]="formData.woundCondition" #diagnode nz-input type="text" style="width:calc(100% - 80px)" class=" h20 noBorder" (keyup.enter)="enterDiagnose(diagnode.value)">
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle1">
+                <div nz-col nzSpan="3">舒适程度：</div>
+                <div nz-col nzSpan="8">
+                    <nz-radio-group [(ngModel)]="formData.degreeOfComfort" (ngModelChange)="degreeOfComfortChange(formData.degreeOfComfort)">
+                        <label nz-radio nzValue="舒适">舒适</label>
+                        <label nz-radio nzValue="不适">不适</label>
+                        <label nz-radio nzValue="疼痛">疼痛</label>
+                        <!-- <div style="display:inline-block;position:relative;top:-1px">
+                            部位：<input [(ngModel)]="formData.degreeOfComfort2" nz-input (keyup)="degreeOfComfortChange2()" type="text" class=" w10p h20 noBorder">
+                        </div> -->
+                    </nz-radio-group>
+                </div>
+                <div nz-col nzSpan="4">
+                    <div style="display:inline-block;position:relative;top:-1px">
+                        部位：<input [attr.value]="formData.degreeOfComfort2" [(ngModel)]="formData.degreeOfComfort2" nz-input (keyup)="degreeOfComfortChange2()" type="text" class=" w50p h20 noBorder">
+                    </div>
+                </div>
+                <div nz-col nzSpan="2">程度：</div>
+                <div nz-col nzSpan="7">
+                    <nz-radio-group [(ngModel)]="formData.degreeOfComfort3">
+                        <label nz-radio nzValue="能忍受">能忍受</label>
+                        <label nz-radio nzValue="难以忍受">难以忍受</label>
+                    </nz-radio-group>
+                </div>
+            </div>
+
+            <div class="lineStyle1">
+                <div style="position: relative;top: -1px;">
+                    <span style="display: inline-block; width:80px">其&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;他：</span><input [attr.value]="formData.otherStr" [(ngModel)]="formData.otherStr" #diagnode nz-input type="text" style="width:calc(100% - 80px)" class=" h20 noBorder" (keyup.enter)="enterDiagnose(diagnode.value)">
+                </div>
+            </div>
+
+            <div nz-row class="lineStyle2">
+                <div nz-col nzSpan="8"></div>
+                <div nz-col nzSpan="8">
+                    <div style="display:inline-block;position:relative;top:-1px">
+                        责任护士签名 <input [attr.value]="formData.nurseSignature" [(ngModel)]="formData.nurseSignature" nz-input type="text" class=" w50p h20 noBorder">
+                    </div>
+                </div>
+                <div nz-col nzSpan="8">
+                    <div style="display:inline-block;position:relative;top:-1px">
+                        护士长签名 <input [attr.value]="formData.headNurseSignature" [(ngModel)]="formData.headNurseSignature" nz-input type="text" class=" w50p h20 noBorder">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

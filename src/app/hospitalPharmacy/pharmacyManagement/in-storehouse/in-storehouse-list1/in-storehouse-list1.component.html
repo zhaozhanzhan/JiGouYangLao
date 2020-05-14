@@ -1,0 +1,98 @@
+<ng-template #btnAdd>
+  <button nz-button nzType="primary">添加</button>
+</ng-template>
+
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row nzType="flex">
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>入库日期</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker
+              name="date"
+              style="width:250px"
+              [(ngModel)]="selectedDates"
+              (ngModelChange)="onRangerPickerChange($event)"
+            ></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>操作人</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="old"
+              id="old"
+              style="width:150px"
+              [(ngModel)]="reqObj.operator"
+              placeholder="检索入库操作人"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="updateList(true)"
+              style="margin-left: 10px;"
+            >
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-table
+  #ajaxTable
+  nzBordered
+  nzShowSizeChanger
+  [nzTitle]="serchArea"
+  [nzFrontPagination]="false"
+  [nzLoading]="isTableLoading"
+  [nzData]="list"
+  [nzTotal]="page.total"
+  [(nzPageIndex)]="page.index"
+  [(nzPageSize)]="page.size"
+  (nzPageIndexChange)="updateList()"
+  (nzPageSizeChange)="updateList(true)"
+  [nzShowTotal]="totalTemplate"
+  [nzScroll]="{ x: '1000px' }"
+>
+  <thead>
+    <tr>
+      <th class="textCenter" nzWidth="180px" nzLeft="0px">入库单号</th>
+      <th class="textCenter">入库时间</th>
+      <th class="textCenter">操作人</th>
+      <th class="textCenter">备注</th>
+      <th class="textCenter" nzWidth="100px" nzRight="0px">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of ajaxTable.data">
+      <td class="textCenter" nzWidth="180px" nzLeft="0px">{{ data?.inId }}</td>
+      <td class="textCenter">{{ data?.inDate }}</td>
+      <td class="textCenter">{{ data?.operator }}</td>
+      <td class="textCenter">{{ data?.inComment }}</td>
+      <td class="textCenter" nzWidth="100px" nzRight="0px">
+        <a 
+        href="javascript:void(0)" 
+        (click)="turnToCheck(data)"
+        roleBtnControll
+        [roleBtnKey]="'checkMenuBtn'"
+        >查看</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

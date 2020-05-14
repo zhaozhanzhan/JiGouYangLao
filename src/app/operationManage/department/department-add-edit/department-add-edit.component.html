@@ -1,0 +1,50 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="部门详情" [nzExtra]="btnArea">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2"  nzFor="parentId">所属部门</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <!-- <nz-select  formControlName="parentId" id="parentId" >
+          <nz-option *ngFor="let departmen of departmentList" [nzValue]="departmen.id" [nzLabel]="departmen.name"></nz-option>
+        </nz-select> -->
+         <nz-tree-select
+            class="w100p"
+            [nzNodes]="goodsClassificationNodes"
+            nzShowSearch
+            [nzPlaceHolder]="reqObjGoodName"
+            formControlName="parentId" id="parentId"
+            (nzClick)="nzEvent($event)"
+            
+          >
+          </nz-tree-select>
+        <!-- <nz-form-explain [hidden]="!(validateForm.get('parentId').dirty && validateForm.get('parentId').errors)">所属部门名称不能为空</nz-form-explain> -->
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="name">部门名称</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input nz-input formControlName="name" id="name">
+        <nz-form-explain [hidden]="!(validateForm.get('name').dirty && validateForm.get('name').errors)">部门名称不能为空</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="comment">备注</nz-form-label>
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <!-- <input nz-input formControlName="comment" id="comment"> -->
+
+        <textarea rows="4" nz-input  formControlName="comment" id="comment"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">保存</button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->

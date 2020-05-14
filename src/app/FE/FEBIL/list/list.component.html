@@ -1,0 +1,63 @@
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8" nzType="flex">
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="namename">长者姓名</nz-form-label>
+                    <nz-form-control>
+                        <input type="text " name="name" id="name" nz-input placeholder="按长者姓名检索 " [(ngModel)]="oldManObj.name" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="cardno">身份证</nz-form-label>
+                    <nz-form-control>
+                        <input type="text " name="cardno" id="cardno" nz-input placeholder="按长者身份证检索 " [(ngModel)]="oldManObj.cardno" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="getOldManList(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="消费明细列表">
+    <nz-table #basicTable [nzData]="oldManList" [nzShowTotal]="totalTit" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading" [nzTotal]="totalElements" [(nzPageIndex)]="oldManObj.page" [(nzPageSize)]="oldManObj.size" (nzPageIndexChange)="getOldManList(true)" (nzPageSizeChange)="getOldManList(true)" nzShowSizeChanger="true" nzFrontPagination="false">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">身份证号码</th>
+                <th class="textCenter">房间号</th>
+                <th class="textCenter">入院日期</th>
+                <th class="textCenter">累计住院天数</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of oldManList; let idx = index">
+                <td class="textCenter">{{ data.name }}</td>
+                <td class="textCenter">{{ data.sex }}</td>
+                <td class="textCenter">{{ data.age }}</td>
+                <td class="textCenter">{{ data.cardno }}</td>
+                <td class="textCenter">{{ data.roomName }}</td>
+                <td class="textCenter">{{ data.inDate }}</td>
+                <td class="textCenter">{{ data.days }}</td>
+                <td class="textCenter">
+                    <a href="#" (click)="info(data.id, $event)">消费明细</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTit>共&nbsp;{{ totalElements }}&nbsp;条</ng-template>

@@ -1,0 +1,72 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6" style="margin-left: -10px;">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSuffixIcon="anticon anticon-search">
+              <input type="text" name="oldman_name" nz-input placeholder="请输入菜品名称" [(ngModel)]="queryParams.name">
+            </nz-input-group>
+          </nz-form-control>
+
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="7" nzFor="name">销样状态</nz-form-label>
+          <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="17">
+            <nz-select style="width: 120px;" [(ngModel)]="queryParams.isPin" nzPlaceHolder="销样状态" name="auditStatus">
+              <nz-option nzValue="0" nzLabel="全部"></nz-option>
+              <nz-option nzValue="1" nzLabel="未销样"></nz-option>
+              <nz-option nzValue="2" nzLabel="已销样"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="loadingDataArray(true)">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 食品留样列表 -->
+<nz-card nzTitle="食品留样列表">
+  <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzBordered]="'true'" nzShowSizeChanger [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements" [nzShowTotal]="totalTit" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th class="textCenter">留样时间</th>
+        <th class="textCenter">留样时段</th>
+        <th class="textCenter">留样菜名</th>
+        <th class="textCenter">销样状态</th>
+        <th class="textCenter">销样时间</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataArray">
+        <td>{{data.createTime}}</td>
+        <td>{{data.timeFrame}}</td>
+        <td>{{data.name}}</td>
+        <td>
+          <span *ngIf="data.isPin==true">已销样</span>
+          <span *ngIf="data.isPin==false">未销样</span>
+        </td>
+        <td>{{data.pinTime}}</td>
+        <td>
+          <a href="#" (click)="showFirePatrol(data.id,$event)">查看</a>
+          <nz-divider *ngIf="data.isPin==false" nzType="vertical"></nz-divider>
+          <a href="#" *ngIf="data.isPin==false" (click)="PinSample(data.id,$event)">销样</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTit>共&nbsp;{{resultData.totalElements}}&nbsp;条</ng-template>

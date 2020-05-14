@@ -1,0 +1,28 @@
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="库房类别列表" [nzExtra]="btnAdd">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list"
+    [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">库房类别名称</th>
+        <th class="textCenter">备注</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{data.name}}</td>
+        <td class="textCenter">{{data.comment}}</td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" (click)="turnToEdit(data)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="delete(data.id)" style="color: #f81d22 !important;">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>

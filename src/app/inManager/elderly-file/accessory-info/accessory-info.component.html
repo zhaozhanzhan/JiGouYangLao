@@ -1,0 +1,27 @@
+<nz-tabset [nzTabPosition]="'left'" nzShowPagination="false" nzSize="default">
+  <nz-tab
+    nzTitle="{{item?.dictTag}}"
+    *ngFor="let item of accessoryList"
+    (nzSelect)="selectTabListener(item?.id, item, mirrImage)"
+  >
+    <nz-skeleton [nzLoading]="loadingDataState" nzActive="true">
+      <mirr-image
+        isShowUploadBtn="true"
+        isShowOcrBtn="false"
+        [imageUrlStr]="item.imageUrls"
+        #mirrImage
+      ></mirr-image>
+      <div nz-row class="textRight">
+        <button
+          nz-button
+          nzType="primary"
+          class="saveBtn"
+          (click)="saveAccessory(item?.id, mirrImage?.showImageUrls)"
+          [nzLoading]="saveLoadingState"
+        >
+          保存
+        </button>
+      </div>
+    </nz-skeleton>
+  </nz-tab>
+</nz-tabset>

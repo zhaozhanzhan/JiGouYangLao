@@ -1,0 +1,449 @@
+<!-- 主体内容 Begin -->
+<object id="factory" style="display:none" viewastext classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=5,60,0,360"></object>
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div id="medicalScore" style="page-break-after: always;" class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13">
+                            <span class="ftwB ftzPt16">病&emsp;案&emsp;质&emsp;量&emsp;评&emsp;分&emsp;定&emsp;级&emsp;检&emsp;查&emsp;表</span>
+                        </div>
+                    </div>
+                    <div class="posAbs r0 t0">
+                        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <button nz-button nzType="default" class="ml20" *ngIf="printDisabled" (click)="clickPrint($event)">打印</button>
+                        <button nz-button nzType="primary" class="ml20" *ngIf="!isPrintNow && user.data.employees.personType=='0'" (click)="save()">保存</button>
+                    </div>
+                </div>
+                <div class="mt10">
+                    <table class="w100p cusTable" style="border: none !important;">
+                        <thead class="w100p" style="display:table-header-group;border: none !important;">
+                            <tr class="w100p" style="border: none !important;">
+                                <td class="w100p" colspan="7" style="border: none !important;">
+                                    <div class="w100p h30">
+                                        <div class="w100p disFlex justConSB">
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>姓名：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.name}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>科别：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.sectionOfficeName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>病区：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.sickWardName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>床号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.bedName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>住院号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{patientsBasicInfo.admissionNo}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tac" rowspan="2" style="width:100px">项目</td>
+                                <td class="tac" rowspan="2" style="    width: 600px !important;">要求</td>
+                                <td class="tac" rowspan="2">标准分</td>
+                                <td class="tac " rowspan="2" style="width:200px;">扣分标准</td>
+                                <td class="tac " rowspan="2">扣分及理由</td>
+                                <td class="tac" colspan="2" style="width:100px;">实得分</td>
+                            </tr>
+                            <tr>
+                                <td class="tac">科评</td>
+                                <td class="tac">院评</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="w100 taL">基本规则</td>
+                                <td class="w100 taL">病历书写应真实、及时、完整、规范、整洁。</td>
+                                <td class="tac">5</td>
+                                <td class="pl10">
+                                    <span>1.不能如实反映疾病全过程不得分；</span><br>
+                                    <span>2.各项记录不能按规定时限完成，每项扣2分；</span><br>
+                                    <span>3.缺页不得分；</span><br>
+                                    <span>4.应有的各项有关记录和检查报告单不齐全，每发现一项扣2分；</span><br>
+                                    <span>5.书写不符合规范要求扣2分；</span><br>
+                                    <span>6.字迹潦草、错别字、杜撰简化字、污损、出格、跨行，无处以内扣3分，五处以上扣5分；</span><br>
+                                    <span>7.上级医师不认真修改病历扣3分，发现一处不签名扣1分；</span><br>
+                                    <span>8.病历不整洁扣2分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea [readonly]="user.data.employees.personType!='0'" rows="4" nz-input style="width:150px !important;" [(ngModel)]="medicalRecordObj.qualityScoreInfo[0].deductionAndReason"></textarea>
+
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[0]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[0].officeEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[0]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[0].hospitalEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">首页</td>
+                                <td class="w100 taL">
+                                    <span>1.使用部颁首页；</span><br>
+                                    <span>2.按要求填写；</span><br>
+                                    <span>3.主要选择正确；</span><br>
+                                </td>
+                                <td class="tac">5</td>
+                                <td class="pl10">
+                                    <span>1.不使用部颁首页不得分；</span><br>
+                                    <span>2.填写错误，每项扣1分；</span><br>
+                                    <span>3.主要诊断选择错误扣3分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea [readonly]="user.data.employees.personType!='0'" rows="4" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[1].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[1]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[1].officeEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[1]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[1].hospitalEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">主诉</td>
+                                <td class="w100 taL">
+                                    <span>1.简洁明了，不超过20字；</span><br>
+                                    <span>2.完整：症状+部位+时间；</span><br>
+                                    <span>3.能导致第一诊断；</span><br>
+                                </td>
+                                <td class="tac">5</td>
+                                <td class="pl10">
+                                    <span>1.冗长，超过20字扣2分；</span><br>
+                                    <span>2.不完整，缺一部分不得分；</span><br>
+                                    <span>3.不能导致第一诊断不得分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[2].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[2]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[2].officeEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[2]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[2].hospitalEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">病史</td>
+                                <td class="w100 taL">
+                                    <span> （一）现病史</span><br>
+                                    <span>1.应与主诉紧密结合，有鉴别诊断资料；</span><br>
+                                    <span>2.能反映主要疾病的发展变化过程；</span><br>
+                                    <span>3.简要记述入院前的诊疗过程及效果；</span><br>
+                                    <span>4.重点突出、层次清楚、概念明确；</span><br>
+                                    <span> （二）过去史、个人史、家庭史记录详细、齐全</span><br>
+                                </td>
+                                <td class="tac">10</td>
+                                <td class="pl10">
+                                    <span>1.与主诉不紧密结合，没有必要的鉴别诊断资料各扣5分；</span><br>
+                                    <span>2.不能反映主要疾病的发展变化过程扣5分；</span><br>
+                                    <span>3.只罗列过去的治疗或检查过程扣5分；</span><br>
+                                    <span>4.叙述混乱、颠倒、层次不清扣5分；</span><br>
+                                    <span>5.“三史”缺一项扣2分，记录过简每项扣1分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[3].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[3]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[3].officeEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[3]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[3].hospitalEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">体格检查</td>
+                                <td class="w100 taL">
+                                    <span>1.一般项目齐全；</span><br>
+                                    <span>2.各系统检查有序、齐全；</span><br>
+                                    <span>3.阳性体征及诊断有关的阴性体征均需详细记录；</span><br>
+                                    <span>4.有专科或重点检查；</span><br>
+                                </td>
+                                <td class="tac">10</td>
+                                <td class="pl10">
+                                    <span>1.一般检查遗漏一项扣1分；</span><br>
+                                    <span>2.遗漏一个系统检查扣3分，检查无序扣2分；</span><br>
+                                    <span>3.遗漏一般阳性体征扣1分，遗漏重要阳性体征及与诊断有关的阴性体征扣3分；</span><br>
+                                    <span>4.遗漏专科或重点检查各扣5分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[4].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[4]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[4].officeEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[4]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[4].hospitalEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">诊断</td>
+                                <td class="w100 taL">
+                                    <span>1.诊断确切、依据充分、主次排列有序；</span><br>
+                                    <span>2.应有的实验室检查、器械检查及时、齐全；</span><br>
+                                </td>
+                                <td class="tac">10</td>
+                                <td class="pl10">
+                                    <span>1.不确切、依据不充分扣5分；主次排列颠倒扣2分</span><br>
+                                    <span>2.延误诊断、误诊或主要疾病漏诊不得分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[5].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[5]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[5].officeEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[5]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[5].hospitalEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">治疗</td>
+                                <td class="w100 taL">
+                                    <span>正确、及时、合理</span><br>
+                                </td>
+                                <td class="tac">10</td>
+                                <td class="pl10">
+                                    <span>1.不正确、不及时、不合理，各扣5分；</span><br>
+                                    <span>2.延误抢救或误诊不得分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[6].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[6]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[6].officeEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[6]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[6].hospitalEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">病程录</td>
+                                <td class="w100 taL">
+                                    <span>1.首次病程记录应注明时间，有诊断依据、鉴别诊断和诊疗计划；</span><br>
+                                    <span>2.病程记录应重点突出，有分析、有综合、有判断；</span><br>
+                                    <span>3.有能反映上级医生按时查房的记录；</span><br>
+                                    <span>4.三级查房记录内容符合规范要求；</span><br>
+                                    <span>5.患者病情变化及时记录；</span><br>
+                                    <span>6.抢救病历有抢救记录；</span><br>
+                                    <span>7.有疑难、术前、死亡病例等讨论记录并符合规范要求；</span><br>
+                                    <span>8.会诊及时并有记录；</span><br>
+                                    <span>9.诊疗操作当日有记录；</span><br>
+                                    <span>10.实验室及器械异常的检查结果有记录，有分析；</span><br>
+                                    <span>11.有反映医师履行告知义务和解答患者疑问的记录；</span><br>
+                                    <span>12.出院前一天有病程记录；</span><br>
+                                </td>
+                                <td class="tac">30</td>
+                                <td class="pl10">
+                                    <span>1.不符合要求扣5分；</span><br>
+                                    <span>2.记录不符合要求扣5分、流水账式记录每次扣2分；</span><br>
+                                    <span>3.发现上级医生不按时查房，一次扣5分；</span><br>
+                                    <span>4.记录内容不符合要求扣5分；</span><br>
+                                    <span>5.不及时记录扣5分；</span><br>
+                                    <span>6.不按规定要求记录，每缺一次扣2分；</span><br>
+                                    <span>7.无讨论各扣5分，记录不符合要求各扣3分；</span><br>
+                                    <span>8.会诊不及时或无记录各扣5分，会诊记录不符合要求扣3分；</span><br>
+                                    <span>9.当日无记录扣2分；</span><br>
+                                    <span>10.无记录、无分析各扣2分；</span><br>
+                                    <span>11.一项做不到扣5分；</span><br>
+                                    <span>12.不符合要求扣2分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[7].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[7]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[7].officeEvaluationScore" [nzMin]="0" [nzMax]="30" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[7]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[7].hospitalEvaluationScore" [nzMin]="0" [nzMax]="30" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">其他要求</td>
+                                <td class="w100 taL">
+                                    <span>1.使用法定计量单位；</span><br>
+                                    <span>2.凡切除的组织均应送病检，凡有病理检查报告；</span><br>
+                                    <span>3.各种检查报告单书写符合规范要求；</span><br>
+                                    <span>4.医嘱内容准确、字迹清楚，有医嘱时间及医师签名；</span><br>
+                                    <span>5.法定传染病有疫情报告记录；</span><br>
+                                </td>
+                                <td class="tac">5</td>
+                                <td class="pl10">
+                                    <span>1.未使用法定计量单位扣2分；</span><br>
+                                    <span>2.未送病检或无病理报告各扣3分，病理报告书写不符合规范要求扣2分；</span><br>
+                                    <span>3.无检查报告单，发现一次扣2分，每份报告单书写不符合要求扣1分；血型、血交叉配合报告涂改发现一次扣2分；</span><br>
+                                    <span>4.每发现一次不符合要求扣2分；</span><br>
+                                    <span>5.无记录扣1分；</span><br>
+                                </td>
+                                <td class="tac">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[8].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[8]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[8].officeEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[8]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[8].hospitalEvaluationScore" [nzMin]="0" [nzMax]="5" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac" rowspan="3">护理文件</td>
+                                <td class="w100 taL">
+                                    <span>（一）体温单</span><br>
+                                    <span>1.生命体征及其他客观记录的数据、单位、符号准确、清楚；</span><br>
+                                    <span>2.记录内容真实，与实际相符；</span><br>
+                                </td>
+                                <td class="tac">
+                                    2
+                                </td>
+                                <td class="pl10">
+                                    <span>1.体温、脉搏、呼吸曲线描绘不清扣1分；数据、单位、符号不准确不得分；</span><br>
+                                    <span>2.不符合要求不得分；</span><br>
+                                </td>
+                                <td class="tac" rowspan="3">
+                                    <textarea rows="4" [readonly]="user.data.employees.personType!='0'" nz-input [(ngModel)]="medicalRecordObj.qualityScoreInfo[9].deductionAndReason"></textarea>
+                                </td>
+                                <td class="tac" rowspan="3">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[9]?.officeEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[9].officeEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                                <td class="tac" rowspan="3">
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.qualityScoreInfo[9]?.hospitalEvaluationScore}}</span>
+                                    <nz-input-number *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.qualityScoreInfo[9].hospitalEvaluationScore" [nzMin]="0" [nzMax]="10" [nzStep]="1" (ngModelChange)="sum()" [nzDisabled]="user.data.employees.personType!='0'"></nz-input-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 taL">
+                                    <span>（二）医嘱单</span><br>
+                                    <span>1.执行时间与实际相符；</span><br>
+                                    <span>2.执行护士签全名并清晰可认；</span><br>
+                                </td>
+                                <td class="tac">
+                                    1
+                                </td>
+                                <td class="pl10">
+                                    <span>不符合要求不得分；</span><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 taL">
+                                    <div>
+                                        <span>（三）护理记录单</span><br>
+                                        <span>1.护理记录单记录内容客观、真实；</span><br>
+                                        <span>2.记录符合规范要求，病情变化随时记；</span><br>
+                                        <span>3.手术护理记录单中敷料、器械数量清点核对记录准确、清楚、签名清楚可认；</span><br>
+                                        <span>4.有一般患者、危重患者、手术患者的护理记录单，并符合要求；</span><br>
+                                    </div>
+                                </td>
+                                <td class="tac">7</td>
+                                <td class="pl10">
+                                    <span>1.不按规范要求记录扣3分；</span><br>
+                                    <span>2.每缺一次记录扣1分；</span><br>
+                                    <span>3.不符合要求扣3分；</span><br>
+                                    <span>4.无记录单不得分；</span><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac">总分</td>
+                                <td class="w100 taL"></td>
+                                <td class="tac">100</td>
+                                <td class="pl10"></td>
+                                <td class="tac"></td>
+                                <td class="tac"></td>
+                                <td class="tac"></td>
+                            </tr>
+                            <tr>
+                                <td class="w100 taL" colspan="7">
+                                    <span>评分标准：</span><br>
+                                    <span>1.85分以上为甲级，84-70分为乙级，69分一下为丙级</span><br>
+                                    <span>2.主诉、病史、体格检查、诊断、治疗、病程录六个核心项目实得总分不足65分不得评为甲级，不足55分即为丙级。</span><br>
+                                    <span>3.有下列情况之一的，即为丙级病历：</span><br>
+                                    <span> 病历丢失、手术病例无麻醉记录；无手术记录；篡改病历；误诊、误治、延误抢救，导致不良后果者；按规范要求有知情同意书而无者</span><br>
+                                    <span>4.有下列情况之一的，病历在原等级基础上下降一级：</span><br>
+                                    <span> 无上级医生查房记录；发现病历涂改、补贴；字迹潦草，难以辨认，不能通读。</span><br>
+                                    <span> 【注】各项扣分以扣完该项标准分为止，不倒扣分。</span><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac" colspan="3">总得分</td>
+                                <td class="w100 taL">科评
+                                    <span style="display: inline-block;margin-left:10px;width:20%">{{medicalRecordObj?.officeEvaluation}}</span>
+                                </td>
+                                <td class="taL">院评
+                                    <span style="display: inline-block;margin-left:10px;width:20%">{{medicalRecordObj?.hospitalEvaluation}}</span>
+                                </td>
+                                <td class="pl10" colspan="2">(
+                                    <nz-select style="width: 100px;" *ngIf="!isPrintNow" [(ngModel)]="medicalRecordObj.medRecordLevel" nzAllowClear [nzDisabled]="user.data.employees.personType!='0'">
+                                        <nz-option nzValue="甲" nzLabel="甲"></nz-option>
+                                        <nz-option nzValue="乙" nzLabel="乙"></nz-option>
+                                        <nz-option nzValue="丙" nzLabel="丙"></nz-option>
+                                    </nz-select>
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.medRecordLevel}}</span> )级病案
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w100 tac" colspan="4" style="border: 0px solid transparent !important;">病案评价人:{{medicalRecordObj?.medRecordAppraiser}}</td>
+                                <td class="w100 taL" colspan="3" style="border: 0px solid transparent !important;">
+                                    日期：
+                                    <nz-date-picker *ngIf="!isPrintNow" [(ngModel)]="data" (ngModelChange)="onChange($event)" style="width:80%" nzDisabled></nz-date-picker>
+                                    <span *ngIf="isPrintNow">{{medicalRecordObj?.appraiserDate}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体内容 End -->
+</div>
+<!-- 表格查询条件Begin -->

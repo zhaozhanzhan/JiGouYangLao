@@ -1,0 +1,667 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p>
+      <span >康复服务基本信息详情</span>
+    </p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <nz-card nzType="inner" nzTitle="个人信息" class="marginBottom24"  >
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzRequired nzFor="name">姓名</nz-form-label>
+            <nz-form-control [nzSm]="16">
+              <nz-input-group nzSearch >
+                <input nz-input  class="oldName" placeholder="长者姓名"  [(ngModel)]="interview.name"  formControlName="name"  id="name" >
+                <div *ngIf="ShowDisabled">
+                  <button nz-button nzType="primary" nzSearch (click)="showOldDialog()" class="chooseOldMan">
+                      选择
+                  </button>
+                </div>
+                <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">姓名不能为空
+                </nz-form-explain>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzRequired nzFor="sex">性别</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select  nzAllowClear nzPlaceHolder="请选择"  [(ngModel)]="interview.sex"  formControlName="sex" id="sex">
+                <nz-option nzValue="男" nzLabel="男"></nz-option>
+                <nz-option nzValue="女" nzLabel="女"></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="validateForm.get('sex').dirty && validateForm.get('sex').errors">性别不能为空</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzRequired nzFor="birthYearMonth">出生年月</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="interview.birthYearMonth"  formControlName="birthYearMonth" id="birthYearMonth" style="width: 100%"></nz-date-picker>
+              <nz-form-explain *ngIf="validateForm.get('birthYearMonth').dirty && validateForm.get('birthYearMonth').errors">出生年月不能为空</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="nation">民族</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"   [(ngModel)]="interview.nation" formControlName="nation" id="nation">
+                <nz-option nzLabel="汉族" nzValue="汉族"></nz-option>
+                <nz-option nzLabel="蒙古族" nzValue="蒙古族"></nz-option>
+                <nz-option nzLabel="回族" nzValue="回族"></nz-option>
+                <nz-option nzLabel="藏族" nzValue="藏族"></nz-option>
+                <nz-option nzLabel="维吾尔族" nzValue="维吾尔族"></nz-option>
+                <nz-option nzLabel="苗族" nzValue="苗族"></nz-option>
+                <nz-option nzLabel="彝族" nzValue="彝族"></nz-option>
+                <nz-option nzLabel="壮族" nzValue="壮族"></nz-option>
+                <nz-option nzLabel="布依族" nzValue="布依族"></nz-option>
+                <nz-option nzLabel="朝鲜族" nzValue="朝鲜族"></nz-option>
+                <nz-option nzLabel="满族" nzValue="满族"></nz-option>
+                <nz-option nzLabel="侗族" nzValue="侗族"></nz-option>
+                <nz-option nzLabel="瑶族" nzValue="瑶族"></nz-option>
+                <nz-option nzLabel="白族" nzValue="白族"></nz-option>
+                <nz-option nzLabel="土家族" nzValue="土家族"></nz-option>
+                <nz-option nzLabel="哈尼族" nzValue="哈尼族"></nz-option>
+                <nz-option nzLabel="哈萨克族" nzValue="哈萨克族"></nz-option>
+                <nz-option nzLabel="傣族" nzValue="傣族"></nz-option>
+                <nz-option nzLabel="黎族" nzValue="黎族"></nz-option>
+                <nz-option nzLabel="傈僳族" nzValue="傈僳族"></nz-option>
+                <nz-option nzLabel="佤族" nzValue="佤族"></nz-option>
+                <nz-option nzLabel="畲族" nzValue="畲族"></nz-option>
+                <nz-option nzLabel="高山族" nzValue="高山族"></nz-option>
+                <nz-option nzLabel="拉祜族" nzValue="拉祜族"></nz-option>
+                <nz-option nzLabel="水族" nzValue="水族"></nz-option>
+                <nz-option nzLabel="东乡族" nzValue="东乡族"></nz-option>
+                <nz-option nzLabel="纳西族" nzValue="纳西族"></nz-option>
+                <nz-option nzLabel="景颇族" nzValue="景颇族"></nz-option>
+                <nz-option nzLabel="柯尔克孜族" nzValue="柯尔克孜族"></nz-option>
+                <nz-option nzLabel="土族" nzValue="土族"></nz-option>
+                <nz-option nzLabel="达斡尔族" nzValue="达斡尔族"></nz-option>
+                <nz-option nzLabel="仫佬族" nzValue="仫佬族"></nz-option>
+                <nz-option nzLabel="羌族" nzValue="羌族"></nz-option>
+                <nz-option nzLabel="布朗族" nzValue="布朗族"></nz-option>
+                <nz-option nzLabel="撤拉族" nzValue="撤拉族"></nz-option>
+                <nz-option nzLabel="毛难族" nzValue="毛难族"></nz-option>
+                <nz-option nzLabel="仡佬族" nzValue="仡佬族"></nz-option>
+                <nz-option nzLabel="锡伯族" nzValue="锡伯族"></nz-option>
+                <nz-option nzLabel="阿昌族" nzValue="阿昌族"></nz-option>
+                <nz-option nzLabel="普米族" nzValue="普米族"></nz-option>
+                <nz-option nzLabel="塔吉克族" nzValue="塔吉克族"></nz-option>
+                <nz-option nzLabel="怒族" nzValue="怒族"></nz-option>
+                <nz-option nzLabel="乌孜别克族" nzValue="乌孜别克族"></nz-option>
+                <nz-option nzLabel="俄罗斯族" nzValue="俄罗斯族"></nz-option>
+                <nz-option nzLabel="鄂温克族" nzValue="鄂温克族"></nz-option>
+                <nz-option nzLabel="德昂族" nzValue="德昂族"></nz-option>
+                <nz-option nzLabel="保安族" nzValue="保安族"></nz-option>
+                <nz-option nzLabel="裕固族" nzValue="裕固族"></nz-option>
+                <nz-option nzLabel="京族" nzValue="京族"></nz-option>
+                <nz-option nzLabel="塔塔尔族" nzValue="塔塔尔族"></nz-option>
+                <nz-option nzLabel="独龙族" nzValue="独龙族"></nz-option>
+                <nz-option nzLabel="鄂伦春族" nzValue="鄂伦春族"></nz-option>
+                <nz-option nzLabel="赫哲族" nzValue="赫哲族"></nz-option>
+                <nz-option nzLabel="门巴族" nzValue="门巴族"></nz-option>
+                <nz-option nzLabel="珞巴族" nzValue="珞巴族"></nz-option>
+                <nz-option nzLabel="基诺族" nzValue="基诺族"></nz-option>
+                <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                <nz-option nzLabel="外国血统中国籍人士" nzValue="外国血统中国籍人士"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="cardNo">身份证号码</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input   [(ngModel)]="interview.cardno" formControlName="cardNo" id="cardNo" >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="phone">联系电话</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input nz-input  [(ngModel)]="interview.phone" formControlName="phone" id="phone" >
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="marriage">婚姻状况</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="interview.marriage" nzPlaceHolder="请选择"  formControlName="marriage" id="marriage">
+                <nz-option nzLabel="未婚" nzValue="未婚"></nz-option>
+                <nz-option nzLabel="已婚" nzValue="已婚"></nz-option>
+                <nz-option nzLabel="丧偶" nzValue="丧偶"></nz-option>
+                <nz-option nzLabel="离婚" nzValue="离婚"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="education">文化程度</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="interview.education"  formControlName="education" id="education">
+                <nz-option nzLabel="小学" nzValue="小学"></nz-option>
+                <nz-option nzLabel="初中" nzValue="初中"></nz-option>
+                <nz-option nzLabel="高中" nzValue="高中"></nz-option>
+                <nz-option nzLabel="中专或技工学校" nzValue="中专或技工学校"></nz-option>
+                <nz-option nzLabel="大专" nzValue="大专"></nz-option>
+                <nz-option nzLabel="大学本科" nzValue="大学本科"></nz-option>
+                <nz-option nzLabel="研究生" nzValue="研究生"></nz-option>
+                <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+       
+
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8" nzFor="selfCareAbility">生活自理程度</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="selfCareAbility" id="selfCareAbility">
+                <nz-option nzLabel="完全自理" nzValue="完全自理"></nz-option>
+                <nz-option nzLabel="需他人部分帮助" nzValue="需他人部分帮助"></nz-option>
+                <nz-option nzLabel="完全依赖他人帮忙" nzValue="完全依赖他人帮忙"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="medicalPayment">医疗支付方式</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="medicalPaymentNumber"  [style.width]="medicalPaymentNumber == '其他'?'40%':'100%'" nzPlaceHolder="请选择"  formControlName="medicalPayment" id="medicalPayment">
+                <nz-option nzLabel="城镇居民基本医疗保险" nzValue="城镇居民基本医疗保险"></nz-option>
+                <nz-option nzLabel="新型农村合作医疗" nzValue="新型农村合作医疗"></nz-option>
+                <nz-option nzLabel="贫困救助" nzValue="贫困救助"></nz-option>
+                <nz-option nzLabel="商业医疗保险" nzValue="商业医疗保险"></nz-option>
+                <nz-option nzLabel="全公费" nzValue="全公费"></nz-option>
+                <nz-option nzLabel="全自费" nzValue="全自费"></nz-option>
+                <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+              </nz-select>
+              <input nz-input  placeholder="请输入费用支付方式" style="width: 60%;" formControlName="otherPayment"
+              id="otherPayment" *ngIf="medicalPaymentNumber == '其他'" > 
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="address">住址</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <input nz-input formControlName="address" [(ngModel)]="interview.address" id="address">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+    </form>
+  </nz-card>
+
+
+  <nz-card nzType="inner" nzTitle="残疾信息" class="marginBottom24" >
+      <form nz-form [formGroup]="validateForm">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisVision">视力</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisVision" id="mjrDisVision">
+                    <nz-option nzLabel="盲" nzValue="盲"></nz-option>
+                    <nz-option nzLabel="低视力" nzValue="低视力"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisListen">听力</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisListen" id="mjrDisListen">
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                    <nz-option nzLabel="左" nzValue="左"></nz-option>
+                    <nz-option nzLabel="右" nzValue="右"></nz-option>
+                    <nz-option nzLabel="左和右" nzValue="左和右"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisIntelligence">智力</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisIntelligence" id="mjrDisIntelligence">
+                    <nz-option nzLabel="有" nzValue="有"></nz-option>
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisSpirit">精神</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisSpirit" id="mjrDisSpirit">
+                    <nz-option nzLabel="有" nzValue="有"></nz-option>
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisLang">言语</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisLang" id="mjrDisLang">
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                    <nz-option nzLabel="失语" nzValue="失语"></nz-option>
+                    <nz-option nzLabel="发音障碍" nzValue="发音障碍"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="mjrDisBody">肢体</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="mjrDisBody" id="mjrDisBody">
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                    <nz-option nzLabel="偏瘫" nzValue="偏瘫"></nz-option>
+                    <nz-option nzLabel="截瘫" nzValue="截瘫"></nz-option>
+                    <nz-option nzLabel="脑瘫" nzValue="脑瘫"></nz-option>
+                    <nz-option nzLabel="截/缺肢" nzValue="截/缺肢"></nz-option>
+                    <nz-option nzLabel="儿麻后遗症" nzValue="儿麻后遗症"></nz-option>
+                    <nz-option nzLabel="关节疾患" nzValue="关节疾患"></nz-option>
+                    <nz-option nzLabel="畸形" nzValue="畸形"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="disLevel">残疾等级</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  formControlName="disLevel" id="disLevel">
+                    <nz-option nzLabel="无" nzValue="无"></nz-option>
+                    <nz-option nzLabel="一级" nzValue="一级"></nz-option>
+                    <nz-option nzLabel="二级" nzValue="二级"></nz-option>
+                    <nz-option nzLabel="三级" nzValue="三级"></nz-option>
+                    <nz-option nzLabel="四级" nzValue="四级"></nz-option>
+                    <nz-option nzLabel="未评定" nzValue="未评定"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="disCauseTime">致残时间</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-date-picker  nzFormat="yyyy-MM-dd" formControlName="disCauseTime" id="disCauseTime" ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="disCause">残疾原因</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                <nz-select style="width: 100%"  nzMode="tags" formControlName="disCause" id="disCause">
+                  <nz-option nzLabel="遗传" nzValue="遗传"></nz-option>
+                  <nz-option nzLabel="先天" nzValue="先天"></nz-option>
+                  <nz-option nzLabel="疾病" nzValue="疾病"></nz-option>
+                  <nz-option nzLabel="药物中毒" nzValue="药物中毒"></nz-option>
+                  <nz-option nzLabel="创伤或意外损伤" nzValue="创伤或意外损伤"></nz-option>
+                  <nz-option nzLabel="有害环境" nzValue="有害环境"></nz-option>
+                  <nz-option nzLabel="原因不明" nzValue="原因不明"></nz-option>
+                  <nz-option nzLabel="围产期因素" nzValue="围产期因素"></nz-option>
+                  <nz-option nzLabel="接受热辐射(桑拿、睡热炕等)" nzValue="接受热辐射(桑拿、睡热炕等)"></nz-option>
+                  <nz-option nzLabel="噪声" nzValue="噪声"></nz-option>
+                  <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+  </nz-card>
+
+
+
+  <nz-card nzType="inner" nzTitle="功能训练需求" class="marginBottom24"  >
+      <form nz-form  [formGroup]="validateForm">
+        <div nz-row [nzGutter]="24">
+           
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="funcTrainListenLang">听力语言</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select style="width: 100%"   nzPlaceHolder="请选择"  nzMode="tags" formControlName="funcTrainListenLang" id="funcTrainListenLang">
+                    <nz-option nzLabel="听觉语言能力训练" nzValue="听觉语言能力训练"></nz-option>
+                    <nz-option nzLabel="言语矫治" nzValue="言语矫治"></nz-option>
+                    <nz-option nzLabel="双语训练" nzValue="双语训练"></nz-option>
+                    <nz-option nzLabel="手语指导" nzValue="手语指导"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="funcTrainIntelligence">智力</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="funcTrainIntelligence" id="funcTrainIntelligence">
+                    <nz-option nzLabel="运动能力训练" nzValue="运动能力训练"></nz-option>
+                    <nz-option nzLabel="感知能力训练" nzValue="感知能力训练"></nz-option>
+                    <nz-option nzLabel="认知能力训练" nzValue="认知能力训练"></nz-option>
+                    <nz-option nzLabel="生活自理能力训练" nzValue="生活自理能力训练"></nz-option>
+                    <nz-option nzLabel="语言交流训练" nzValue="语言交流训练"></nz-option>
+                    <nz-option nzLabel="社会适应能力训练" nzValue="社会适应能力训练"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="funcTrainSpirit">精神</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="funcTrainSpirit" id="funcTrainSpirit">
+                    <nz-option nzLabel="工(农)疗" nzValue="工(农)疗"></nz-option>
+                    <nz-option nzLabel="社会适应训练" nzValue="社会适应训练"></nz-option>
+                    <nz-option nzLabel="作业治疗" nzValue="作业治疗"></nz-option>
+                    <nz-option nzLabel="娱(体)疗" nzValue="娱(体)疗"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="funcTrainBody">肢体</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="funcTrainBody" id="funcTrainBody">
+                    <nz-option nzLabel="运动功能训练" nzValue="运动功能训练"></nz-option>
+                    <nz-option nzLabel="生活自理训练" nzValue="生活自理训练"></nz-option>
+                    <nz-option nzLabel="社会适应训练" nzValue="社会适应训练"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="funcTrainVision">视力</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                <nz-select style="width: 100%"  nzPlaceHolder="请选择" nzMode="tags" formControlName="funcTrainVision" id="funcTrainVision">
+                  <!-- <nz-option *ngFor="let option of funcTrainVision" [nzLabel]="option.label" [nzValue]="option.value"></nz-option> -->
+                  <nz-option nzLabel="盲人定向行走训练" nzValue="盲人定向行走训练"></nz-option>
+                    <nz-option nzLabel="日常生活技能训练" nzValue="日常生活技能训练"></nz-option>
+                    <nz-option nzLabel="社会适应训练" nzValue="社会适应训练"></nz-option>
+                    <nz-option nzLabel="低视力功能训练" nzValue="低视力功能训练"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="recMedReq ">康复医疗需求</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select style="width: 100%"  nzPlaceHolder="请选择" nzMode="tags" formControlName="recMedReq" id="recMedReq">
+                    <nz-option nzLabel="医疗诊断" nzValue="医疗诊断"></nz-option>
+                    <nz-option nzLabel="残疾评定" nzValue="残疾评定"></nz-option>
+                    <nz-option nzLabel="白内障复明手术" nzValue="白内障复明手术"></nz-option>
+                    <nz-option nzLabel="人工耳蜗植入" nzValue="人工耳蜗植入"></nz-option>
+                    <nz-option nzLabel="肢体矫治手术" nzValue="肢体矫治手术"></nz-option>
+                    <nz-option nzLabel="理疗" nzValue="理疗"></nz-option>
+                    <nz-option nzLabel="传统医疗" nzValue="传统医疗"></nz-option>
+                    <nz-option nzLabel="医疗、康复护理" nzValue="医疗、康复护理"></nz-option>
+                    <nz-option nzLabel="精神病服药" nzValue="精神病服药"></nz-option>
+                    <nz-option nzLabel="家庭病床" nzValue="家庭病床"></nz-option>
+                    <nz-option nzLabel="住院转诊" nzValue="住院转诊"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+      </form>
+  </nz-card>
+
+  <nz-card nzType="inner" nzTitle="辅助器具需求" class="marginBottom24" >
+      <form nz-form [formGroup]="validateForm">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevVision">视力</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="assDevVision" id="assDevVision">
+                    <nz-option nzLabel="助视器" nzValue="助视器"></nz-option>
+                    <nz-option nzLabel="盲杖" nzValue="盲杖"></nz-option>
+                    <nz-option nzLabel="盲人书写用具" nzValue="盲人书写用具"></nz-option>
+                    <nz-option nzLabel="盲人报时用具" nzValue="盲人报时用具"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevListenLang">听力语言</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="assDevListenLang" id="assDevListenLang">
+                    <nz-option nzLabel="助听器" nzValue="助听器"></nz-option>
+                    <nz-option nzLabel="人工耳蜗" nzValue="人工耳蜗"></nz-option>
+                    <nz-option nzLabel="语言训练用具" nzValue="语言训练用具"></nz-option>
+                    <nz-option nzLabel="会话交流用具" nzValue="会话交流用具"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevBody">智力</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="assDevBody" id="assDevBody">
+                    <nz-option nzLabel="认知图片" nzValue="认知图片"></nz-option>
+                    <nz-option nzLabel="认知玩具" nzValue="认知玩具"></nz-option>
+                    <nz-option nzLabel="启智用具" nzValue="启智用具"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevSpirit">精神</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" nzMode="tags" formControlName="assDevSpirit" id="assDevSpirit">
+                    <nz-option nzLabel="文体用品" nzValue="文体用品"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevIntelligence">肢体</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="assDevIntelligence" id="assDevIntelligence">
+                    <nz-option nzLabel="生活自理器具" nzValue="生活自理器具"></nz-option>
+                    <nz-option nzLabel="辅助坐、卧、翻身、站立器具" nzValue="辅助坐、卧、翻身、站立器具"></nz-option>
+                    <nz-option nzLabel="拐杖及助行器具" nzValue="拐杖及助行器具"></nz-option>
+                    <nz-option nzLabel="轮椅、手摇三轮车等代步工具" nzValue="轮椅、手摇三轮车等代步工具"></nz-option>
+                    <nz-option nzLabel="防压疮垫" nzValue="防压疮垫"></nz-option>
+                    <nz-option nzLabel="集尿器具" nzValue="集尿器具"></nz-option>
+                    <nz-option nzLabel="坐便器具" nzValue="坐便器具"></nz-option>
+                    <nz-option nzLabel="阅读书写器具" nzValue="阅读书写器具"></nz-option>
+                    <nz-option nzLabel="操作电脑辅助器具" nzValue="操作电脑辅助器具"></nz-option>
+                    <nz-option nzLabel="装配假肢" nzValue="装配假肢"></nz-option>
+                    <nz-option nzLabel="装配矫形器" nzValue="装配矫形器"></nz-option>
+                    <nz-option nzLabel="其他器具" nzValue="其他器具"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="assDevOther">其他服务</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" nzMode="tags" formControlName="assDevOther" id="assDevOther">
+                    <nz-option nzLabel="购买" nzValue="购买"></nz-option>
+                    <nz-option nzLabel="租借" nzValue="租借"></nz-option>
+                    <nz-option nzLabel="咨询" nzValue="咨询"></nz-option>
+                    <nz-option nzLabel="信息" nzValue="信息"></nz-option>
+                    <nz-option nzLabel="维修服务" nzValue="维修服务"></nz-option>
+                    <nz-option nzLabel="家具环境" nzValue="家具环境"></nz-option>
+                    <nz-option nzLabel="无障碍改造" nzValue="无障碍改造"></nz-option>
+                    <nz-option nzLabel="指导制作辅助器具" nzValue="指导制作辅助器具"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="psyService">心理服务</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择"  nzMode="tags" formControlName="psyService" id="psyService">
+                    <nz-option nzLabel="心理咨询" nzValue="心理咨询"></nz-option>
+                    <nz-option nzLabel="心理治疗" nzValue="心理治疗"></nz-option>
+                    <nz-option nzLabel="家庭成员心理支持" nzValue="家庭成员心理支持"></nz-option>
+                    <nz-option nzLabel="其他" nzValue="其他"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="otherReq">其他需求</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                  <textarea rows="4" nz-input formControlName="otherReq" id="otherReq"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+              <nz-form-control [nzSpan]="20">
+                  <textarea rows="4" nz-input formControlName="comment" id="comment"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+  </nz-card>
+
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonalInfo()" [nzLoading]="savePersonalBtnLoading">保存</button>
+  </div>
+
+</nz-card>
+<!-- 表单区域End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 选择老人时，显示的弹窗 -->
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " [nzTitle]="oldModalTitle " [nzContent]="oldModalContent
+      " (nzOnCancel)="cancelOldDialog() "  nzWidth="800">
+  <ng-template #oldModalTitle>
+    请选择长者
+  </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+      <input type="text " nz-input placeholder="按长者姓名检索 " [(ngModel)]="searchOldName ">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)" nzShowSizeChanger="false" nzFrontPagination="false">
+      <thead>
+        <tr>
+          <th class="tac ftwB">姓名</th>
+          <th class="tac ftwB">性别</th>
+          <th class="tac ftwB">出生年月</th>
+          <th class="tac ftwB">联系电话</th>
+          <th class="tac ftwB">咨询日期</th>
+          <!-- <th class="tac ftwB">预约方式</th>
+          <th class="tac ftwB">预计到访</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of basicTable.data; let idx = index;" (click)="chooseOld(x)">
+          <td class="tac">{{x.name}}</td>
+          <td class="tac">{{x.sex}}</td>
+          <td class="tac">{{x.birthYearMonth}}</td>
+          <td class="tac">{{x.phone}}</td>
+          <td class="tac">{{x.createDate | date:'yyyy-MM-dd'}}</td>
+          <!-- <td class="tac">
+            <span *ngIf="x.consultingType == 1">微信咨询</span>
+            <span *ngIf="x.consultingType == 2">电话咨询</span>
+            <span *ngIf="x.consultingType == 3">来院咨询</span>
+          </td>
+          <td class="tac">{{x.estimatedTime | date:'yyyy-MM-dd'}}</td> -->
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>
+

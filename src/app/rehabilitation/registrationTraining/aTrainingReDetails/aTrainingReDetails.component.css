@@ -1,0 +1,24 @@
+:host /deep/ .ant-calendar-picker {
+    width: 100% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 100% !important;
+}
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+.colorN {
+    color: red;
+    padding-right: 3px;
+}
+
+.marginBottom24 {
+    margin-top: 10px
+}

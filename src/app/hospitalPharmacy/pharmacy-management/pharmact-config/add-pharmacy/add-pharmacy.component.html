@@ -1,0 +1,20 @@
+<nz-card nzTitle="药房配置" [nzExtra]="extraTemplate">
+    <form nz-form [formGroup]="validateForm">
+      <div nz-row>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="name" nzRequired>药房名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input id="name" formControlName="medRoomName">
+            <nz-form-explain *ngIf="validateForm.get('medRoomName').dirty && validateForm.get('medRoomName').errors">药房名称不能为空</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+    <div style="text-align:center;margin-top: 30px;">
+      <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSubmit()" [nzLoading]="isSaveBtnLoading">保存</button>
+    </div>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <button nz-button nzType="default" (click)="back()">返回</button>
+  </ng-template>
+  

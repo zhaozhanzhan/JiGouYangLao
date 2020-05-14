@@ -1,0 +1,58 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+
+<nz-card nzTitle="排班模板列表" [nzExtra]="extraTemplate">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list"
+    [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">模板名称</th>
+        <th class="textCenter">模板详情</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{data.shift}}</td>
+        <td class="textCenter">{{data.name}}</td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" (click)="turnToEdit(data)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="javascript:void(0)" (click)="deleteSchTemplet(data.id)" class="colorF81D22">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>
+
+<!-- <div class="card">
+  <div class="card-header">
+    <i class="fa fa-align-justify"></i>班次模板列表
+    <button type="button" class="btn btn-info add-button pull-right" (click)="turnToAddSchTemplet()">添加</button>
+  </div>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>模板名称</th>
+          <th>模板内容</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let schTemplet of schTempletList">
+          <td>{{schTemplet.shift}}</td>
+          <td>{{schTemplet.name}}</td>
+          <td style="width: 200px;">
+            <button type="button" class="btn btn-link" style="color:#63c2de;padding:0rem" (click)="turnToEditSchTemplet(schTemplet)">编辑</button>
+            <button type="button" class="btn btn-link" style="color:#f95372;padding:0rem" (click)="deleteSchTemplet(schTemplet)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<c-pagination [total]="schTempletServeData.totalElements" (onPageChanged)="onPageChanged($event)"></c-pagination> -->

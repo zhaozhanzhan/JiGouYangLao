@@ -1,0 +1,217 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="采购申请" [nzExtra]="btnArea">
+    <nz-card nzType="inner">
+        <form nz-form [formGroup]="formData">
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="title">申请概述</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <input nz-input formControlName="title" id="title" class="form_input" maxlength="20" />
+                    <nz-form-explain [hidden]="!(formData.get('title').dirty && formData.get('title').errors)">申请概述不能为空</nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="applyDate">申请时间</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" formControlName="applyDate" id="applyDate" [nzStyle]="{ width: '400px' }"></nz-date-picker>
+                    <nz-form-explain [hidden]="!(formData.get('applyDate').dirty &&formData.get('applyDate').errors)">申请时间不能为空</nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="applyCompany">申请单位</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <input nz-input formControlName="applyCompany" id="applyCompany" class="form_input" maxlength="20" />
+                    <nz-form-explain [hidden]="!(formData.get('applyCompany').dirty && formData.get('applyCompany').errors)">申请单位不能为空</nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+            <!-- <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="applyCompany">申请部门</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="applyCompany" class="form_input">
+                        <nz-option *ngFor="let department of departmentList" [nzLabel]="department.name" [nzValue]="department.id"></nz-option>
+                    </nz-select>
+                    <nz-form-explain [hidden]="!(formData.get('applyCompany').dirty &&formData.get('applyCompany').errors)">申请部门不能为空</nz-form-explain>
+                </nz-form-control>
+            </nz-form-item> -->
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzRequired nzFor="applyer">申请人</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <input class="form_input" nz-input formControlName="applyer" id="applyer" />
+                    <nz-form-explain [hidden]="!(formData.get('applyer').dirty &&formData.get('applyer').errors)">申请人不能为空</nz-form-explain>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="comment">备注</nz-form-label>
+                <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+                    <textarea class="form_input" rows="4" nz-input formControlName="comment" id="comment"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+
+    <ng-template #btnListAdd>
+        <button nz-button nzType="dashed" *ngIf="!(getParam.state == 'detail')" (click)="openGoodsModal('add')">
+            <i class="anticon anticon-plus"></i>添加药品
+        </button>
+        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="print_div" [printCSS]="printCSS" (printComplete)="printComplete()"></e-ngx-print>
+        <button nz-button nzType="primary" *ngIf="(getParam.state == 'detail') && !isPrintNow" (click)="clickPrint($event)">打印</button>
+    </ng-template>
+    <nz-card class="mt10" nzType="inner" nzTitle="采购药品" [nzExtra]="btnListAdd">
+        <nz-table #goodsTable [nzData]="goodsList" [nzHideOnSinglePage]="true" nzBordered [nzFrontPagination]="false">
+            <thead>
+                <tr>
+                    <th class="tac">序号</th>
+                    <th class="tac">药品名称</th>
+                    <th class="tac">数量</th>
+                    <th class="tac" style="font-size:14px;padding-left: 2px;">采购单价</th>
+                    <th class="tac">备注</th>
+                    <th class="tac" *ngIf="!(getParam.state == 'detail')">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of goodsTable.data; let i = index">
+                    <td class="maxW50 tac">{{ i + 1 }}</td>
+                    <td class="maxW150 tac">{{ x?.medName }}</td>
+                    <td class="maxW80 tac">{{ x?.num }}</td>
+                    <td class="maxW80 tac" style="font-size:14px;padding-left: 2px;height: 20px;">{{ x?.reqPrice }}</td>
+                    <td class="maxW150 tac">{{ x?.medComment }}</td>
+                    <td class="maxW50 tac" *ngIf="!(getParam.state == 'detail')">
+                        <a href="javascript:void(0)" (click)="editDrug(x,'edit',i)">编辑</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a href="javascript:void(0)" nz-popconfirm class="colorF00" nzTitle="确定删除该药品?" (nzOnConfirm)="delDrug(i)" (nzOnCancel)="false">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+    <div class="tac mt30">
+        <button class="saveBtn" *ngIf="!(getParam.state == 'detail')" nz-button nzType="primary" nzSize="large" [nzLoading]="isBtnLoading" (click)="saveForm()">保存</button>
+    </div>
+    <!--<nz-card class="mt10" nzType="inner" nzTitle="审批信息" *ngIf="approveInfo.isPass">
+        <div nz-row nzType="flex">
+            <div nz-col nzSpan="24">
+                <nz-form-item nzFlex>
+                    <nz-form-label>审批人</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input class="form_input" maxlength="20" readonly [ngModel]="approveInfo.applyName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24" *ngIf="pageMode == 'info'">
+                <nz-form-item nzFlex>
+                    <nz-form-label>审批时间</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input class="form_input" maxlength="20" readonly [ngModel]="approveInfo?.applyDate | date: 'yyyy-MM-dd HH:mm:ss'" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24">
+                <nz-form-item nzFlex>
+                    <nz-form-label>电子签名</nz-form-label>
+                    <nz-form-control>
+                        <mirr-electronicSign [imgUrl]="approveInfo.approvalUrl" [isShowSign]="false" #operatorSign>
+                        </mirr-electronicSign>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <div style="text-align:center;margin-top: 30px;" *ngIf="pageMode == 'add' || pageMode == 'edit'">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()" [nzLoading]="isBtnLoading">
+            保存
+        </button>
+    </div> -->
+</nz-card>
+<!-- 表单区域End -->
+
+<!-- 采购物品弹出框 Begin -->
+<nz-modal [(nzVisible)]="isShowGoodsBox" [nzTitle]="drugDataState == 'add'?'添加药品':'修改药品'" nzWidth="900" (nzOnCancel)="isShowGoodsBox = false" (nzOnOk)="saveGoods()">
+    <form nz-form [formGroup]="goodsData">
+        <div nz-row nzType="flex">
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired>药品名称</nz-form-label>
+                    <nz-form-control>
+                        <nz-select *ngIf="!goodsData.get('rMedId').value" class="dialog_input" nzShowSearch nzAllowClear nzPlaceHolder="请选择" (ngModelChange)="selDrug($event)" (nzOnSearch)="serDrug($event)" [(ngModel)]="selDrugObj" [ngModelOptions]="{standalone: true}">
+                            <nz-option *ngFor="let x of drugList" [nzDisabled]="selIdArr.indexOf(x.id) !== -1" [nzLabel]="x.drugName" [nzValue]="x.id+'|'+x.drugName+'|'+x.salePrice"></nz-option>
+                        </nz-select>
+                        <input *ngIf="goodsData.get('rMedId').value" class="dialog_input" style="cursor:not-allowed;" nz-input formControlName="medName" [attr.disabled]="goodsData.get('rMedId').value" />
+                        <nz-form-explain class="colorF00" [hidden]="selDrugObj">药品名称不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="lastPurchasePrice">最近采购单价</nz-form-label>
+                    <nz-form-control>
+                        <nz-input-number class="dialog_input" nzMin="0" formControlName="lastPurchasePrice" id="lastPurchasePrice" [nzDisabled]="true"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="reqPrice">采购单价</nz-form-label>
+                    <nz-form-control>
+                        <nz-input-number class="dialog_input" nzMin="0" formControlName="reqPrice" id="reqPrice"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col class="w50p">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzRequired nzFor="num">数量</nz-form-label>
+                    <nz-form-control>
+                        <nz-input-number class="dialog_input" [nzMin]="0" [nzStep]="5" formControlName="num" id="num"></nz-input-number>
+                        <nz-form-explain [hidden]="!(goodsData.get('num').dirty && goodsData.get('num').errors)">药品数量不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="medComment">备注</nz-form-label>
+                    <nz-form-control>
+                        <textarea nz-input class="dialog_areaInput" rows="3" maxlength="20" formControlName="medComment" id="medComment"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</nz-modal>
+<!-- 采购物品弹出框 End -->
+
+<!-- 表格打印 Begin -->
+<div [hidden]="!isPrintNow" #print_div>
+    <div style="width:98%;text-align: center;margin: 0 auto">
+        <h1>{{ tagName }}药品采购申请表</h1>
+        <div style="text-align:right;margin-bottom: 20px;">
+            {{ month }}月{{ day }}日
+        </div>
+    </div>
+    <table style="border-collapse:collapse;width: 98%;margin: 0 auto;" border="1" id="printTable">
+        <thead>
+            <tr>
+                <th class="tac" style="font-size:14px;padding-left: 2px;">药品名称</th>
+                <th class="tac" style="font-size:14px;padding-left: 2px;">数量</th>
+                <th class="tac" style="font-size:14px;padding-left: 2px;">采购单价</th>
+                <th class="tac" style="font-size:14px;padding-left: 2px;">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of goodsList; let i = index">
+                <td class="maxW50 tac" style="font-size:14px;padding-left: 2px;height: 20px;">{{ x?.medName }}</td>
+                <td class="maxW150 tac" style="font-size:14px;padding-left: 2px;height: 20px;">{{ x?.num }}</td>
+                <td class="maxW80 tac" style="font-size:14px;padding-left: 2px;height: 20px;">{{ x?.reqPrice }}</td>
+                <td class="maxW150 tac" style="font-size:14px;padding-left: 2px;height: 20px;">{{ x?.medComment }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="width:60%;float:right;margin-top: 20px;">
+        <div style="width:50%;display:inline-block">申请部门：{{ departmentName }}</div>
+        <div style="width:50%;display:inline-block">批准：</div>
+    </div>
+</div>
+<!-- 表格打印 End -->

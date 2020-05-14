@@ -1,0 +1,113 @@
+<!-- 表格查询条件Begin -->
+<!-- <ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>角色名</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            style="width:120px"
+            [(ngModel)]="reqObj.name"
+            placeholder="检索角色名"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div> 
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="updateList(true)"
+            style="margin-left: 10px;"
+          >
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template> -->
+<!-- 表格查询条件End -->
+<ng-template #btnAdd>
+  <button nz-button nzType="primary" (click)="showOldDialog()">
+    添加
+  </button>
+</ng-template>
+<nz-card nzTitle="患者记录评估表" [nzExtra]="btnAdd">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list"
+    [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">姓名</th>
+        <th class="textCenter">性别</th>
+        <th class="textCenter">年龄</th>
+        <th class="textCenter">病区</th>
+        <th class="textCenter">住院号</th>
+        <th class="textCenter">诊断</th>
+        <th class="textCenter">评估类型</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.basicInfo?.name }}</td>
+        <td class="textCenter">{{ data?.basicInfo?.sex }}</td>
+        <td class="textCenter">{{ data?.basicInfo?.age }}</td>
+        <td class="textCenter">{{ data?.basicInfo?.sickWardName }}</td>
+        <td class="textCenter">{{ data?.basicInfo?.admissionNo }}</td>
+        <td class="textCenter">{{ data?.basicInfo?.judgement }}</td>
+        <td class="textCenter">{{ data?.assessmentType }}</td>
+        <td class="textCenter">
+          <a href="javascript:void(0)" roleBtnControll [roleBtnKey]="'EditMenuBtn'" (click)="gogogo(data,data.assessmentType == '入院评估' ? 1 : 2,'edit')">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>
+
+
+
+<!-- 选择老人时，显示的弹窗 -->
+<nz-modal [nzFooter]="null " [(nzVisible)]="isShowOldDialog " nzTitle="请选择长者" (nzOnCancel)="isShowOldDialog = false;olderName.value = ''" nzWidth="800">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton " style="margin-bottom: 15px ">
+            <input type="text " nz-input placeholder="按长者姓名检索 " #olderName (keyup)="serachOlder(olderName.value)">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="loadingOldList(olderName.value)">
+                <i class="anticon anticon-search"></i>
+            </button>
+        </ng-template>
+
+        <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="false" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading">
+            <thead>
+                <tr>
+                    <th class="tac ftwB">姓名</th>
+                    <th class="tac ftwB">性别</th>
+                    <th class="tac ftwB">出生年月</th>
+                    <th class="tac ftwB">联系电话</th>
+                    <!-- <th class="tac ftwB">咨询日期</th> -->
+                    <th class="tac ftwB">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of basicTable.data; let idx = index;" (click)="chooseOld(x)">
+                    <td class="tac">{{x.name}}</td>
+                    <td class="tac">{{x.sex}}</td>
+                    <td class="tac">{{x.birthDay}}</td>
+                    <td class="tac">{{x.phone}}</td>
+                    <!-- <td class="tac">{{x.createDate | date:'yyyy-MM-dd'}}</td> -->
+                    <td class="tac">
+                      <a href="javascript: void(0)" (click)="gogogo(x,1)">入院评估</a>
+                      <nz-divider nzType="vertical"></nz-divider>
+                      <a href="javascript: void(0)" (click)="gogogo(x,2)">术前评估</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+</nz-modal>

@@ -1,0 +1,50 @@
+:host ::ng-deep .long-div {
+    min-height: 800px;
+    overflow-y: scroll;
+}
+
+:host ::ng-deep .long-div-inner {
+    min-height: 800px;
+}
+
+:host ::ng-deep .long-div .ant-back-top {
+    right: 150px;
+}
+
+:host ::ng-deep strong {
+    color: rgba(64, 64, 64, 0.6);
+}
+
+.container {
+    padding: 0
+}
+:host ::ng-deep .ant-drawer-body{
+    padding:0px !important;
+
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+ul li{
+   list-style: none;
+   cursor:pointer;
+}
+
+ul li:hover{
+    color:#63c2de;
+}
+h5 {
+    color: rgb(49, 48, 48);
+    color: rgb(49, 48, 48);
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.marginLeft {
+    margin-left: 10px;
+}

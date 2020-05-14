@@ -1,0 +1,350 @@
+<div nz-row nzGutter="16">
+  <div nz-col nzSpan="8">
+    <!-- 消防区域列表 -->
+    <div class="PatrolCycle">
+      <span class="PatrolCycleSpan">消防巡查周期</span>
+      <nz-radio-group [(ngModel)]="patrolCycleParam.checkCycle" nzDisabled>
+        <label nz-radio nzValue="1">日</label>
+        <label nz-radio nzValue="2">周</label>
+        <label nz-radio nzValue="3">月</label>
+      </nz-radio-group>
+      <a
+        href="javascript:void(0)"
+        (click)="showPatrolCycle($event)"
+        class="PatrolCycleEdit"
+        >修改</a
+      >
+    </div>
+  </div>
+</div>
+
+<div nz-row style="margin-top: 20px" nzGutter="16">
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="消防区域列表" [nzExtra]="extraAreaTemplate">
+      <nz-table
+        #basicTable
+        [nzData]="areaArray"
+        [nzBordered]="'true'"
+        nzShowSizeChanger
+        [nzLoading]="isAreaTableLoading"
+        [nzTotal]="resultAreaData.totalElements"
+        [nzShowTotal]="areaTotal"
+        [(nzPageIndex)]="queryAreaParams.page"
+        [(nzPageSize)]="queryAreaParams.size"
+        (nzPageIndexChange)="loadingAreaArray()"
+        (nzPageSizeChange)="loadingAreaArray(true)"
+        [nzShowSizeChanger]="false"
+        [nzFrontPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th>区域名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of areaArray"
+            (click)="choosedArea(data.id, data.name)"
+            [ngClass]="{
+              selectedRow_true: selectedAreaId == data.id,
+              selectedRow_false: selectedAreaId != data.id
+            }"
+          >
+            <td>{{ data.name }}</td>
+            <td>
+              <a href="javascript:void(0)" (click)="doEditArea(data)">编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a
+                href="javascript:void(0)"
+                (click)="del(data.id, 'fireArea')"
+                class="red"
+                >删除</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <ng-template #extraAreaTemplate>
+      <a href="javascript:void(0)" (click)="doEditArea(null)">添加</a>
+    </ng-template>
+    <ng-template #areaTotal
+      >共&nbsp;{{ resultAreaData.totalElements }}&nbsp;条</ng-template
+    >
+  </div>
+  <div nz-col nzSpan="16">
+    <!-- 消防区域巡查点列表 -->
+    <nz-card nzTitle="{{selectedAreaName}}" [nzExtra]="extraPointTemplate">
+      <nz-table
+        #basicTable1
+        [nzData]="pointArray"
+        [nzBordered]="'true'"
+        nzShowSizeChanger
+        [nzLoading]="isPointTableLoading"
+        [nzTotal]="resultPointData.totalElements"
+        [nzShowTotal]="totalPointTotal"
+        [(nzPageIndex)]="queryPointParams.page"
+        [(nzPageSize)]="queryPointParams.size"
+        (nzPageIndexChange)="queryPointArray(false)"
+        (nzPageSizeChange)="queryPointArray(true)"
+        [nzShowSizeChanger]="true"
+        [nzFrontPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th>巡查点名称</th>
+            <th>是否配备消防栓</th>
+            <th>是否配备灭火器</th>
+            <th>是否配备其他</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of pointArray">
+            <td>{{ data.name }}</td>
+            <td>
+              <span *ngIf="data.hasHydrant == false">否</span>
+              <span *ngIf="data.hasHydrant == true">是</span>
+            </td>
+            <td>
+              <span *ngIf="data.hasFireExtinguisher == false">否</span>
+              <span *ngIf="data.hasFireExtinguisher == true">是</span>
+            </td>
+            <td>
+              <span *ngIf="data.hasOther == false">否</span>
+              <span *ngIf="data.hasOther == true">是</span>
+            </td>
+            <td>
+              <a href="javascript:void(0)" (click)="doShowPointDialog(data)"
+                >编辑</a
+              >
+              <nz-divider nzType="vertical"></nz-divider>
+              <a
+                href="javascript:void(0)"
+                (click)="del(data.id, 'firePatrol')"
+                class="red"
+                >删除</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <ng-template #extraPointTemplate>
+      <a href="javascript:void(0)" (click)="doShowPointDialog()">添加</a>
+    </ng-template>
+    <ng-template #totalPointTotal
+      >共&nbsp;{{ resultPointData.totalElements }}&nbsp;条</ng-template
+    >
+  </div>
+</div>
+
+<!-- 修改消防巡查周期 -->
+<nz-modal
+  [(nzVisible)]="isPatrolCycleDialogShow"
+  nzTitle="消防巡查周期"
+  (nzOnCancel)="isPatrolCycleDialogShow = false"
+  (nzOnOk)="patrolCycleOk()"
+>
+  <span class="PatrolCycleSpan">消防巡查周期</span>
+  <nz-radio-group [(ngModel)]="selectedPatrolCycle">
+    <label nz-radio nzValue="1">日</label>
+    <label nz-radio nzValue="2">周</label>
+    <label nz-radio nzValue="3">月</label>
+  </nz-radio-group>
+</nz-modal>
+
+<!-- 编辑消防区域名称对话框 -->
+<nz-modal
+  [(nzVisible)]="isEditAreaDialogShow"
+  nzTitle="编辑消防区域"
+  (nzOnCancel)="isEditAreaDialogShow = false"
+  (nzOnOk)="doAreaDialogSave()"
+  [nzOkLoading]="isAreaSaveLoading"
+>
+  <div>
+    <span>请输入名称</span>
+    <input
+      nz-input
+      placeholder="请输入消防区域名称"
+      [(ngModel)]="saveAreaParams.name"
+      style="width: 60%;margin-left:20px"
+      maxlength="15"
+    />
+  </div>
+</nz-modal>
+
+<!-- 编辑消防巡查点对话框 -->
+<nz-modal
+  [(nzVisible)]="isEditPointDialogShow"
+  nzTitle="编辑巡查点"
+  (nzOnCancel)="isEditPointDialogShow = false"
+  (nzOnOk)="savePoint()"
+  [nzOkLoading]="isSavePointLoading"
+>
+  <div nz-row nzAlign="middle" nzType="flex" nzGutter="16">
+    <div nz-col nzSpan="4" style="text-align: right;">名称</div>
+    <div nz-col nzSpan="18">
+      <input
+        nz-input
+        placeholder="请输入巡查点名称"
+        [(ngModel)]="savePointParams.name"
+      />
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;">是否配备</div>
+    <div nz-col nzSpan="18">
+      <label nz-checkbox [(ngModel)]="savePointParams.hasHydrant">消防栓</label>
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+    *ngIf="savePointParams.hasHydrant"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+      <nz-checkbox-wrapper style="width: 100%;">
+        <div nz-row>
+          <div
+            nz-col
+            nzSpan="8"
+            *ngFor="let item of savePointParams.fireHydrant; let i = index"
+          >
+            <label
+              nz-checkbox
+              nzValue="item.value"
+              [(ngModel)]="item.checked"
+              >{{ item.label }}</label
+            >
+          </div>
+        </div>
+      </nz-checkbox-wrapper>
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+      <label nz-checkbox [(ngModel)]="savePointParams.hasFireExtinguisher"
+        >灭火器</label
+      >
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+    *ngIf="savePointParams.hasFireExtinguisher"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+      数量
+      <nz-input-number
+        [(ngModel)]="savePointParams.linkedFireExtinguisherNum"
+        [nzMin]="0"
+        [nzMax]="100"
+        [nzStep]="1"
+        style="width: 100px"
+      ></nz-input-number>
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    style="margin-top:5px;"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+      <label nz-checkbox [(ngModel)]="savePointParams.hasOther">其他</label>
+    </div>
+  </div>
+
+  <div
+    nz-row
+    nzAlign="middle"
+    nzType="flex"
+    nzGutter="16"
+    *ngIf="savePointParams.hasOther"
+  >
+    <div nz-col nzSpan="4" style="text-align: right;"></div>
+    <div nz-col nzSpan="18">
+      <div
+        nz-row
+        nzGutter="16"
+        style="margin-top: 5px"
+        *ngFor="
+          let otherItem of savePointParams.otherFalicitiesArray;
+          let i = index
+        "
+      >
+        <div nz-col nzSpan="18">
+          <input
+            nz-input
+            placeholder="请输入其他配备项名称"
+            [(ngModel)]="otherItem.item"
+            maxlength="15"
+          />
+        </div>
+        <div nz-col nzSpan="6">
+          <i
+            [hidden]="i == 0"
+            nz-icon
+            type="minus-circle-o"
+            class="dynamic-delete-button"
+            (click)="removeOtherItem(i)"
+          ></i>
+        </div>
+      </div>
+
+      <button
+        nz-button
+        nzType="dashed"
+        style="width:100px"
+        (click)="addOtherItem()"
+        style="margin-top: 5px"
+      >
+        <i nz-icon type="plus"></i> 添加
+      </button>
+    </div>
+  </div>
+</nz-modal>
+
+<!-- 删除对话框操作 -->
+<nz-modal
+  [(nzVisible)]="isShowDelDialog"
+  nzTitle="删除确认"
+  (nzOnCancel)="isShowDelDialog = false"
+  (nzOnOk)="delAreaOrPoint()"
+  [nzOkLoading]="isDelBtnLoading"
+>
+  <p *ngIf="selectedDelAction == 'fireArea'">请确认是否删除当前选择的区域！</p>
+  <p *ngIf="selectedDelAction == 'firePatrol'">
+    请确认是否删除当前选择的巡查点！巡查点删除后绑定的灭火器会自动解除绑定！
+  </p>
+</nz-modal>

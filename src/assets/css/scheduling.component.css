@@ -1,0 +1,16 @@
+th,
+td {
+  text-align: center !important;
+}
+
+.ant-table-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+:host /deep/ .ant-table-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}

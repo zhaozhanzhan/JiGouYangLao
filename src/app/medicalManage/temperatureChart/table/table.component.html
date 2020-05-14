@@ -1,0 +1,26 @@
+<nz-skeleton [nzActive]="true" [nzLoading]="isLoading">
+  <app-temperatureChartDraw
+    [personInfo]="personInfo"
+    [temperatureInfoData]="temperatureInfoData"
+    [BloodPressMode]="BloodPressMode"
+  ></app-temperatureChartDraw>
+</nz-skeleton>
+
+<div
+  nz-row
+  nzType="flex"
+  nzJustify="center"
+  nzAlign="middle"
+  style="margin-top:20px;margin-bottom: 20px"
+>
+  <div nz-col>
+    <nz-button-group>
+      <button nz-button nzType="primary" (click)="goLast()">
+        <i nz-icon type="left"></i>上一页
+      </button>
+      <button nz-button nzType="primary" (click)="goNext()">
+        下一页<i nz-icon type="right"></i>
+      </button>
+    </nz-button-group>
+  </div>
+</div>

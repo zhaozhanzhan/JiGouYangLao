@@ -1,0 +1,8 @@
+.oldCard {
+    max-width: 270px;
+    text-align: center;
+}
+
+:host /deep/ .ant-input-number {
+    width: 70%
+}

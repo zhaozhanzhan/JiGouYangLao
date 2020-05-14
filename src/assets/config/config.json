@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://192.168.0.123:8080/",
+  "baseUrlRuisong": "http://192.168.1.138:8080/",
+  "baseUrlFormal": "http://139.224.12.181:38090/BasicProject/",
+  "imgUploadUrl": "https://base.sunsetcare-mirrortech.com/wechat/imgUpload/upload.html",
+  "mobileSignUrl": "https://base.sunsetcare-mirrortech.com/wechat/qianming/#/base/",
+  "originTag": "BasicProject",
+  "originFullName": "镜子信息养老服务云"
+}

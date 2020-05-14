@@ -1,0 +1,709 @@
+<div style="background: white;position: relative;">
+  <button *ngIf="!(status == '未完成' || status == '已完成')" nz-button nzType="primary" style="display:inline-block;position:absolute;right:50px;z-index:999;" (click)="addtab(addTabTitle)">
+    <i nz-icon type="plus" theme="outline" style="font-size:13px;"></i>新增
+  </button>
+  <!-- 标签页 -->
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="tabSelectedIndex">
+    <nz-tab *ngFor="let tab of tabs;let i = index" [nzTitle]="titleTemplate" (nzSelect)="selTab(i,tab.id)">
+      <ng-template #titleTemplate>
+        <a *ngIf="tab.icon" nz-popconfirm nzTitle="确认删除本条记录?" (nzOnConfirm)="deleteTab(i)">
+          <i style="color:red;" nz-icon [type]="tab.icon?tab.icon:''"></i>
+        </a>
+        {{ tab.title }}
+      </ng-template>
+    </nz-tab>
+    
+  </nz-tabset>
+
+  <!--要获取 表单 内容 ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇  -->
+  <div *ngIf="!islocalform && tabs.length > 0" style="position: relative;">
+    <!-- 遮罩 -->
+    <div *ngIf="status == '未完成' || status == '已完成'" style="position: absolute;width: 100%;height:100%;z-index: 99;"></div>
+    <nz-spin nzSimple [nzSpinning]="loading">
+      <button *ngIf="!(status == '未完成' || status == '已完成')" nz-button nzType="primary" style="display:inline-block;position:absolute;right:50px;z-index:999;" (click)="saveForm('edit')">
+        保存
+      </button>
+      <div style="padding:20px;margin-left: 60px;font-size:15px;">
+        <div>
+          标题：
+          <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve.title">
+        </div>
+        <div style="margin-top:15px;">
+          血压：
+          <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve.bloodPressure">
+          体温：
+          <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve.bodyTemperature">
+          脉搏：
+          <input nz-input style="width:20%;" maxlength="50" type="text" [(ngModel)]="dailyObserve.pulse">
+        </div>
+        <div style="margin-top:15px;">
+          小便：
+          <nz-input-group nzAddOnBefore="尿量" nzAddOnAfter="ml" style="width:150px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.peeML" />
+          </nz-input-group>
+          <nz-input-group nzAddOnBefore="白天" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.dayTimes" />
+          </nz-input-group>
+          <nz-input-group nzAddOnBefore="夜间" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.nightTimes" />
+          </nz-input-group>
+          <div style="width:100%;height:20px;background:white;position: relative;z-index: 10;"></div><!-- 遮挡第一个选项 -->
+          <div style="position:relative;left:49px;width: 320px;top: -24px;">
+            <nz-checkbox-group [(ngModel)]="dailyObserve.peeCheck"></nz-checkbox-group>
+          </div>
+        </div>
+
+        <div style="line-height: 32px;">
+          大便：
+          <nz-input-group nzAddOnBefore="次数" style="width:100px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.shitTimes" />
+          </nz-input-group>
+          <nz-checkbox-group [(ngModel)]="dailyObserve.shitCheck"></nz-checkbox-group>
+          <nz-input-group nzAddOnAfter="天" style="width:100px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.shitday" />
+          </nz-input-group>
+        </div>
+
+        <div style="line-height: 32px;margin-top:15px;">
+          行动：
+          <nz-checkbox-group [(ngModel)]="dailyObserve.action"></nz-checkbox-group>
+        </div>
+
+        <div style="line-height: 32px;width:100%;">
+          饮食：进食能力：<nz-checkbox-group [(ngModel)]="dailyObserve.eatfood"></nz-checkbox-group>
+          <div style="position:relative;left:45px;">
+            <div>
+              <nz-input-group nzAddOnBefore="主食" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.mainfood" />
+              </nz-input-group>
+              <nz-input-group nzAddOnBefore="菜" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.foodlist" />
+              </nz-input-group>
+            </div>
+            <div>
+              菜的口味：
+              <nz-checkbox-group [(ngModel)]="dailyObserve.flavor"></nz-checkbox-group>
+            </div>
+            <div>
+              治疗饮食：
+              <nz-checkbox-group [(ngModel)]="dailyObserve.treatfood"></nz-checkbox-group>
+            </div>
+            <div>
+              <nz-input-group nzAddOnBefore="喜欢的食物" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.likefood" />
+              </nz-input-group>
+              <nz-input-group nzAddOnBefore="不喜欢的食物" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.dislikefood" />
+              </nz-input-group>
+            </div>
+            <div style="margin-top:10px;">
+              <nz-input-group nzAddOnBefore="过敏食物" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.allergyfood" />
+              </nz-input-group>
+              <nz-input-group nzAddOnBefore="禁忌食物" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.prohibitfood" />
+              </nz-input-group>
+            </div>
+            <div style="margin-top:10px;">
+              <nz-input-group nzAddOnBefore="喜欢吃零食" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.likesnack" />
+              </nz-input-group>
+              <nz-input-group nzAddOnBefore="其他" style="width:40%;margin-right:20px;">
+                <input type="text" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.otherfood" />
+              </nz-input-group>
+            </div>
+          </div>
+        </div>
+
+        <div style="line-height: 32px;margin-top:15px;">
+          饮水：
+          <nz-input-group nzAddOnBefore="每天" nzAddOnAfter="杯" style="width:150px;margin-right:20px;">
+            <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.cups" />
+          </nz-input-group>
+          <nz-checkbox-group [(ngModel)]="dailyObserve.beverage"></nz-checkbox-group>
+          <input type="text" style="width:260px;margin-right:20px;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.othertea" />
+        </div>
+
+        <div style="line-height: 32px;">
+          睡眠：
+          <nz-checkbox-group [(ngModel)]="dailyObserve.sleepState"></nz-checkbox-group>
+          <div nz-row style="width:100%;position:relative;left:45px;">
+              <div nz-col nzSpan="10">
+                <div>
+                  起床时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.getupTimeHour" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.getupTimeMinute" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  午睡：
+                  <nz-radio-group [(ngModel)]="dailyObserve.nap">
+                    <label nz-radio nzValue="有">有</label>
+                    <label nz-radio nzValue="无">无</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  午睡时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.snaph" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.snapm" />
+                  </nz-input-group>
+                  至
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.enaph" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.enapm" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  午睡质量：
+                  <nz-radio-group [(ngModel)]="dailyObserve.napstate">
+                    <label nz-radio nzValue="好">好</label>
+                    <label nz-radio nzValue="一般">一般</label>
+                    <label nz-radio nzValue="差">差</label>
+                  </nz-radio-group>
+                </div>
+                
+              </div>
+              <div nz-col nzSpan="12" style="border-left: 2px solid #ccc;margin-left:20px;padding-left:20px;">
+                <div>
+                  就寝时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.sleepTimeh" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve.sleepTimem" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  晚上睡觉：
+                  <nz-checkbox-group [(ngModel)]="dailyObserve.nightSleep"></nz-checkbox-group>
+                </div>
+                <div>
+                  睡前有无特殊习惯：
+                  <nz-radio-group [(ngModel)]="dailyObserve.sleepBehavior">
+                    <label nz-radio nzValue="有">有</label>
+                    <label nz-radio nzValue="无">无</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  睡眠质量：
+                  <nz-radio-group [(ngModel)]="dailyObserve.nightmare">
+                    <label nz-radio nzValue="好">好</label>
+                    <label nz-radio nzValue="差">差</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  <label nz-checkbox [(ngModel)]="dailyObserve.issleepless">失眠</label>
+                  <nz-input-group nzAddOnBefore="时长" style="width:100px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.sleepless" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnBefore="夜醒" nzAddOnAfter="次" style="width:120px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.iswakeuptimes" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnBefore="时长" style="width:100px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.wakeuplong" />
+                  </nz-input-group>
+                  <label nz-checkbox [(ngModel)]="dailyObserve.earlywakeup">早醒</label>
+                </div>
+                
+              </div>
+          </div>
+        </div>
+
+        <div style="margin-top:15px;position: relative;">
+          <span style="margin-right:20px;display:inline-block;position: absolute;">其他：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="dailyObserve.other" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+        </div>
+
+        <div style="line-height: 32px;margin-top:15px;margin-left: -10px;">
+          <span style="display:inline-block;">跟进人：</span>
+          <input type="text" style="text-align:center;width:150px;margin-right:20px;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.follower" />
+        </div>
+
+        <div style="margin-top:15px;position: relative;z-index: 100;">
+          <button nz-button nzType="default" nzBlock (click)="extend = !extend">
+            <i nz-icon type="colum-height" theme="outline"></i>
+            更多内容模板
+          </button>
+        </div>
+
+        <!-- 更多内容模板 -->
+        <div *ngIf="extend">
+          <div style="line-height: 32px;width:100%;margin-top: 15px;">
+            洗漱：面部清洁：<nz-checkbox-group [(ngModel)]="dailyObserve.face"></nz-checkbox-group>
+            <div style="position:relative;left:45px;">
+              <div>
+                手脚清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.handfoot"></nz-checkbox-group>
+              </div>
+              <div>
+                口腔清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.mouse"></nz-checkbox-group>
+              </div>
+              <div>
+                刷&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;牙：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.teeth"></nz-checkbox-group>
+              </div>
+              <div>
+                牙齿状况：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.teethstate"></nz-checkbox-group>
+              </div>
+              <div>
+                咀嚼能力：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.bit"></nz-checkbox-group>
+              </div>
+              <div>
+                会阴清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve.egg"></nz-checkbox-group>
+              </div>
+            </div>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            洗发洗澡：<nz-checkbox-group [(ngModel)]="dailyObserve.shower"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            换洗衣服：<nz-checkbox-group [(ngModel)]="dailyObserve.close"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -15px;">
+            上下楼：<nz-checkbox-group [(ngModel)]="dailyObserve.upstairs"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            户外活动：<nz-checkbox-group [(ngModel)]="dailyObserve.outdoor"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            活动范围：<nz-checkbox-group [(ngModel)]="dailyObserve.outdoorarea"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            穿衣：<nz-checkbox-group [(ngModel)]="dailyObserve.wear"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            仪表：<nz-checkbox-group [(ngModel)]="dailyObserve.appearance"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            床铺卫生：<nz-checkbox-group [(ngModel)]="dailyObserve.bed"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-top: 15px;">
+            吸烟：
+            <nz-input-group nzAddOnAfter="支/日" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.smokeTimes" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve.smoke"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-top: 15px;">
+            饮酒：
+            <nz-input-group nzAddOnBefore="每天" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.alcoholTimes" />
+            </nz-input-group>
+            <nz-input-group nzAddOnBefore="每次" nzAddOnAfter="两" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve.alcoholML" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve.alcohols"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -15px;">
+            打电话：<nz-checkbox-group [(ngModel)]="dailyObserve.tell"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            理财：<nz-checkbox-group [(ngModel)]="dailyObserve.money"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            购物：<nz-checkbox-group [(ngModel)]="dailyObserve.shopping"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            亲友交往：<nz-checkbox-group [(ngModel)]="dailyObserve.friend"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            情绪行为：<nz-checkbox-group [(ngModel)]="dailyObserve.emotion"></nz-checkbox-group>
+          </div>
+
+          <div style="margin-top:15px;position: relative;">
+            <span style="margin-right:20px;display:inline-block;position: absolute;">爱好：</span>
+            <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="dailyObserve.habit" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+    </nz-spin>
+  </div>
+  <!--要获取 表单 内容 ⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆  -->
+
+  <!--本地 表单 内容 ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇  -->
+  <div *ngIf="islocalform" style="position: relative;">
+      <nz-spin nzSimple [nzSpinning]="loading">
+        <button nz-button nzType="primary" style="display:inline-block;position:absolute;right:50px;z-index:999;" (click)="saveForm('add')">
+          保存
+        </button>
+        <div style="padding:20px;margin-left: 60px;font-size:15px;">
+          <div>
+            标题：
+            <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve2.title">
+          </div>
+          <div style="margin-top:15px;">
+            血压：
+            <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve2.bloodPressure">
+            体温：
+            <input nz-input style="width:20%;margin-right:20px;" maxlength="50" type="text" [(ngModel)]="dailyObserve2.bodyTemperature">
+            脉搏：
+            <input nz-input style="width:20%;" maxlength="50" type="text" [(ngModel)]="dailyObserve2.pulse">
+          </div>
+          <div style="margin-top:15px;">
+            小便：
+            <nz-input-group nzAddOnBefore="尿量" nzAddOnAfter="ml" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.peeML" />
+            </nz-input-group>
+            <nz-input-group nzAddOnBefore="白天" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.dayTimes" />
+            </nz-input-group>
+            <nz-input-group nzAddOnBefore="夜间" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.nightTimes" />
+            </nz-input-group>
+            <div style="width:100%;height:20px;background:white;position: relative;z-index: 10;"></div><!-- 遮挡第一个选项 -->
+            <div style="position:relative;left:49px;width: 320px;top: -24px;">
+              <nz-checkbox-group [(ngModel)]="dailyObserve2.peeCheck"></nz-checkbox-group>
+            </div>
+          </div>
+          <div style="line-height: 32px;">
+            大便：
+            <nz-input-group nzAddOnBefore="次数" style="width:100px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.shitTimes" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.shitCheck"></nz-checkbox-group>
+            <nz-input-group nzAddOnAfter="天" style="width:100px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.shitday" />
+            </nz-input-group>
+          </div>
+          <div style="line-height: 32px;margin-top:15px;">
+            行动：
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.action"></nz-checkbox-group>
+          </div>
+          <div style="line-height: 32px;width:100%;">
+            饮食：进食能力：<nz-checkbox-group [(ngModel)]="dailyObserve2.eatfood"></nz-checkbox-group>
+            <div style="position:relative;left:45px;">
+              <div>
+                <nz-input-group nzAddOnBefore="主食" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.mainfood" />
+                </nz-input-group>
+                <nz-input-group nzAddOnBefore="菜" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.foodlist" />
+                </nz-input-group>
+              </div>
+              <div>
+                菜的口味：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.flavor"></nz-checkbox-group>
+              </div>
+              <div>
+                治疗饮食：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.treatfood"></nz-checkbox-group>
+              </div>
+              <div>
+                <nz-input-group nzAddOnBefore="喜欢的食物" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.likefood" />
+                </nz-input-group>
+                <nz-input-group nzAddOnBefore="不喜欢的食物" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.dislikefood" />
+                </nz-input-group>
+              </div>
+              <div style="margin-top:10px;">
+                <nz-input-group nzAddOnBefore="过敏食物" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.allergyfood" />
+                </nz-input-group>
+                <nz-input-group nzAddOnBefore="禁忌食物" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.prohibitfood" />
+                </nz-input-group>
+              </div>
+              <div style="margin-top:10px;">
+                <nz-input-group nzAddOnBefore="喜欢吃零食" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.likesnack" />
+                </nz-input-group>
+                <nz-input-group nzAddOnBefore="其他" style="width:40%;margin-right:20px;">
+                  <input type="text" maxlength="50" type="text" nz-input
+                    [(ngModel)]="dailyObserve2.otherfood" />
+                </nz-input-group>
+              </div>
+            </div>
+          </div>
+          <div style="line-height: 32px;margin-top:15px;">
+            饮水：
+            <nz-input-group nzAddOnBefore="每天" nzAddOnAfter="杯" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.cups" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.beverage"></nz-checkbox-group>
+            <input type="text" style="width:260px;margin-right:20px;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.othertea" />
+          </div>
+          <div style="line-height: 32px;">
+            睡眠：
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.sleepState"></nz-checkbox-group>
+            <div nz-row style="width:100%;position:relative;left:45px;">
+              <div nz-col nzSpan="10">
+                <div>
+                  起床时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.getupTimeHour" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.getupTimeMinute" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  午睡：
+                  <nz-radio-group [(ngModel)]="dailyObserve2.nap">
+                    <label nz-radio nzValue="有">有</label>
+                    <label nz-radio nzValue="无">无</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  午睡时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.snaph" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.snapm" />
+                  </nz-input-group>
+                  至
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.enaph" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.enapm" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  午睡质量：
+                  <nz-radio-group [(ngModel)]="dailyObserve2.napstate">
+                    <label nz-radio nzValue="好">好</label>
+                    <label nz-radio nzValue="一般">一般</label>
+                    <label nz-radio nzValue="差">差</label>
+                  </nz-radio-group>
+                </div>
+
+              </div>
+              <div nz-col nzSpan="12" style="border-left: 2px solid #ccc;margin-left:20px;padding-left:20px;">
+                <div>
+                  就寝时间：
+                  <nz-input-group nzAddOnAfter="时" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.sleepTimeh" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnAfter="分" style="width:80px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.sleepTimem" />
+                  </nz-input-group>
+                </div>
+                <div>
+                  晚上睡觉：
+                  <nz-checkbox-group [(ngModel)]="dailyObserve2.nightSleep"></nz-checkbox-group>
+                </div>
+                <div>
+                  睡前有无特殊习惯：
+                  <nz-radio-group [(ngModel)]="dailyObserve2.sleepBehavior">
+                    <label nz-radio nzValue="有">有</label>
+                    <label nz-radio nzValue="无">无</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  睡眠质量：
+                  <nz-radio-group [(ngModel)]="dailyObserve2.nightmare">
+                    <label nz-radio nzValue="好">好</label>
+                    <label nz-radio nzValue="差">差</label>
+                  </nz-radio-group>
+                </div>
+                <div>
+                  <label nz-checkbox [(ngModel)]="dailyObserve2.issleepless">失眠</label>
+                  <nz-input-group nzAddOnBefore="时长" style="width:100px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.sleepless" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnBefore="夜醒" nzAddOnAfter="次" style="width:120px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.iswakeuptimes" />
+                  </nz-input-group>
+                  <nz-input-group nzAddOnBefore="时长" style="width:100px;margin-right:20px;">
+                    <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input
+                      [(ngModel)]="dailyObserve2.wakeuplong" />
+                  </nz-input-group>
+                  <label nz-checkbox [(ngModel)]="dailyObserve2.earlywakeup">早醒</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:15px;position: relative;">
+            <span style="margin-right:20px;display:inline-block;position: absolute;">其他：</span>
+            <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="dailyObserve2.other" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+          </div>
+          <div style="line-height: 32px;margin-top:15px;margin-left: -10px;">
+            <span style="display:inline-block;">跟进人：</span>
+            <input type="text" style="text-align:center;width:150px;margin-right:20px;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.follower" />
+          </div>
+          <div style="margin-top:15px;">
+            <button nz-button nzType="default" nzBlock (click)="extend2 = !extend2">
+              <i nz-icon type="colum-height" theme="outline"></i>
+              更多内容模板
+            </button>
+          </div>
+          <!-- 更多内容模板 -->
+        <div *ngIf="extend2">
+          <div style="line-height: 32px;width:100%;margin-top: 15px;">
+            洗漱：面部清洁：<nz-checkbox-group [(ngModel)]="dailyObserve2.face"></nz-checkbox-group>
+            <div style="position:relative;left:45px;">
+              <div>
+                手脚清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.handfoot"></nz-checkbox-group>
+              </div>
+              <div>
+                口腔清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.mouse"></nz-checkbox-group>
+              </div>
+              <div>
+                刷&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;牙：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.teeth"></nz-checkbox-group>
+              </div>
+              <div>
+                牙齿状况：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.teethstate"></nz-checkbox-group>
+              </div>
+              <div>
+                咀嚼能力：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.bit"></nz-checkbox-group>
+              </div>
+              <div>
+                会阴清洁：
+                <nz-checkbox-group [(ngModel)]="dailyObserve2.egg"></nz-checkbox-group>
+              </div>
+            </div>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            洗发洗澡：<nz-checkbox-group [(ngModel)]="dailyObserve2.shower"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            换洗衣服：<nz-checkbox-group [(ngModel)]="dailyObserve2.close"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -15px;">
+            上下楼：<nz-checkbox-group [(ngModel)]="dailyObserve2.upstairs"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            户外活动：<nz-checkbox-group [(ngModel)]="dailyObserve2.outdoor"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            活动范围：<nz-checkbox-group [(ngModel)]="dailyObserve2.outdoorarea"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            穿衣：<nz-checkbox-group [(ngModel)]="dailyObserve2.wear"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            仪表：<nz-checkbox-group [(ngModel)]="dailyObserve2.appearance"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            床铺卫生：<nz-checkbox-group [(ngModel)]="dailyObserve2.bed"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-top: 15px;">
+            吸烟：
+            <nz-input-group nzAddOnAfter="支/日" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.smokeTimes" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.smoke"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-top: 15px;">
+            饮酒：
+            <nz-input-group nzAddOnBefore="每天" nzAddOnAfter="次" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.alcoholTimes" />
+            </nz-input-group>
+            <nz-input-group nzAddOnBefore="每次" nzAddOnAfter="两" style="width:150px;margin-right:20px;">
+              <input type="text" style="text-align:center;" maxlength="50" type="text" nz-input [(ngModel)]="dailyObserve2.alcoholML" />
+            </nz-input-group>
+            <nz-checkbox-group [(ngModel)]="dailyObserve2.alcohols"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -15px;">
+            打电话：<nz-checkbox-group [(ngModel)]="dailyObserve2.tell"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            理财：<nz-checkbox-group [(ngModel)]="dailyObserve2.money"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;">
+            购物：<nz-checkbox-group [(ngModel)]="dailyObserve2.shopping"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            亲友交往：<nz-checkbox-group [(ngModel)]="dailyObserve2.friend"></nz-checkbox-group>
+          </div>
+
+          <div style="line-height: 32px;margin-left: -30px;">
+            情绪行为：<nz-checkbox-group [(ngModel)]="dailyObserve2.emotion"></nz-checkbox-group>
+          </div>
+
+          <div style="margin-top:15px;position: relative;">
+            <span style="margin-right:20px;display:inline-block;position: absolute;">爱好：</span>
+            <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="dailyObserve2.habit" maxlength="500" style="display:inline-block;width:92%;left: 50px;"></textarea>
+          </div>
+
+        </div>
+  
+        </div>
+      </nz-spin>
+  </div>
+    <!--本地 表单 内容 ⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆  -->
+  
+</div>
+
+<nz-modal [(nzVisible)]="addTabModelIsVisible" nzTitle="新增记录" nzOkText="确认" nzCancelText="取消" (nzOnOk)="addTabModelOk(addTabTitle.value)"
+  (nzOnCancel)="addTabModelCancel()">
+  <p></p>
+  请输入新增标题：<input #addTabTitle nz-input style="width:70%;" maxlength="10" type="text">
+  <p></p>
+</nz-modal>

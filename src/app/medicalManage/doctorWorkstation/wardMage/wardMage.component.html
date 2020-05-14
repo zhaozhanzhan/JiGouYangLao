@@ -1,0 +1,388 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="name">病人姓名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="reqObj.name" placeholder="请输入姓名" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>科室</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzPlaceHolder="请选择" [(ngModel)]="reqObj.sectionOfficeId" style="width: 150px;" (ngModelChange)="ngChange()">
+                        <nz-option *ngFor="let item of sectionOfficeList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>主治医生</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.attendingDoc">
+                        <nz-option *ngFor="let item of dorList" [nzValue]="item.name" [nzLabel]="item.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>病区</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.sickWardId" (ngModelChange)="roomChange()">
+                        <nz-option nzValue="0" nzLabel="全部"></nz-option>
+                        <nz-option *ngFor="let item of sickWardList" [nzValue]="item.id" [nzLabel]="item.sickWardName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>房间</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.roomId">
+                        <nz-option *ngFor="let item of roomList" [nzValue]="item.id" [nzLabel]="item.roomName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>病情</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.situation">
+                        <nz-option nzValue="危险" nzLabel="危险"></nz-option>
+                        <nz-option nzValue="紧急" nzLabel="紧急"></nz-option>
+                        <nz-option nzValue="一般" nzLabel="一般"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>护理等级</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.careLevelCase">
+                        <nz-option *ngFor="let option of nursingList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.status">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="0" nzLabel="正常"></nz-option>
+                        <nz-option nzValue="2" nzLabel="新入院"></nz-option>
+                        <nz-option nzValue="5" nzLabel="新转入"></nz-option>
+                        <nz-option nzValue="3" nzLabel="请假"></nz-option>
+                        <nz-option nzValue="1" nzLabel="出院"></nz-option>
+                        <nz-option nzValue="4" nzLabel="死亡"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>医疗付费方式</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.medicalPayment">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="社会基本医疗保险" nzLabel="社会基本医疗保险"></nz-option>
+                        <nz-option nzValue="商业保险" nzLabel="商业保险"></nz-option>
+                        <nz-option nzValue="自费医疗" nzLabel="自费医疗"></nz-option>
+                        <nz-option nzValue="公费医疗" nzLabel="公费医疗"></nz-option>
+                        <nz-option nzValue="大病统筹" nzLabel="大病统筹"></nz-option>
+                        <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card [nzTitle]="serchArea">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="4" *ngFor="let data of list">
+            <nz-card class="card" style="
+            border-radius: 15px;
+            margin-top:5px;
+            cursor: pointer;
+            box-shadow: #efefef 3px 3px 3px 0px;" [ngClass]="{
+          'card cardBgWhite': data?.inHospitalInfoc?.status == '0',
+          'card cardBgH':
+            data?.inHospitalInfo?.status == '1' ||
+            data?.inHospitalInfo?.status == '4' ||
+            data?.inHospitalInfo?.status == '7' ||
+            data?.inHospitalInfo?.status == '6',
+          'card cardBgCyan':
+            data?.inHospitalInfo?.status == '2' ||
+            data?.inHospitalInfo?.status == '5',
+          'card cardBgZ': data?.inHospitalInfo?.status == '3'
+        }" (click)="toPatient(data)">
+                <div class="nurseCard">
+                    <div *ngIf="data?.inHospitalInfo?.status == '3'">
+                        <span class="title">预计返回：</span>
+                        <span style="display: inline-block;font-size: 13px;">{{
+              data?.inHospitalInfo?.estimatedTime
+            }}</span>
+                    </div>
+                    <div *ngIf="data?.inHospitalInfo?.status == '7'">
+                        <span class="title">出院日期：</span>
+                        <span>{{ data?.inHospitalInfo?.outDate }}</span>
+                    </div>
+                    <div *ngIf="
+              data?.inHospitalInfo?.status != '3' &&
+              data?.inHospitalInfo?.status != '7'
+            ">
+                        <span class="title"></span>
+                        <span></span>
+                    </div>
+                    <div class="titlePublic">
+                        <span class="title">床位：</span><span>{{ data?.bedName }}</span>
+                        <span class="nurseLeave">
+                            <span style="padding: 0px 10px;" [ngClass]="{
+                  'publicCard whiteCard': data?.inHospitalInfo?.status == '3',
+                  'publicCard violetCard': data?.inHospitalInfo?.status != '3'
+                }" *ngIf="data?.inHospitalInfo?.status == '3'">
+                                假
+                            </span>
+                            <span [ngClass]="{
+                  'publicCard whiteCard':
+                    data?.inHospitalInfo?.status == '2' ||
+                    data?.inHospitalInfo?.status == '5',
+                  'publicCard whiteCard':
+                    data?.inHospitalInfo?.status != '2' ||
+                    data?.inHospitalInfo?.status != '5'
+                }" *ngIf="data?.inHospitalInfo?.status == '2'">
+                                新
+                            </span>
+                            <span [ngClass]="{
+                  'publicCard whiteCard':
+                    data?.inHospitalInfo?.status == '2' ||
+                    data?.inHospitalInfo?.status == '5',
+                  'publicCard whiteCard':
+                    data?.inHospitalInfo?.status != '2' ||
+                    data?.inHospitalInfo?.status != '5'
+                }" *ngIf="data?.inHospitalInfo?.status == '5'">
+                                转
+                            </span>
+
+                            <div class="bigM" *ngIf="data?.inHospitalInfo?.status == '4'">
+                                <span class="bigLine">
+                                    <span class="smillLine" style="height:7px;"></span>
+                                </span>
+                            </div>
+
+                            <span *ngIf="data?.inHospitalInfo?.status == '1'" style="padding: 0px 20px;" [ngClass]="{
+                  'publicCard grayCard marginTop':
+                    data?.inHospitalInfo?.status == '1',
+                  'publicCard whiteCard marginTop':
+                    data?.inHospitalInfo?.status != '1'
+                }">
+                                出
+                            </span>
+                        </span>
+                    </div>
+                    <div class="titlePublic">
+                        <span class="title">住院号：</span><span>{{ data?.inHospitalInfo?.admissionNo }}</span><br />
+                    </div>
+                </div>
+
+                <nz-skeleton [nzActive]="true" [nzAvatar]="{ size: 'large' }" [nzLoading]="isLoading">
+                    <nz-card-meta [nzAvatar]="avatarTemplate" [nzDescription]="descriptionTemplate"></nz-card-meta>
+                </nz-skeleton>
+                <div style="margin-top:5px;">
+                    <span class="textName">科室：</span>
+                    <span class="textC">{{ data?.inHospitalInfo?.sectionOffice?.name }}</span>
+                    <div class="maginLeft" style="float: right;width:56%">
+                        <span class="textName">病区：</span>
+                        <span style="vertical-align: middle">{{ data?.inHospitalInfo?.sickWard?.sickWardName }}</span>
+                    </div>
+                </div>
+            </nz-card>
+
+            <!-- 有住院人信息的 -->
+            <ng-template #avatarTemplate>
+                <!-- <span>
+                    <img src="assets/img/wardImgs/yuan.png" style="    width: 70px;
+                  border-radius: 40px;">
+                </span> -->
+
+                <div [ngClass]="{
+            bickImg:
+              data?.inHospitalInfo?.status == '0' ||
+              data?.inHospitalInfo?.status == '1',
+              bickImg:
+              data?.inHospitalInfo?.status != '0' ||
+              data?.inHospitalInfo?.status != '1'
+          }"></div>
+            </ng-template>
+
+            <!-- 显示病人基本信息 -->
+            <ng-template #descriptionTemplate>
+                <div [ngClass]="{
+            bickColr: data?.inHospitalInfo?.status == '0',
+            whitColr: data?.inHospitalInfo?.status != '0'
+          }">
+                    <span class="paddingSpan">
+                        <span [ngClass]="{
+                bickColr: data?.inHospitalInfo?.status == '0',
+                whitColr: data?.inHospitalInfo?.status != '0'
+              }">{{ data?.inHospitalInfo?.basicInfo?.name }}</span> </span><br />
+                    <span class="paddingSpan">
+                        <span [ngClass]="{
+                bickColr: data?.inHospitalInfo?.status == '0',
+                whitColr: data?.inHospitalInfo?.status != '0'
+              }">
+                            <span *ngIf="data?.inHospitalInfo?.basicInfo?.sex == '0'">男</span>
+                            <span *ngIf="data?.inHospitalInfo?.basicInfo?.sex == '1'">女</span>
+                        </span>
+                        <span [ngClass]="{
+                bickColr: data?.inHospitalInfo?.status == '0',
+                whitColr: data?.inHospitalInfo?.status != '0'
+              }" style="margin-left:20px;">{{ data?.inHospitalInfo?.basicInfo?.age }}岁</span> </span><br />
+                </div>
+
+                <span class="paddingSpan">
+                    <span class="triangle_border_up marginTop" *ngIf="data?.inHospitalInfo?.situation == '危险'">
+                        <span class="sanjiao">
+                            <span style="margin-left: -2px;">!</span>
+                        </span>
+                    </span>
+
+                    <span [ngClass]="{
+              'pointPublic  marginTop whiteCard':
+                data?.inHospitalInfo?.status == '2' ||
+                data?.inHospitalInfo?.status == '5',
+              'pointPublic newCard marginTop':
+                data?.inHospitalInfo?.status != '2' ||
+                data?.inHospitalInfo?.status != '5'
+            }" *ngIf="data?.inHospitalInfo?.situation == '一般'">
+                        !
+                    </span>
+                    <span class="pointPublic emergency marginTop" *ngIf="data?.inHospitalInfo?.situation == '紧急'">
+                        !
+                    </span>
+                    <span class="publicCard greenCard marginLeft" *ngIf="data?.inHospitalInfo?.careLevelCase == '2'">
+                        Ⅲ级
+                    </span>
+
+                    <span class="publicCard blueCard marginLeft" *ngIf="data?.inHospitalInfo?.careLevelCase == '1'">
+                        Ⅱ级
+                    </span>
+                    <span class="publicCard pinkCard marginLeft" *ngIf="data?.inHospitalInfo?.careLevelCase == '0'">
+                        Ⅰ级
+                    </span>
+                    <span class="publicCard pinkCard marginLeft" *ngIf="data?.inHospitalInfo?.careLevelCase == '3'">
+                        特级
+                    </span> </span><br />
+            </ng-template>
+        </div>
+    </div>
+    <div nz-row class="marginTopBottom16">
+        <div class="floatRight">
+            <nz-pagination [(nzPageIndex)]="reqObj.page" [(nzTotal)]="total" [(nzPageSize)]="reqObj.size" [nzShowTotal]="totalTemplate" (nzPageIndexChange)="onPageIndexChange($event)"></nz-pagination>
+            <ng-template #totalTemplate let-total> 共 {{ total }} 条 </ng-template>
+        </div>
+    </div>
+    <div style="margin-top:10px;">
+        <span class="pointPublic newCard marginTop">
+            !
+        </span>
+        <span class="imgC marginTop">
+            一般
+        </span>
+        <span class="pointPublic emergency marginTop">
+            !
+        </span>
+        <span class="imgC marginTop">
+            急症
+        </span>
+        <span class="triangle_border_up marginTop">
+            <span class="sanjiao">
+                <span style="margin-left: -2px;">!</span>
+            </span>
+        </span>
+        <span class="imgC marginTop">
+            危险
+        </span>
+        <span>
+            <div class="bigM">
+                <span class="bigLine">
+                    <span class="smillLine"></span>
+                </span>
+            </div>
+        </span>
+
+        <span class="imgC  marginTop">
+            死亡
+        </span>
+        <span class="publicCard greenCard marginTop">
+            Ⅲ级
+        </span>
+        <span class="imgC marginTop">
+            三级护理
+        </span>
+
+        <span class="publicCard blueCard marginTop">
+            Ⅱ级
+        </span>
+        <span class="imgC marginTop">
+            二级护理
+        </span>
+        <span class="publicCard pinkCard marginTop">
+            Ⅰ级
+        </span>
+        <span class="imgC marginTop">
+            一级护理
+        </span>
+        <span class="publicCard redCard marginTop">
+            特级
+        </span>
+        <span class="imgC marginTop">
+            特级护理
+        </span>
+        <span class="publicCard newCard marginTop">
+            新
+        </span>
+        <span class="imgC marginTop">
+            新入院
+        </span>
+        <span class="publicCard grayCard marginTop">
+            出
+        </span>
+        <span class="imgC marginTop">
+            已出院
+        </span>
+        <span class="publicCard violetCard marginTop">
+            假
+        </span>
+        <span class="imgC marginTop">
+            请假
+        </span>
+        <span class="publicCard newCard marginTop">
+            转
+        </span>
+        <span class="imgC marginTop">
+            新转入
+        </span>
+    </div>
+</nz-card>

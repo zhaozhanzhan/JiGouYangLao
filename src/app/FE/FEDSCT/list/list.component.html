@@ -1,0 +1,146 @@
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8" nzType="flex">
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="name">抵扣券代码</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="voucherCode" id="voucherCode" style="width:150px" [(ngModel)]="queryParams.voucherCode" placeholder="请输入抵扣券代码" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="voucherName">抵扣券名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="voucherName" id="voucherName" style="width:150px" [(ngModel)]="queryParams.voucherName" placeholder="请输入抵扣券名称" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="useConditions">使用条件</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:120px" nzAllowClear name="useConditions" id="useConditions" [(ngModel)]="queryParams.useConditions" nzPlaceHolder="请输入使用条件">
+                            <nz-option nzValue="1" nzLabel="不限条件"></nz-option>
+                            <nz-option nzValue="2" nzLabel="消费使用"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="deductionType">抵扣类型</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:120px" name="deductionType" id="deductionType" [(ngModel)]="queryParams.deductionType" nzAllowClear nzPlaceHolder="" (ngModelChange)="changeType()">
+                            <nz-option nzValue="1" nzLabel="金额"></nz-option>
+                            <nz-option nzValue="2" nzLabel="比例"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="expCategoryId">抵扣消费类别</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" name="expCategoryId" id="expCategoryId" [(ngModel)]="queryParams.expCategoryId" (ngModelChange)="changeExpItem()">
+                            <nz-option nzLabel="全部" nzValue=""> </nz-option>
+                            <nz-option *ngFor="let option of expCategoryList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="expItemId">抵扣消费项目</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" name="expItemId" id="expItemId" [(ngModel)]="queryParams.expItemId">
+                            <nz-option nzLabel="全部" nzValue=""> </nz-option>
+                            <nz-option *ngFor="let option of expItemList" [nzLabel]="option.itemName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="issuingState">发行状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:120px" name="issuingState" id="issuingState" [(ngModel)]="queryParams.issuingState" nzAllowClear nzPlaceHolder="">
+                            <nz-option nzValue="1" nzLabel="未发行"></nz-option>
+                            <nz-option nzValue="2" nzLabel="已发行"></nz-option>
+                            <nz-option nzValue="3" nzLabel="停发"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="loadingDataArray(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="抵扣券列表" [nzExtra]="extraTemplate">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th>抵扣券代码</th>
+                <th>抵扣券名称</th>
+                <th>使用条件</th>
+                <th>抵扣类型</th>
+                <th>抵扣金额</th>
+                <th>抵扣消费类别</th>
+                <th>抵扣消费项目</th>
+                <th>发行状态</th>
+                <th>发行数量</th>
+                <th>剩余数量</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td>{{ data?.voucherCode }}</td>
+                <td>{{ data?.voucherName }}</td>
+                <td>
+                    <span *ngIf="data?.useConditions=='1'">不限条件</span>
+                    <span *ngIf="data?.useConditions=='2'">消费使用</span>
+                </td>
+                <td>
+                    <span *ngIf="data?.deductionType=='1'">金额</span>
+                    <span *ngIf="data?.deductionType=='2'">比例</span>
+                </td>
+                <td>{{ data?.deductibleAmount}}</td>
+                <td>{{ data?.expCategory?.name}}</td>
+                <td>
+                    <span *ngIf="data?.useConditions=='2' && data?.expItem==null">全部</span>
+                    <span *ngIf="data?.useConditions=='2' && data?.expItem!=null">{{ data?.expItem?.itemName}}</span>
+                </td>
+                <td>
+                    <span *ngIf="data?.issuingState=='1'">未发行</span>
+                    <span *ngIf="data?.issuingState=='2'">已发行</span>
+                    <span *ngIf="data?.issuingState=='3'">停发</span>
+                </td>
+                <td>{{ data?.issuingNum}}</td>
+                <td>{{ data?.numberRemaining}}</td>
+                <td>
+                    <a href="#" (click)="edit(data, $event)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="showInfo(data.id, $event)">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data.id, $event)" class="red" *ngIf="data?.issuingState=='2'|| data?.issuingState=='1'">停用</a>
+                    <a href="#" (click)="start(data.id, $event)" *ngIf="data?.issuingState=='3'" class="red">启用</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <a href="#" (click)="addInfo($event)">添加</a>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template>

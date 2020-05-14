@@ -1,0 +1,57 @@
+:host /deep/ .ant-table-tbody>tr>td {
+  padding: 8px 4px;
+}
+
+nz-form-label {
+  width: 100px;
+  text-align: right
+}
+
+.dialog_input {
+  width: 150px;
+  max-width: 150px;
+}
+
+nz-form-control {
+  width: 100%
+}
+
+.red{
+  color: red
+}
+.hu{
+  color: darkgray
+}
+
+:host /deep/ .ant-calendar-picker {
+  width: 100%;
+}
+
+:host /deep/ .ant-table-tbody>tr>td {
+  padding: 8px 4px;
+}
+
+.ant-form-item {
+  margin: 0px !important;
+}
+
+nz-form-label {
+  width: 100px;
+  text-align: right
+}
+
+.dialog_input {
+  width: 150px;
+  max-width: 150px;
+}
+
+.dialog_areaInput {
+  width: 400px;
+  max-width: 400px;
+}
+
+.form_input {
+  width: 400px;
+}
+
+

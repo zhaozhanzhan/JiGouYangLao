@@ -1,0 +1,142 @@
+<ng-template #serchArea>
+  <form nz-form>
+      <div nz-row [nzGutter]="8" nzType="flex">
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-label nzFor="name">账目名称</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="queryParams.accountsName" placeholder="请输入账目名称" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <!-- <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-label nzFor="name">抵扣券名称</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="queryParams.hospitalNo" placeholder="请输入住院号" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div> -->
+          <div nz-col>
+              <nz-form-item>
+                  <nz-form-control>
+                      <button nz-button nzType="primary" (click)="getList(true)">
+                          查询
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+      </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="账目列表" [nzExtra]="extraTemplate">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="getList()" (nzPageSizeChange)="getList(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th style="text-align: center;">账目名称</th>
+                <th style="text-align: center;">是否记滞纳金</th>
+                <th style="text-align: center;">欠缴起算金额（元）</th>
+                <th style="text-align: center;">免计天数</th>
+                <th style="text-align: center;">比率（‰）</th>
+                <th style="text-align: center;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td style="text-align: center;">{{ data?.accountsName }}</td>
+                <td style="text-align: center;">{{ data?.idDelayingPayment }}</td>
+                <td style="text-align: center;">{{ data?.dueAmount }}</td>
+                <td style="text-align: center;">{{ data?.freeDays }}</td>
+                <td style="text-align: center;">{{ data?.ratio }}</td>
+                <td style="text-align: center;">
+                    <!-- <a href="#" >添加</a>
+                    <nz-divider nzType="vertical"></nz-divider> -->
+                    <a href="javascript: void(0)" (click)="edit(data)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript: void(0)" (click)="edit(data, true, add_edit_Model)">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript: void(0)" style="color: red;" (click)="delete(data)">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <a href="javascript: void(0)" (click)="addInfo()">添加</a>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template>
+
+<!-- 添加、编辑、查看 -->
+<nz-modal #add_edit_Model nzWidth="700" [(nzVisible)]="isVisibleAddModel" [nzTitle]="addModaltitle" (nzAfterClose)="add_edit_Model.nzFooter = true;" (nzOnCancel)="addModalCancel();" (nzOnOk)="addModalOk()" [nzOkLoading]="addModalOkLoading">
+    <form nz-form [formGroup]="validateForm">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="accountsName">账目名称</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input formControlName="accountsName" id="accountsName" />
+            <nz-form-explain *ngIf="validateForm.get('accountsName').dirty && validateForm.get('accountsName').errors">账目名称（2~20位）!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sort">排序号</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input type="number" max="999" min="1" onblur="this.value = Math.floor(this.value)" nz-input formControlName="sort" id="sort" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="idDelayingPayment">是否记滞纳金</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-radio-group formControlName="idDelayingPayment" id="idDelayingPayment">
+              <label nz-radio nzValue="是">是</label>
+              <label nz-radio nzValue="否">否</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="validateForm.get('idDelayingPayment').dirty && validateForm.get('idDelayingPayment').errors">请选择是否记滞纳金!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.value.idDelayingPayment == '是'">
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dueAmount">欠缴起算金额</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-input-group nzAddOnAfter="元">
+              <input type="number" max="999999" min="0" onblur="this.value = Number(this.value).toFixed(2)" nz-input formControlName="dueAmount" id="dueAmount">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.value.idDelayingPayment == '是'">
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="freeDays">免记天数</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-input-group nzAddOnAfter="天">
+              <input type="number" max="9999" min="0" onblur="this.value = Math.ceil(this.value)" nz-input formControlName="freeDays" id="freeDays">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.value.idDelayingPayment == '是'">
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="ratio">比率</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-input-group nzAddOnAfter="‰">
+              <input type="number" onblur="this.value = Number(this.value).toFixed(2)" nz-input formControlName="ratio" id="ratio">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        
+
+        <!-- <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="accountName">E-mail</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="errorTpl">
+            <input nz-input formControlName="accountName" id="accountName" />
+            <ng-template #errorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Please confirm your password!
+              </ng-container>
+              <ng-container *ngIf="control.hasError('confirm')">
+                Two passwords that you enter is inconsistent!
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item> -->
+      </form>
+</nz-modal>

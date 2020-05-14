@@ -1,0 +1,65 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="name">姓名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="reqObj.name" placeholder="请输入姓名" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="住院登记列表" [nzExtra]="btnAdd">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th nzWidth="200px" nzLeft="0px" class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">年龄</th>
+                <th class="textCenter">身份证号</th>
+                <th class="textCenter">联系人姓名</th>
+                <th class="textCenter">联系人电话</th>
+                <th class="textCenter">状态</th>
+                <th nzWidth="220px" nzRight="0px" class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td nzWidth="200px" nzLeft="0px" class="textCenter">{{ data?.name }}</td>
+                <td class="textCenter">{{data?.sex == 0 ? "男" : "女" }}</td>
+                <td class="textCenter">{{data?.age }}</td>
+                <td class="textCenter">{{data?.cardno}}</td>
+                <td class="textCenter">{{data?.contactName}}</td>
+                <td class="textCenter">{{data?.contactPhone}}</td>
+                <td class="textCenter">{{data?.status | statusPipe}}</td>
+                <td class="textCenter" nzWidth="220px" nzRight="0px">
+                    <a href="javascript:void(0)" (click)="turnToEdit(data)" roleBtnControll [roleBtnKey]="'EditMenuBtn'">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="turnTocheck(data)" roleBtnControll [roleBtnKey]="'checkMenuBtn'">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="turnTocheckInInfor(data)">入住信息</a>
+                    <!-- <nz-divider nzType="vertical" *ngIf="data?.status == '2'"></nz-divider>
+                    <a href="javascript:void(0)" *ngIf="data?.status == '2'" (click)="delete(data?.id)" style="color: #f81d22 !important;" roleBtnControll [roleBtnKey]="'DelMenuBtn'">删除</a> -->
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

@@ -1,0 +1,21 @@
+nz-form-label {
+    margin-left: 10px;
+}
+
+.w100p {
+    width: 100%;
+}
+
+#printTable thead tr th {
+    font-size: 12px !important;
+}
+
+#printTable tbody tr td {
+    font-size: 12px !important;
+}
+
+.textCenter {
+    font-size: 14px;
+    padding-left: 2px;
+    text-align: center
+}

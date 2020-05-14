@@ -1,0 +1,11 @@
+.textCenter {
+    text-align: center
+}
+
+.red {
+    color: red
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100% !important;
+}

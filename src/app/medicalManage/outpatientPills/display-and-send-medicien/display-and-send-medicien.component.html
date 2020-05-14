@@ -1,0 +1,159 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div style="padding: 20px 0;">
+        <div nz-row nzType="flex">
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药房</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择药房" [(ngModel)]="sendData2.medRoomId">
+                            <nz-option *ngFor="let item of medRoomList;let i = index" [nzValue]="item.id" [nzLabel]="item.medRoomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="name">病人</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="name" id="name" style="width:150px" placeholder="按病人姓名检索" [(ngModel)]="sendData.name" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>建筑</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="" nzPlaceHolder="请选择建筑" style="width: 150px;" [(ngModel)]="sendData.buildingId"  (ngModelChange)="reFreshBuild(sendData.buildingId)">
+                            <nz-option *ngFor="let x of buildArr; let key = index" [nzValue]="x.id" [nzLabel]="x.buildingName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>楼层</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="" nzPlaceHolder="请选择楼层" style="width: 150px;" [(ngModel)]="sendData.floorId" (ngModelChange)="reFreshFloor(sendData.floorId)">
+                            <nz-option *ngFor="let x of floorArr; let key = index" [nzValue]="x.id" [nzLabel]="x.floorName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>房间</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="" nzPlaceHolder="请选择房间" style="width: 150px;" [(ngModel)]="sendData.roomId" (ngModelChange)="getList(true)">
+                            <nz-option *ngFor="let x of roomArr; let key = index" [nzValue]="x.id" [nzLabel]="x.roomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" [(ngModel)]="sendData.sendMedStatus">
+                            <nz-option nzValue="0" nzLabel="未发"></nz-option>
+                            <nz-option nzValue="1" nzLabel="已发"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>处方类型</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzAllowClear="true" nzPlaceHolder="选择处方类型" [(ngModel)]="sendData.prescriptionType" >
+                            <nz-option nzValue="1" nzLabel="精一处方"></nz-option>
+                            <nz-option nzValue="2" nzLabel="精二处方"></nz-option>
+                            <nz-option nzValue="3" nzLabel="普通处方"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>日期</nz-form-label>
+                    <nz-form-control>
+                        <nz-range-picker [(ngModel)]="selDate" (ngModelChange)="dateChange($event)" nzFormat="yyyy-MM-dd" nzAllowClear></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="givingMedicine()">
+                            批量发药
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;">门诊发药</div>
+<nz-tabset style="background: #fff;padding-top: 24px;">
+    <nz-tab nzTitle="显示页">
+        <div style="padding:0 50px;">
+            <nz-table #basicTable [nzData]="listOfData" [nzTitle]="serchArea" nzBordered [nzLoading]="isLoading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]" (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+                <thead>
+                    <tr>
+                        <th nzShowCheckbox [nzIndeterminate]="isPartSel" [nzChecked]="allChecked" (nzCheckedChange)="checkBoxAllChange()"><span style="display:block;position:absolute;;top:-1px;left:10px;">操作</span></th>
+                        <th>姓名</th>
+                        <th>床号</th>
+                        <th>药名</th>
+                        <th>规格</th>
+                        <th>天数</th>
+                        <th>总量</th>
+                        <th>单次剂量</th>
+                        <th>用法</th>
+                        <th>频次</th>
+                        <th>日期</th>
+                        <th>处方类型</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let data of basicTable.data;let cpListI = index">
+                        <ng-container *ngFor="let cpDesc of data.cpDescList;let cpDescI = index">
+                            <ng-container *ngFor="let cpDrug of cpDesc.cpDrugList;let cpDrugI = index">
+                                <ng-container>
+                                    <tr *ngFor="let cpDrugDesc of cpDrug.cpDrugDescList;let cpDrugDescI = index">
+                                        <td nzShowCheckbox [nzChecked]="cpDesc.checked" (nzCheckedChange)="checkBoxChange(cpDesc)" [attr.rowspan]="cpDesc.cpDrugDescSize2" *ngIf="cpDrugI == 0 && cpDrugDescI == 0"></td>
+                                        <td [attr.rowspan]="data.cpDrugDescSize1" *ngIf="cpDescI == 0 && cpDrugI == 0 && cpDrugDescI == 0">{{data.name}}</td>
+                                        <td [attr.rowspan]="data.cpDrugDescSize1" *ngIf="cpDescI == 0 && cpDrugI == 0 && cpDrugDescI == 0">{{data.bedName}}</td>
+                                        <td>{{cpDrugDesc.medDrugName}}</td>
+                                        <td>{{cpDrugDesc.specification}}</td>
+                                        <td>{{cpDrugDesc.daysNum}}</td>
+                                        <td>{{cpDrugDesc.totalNum}}</td>
+                                        <td>{{cpDrugDesc.dosage}}</td>
+                                        <td [attr.rowspan]="cpDrug.cpDrugDescSize3" *ngIf="cpDrugDescI == 0">{{cpDrug.drugUsage}}</td>
+                                        <td [attr.rowspan]="cpDrug.cpDrugDescSize3" *ngIf="cpDrugDescI == 0">{{cpDrug.drugFrequency}}</td>
+                                        <td [attr.rowspan]="cpDesc.cpDrugDescSize2" *ngIf="cpDrugI == 0 && cpDrugDescI == 0">{{cpDesc.sendMedDate}}</td>
+                                        <td [attr.rowspan]="cpDesc.cpDrugDescSize2" *ngIf="cpDrugI == 0 && cpDrugDescI == 0"
+                                        [ngClass]="{'colorF00': cpDesc.cpType == '精一处方'}">{{cpDesc.cpType}}</td>
+                                        <td [attr.rowspan]="cpDesc.cpDrugDescSize2" *ngIf="cpDrugI == 0 && cpDrugDescI == 0">{{cpDesc.sendMedStatus == 0 ? '未发' : '已发'}}</td>
+                                    </tr>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                    
+                </tbody>
+            </nz-table>
+        </div>
+    </nz-tab>
+</nz-tabset>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>

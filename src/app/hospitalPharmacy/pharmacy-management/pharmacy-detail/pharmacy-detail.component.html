@@ -1,0 +1,130 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div style="padding: 20px 0;">
+        <div nz-row nzType="flex">
+            <div nz-col style="margin-right:10px;margin-left: 20px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input style="width:150px" placeholder="按药品名称检索" [(ngModel)]="sendData.search" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药房</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="选择药房" [(ngModel)]="sendData.medRoomId">
+                            <nz-option *ngFor="let item of medRoomList;let key = index" [nzValue]="item.id" [nzLabel]="item.medRoomName"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>限制等级</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:150px;" nzPlaceHolder="请选择限制等级" [(ngModel)]="sendData.limitLevel">
+                            <nz-option nzValue="" nzLabel="全部"></nz-option>
+                            <nz-option nzValue="普通" nzLabel="普通"></nz-option>
+                            <nz-option nzValue="精I" nzLabel="精I"></nz-option>
+                            <nz-option nzValue="精II" nzLabel="精II"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:150px;" nzPlaceHolder="请选择药品状态" [(ngModel)]="sendData.drugStatus">
+                            <nz-option nzValue="" nzLabel="全部"></nz-option>
+                            <nz-option nzValue="1" nzLabel="启用"></nz-option>
+                            <nz-option nzValue="0" nzLabel="禁用"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>药品类别</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:150px;" nzPlaceHolder="请选择药品类别" [(ngModel)]="sendData.drugType">
+                            <nz-option nzValue="" nzLabel="全部"></nz-option>
+                            <nz-option nzValue="西药" nzLabel="西药"></nz-option>
+                            <nz-option nzValue="中成药" nzLabel="中成药"></nz-option>
+                            <nz-option nzValue="自制剂" nzLabel="自制剂"></nz-option>
+                            <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>是否过期</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 200px;" nzPlaceHolder="是否过期" [(ngModel)]="sendData.isExpire">
+                            <nz-option nzValue="3" nzLabel="全部"></nz-option>
+                            <nz-option nzValue="0" nzLabel="临期"></nz-option>
+                            <nz-option nzValue="1" nzLabel="正常"></nz-option>
+                            <nz-option nzValue="2" nzLabel="过期"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col style="margin-right:10px;">
+                <nz-form-item nzFlex>
+                    <nz-form-label>过期时间</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [ngModel]="selDate" (ngModelChange)="dateChange($event)"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;">药房明细</div>
+<div style="padding:0 50px;padding-top: 24px;background: #fff;">
+    <nz-table #basicTable [nzData]="listOfData" [nzLoading]="Loading" [nzTitle]="serchArea" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size"
+        [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]" (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+        <thead>
+            <tr>
+                <th class="center">药品名称</th>
+                <th class="center">生产厂商</th>
+                <th class="center">药品规格</th>
+                <th class="center">剂型</th>
+                <th class="center">数量</th>
+                <th class="center">待扣小单位数量</th>
+                <th class="center">药品类别</th>
+                <th class="center">限制等级</th>
+                <th class="center">药品状态</th>
+                <!-- <th class="center">操作</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td class="center">{{data.drugName}}</td>
+                <td class="center">{{data.manufacturers}}</td>
+                <td class="center">{{data.specification}}</td>
+                <td class="center">{{data.dosageForm | dosageFormPipe}}</td>
+                <td class="center">{{data.quantity}}</td>
+                <td class="center">{{data.quantityForSmall}}</td>
+                <td class="center">{{data.drugType}}</td>
+                <td class="center">{{data.limitLevel}}</td>
+                <td class="center">{{data.drugStatus}}</td>
+                <!-- <td class="center"></td> -->
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>

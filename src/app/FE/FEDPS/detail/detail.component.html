@@ -1,0 +1,50 @@
+<!-- 表格查询条件End -->
+<nz-card nzTitle="缴存明细列表" [nzExtra]="extraTemplate" [nzBordered]="false">
+    <nz-card nzTitle="基本信息" style="font-size: 15px;">
+        <div nz-row>
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="5">姓名：{{ olderInfo?.name }}</div>
+            <div nz-col nzSpan="5">性别：{{ olderInfo?.sex }}</div>
+            <div nz-col nzSpan="5">年龄：{{ olderInfo?.age }}</div>
+            <div nz-col nzSpan="5">身份证：{{ olderInfo?.cardno }}</div>
+        </div>
+        <div nz-row style="margin-top: 20px;">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="5">房间：{{ olderInfo?.roomName }}</div>
+            <div nz-col nzSpan="5">
+                入院日期：{{ olderInfo?.inDate | date: "yyyy-MM-dd" }}
+            </div>
+            <div nz-col nzSpan="5">累计住院天数：{{ olderInfo?.days }}</div>
+        </div>
+    </nz-card>
+    <nz-table #basicTable [nzData]="dataArray" [nzShowPagination]="false" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th style="text-align: center;">缴存账目</th>
+                <th style="text-align: center;">缴存账目余额（元）</th>
+                <th style="text-align: center;">缴存账目累计缴存（元）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td style="text-align: center;">
+                    {{ data?.depositAccounts?.accountsName }}
+                </td>
+
+                <td style="text-align: center;">
+                    {{ data?.accountBalance }}
+                </td>
+
+                <td style="text-align: center;">
+                    {{ data?.payMoney }}
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="default" onclick="window.history.back()">
+        返回
+    </button>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template>

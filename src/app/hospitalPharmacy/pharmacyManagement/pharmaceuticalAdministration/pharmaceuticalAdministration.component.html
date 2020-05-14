@@ -1,0 +1,111 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="operator">药品名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="old" id="old" style="width:150px" [(ngModel)]="reqObj.search" placeholder="请输入药品名称" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="limitLevel">限制等级</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width:150px;" nzAllowClear nzPlaceHolder="请选择限制等级" name="limitLevel" id="limitLevel" [(ngModel)]="reqObj.limitLevel">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="普通" nzLabel="普通"></nz-option>
+                        <nz-option nzValue="精I" nzLabel="精I"></nz-option>
+                        <nz-option nzValue="精II" nzLabel="精II"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="drugStatus">药品状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width:150px;" nzAllowClear nzPlaceHolder="请选择药品状态" name="drugStatus" id="drugStatus" [(ngModel)]="reqObj.drugStatus">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="1" nzLabel="启用"></nz-option>
+                        <nz-option nzValue="0" nzLabel="禁用"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="drugType">药品类别</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width:150px;" nzAllowClear nzPlaceHolder="请选择药品类别" name="drugType" id="drugType" [(ngModel)]="reqObj.drugType">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="西药" nzLabel="西药"></nz-option>
+                        <nz-option nzValue="中成药" nzLabel="中成药"></nz-option>
+                        <nz-option nzValue="自制剂" nzLabel="自制剂"></nz-option>
+                        <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<nz-card nzTitle="药品列表" [nzExtra]="btnAdd">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th nzWidth="200px" nzLeft="0px" class="textCenter">药品名称</th>
+                <th class="textCenter">生产厂商</th>
+                <th class="textCenter">药品规格</th>
+                <th class="textCenter">剂型</th>
+                <th class="textCenter">药品类别</th>
+                <th class="textCenter">限制等级</th>
+                <th class="textCenter">药品状态</th>
+                <th nzWidth="220px" nzRight="0px" class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td nzWidth="200px" nzLeft="0px" class="textCenter">
+                    {{ data?.drugName }}
+                </td>
+                <td class="textCenter">{{ data?.manufacturers }}</td>
+                <td class="textCenter">{{ data?.specification }}</td>
+                <td class="textCenter">{{ data?.dosageForm | dosageFormPipe}}</td>
+                <td class="textCenter">{{data?.drugType}}</td>
+                <td class="textCenter">{{data?.limitLevel}}</td>
+                <td class="textCenter">
+                    <span *ngIf="data?.drugStatus=='0'">禁用</span>
+                    <span *ngIf="data?.drugStatus=='1'">启用</span>
+                </td>
+                <td class="textCenter" nzWidth="220px" nzRight="0px">
+                    <a href="javascript:void(0)" (click)="turnToEdit(data)" roleBtnControll [roleBtnKey]="'EditMenuBtn'">编辑
+                    </a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="turnTocheck(data)" roleBtnControll [roleBtnKey]="'checkMenuBtn'">查看
+                    </a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="forbidden(data?.id,data?.drugStatus)" [ngStyle]="{ color: data?.drugStatus == 1 ? 'red' : '#20a8d8' }" roleBtnControll [roleBtnKey]="'editIsUseBtn'">{{ data?.drugStatus == 1 ? "禁用" : "启用" }}</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="javascript:void(0)" (click)="delete(data?.id)" style="color: #f81d22 !important;" roleBtnControll [roleBtnKey]="'DelMenuBtn'">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

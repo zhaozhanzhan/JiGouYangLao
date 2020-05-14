@@ -1,0 +1,173 @@
+
+
+<div style="background:#fff;position: relative;">
+  <div *ngIf="checkModel" style="position:absolute;z-index:99;width:100%;height:100%;"></div>
+  <nz-spin [nzSpinning]="loading">
+    <!-- 基本配置 -->
+    <nz-card style="width:100%;font-size:15px;" nzTitle="基本配置" [nzLoading]="false" [nzExtra]="goBack">
+      <div style="padding-left:60px; display: flex; flex-direction: row;flex-wrap: wrap;justify-content: space-between;align-content:space-between;">
+        <div style="line-height: 32px;width: 33%;" class="animated" [ngClass]="{'err': formData.project == '' && isSave,'shake': formData.project == '' && isSave}">
+          <span style="color:red;font-size:16px;">*</span>
+          项目名称：
+          <input nz-input style="width:200px" [(ngModel)]="formData.project" />
+        </div>
+        <div style="line-height: 32px;width: 33%;" class="animated" [ngClass]="{'err': formData.classify == '' && isSave,'shake': formData.classify == '' && isSave}">
+          <span style="color:red;font-size:16px;">*</span>
+          项目类别：
+          <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择项目类别" [(ngModel)]="formData.classify">
+            <nz-option *ngFor="let item of sysProClassify" [nzLabel]="item.categoryName" [nzValue]="item.id"></nz-option>
+          </nz-select>
+          <!-- <input nz-input style="width:200px" [(ngModel)]="formData.classify" /> -->
+        </div>
+        <div style="line-height: 32px;width: 33%;">
+          系统项目：
+          <!-- <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择系统项目" [(ngModel)]="formData.systemPro">
+            <nz-option *ngFor="let item of sysProject" [nzLabel]="item.caseName" [nzValue]="item.id"></nz-option>
+          </nz-select> -->
+          <input nz-input style="width:200px" placeholder="请选择系统项目" readonly [(ngModel)]="systemClaPro" (click)="selSystemPro()" />
+        </div>
+        <div style="width: 99%">
+          <div style="line-height: 32px;margin-top: 10px;width: 35%" class="animated" [ngClass]="{'err': formData.object == '' && isSave,'shake': formData.object == '' && isSave}">
+            <span style="color:red;font-size:16px;">*</span>
+            服务对象：
+            <nz-radio-group [(ngModel)]="formData.object" (ngModelChange)="objectChange($event)">
+              <label nz-radio nzValue="房间">房间</label>
+              <label nz-radio nzValue="人">人</label>
+              <label nz-radio nzValue="清洁区域">清洁区域</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div style="width: 35%">
+          <div *ngIf="showCareLevel" style="line-height: 32px;" class="animated" [ngClass]="{'err': isLevel == '' && isSave,'shake': isLevel == '' && isSave}">
+            <span style="color:red;font-size:16px;">*</span>
+            护理等级：
+            <nz-checkbox-group [(ngModel)]="formData.level" (ngModelChange)="levelChange($event)"></nz-checkbox-group>
+          </div>
+        </div>
+        <div style="margin-top:15px;position: relative;width: 99%;">
+          <span style="margin-right:20px;margin-left: 10px;display:inline-block;position: absolute;">工作标准：</span>
+          <textarea rows="4" nz-input [nzAutosize]="{ minRows: 4, maxRows: 6 }" [(ngModel)]="formData.standard" maxlength="500" style="display:inline-block;width:86%;left: 90px;"></textarea>
+        </div>
+        <div style="width: 99%;">
+          <div style="line-height: 32px;margin-top: 10px;width: 35%" class="animated" [ngClass]="{'err': formData.cycle == '' && isSave,'shake': formData.cycle == '' && isSave}">
+            <span style="color:red;font-size:16px;">*</span>
+            服务周期：
+            <nz-radio-group [(ngModel)]="formData.cycle">
+              <label nz-radio nzValue="即时">即时</label>
+              <label nz-radio nzValue="每日">每日</label>
+              <label nz-radio nzValue="每周">每周</label>
+              <label nz-radio nzValue="每月">每月</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div style="line-height: 32px;width: 99%; margin-left: 25px;margin-top: 10px;">
+          排序号：
+          <input nz-input maxlength="6" style="width:200px" [(ngModel)]="formData.orderNum" oninput="value=value.replace(/[^\d]/g,'')"/>
+        </div>
+      </div>
+    </nz-card>
+
+    <!-- 服务登记配置 -->
+    <nz-card style="width:100%;font-size:15px;font-size:15px;margin-top:15px;" nzTitle="服务登记配置" [nzLoading]="false">
+      <div style="padding-left:60px; display: flex; flex-direction: row;flex-wrap: wrap;justify-content: space-between;align-content:space-between;">
+        <div style="line-height: 32px;width: 99%;">
+          <label nz-checkbox [(ngModel)]="formData.needGoods">需要使用物品</label>
+          <input *ngIf="formData.needGoods" placeholder="请输入物品名称" nz-input style="width:200px;margin-right: 20px;" [(ngModel)]="formData.goods" />
+          <span *ngIf="formData.needGoods" >每次使用件数：</span>  
+          <input *ngIf="formData.needGoods" maxlength="5"  nz-input style="width:60px" [(ngModel)]="formData.pieces" oninput="value=value.replace(/[^\d]/g,'')"/>
+        </div>
+
+        <nz-card nzType="inner" nzTitle="自定义项" [nzExtra]="extraTemplate" style="width:92%;margin-top:10px;">
+          <div *ngFor="let item of formData.diy; let i = index;" style="margin-top:15px;">
+            <!-- 单选 -->
+            <div *ngIf="item.classify == '单选'" style="position: relative;">
+              <span style="display: inline-block; position:absolute; right:10px;">
+                <a class="colorF00" nz-popconfirm nzTitle="确认删除该自定义项吗?" (nzOnConfirm)="deleteDiyItem(i)">删除</a>
+              </span>
+              {{ item.title }}：
+              <nz-radio-group [(ngModel)]="item.value">
+                <label *ngFor="let x of item.option" nz-radio [nzValue]="x">{{x}}</label>
+              </nz-radio-group>
+            </div>
+            <!-- 多选 -->
+            <div *ngIf="item.classify == '多选'" style="position: relative;">
+              <span style="display: inline-block; position:absolute; right:10px;">
+                <a class="colorF00" nz-popconfirm nzTitle="确认删除该自定义项吗?" (nzOnConfirm)="deleteDiyItem(i)">删除</a>
+              </span>
+              {{ item.title }}：
+              <nz-checkbox-group [(ngModel)]="item.value"></nz-checkbox-group>
+            </div>
+            <!-- 文字输入 -->
+            <div *ngIf="item.classify == '文字输入'" style="position: relative;">
+              <span style="display: inline-block; position:absolute; right:10px;">
+                <a class="colorF00" nz-popconfirm nzTitle="确认删除该自定义项吗?" (nzOnConfirm)="deleteDiyItem(i)">删除</a>
+              </span>
+              {{ item.title }}：
+              <input nz-input maxlength="50" style="width:70%" placeholder="请输入自定义内容" [(ngModel)]="item.value" />
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </nz-card>
+    <!-- 按钮 -->
+  <div style="text-align:center;margin:60px;">
+    <button *ngIf="!checkModel" style="width:130px;height:40px;margin-right:20px;" nz-button [nzSize]="large" nzType="primary" (click)="saveForm()">保存</button>
+  </div>
+      
+  </nz-spin>
+</div>
+
+<!-- 新增自定义弹框 -->
+<nz-modal [nzWidth]=800 [(nzVisible)]="addDIYisVisible" nzTitle="新增自定义项" nzOkText="确认" nzCancelText="取消" (nzOnOk)="addDIYModelOk()" (nzOnCancel)="addDIYModelCancel()">
+  <div style="padding-left:50px;font-size: 15px;position: relative;">
+    <div style="width:30%;" class="animated" [ngClass]="{'err': DiyBox.title == '' && addDIYisSave,'shake': DiyBox.title == '' && addDIYisSave}">
+      标题：<input nz-input style="width:70%;" maxlength="8" type="text" placeholder="8个字以内" [(ngModel)]="DiyBox.title">
+    </div>
+    <p></p>
+    类型：
+    <nz-radio-group [(ngModel)]="DiyBox.classify" (ngModelChange)="DiyClassifyChange($event)">
+      <label nz-radio nzValue="单选">单选</label>
+      <label nz-radio nzValue="多选">多选</label>
+      <label nz-radio nzValue="文字输入">文字输入</label>
+    </nz-radio-group>
+    <p></p>
+    <div *ngIf="isShowDiyOption">
+      选项：
+      <nz-tag *ngFor="let tag of tags; let i = index" [nzMode]="'closeable'" (nzAfterClose)="handleClose(tag)">
+        <span style="font-size:15px;padding: 3px;">{{ sliceTagName(tag) }}</span>
+      </nz-tag>
+      <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+        <i nz-icon type="plus"></i> <span style="font-size:15px;padding: 3px;">添加选项</span>
+      </nz-tag>
+      <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+        style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+    </div>
+  </div>
+</nz-modal>
+
+<!-- 选择系统项目弹框 -->
+<nz-modal [nzWidth]=800 [(nzVisible)]="selSystemProisVisible" nzTitle="选择系统项目" nzOkText="确认" nzCancelText="取消" (nzOnOk)="selSystemProModelOk()" (nzOnCancel)="selSystemProModelCancel()">
+    <div style="padding-left:50px;font-size: 15px;position: relative;">
+      <p></p>
+      系统类别：
+      <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择系统类别" [(ngModel)]="formData.systemClassify" (ngModelChange)="classifyChange($event)">
+        <nz-option *ngFor="let item of systemCla" [nzLabel]="item.caseName" [nzValue]="item.id"></nz-option>
+      </nz-select>
+      <p></p>
+      系统项目：
+      <nz-select style="width: 200px;" nzShowSearch nzPlaceHolder="请选择系统项目" [(ngModel)]="formData.systemPro" (ngModelChange)="projectChange($event)">
+        <nz-option *ngFor="let item of systemPro" [nzLabel]="item.caseName" [nzValue]="item.id"></nz-option>
+      </nz-select>
+    </div>
+  </nz-modal>
+
+<!-- 模板 -->
+<ng-template #extraTemplate>
+    <button nz-button nzType="dashed" (click)="addDIY()">
+    <i class="anticon anticon-plus"></i>添加</button>
+</ng-template>
+<ng-template #goBack>
+  <div style="position:relative;z-index:100;">
+    <button nz-button (click)="goback()">返回</button>
+  </div>
+</ng-template>

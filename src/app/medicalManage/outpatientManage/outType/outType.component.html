@@ -1,0 +1,131 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row [nzGutter]="8" nzType="flex">
+    <div nz-col>
+      <!-- <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="6" [nzXXl]="4" nzFor="key">名字</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+                    <input nz-input name="name" [(ngModel)]="reqObj.key" id="key" placeholder="请输入关键字" (keyup.enter)="updateList()">
+                </nz-form-control>
+            </nz-form-item> -->
+
+      <nz-form-item nzFlex>
+        <nz-form-label nzFor="key">名字</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            [(ngModel)]="reqObj.key"
+            id="key"
+            placeholder="请输入关键字"
+            (keyup.enter)="updateList()"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>外出类型</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class=""
+            nzPlaceHolder="请选择"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.outType"
+          >
+            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+            <nz-option nzValue="1" nzLabel="外出门诊">外出门诊</nz-option>
+            <nz-option nzValue="2" nzLabel="外出住院">外出住院</nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>是否外出</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            class=""
+            nzPlaceHolder="请选择"
+            style="width: 150px;"
+            [(ngModel)]="reqObj.isOut"
+          >
+            <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+            <nz-option nzValue="1" nzLabel="外出">外出</nz-option>
+            <nz-option nzValue="0" nzLabel="未外出">未外出</nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex="true">
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="updateList(true)">
+            查询
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="5">
+      <label for="">外出就诊:</label>
+      <span>{{ type1 }}</span>
+    </div>
+    <div nz-col nzSpan="5">
+      <label for="">外出住院:</label>
+      <span>{{ type2 }}</span>
+    </div>
+    <div nz-col nzSpan="5">
+      <label for="">未归人数:</label>
+      <span>{{ type3 }}</span>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="外出列表">
+  <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzTitle]="serchArea"
+    [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">名字</th>
+        <th class="textCenter">外出类型</th>
+        <th class="textCenter">外出医院</th>
+        <th class="textCenter">外出时间</th>
+        <th class="textCenter">是否归来</th>
+        <th class="textCenter">归来时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data.name }}</td>
+        <td class="textCenter">
+          <span *ngIf="data?.outType == '1'">外出门诊</span>
+          <span *ngIf="data?.outType == '2'">外出住院</span>
+        </td>
+        <th class="textCenter">{{ data.clinicHospital }}</th>
+        <td class="textCenter">{{ data.outTime }}</td>
+        <td class="textCenter">
+          <span *ngIf="data?.isOut == '1'">是</span>
+          <span *ngIf="data?.isOut == '0'">否</span>
+        </td>
+        <td class="textCenter">{{ data.outHospitalDate }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共{{ total }}条</ng-template>

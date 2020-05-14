@@ -1,0 +1,176 @@
+<nz-card nzType="inner" nzTitle="房屋建筑信息" class="marginBottom24">
+  <form nz-form  [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"  nzFor="buildingArea">机构建筑面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32"  formControlName="buildingArea" id="buildingArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="coverArea">机构占地面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="coverArea" id="coverArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="greenArea">绿化面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="greenArea" id="greenArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="serviceObjectArea">服务对象用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="serviceObjectArea" id="serviceObjectArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="medicalHouseArea">医务用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="medicalHouseArea" id="medicalHouseArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="outdoorArea">户外活动场所面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="outdoorArea" id="outdoorArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="outdoorEntertainArea">室外娱乐场所面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="outdoorEntertainArea" id="outdoorEntertainArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="indoorEntertainArea">室内娱乐场所面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="indoorEntertainArea" id="indoorEntertainArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="bathroomArea">独立卫生间面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="bathroomArea" id="bathroomArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="sigalBedArea">单床使用面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="sigalBedArea" id="sigalBedArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="healthArea">康复体锻用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="healthArea" id="healthArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="logisticHouseArea">后勤用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="logisticHouseArea" id="logisticHouseArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="canteenHouseArea">食堂用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="canteenHouseArea" id="canteenHouseArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="officeArea">办公用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32" formControlName="officeArea" id="officeArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="houseNature">房屋性质</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <nz-select nzAllowClear nzPlaceHolder="请选择" formControlName="houseNature" id="houseNature">
+                <nz-option *ngFor="let option of houseNatureList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="oldAssistArea">老年人居住用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="32" formControlName="oldAssistArea" id="oldAssistArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="adminAssistArea">行政辅助用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="32" formControlName="adminAssistArea" id="adminAssistArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="empolyeeArea">员工生活用房面积</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="32" formControlName="empolyeeArea" id="empolyeeArea"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveOrganConstructionInfo()"
+      [nzLoading]="saveBasicInformationLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>

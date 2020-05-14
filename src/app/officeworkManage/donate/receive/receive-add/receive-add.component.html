@@ -1,0 +1,423 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="物品调拨详情" [nzExtra]="btnArea">
+  <nz-card nzType="inner">
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="whOutId"
+          >出库库房</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-select
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            formControlName="whOutId"
+            id="whOutId"
+            (ngModelChange)="onWhOutChange($event)"
+            class="form_input"
+          >
+            <nz-option
+              *ngFor="let storehouse of storehouseList"
+              [nzLabel]="
+                storehouse.name 
+              "
+              [nzValue]="storehouse.id"
+            ></nz-option>
+          </nz-select>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('whOutId').dirty &&
+                validateForm.get('whOutId').errors
+              )
+            "
+            >出库库房不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="recDeptId"
+          >调拨部门</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-select
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            formControlName="recDeptId"
+            id="recDeptId"
+            (ngModelChange)="onRecDeptChange($event)"
+            class="form_input"
+          >
+            <nz-option
+              *ngFor="let department of departmentList"
+              [nzLabel]="department.name"
+              [nzValue]="department.id"
+            ></nz-option>
+          </nz-select>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('recDeptId').dirty &&
+                validateForm.get('recDeptId').errors
+              )
+            "
+            >调拨部门不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="recWhId"
+          >调拨库房</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-select
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            formControlName="recWhId"
+            class="form_input"
+            id="recWhId"
+          >
+            <nz-option
+              *ngFor="let storehouse of storehouseListOfDept"
+              [nzLabel]="
+                storehouse.name
+              "
+              [nzValue]="storehouse.id"
+            ></nz-option>
+          </nz-select>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('recWhId').dirty &&
+                validateForm.get('recWhId').errors
+              )
+            "
+            >调拨库房不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="receiver"
+          >调拨人员</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            nz-input
+            formControlName="receiver"
+            id="receiver"
+            class="form_input"
+            maxlength="10"
+          />
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('receiver').dirty &&
+                validateForm.get('receiver').errors
+              )
+            "
+            >调拨人员不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="useFor"
+          >调拨用途</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <input
+            nz-input
+            formControlName="useFor"
+            id="useFor"
+            class="form_input"
+            maxlength="20"
+          />
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('useFor').dirty &&
+                validateForm.get('useFor').errors
+              )
+            "
+            >调拨用途不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+     
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzRequired
+          nzFor="recTime"
+          >调拨时间</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <nz-date-picker
+            nzShowTime
+            nzFormat="yyyy-MM-dd HH:mm:ss"
+            formControlName="recTime"
+            [nzStyle]="{ width: '400px' }"
+            id="recTime"
+          ></nz-date-picker>
+          <nz-form-explain
+            [hidden]="
+              !(
+                validateForm.get('recTime').dirty &&
+                validateForm.get('recTime').errors
+              )
+            "
+            >调拨时间不能为空</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzMd]="4"
+          [nzLg]="4"
+          [nzXl]="2"
+          [nzXXl]="2"
+          nzFor="outComment"
+          >备注</nz-form-label
+        >
+        <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+          <textarea
+            rows="4"
+            nz-input
+            class="form_input"
+            formControlName="outComment"
+            id="outComment"
+            maxlength="50"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-card>
+
+  <ng-template #btnListAdd>
+    <!--
+      <button nz-button nzType="dashed" (click)="addOutWarehouse($event)">
+      <i class="anticon anticon-plus"></i>添加物品</button>
+    -->
+    <button nz-button nzType="dashed" (click)="showChooseGoodsDialog()">
+      <i class="anticon anticon-plus"></i>添加物品
+    </button>
+  </ng-template>
+  <nz-card
+    class="mt10"
+    nzType="inner"
+    nzTitle="调拨物品"
+    [nzExtra]="btnListAdd"
+  >
+    <nz-table
+      #drugTable
+      [nzData]="outWarehouseDesc"
+      [nzHideOnSinglePage]="true"
+    >
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>物品名称</th>
+          <th>捐赠用途</th>
+          <th>剩余数量</th>
+          <th>调拨数量</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of drugTable.data; let num = index">
+          <td class="maxW50 tac">{{ num + 1 }}</td>
+          <td class="maxW150 tac">{{ data?.goodName }}</td>
+          <td class="maxW150 tac">{{ data?.useFor }}</td>
+          <td class="maxW150 tac">{{ data?.quality }}</td>
+          <td class="maxW80">
+            <nz-input-number
+              class="w100p"
+              [(ngModel)]="data.outNum"
+              [nzMin]="1"
+              [nzStep]="1"
+              [nzPrecision]="0"
+            ></nz-input-number>
+          </td>
+          <td>
+            <input
+              nz-input
+              [(ngModel)]="data.goodsComment"
+              [title]="data.goodsComment"
+              maxlength="15"
+            />
+          </td>
+          <td class="maxW50 tac">
+            <a
+              (click)="deleteOutWarehouse(data, $event)"
+              style="color: #f81d22 !important;"
+              >删除</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card class="mt10" nzType="inner" nzTitle="签名">
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="operatorUrl"
+        >经办人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="operatorUrl"
+          [isShowSign]="true"
+          #operatorSign
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="receiverUrl"
+        >调拨人</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <mirr-electronicSign
+          [imgUrl]="receiverUrl"
+          [isShowSign]="true"
+          #receiverSign
+        >
+        </mirr-electronicSign>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveForm(operatorSign.imgUrl, receiverSign.imgUrl)"
+      [nzLoading]="isBtnLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<nz-modal
+  [(nzVisible)]="isShowChooseGoodDialog"
+  nzTitle="调拨物品详情"
+  nzWidth="1000"
+  (nzOnCancel)="isShowChooseGoodDialog = false"
+  (nzOnOk)="choosedGoods()"
+>
+  <nz-form-item nzFlex>
+    <nz-form-label nzFor="whGoodsId">物品</nz-form-label>
+    <nz-form-control>
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        style="width:150px"
+        nzPlaceHolder="请选择"
+        [(ngModel)]="queryWarehouseBatchListParam.outGoodId"
+        (ngModelChange)="onSelectedGoodChange()"
+      >
+        <nz-option
+          *ngFor="let goods of goodsList"
+          [nzLabel]="goods.goodName"
+          [nzValue]="goods.goodId"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-table
+    #goodsTable
+    [nzData]="warehouseBatchList"
+    [nzHideOnSinglePage]="true"
+    nzBordered
+    [nzFrontPagination]="false"
+    nzSize="small"
+  >
+    <thead>
+      <tr>
+        <th
+          nzShowCheckbox
+          [(nzChecked)]="warehouseBatchAllChecked"
+          [nzIndeterminate]="warehouseBatchIndeterminate"
+          (nzCheckedChange)="checkAll($event)"
+        ></th>
+        <th class="tac">批次号</th>
+        <th class="tac">物品名称</th>
+        <th class="tac">捐赠单位</th>
+        <th class="tac">捐赠日期</th>
+        <th class="tac">捐赠用途</th>
+        <th class="tac">数量</th>
+        <th class="tac">有效期（天）</th>
+        <th class="tac">到期日期</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of goodsTable.data; let num = index">
+        <td
+          nzShowCheckbox
+          [(nzChecked)]="data.checked"
+          [nzDisabled]="data.disabled"
+          (nzCheckedChange)="refreshStatus()"
+        ></td>
+        <td class="maxW50 tac">{{ data?.batchNum }}</td>
+        <td class="maxW150 tac">{{ data?.goodName }}</td>
+        <td class="maxW150 tac">{{ data?.donatedCompany }}</td>
+        <td class="maxW80 tac">{{ data?.donatedDate | date: "yyyy-MM-dd" }}</td>
+        <td class="maxW150 tac">{{ data?.useFor }}</td>
+        <td class="maxW150 tac">{{ data?.quality }}</td>
+        <td class="maxW150 tac">{{ data?.shelfLife }}</td>
+        <td class="maxW150 tac">{{ data?.expireDate | date: "yyyy-MM-dd" }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-modal>

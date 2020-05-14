@@ -1,0 +1,142 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row nzType="flex">
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="name">人员姓名</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="name" id="name" style="width:150px" placeholder="请输入人员姓名" [(ngModel)]="reqObj.name" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label style="margin-left:5px" nzFor="departmentId">部门</nz-form-label>
+                    <nz-form-control style="width:200px;">
+                        <nz-tree-select class="w100p" name="departmentId" id="departmentId" [nzNodes]="goodsClassificationNodes" nzShowSearch [nzPlaceHolder]="reqObjGoodName" [(ngModel)]="reqObj.departmentId"></nz-tree-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label style="margin-left:5px" nzFor="status">工作状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select name="status" id="status" nzAllowClear nzPlaceHolder="请选择工作状态" style="width:150px;" [(ngModel)]="reqObj.status">
+                            <nz-option nzValue="0" nzLabel="在职"></nz-option>
+                            <nz-option nzValue="1" nzLabel="离职"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label style="margin-left:5px" nzFor="status">人员类型</nz-form-label>
+                    <nz-form-control>
+                        <nz-select nzAllowClear nzPlaceHolder="请选择人员类型" style="width:150px;" name="personType" [(ngModel)]="reqObj.personType" id="personType">
+                            <nz-option nzValue="0" nzLabel="医生"></nz-option>
+                            <nz-option nzValue="1" nzLabel="护理人员"></nz-option>
+                            <nz-option nzValue="2" nzLabel="护士"></nz-option>
+                            <nz-option nzValue="3" nzLabel="普通职员"></nz-option>
+                            <nz-option nzValue="4" nzLabel="其他人员"></nz-option>
+                            <nz-option nzValue="5" nzLabel="管理人员"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label style="margin-left:5px" nzFor="btime">入职时间</nz-form-label>
+                    <nz-form-control>
+                        <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [ngModel]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div>
+                <nz-form-item nzFlex>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<nz-card nzTitle="人员档案列表" [nzExtra]="extraTemplate">
+    <nz-table #basicTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+        <thead>
+            <tr>
+                <th class="textCenter">姓名</th>
+                <th class="textCenter">性别</th>
+                <th class="textCenter">部门</th>
+                <th class="textCenter">入职时间</th>
+                <!-- <th class="textCenter">现在职务</th> -->
+                <th class="textCenter">人员类型</th>
+                <th class="textCenter">工作状态</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td class="textCenter">
+                    {{ data?.name }}
+                </td>
+                <td class="textCenter">{{ data?.sex }}</td>
+                <td class="textCenter">{{ data?.department }}</td>
+                <td class="textCenter">{{ data?.comeDate }}</td>
+                <!-- <td class="textCenter">{{data.position}}</td> -->
+                <td class="textCenter">
+                    <span *ngIf="data.personType == '0'">医生</span>
+                    <span *ngIf="data.personType == '1'">护理人员</span>
+                    <span *ngIf="data.personType == '2'">护士</span>
+                    <span *ngIf="data.personType == '3'">普通职员</span>
+                    <span *ngIf="data.personType == '4'">其他人员</span>
+                    <span *ngIf="data.personType == '5'">管理人员</span>
+                </td>
+                <td class="textCenter">
+                    <span *ngIf="data.status == '0'">在职</span>
+                    <span *ngIf="data.status == '1'">离职</span>
+                </td>
+                <td class="textCenter">
+                    <!-- <a href="#" (click)="turnToModifier(data,$event)">编辑</a> -->
+                    <a href="#" *ngIf="data.status == '0'" (click)="turnToModifier(data, $event)">编辑</a>
+                    <a href="#" *ngIf="data.status == '1'" (click)="turnToCheck(data, $event)">查看</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data.id, $event)" style="color: red">删除</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="modifierStatus('1', data.id, '', data.status, $event)" *ngIf="data.status == '0'">离职</a>
+                    <a href="#" (click)=" modifierStatus('2', data.id, data.leaveDate, data.status, $event)" *ngIf="data.status == '1'">复职</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template>
+<ng-template #totalTemplate let-total>共{{ total }}条</ng-template>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="修改工作状态详情" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div nz-col>
+        <nz-form-item nzFlex>
+            <nz-form-label><span class="red">*</span>工作状态</nz-form-label>
+            <nz-form-control>
+                <nz-select style="width: 174px;" nzAllowClear nzPlaceHolder="请选择工作状态" [(ngModel)]="profileLeaveObj.status">
+                    <nz-option nzValue="0" nzLabel="在职" *ngIf="stString=='2'"></nz-option>
+                    <nz-option nzValue="1" nzLabel="离职" *ngIf="stString=='1'"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col *ngIf="status == '0'">
+        <nz-form-item nzFlex>
+            <nz-form-label> <span class="red">*</span>离职日期</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker [(ngModel)]="profileLeaveObj.leaveDate"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</nz-modal>

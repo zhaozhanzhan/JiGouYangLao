@@ -1,0 +1,154 @@
+<ng-template #serchArea>
+    <form nz-form>
+        <div nz-row [nzGutter]="8" nzType="flex">
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="itemName">项目名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="itemName" id="itemName" style="width:150px" [(ngModel)]="queryParams.itemName" placeholder="请输入项目名称" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="name">姓名</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="queryParams.name" placeholder="请输入姓名" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="cardno">身份证号</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="cardno" id="cardno" style="width:150px" [(ngModel)]="queryParams.cardno" placeholder="请输入身份证号" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="bedNo">房间号</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="bedNo" id="bedNo" style="width:150px" [(ngModel)]="queryParams.bedNo" placeholder="请输入房间号" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="consumptionCategory">消费时间</nz-form-label>
+                    <nz-form-control>
+                        <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [(ngModel)]="date" (ngModelChange)="selDate($event)"></nz-range-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="expCategoryName">消费类别</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input name="expCategoryName" id="expCategoryName" style="width:150px" [(ngModel)]="queryParams.expCategoryName" placeholder="请输入消费类别" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="chargeMode">收费方式</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 120px;" name="chargeMode" nzAllowClear id="chargeMode" [(ngModel)]="queryParams.chargeMode">
+                            <nz-option nzValue="1" nzLabel="现结"></nz-option>
+                            <nz-option nzValue="2" nzLabel="代扣"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="feeMode">计费方式</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width: 120px;" name="feeMode" nzAllowClear id="feeMode" [(ngModel)]="queryParams.feeMode" [nzDisabled]="disabled">
+                            <nz-option nzLabel="登记计费" nzValue="1"> </nz-option>
+                            <nz-option nzLabel="按月计费" nzValue="2"> </nz-option>
+                            <nz-option nzLabel="按日计费" nzValue="3"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item nzFlex>
+                    <nz-form-label nzFor="settlementStatus">结算状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select style="width:120px" nzAllowClear name="settlementStatus" id="settlementStatus" [(ngModel)]="queryParams.settlementStatus" nzAllowClear nzPlaceHolder="">
+                            <nz-option nzValue="1" nzLabel="已计费"></nz-option>
+                            <nz-option nzValue="2" nzLabel="已结算"></nz-option>
+                            <nz-option nzValue="3" nzLabel="已取消"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="loadingDataArray(true)">
+                            查询
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="消费登记列表" [nzExtra]="extraTemplate">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzShowPagination]="true" [nzBordered]="'true'" [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false" [nzShowTotal]="totalTit">
+        <thead>
+            <tr>
+                <th>项目名称</th>
+                <th>姓名</th>
+                <th>身份证号</th>
+                <th>房间号</th>
+                <th>消费时间</th>
+                <th>消费类别</th>
+                <th>单价</th>
+                <th>规格</th>
+                <th>收费方式</th>
+                <th>扣款账目</th>
+                <th>计费方式</th>
+                <th>结算状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td>{{ data?.expItem?.itemName }}</td>
+                <td>{{ data?.oldman?.name }}</td>
+                <td>{{ data?.oldman?.cardno }}</td>
+                <td>{{ data?.oldman?.bed?.room?.roomName }}</td>
+                <td>{{data?.consumptionTime | date: 'yyyy-MM-dd'}}</td>
+                <td>{{ data?.expItem?.expCategoryInfo?.name}}</td>
+                <td>{{ data?.expItem?.unitPrice}}</td>
+                <td>{{ data?.expItem?.specs}}</td>
+                <td>
+                    <span *ngIf="data?.expItem?.chargeMode=='1'">现结</span>
+                    <span *ngIf="data?.expItem?.chargeMode=='2'">代扣</span>
+                </td>
+                <td>{{ data?.expItem?.depositAccountsInfo?.accountsName}}</td>
+                <td>
+                    <span *ngIf="data?.expItem?.feeMode=='1'">登记计费</span>
+                    <span *ngIf="data?.expItem?.feeMode=='2'">按月计费</span>
+                    <span *ngIf="data?.expItem?.feeMode=='3'">按日计费</span>
+                </td>
+                <td>
+                    <span *ngIf="data?.settlementStatus=='1'">已计费</span>
+                    <span *ngIf="data?.settlementStatus=='2'">已结算</span>
+                    <span *ngIf="data?.settlementStatus=='3'">已取消</span>
+                </td>
+                <td>
+                    <a href="#" (click)="showInfo(data.id, $event)">费用详情</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+    <a href="#" (click)="addInfo($event)">添加</a>
+</ng-template>
+<ng-template #totalTit>共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template>

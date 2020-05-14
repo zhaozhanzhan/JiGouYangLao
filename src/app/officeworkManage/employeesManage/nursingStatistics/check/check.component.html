@@ -1,0 +1,29 @@
+<div class="card-block" *ngIf="data">
+  <h6>班组：{{employeesGroup}}</h6>
+  <h6>护工：{{data.eName}}</h6>
+  <h6>日期：{{btime}} &sim; {{etime}}</h6>
+  <div style="margin-top: 10px;">
+    <h6>责任包干: {{data.resMemoNum}}次</h6>
+    <h6>翻身服务: {{data.rollMemoNum}}次</h6>
+    <h6>二便服务: {{data.shPeMemoNum}}次</h6>
+    <h6>查房记录: {{data.checkNum}}次</h6>
+    <h6>消毒记录: {{data.jordanCleanNum}}次</h6>
+  </div>
+</div>
+
+<div class="card-block" *ngIf="!data">
+  <h6>班组：{{nursingStatistics.spName}}</h6>
+  <h6>护工：
+    <span *ngFor="let data of nursingStatistics.values; let num = index;">{{data.eName}}
+      <span *ngIf="num < nursingStatistics.values.length - 1"> 、 </span>
+    </span>
+  </h6>
+  <h6>日期：{{btime}} &sim; {{etime}}</h6>
+  <div style="margin-top: 10px;">
+    <h6>责任包干: {{nursingStatistics.allresnum}}次</h6>
+    <h6>翻身服务: {{nursingStatistics.allrollnum}}次</h6>
+    <h6>二便服务: {{nursingStatistics.allshpenum}}次</h6>
+    <h6>查房记录: {{nursingStatistics.allchecknum}}次</h6>
+    <h6>消毒记录: {{nursingStatistics.alljordanCleanNum}}次</h6>
+  </div>
+</div>

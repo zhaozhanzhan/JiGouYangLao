@@ -1,0 +1,97 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="name">病人姓名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="name" placeholder="请输入姓名" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>科室</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzPlaceHolder="请选择" [(ngModel)]="sectionOfficeId" style="width: 150px;" (ngModelChange)="ngChange()">
+                        <nz-option *ngFor="let item of sectionOfficeList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>主治医生</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="attendingDoc">
+                        <nz-option *ngFor="let item of dorList" [nzValue]="item.employees.name" [nzLabel]="item.employees.name">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>病区</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="sickWardId" (ngModelChange)="roomChange()">
+                        <nz-option *ngFor="let item of sickWardList" [nzValue]="item.id" [nzLabel]="item.sickWardName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>房间</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="roomId">
+                        <nz-option *ngFor="let item of roomList" [nzValue]="item.id" [nzLabel]="item.roomName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="bedNum">床位号</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="bedNum" id="bedNum" style="width:150px" [(ngModel)]="bedNum" placeholder="请输入床位号" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="bedNum">医嘱状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width:150px" [(ngModel)]="isDone" nzAllowClear>
+                        <nz-option nzValue="0" nzLabel="待处理"></nz-option>
+                        <nz-option nzValue="1" nzLabel="已处理"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="child1.getListDetails()" *ngIf="selectedIndex == 0" style="margin-left:10px;">
+                        查询
+                    </button>
+                    <button nz-button nzType="primary" (click)="child2.getListDetails()" *ngIf="selectedIndex == 1" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card [nzTitle]="serchArea">
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="selectedIndexChange()">
+        <nz-tab nzTitle="长期医嘱">
+            <app-onHand-standingOrder #child1 [name]="name" [attendingDoc]="attendingDoc" [sectionOfficeId]="sectionOfficeId" [sickWardId]="sickWardId" [roomId]="roomId" [bedName]="bedName" [isDone]="isDone"></app-onHand-standingOrder>
+        </nz-tab>
+        <nz-tab nzTitle="临时医嘱">
+            <app-onHand-temporaryOrder #child2 [name]="name" [attendingDoc]="attendingDoc" [sectionOfficeId]="sectionOfficeId" [sickWardId]="sickWardId" [roomId]="roomId" [bedName]="bedName" [isDone]="isDone"></app-onHand-temporaryOrder>
+        </nz-tab>
+    </nz-tabset>
+</nz-card>

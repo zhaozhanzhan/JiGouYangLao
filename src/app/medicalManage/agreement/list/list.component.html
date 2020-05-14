@@ -1,0 +1,100 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-27 10:50:46
+ * @Description:
+ -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8" nzType="flex">
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="name">患者</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="name"
+              id="name"
+              style="width:150px"
+              [(ngModel)]="queryParams.nameOrCardNo"
+              placeholder="请输入姓名或身份证号"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="name">住院号</nz-form-label>
+          <nz-form-control>
+            <input
+              nz-input
+              name="name"
+              id="name"
+              style="width:150px"
+              [(ngModel)]="queryParams.hospitalNo"
+              placeholder="请输入住院号"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="loadingDataArray(true)">
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<nz-card nzTitle="医患沟通列表" [nzExtra]="extraTemplate">
+  <nz-table
+    #basicTable
+    [nzData]="dataArray"
+    [nzTitle]="serchArea"
+    [nzShowPagination]="true"
+    [nzBordered]="'true'"
+    [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements"
+    [(nzPageIndex)]="queryParams.page"
+    [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+    [nzShowTotal]="totalTit"
+  >
+    <thead>
+      <tr>
+        <th>住院号</th>
+        <th>姓名</th>
+        <th>沟通模板</th>
+        <th>创建日期</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data?.inHospitalInfo?.admissionNo }}</td>
+        <td>{{ data?.inHospitalInfo?.basicInfo?.name }}</td>
+        <td>{{ data?.templateName }}</td>
+        <td>{{ data?.createDate | date: "yyyy-MM-dd" }}</td>
+        <td>
+          <a href="#" (click)="showInfo(data, $event)">沟通详情</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#" (click)="delContract(data, $event)" class="red">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #extraTemplate>
+  <a href="#" (click)="addInfo($event)">新增</a>
+</ng-template>
+<ng-template #totalTit
+  >共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template
+>

@@ -1,0 +1,283 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-05 14:18:20
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button (click)="back()" *ngIf="!isModifyMode" nz-button nzType="default">
+        返回
+    </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="消费项目详情" [nzExtra]="btnArea">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="sort" nzRequired>排序号</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-input-number style="width:100%" formControlName="sort" [nzMin]="0" [nzStep]="1" [nzMax]="99999999"></nz-input-number>
+                <nz-form-explain *ngIf="
+            validateForm.get('sort').dirty && validateForm.get('sort').errors
+          ">请输入排序号!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="itemCode">
+                <span>
+                    项目代码
+                </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input formControlName="itemCode" maxlength="10" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="itemName" nzRequired>
+                <span>
+                    项目名称
+                </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['itemName']">
+                <input nz-input formControlName="itemName" maxlength="15" />
+                <nz-form-explain *ngIf="
+            validateForm.get('itemName').dirty &&
+            validateForm.get('itemName').errors
+          ">请输入项目名称!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="expCategoryId" nzRequired>消费类别</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['expCategoryId']">
+                <nz-select formControlName="expCategoryId" style="width: 100%">
+                    <ng-container *ngFor="let item of feeCategory">
+                        <nz-option [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    </ng-container>
+                </nz-select>
+                <nz-form-explain *ngIf="
+            validateForm.get('expCategoryId').dirty &&
+            validateForm.get('expCategoryId').errors
+          ">请选择消费类别!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="unitPrice" nzRequired>单价</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['unitPrice']">
+                <nz-input-number formControlName="unitPrice" [nzMin]="0" [nzStep]="10" [nzMax]="999999" [nzPrecision]="2" style="width: 100%" [nzFormatter]="formatterYuan" [nzParser]="parserYuan"></nz-input-number>
+                <nz-form-explain *ngIf="
+            validateForm.get('unitPrice').dirty &&
+            validateForm.get('unitPrice').errors
+          ">请输入单价!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="specs" nzRequired>规格</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入规格!">
+                <input nz-input formControlName="specs" maxlength="8" />
+                <nz-form-explain *ngIf="
+            validateForm.get('specs').dirty && validateForm.get('specs').errors
+          ">请输入规格!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="chargeMode" nzRequired>
+                <span>收费方式
+                    <i nz-icon nz-tooltip [nzTitle]="chargeModeNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #chargeModeNotify>
+                    收费方式分为：<b>现结</b>、<b>代扣</b>两种；<br />选择“现结”，在登记消费时系统不按单价进行扣费；<br />选择“代扣”时，在登记消费时系统根据选择代扣的账目进行自动扣费；
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+<<<<<<< HEAD
+                <nz-select formControlName="chargeMode" style="width: 100%" [nzMaxMultipleCount]="2" nzMode="tags" (ngModelChange)="change($event)">
+=======
+                <nz-select formControlName="chargeMode" style="width: 100%" [nzMaxMultipleCount]="2" nzMode="tags" (ngModelChange)="change()">
+>>>>>>> 9dda0dbaf712eacbb8cb0d8e4c2d5c50444fbe68
+                    <nz-option nzLabel="现结" nzValue="1"></nz-option>
+                    <nz-option nzLabel="代扣" nzValue="2"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="
+            validateForm.get('chargeMode').dirty &&
+            validateForm.get('chargeMode').errors
+          ">请选择收费方式!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="isAccountPayShow">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="depositAccountsId" nzRequired>
+                <span>主扣款账目
+                    <i nz-icon nz-tooltip [nzTitle]="depositAccountsNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #depositAccountsNotify>
+                    “扣款账目”在本计费系统中用于给老年人设立用于不同消费项目的账户；每个账户可以单独缴存，且每个账户都可以有具体的费用开支明细；
+                    <br />配置“主扣款账目”会在消费时扣除该账目的余额。
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['depositAccountsId']">
+                <nz-select formControlName="depositAccountsId" style="width: 100%">
+                    <ng-container *ngFor="let item of feeAccount">
+                        <nz-option [nzLabel]="item.accountsName" [nzValue]="item.id"></nz-option>
+                    </ng-container>
+                </nz-select>
+                <nz-form-explain *ngIf="
+            validateForm.get('depositAccountsId').dirty &&
+            validateForm.get('depositAccountsId').errors
+          ">请选择主扣款账目!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="isAccountPayShow">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="depositAccountsSpareId">
+                <span>备扣款账目
+                    <i nz-icon nz-tooltip [nzTitle]="depositAccountsSpareNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #depositAccountsSpareNotify>
+                    当“主扣款账目”余额不足时会扣取“备扣款账目”的余额。
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['depositAccountsSpareId']">
+                <nz-select formControlName="depositAccountsSpareId" style="width: 100%">
+                    <ng-container *ngFor="let item of feeAccount">
+                        <nz-option [nzLabel]="item.accountsName" [nzValue]="item.id"></nz-option>
+                    </ng-container>
+                </nz-select>
+                <nz-form-explain *ngIf="
+            validateForm.get('depositAccountsSpareId').dirty &&
+            validateForm.get('depositAccountsSpareId').errors
+          ">请选择主扣款账目!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="isAccountPayShow">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="feeMode" nzRequired>
+                <span>
+                    计费方式
+                    <i nz-icon nz-tooltip [nzTitle]="feeModeNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #feeModeNotify>
+                    计费方式分为<b>登记计费</b>、<b>按月计费</b>、<b>按日计费</b>；
+                    <br />“登记计费”：消费时进行登记后扣费；
+                    <br />“按月计费”：系统按月自动扣除费用；需要额外配置按月计费周期、持续期等项；
+                    <br />“按日计费”：系统按日自动扣除费用；需要额外配置持续期；
+                    <br />
+                    <b>周期计费的开始</b>：<br />当需要在老年人办理入院时就开始计费，则需要在入院时登记该消费项目，系统会按入院日期记为消费项目的开始日期；当需为在院老人登记消费该项目时，则需要在“消费登记”中登记消费日期；系统按消费日期记为开始日期；<br /><b>周期计费的结束</b>：<br />当老年人办理出院时，所有正在计费的项目都由系统进行结束且扣费；当需要终止该消费时，则可以在“消费登记”功能中进行终止；
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-select formControlName="feeMode" style="width: 100%" (ngModelChange)="feeModeChange($event)">
+                    <nz-option nzLabel="登记计费" nzValue="1"></nz-option>
+                    <nz-option nzLabel="按月计费" nzValue="2"></nz-option>
+                    <nz-option nzLabel="按日计费" nzValue="3"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="
+            validateForm.get('feeMode').dirty &&
+            validateForm.get('feeMode').errors
+          ">请选择计费方式!</nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <!-- 周期计费 -- 月配置 -->
+    <div style="max-width: 600px;" *ngIf="
+      validateForm.get('feeMode').value == 2 ||
+      validateForm.get('feeMode').value == 3
+    ">
+        <nz-form-item *ngIf="validateForm.get('feeMode').value == 2">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired><span>
+                    计费日期
+                    <i nz-icon nz-tooltip [nzTitle]="valuationMonthDayNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #valuationMonthDayNotify>
+                    <b>每隔30天：</b><br />
+                    根据消费登记时填入的“消费日期”为起始日期，每逢30天进行自动扣费；<br />
+                    <b>每月月末：</b><br />
+                    自然月的最后一天进行自动扣费；（如：当前为2月则28日完成该项目的自动扣费）<br />
+                    <b>每月1号-28号：</b><br />
+                    自然月的1号、2号、3号......28号；选择这28项中的任意一项，则表明采用自然月的计费方式，在指定日期内系统自动完成项目扣费；<br />
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-select style="width: 100%" [(ngModel)]="selectedValuationMonthDay">
+                    <nz-option nzLabel="每隔30天" nzValue="30"></nz-option>
+                    <nz-option nzLabel="每月月末" nzValue="0"></nz-option>
+                    <ng-container *ngFor="let item of valuationMonthDay">
+                        <nz-option [nzLabel]="item.date" [nzValue]="item.index"></nz-option>
+                    </ng-container>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.get('feeMode').value == 2">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>日折算价</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-input-number [(ngModel)]="dayDiscountPrice" [nzMin]="0" [nzStep]="10" [nzMax]="999999" [nzPrecision]="2" style="width: 100%" [nzFormatter]="formatterYuan" [nzParser]="parserYuan"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>
+                <span>
+                    持续期
+                    <i nz-icon nz-tooltip [nzTitle]="durationNotify" type="question-circle" nzTheme="outline"></i>
+                </span>
+                <ng-template #durationNotify>
+                    输入0时，表示可以长期持续服务；<br />
+                    <b>当“计费周期”为“月”时：</b><br />
+                    根据输入的<b>月数</b>，到期后系统会自动结束该项目；<br />
+                    <b>当“计费周期”为“日”时：</b><br />
+                    根据输入的<b>天数</b>，到期后系统会自动结束该项目；<br />
+                </ng-template>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-input-number [(ngModel)]="duration" [nzMin]="0" [nzStep]="1" [nzMax]="999" style="width: calc(100% - 55px)"></nz-input-number>
+                <label style="width:50px;display: block;text-align: center;float: right;">{{ validateForm.get("feeMode").value == 2 ? "个月" : "天" }}</label>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="validateForm.get('feeMode').value == 2">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="feeMode" nzRequired>按月计费单价配置</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-table #editRowTable [nzData]="feeMonthList" nzSize="small" nzNoResult=" " nzShowPagination="false" [nzData]="feeMonthList">
+                    <thead></thead>
+                    <tbody>
+                        <tr>
+                            <td>月份</td>
+                            <td>单价</td>
+                        </tr>
+                        <ng-container *ngFor="let item of feeMonthList; let i = index">
+                            <tr>
+                                <td>
+                                    <div class="editable-cell">
+                                        <div class="editable-cell-text-wrapper">
+                                            {{ item.month }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editable-cell">
+                                        <div class="editable-cell-text-wrapper">
+                                            <ng-container>
+                                                <nz-input-number [nzMin]="0" [nzMax]="999999" [nzStep]="10" [nzPrecision]="2" [nzFormatter]="formatterYuan" [nzParser]="parserYuan" [(ngModel)]="item.price"></nz-input-number>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </nz-table>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isSaveLoading">
+                保存
+            </button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-card>
+<!-- 表单区域End -->

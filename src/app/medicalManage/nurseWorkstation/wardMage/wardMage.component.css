@@ -1,0 +1,433 @@
+.marginBottom8 {
+    margin-bottom: 8px;
+}
+
+.marginTopBottom16 {
+    margin: 16px 0;
+}
+
+.floatRight {
+    float: right;
+}
+
+.width100 {
+    width: 100% !important;
+}
+
+.whiteColor {
+    color: #fff;
+}
+
+.bickColor {
+    color: #000;
+}
+
+.paddingSpan {
+    display: inline-block;
+}
+
+nz-form-label {
+    margin-left: 10px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 0px 10px;
+    margin-top: 10px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+li a {
+    width: 100%;
+    display: inline-block;
+}
+
+:host /deep/ .ant-card-body {
+    padding: 0px 10px 10px 10px !important;
+}
+
+.titlePublic {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.backLine {
+    height: 1px;
+    background: #bfbfbf;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.whiteLine {
+    height: 1px;
+    background: #fff;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.color {
+    color: #fff
+}
+
+.maginLeft {
+    margin-left: 5%
+}
+
+.title {
+    display: inline-block;
+    text-align: right;
+}
+
+.imgC {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 100% !important;
+}
+
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+.colorN {
+    color: red;
+    padding-right: 3px;
+}
+
+.marginBottom24 {
+    margin-top: 10px
+}
+
+.red {
+    color: red
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* 线 */
+
+.lineD {
+    height: 1px;
+    margin: 5px 0px;
+    background: #efefef;
+    width: 100%
+}
+
+.imgDescribe {
+    width: 2%;
+    display: inline-block;
+}
+
+.card {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: #efefef 3px 3px 3px 0px;
+    border-radius: 15px;
+    margin-top: 5px;
+    border: 1px solid #f5f5f5;
+}
+
+
+/* 卡片背景颜色 */
+
+.cardBgViolet {
+    background: #853c84;
+    color: #fff
+}
+
+
+/* 蓝色 */
+
+.cardBgGreen {
+    background: #419388;
+    color: #fff
+}
+
+
+/* 紫色 */
+
+.cardBgZ {
+    background: #901bb5;
+    color: #fff
+}
+
+
+/* 绿色 */
+
+.cardBgCyan {
+    background: #97c05b;
+    color: #fff
+}
+
+
+/* 白色 */
+
+.cardBgWhite {
+    background: #fff;
+    color: #676767
+}
+
+
+/* 灰色 */
+
+.cardBghu {
+    background: #bababa;
+    color: #fff
+}
+
+.nurseCard {
+    margin-bottom: 5px;
+}
+
+.nurseLeave {
+    display: inline-block;
+    float: right;
+}
+
+.borderWhit {
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+}
+
+.borderBlack {
+    border-left: 1px solid #bfbfbf;
+    border-right: 1px solid #bfbfbf;
+}
+
+.borderRight {}
+
+.marginLeft {
+    margin-left: 10px;
+}
+
+
+/* 白色边框 白色字体 */
+
+.publicCard {
+    padding: 0px 15px;
+    border-radius: 3px;
+}
+
+.whiteCard {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+
+/* 三级绿色 */
+
+.greenCard {
+    border: 1px solid #209a19;
+    color: #209a19;
+}
+
+
+/* 一级粉色 */
+
+.pinkCard {
+    border: 1px solid #ff4f8b;
+    color: #ff4f8b;
+}
+
+
+/* 二级蓝色 */
+
+.blueCard {
+    border: 1px solid #2c87fd;
+    color: #2c87fd;
+}
+
+
+/* 特级红色 */
+
+.redCard {
+    border: 1px solid red;
+    color: red;
+}
+
+
+/*出院灰色 */
+
+.grayCard {
+    border: 1px solid #bababa;
+    color: #bababa;
+}
+
+
+/*请假紫色 */
+
+.violetCard {
+    border: 1px solid #901bb5;
+    color: #901bb5;
+}
+
+
+/* 新入院和转入的颜色 */
+
+.newCard {
+    border: 1px solid #8ac247;
+    color: #8ac247;
+}
+
+
+/* 新入院和转入的颜色 */
+
+.whiteCard {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+
+/* 感叹号的公共样式 */
+
+.pointPublic {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 13px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+
+/* 急症 */
+
+.emergency {
+    background: #e3c815;
+    color: #fff;
+    line-height: 24px;
+}
+
+
+/*危险向上*/
+
+.triangle_border_up {
+    display: inline-block;
+    width: 21px;
+    height: 0;
+    border-width: 0px 14px 21px;
+    border-style: solid;
+    border-color: transparent transparent red;
+    margin: -4px auto;
+    position: relative;
+}
+
+.triangle_border_up .sanjiao {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 0px 12px 20px;
+    border-style: solid;
+    border-color: transparent transparent red;
+    position: absolute;
+    top: 1px;
+    left: -12px;
+    line-height: 23px;
+    color: #fff;
+}
+
+.marginTop {
+    margin-top: 5px;
+}
+
+
+/* 死亡 */
+
+.bigM {
+    width: 25px;
+    height: 16px;
+    border: 2px solid #515050;
+    display: inline-block;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.bigLine {
+    width: 94%;
+    height: 2px;
+    display: inline-block;
+    background: #515050;
+    margin-top: 3px;
+}
+
+.smillLine {
+    width: 80%;
+    height: 5px;
+    background: #515050;
+    display: inline-block;
+}
+
+.whitImg {
+    border: 5px solid #fff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.bickImg {
+    border: 5px solid #efefef;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.bickColr {
+    color: #676767
+}
+
+.backColr {
+    color: #000
+}
+
+.whitColr {
+    color: #fff
+}
+
+.textC {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 40px;
+    vertical-align: middle;
+}
+
+.textName {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.whiteA {
+    color: #fff
+}
+
+.backA {
+    color: #676767
+}

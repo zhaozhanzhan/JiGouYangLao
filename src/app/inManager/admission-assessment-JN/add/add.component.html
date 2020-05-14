@@ -1,0 +1,646 @@
+<!-- 能力评估基本信息表顶部按钮Begin -->
+<ng-template #abilityAssessBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 能力评估基本信息表顶部按钮End -->
+<!-- 能力评估基本信息表顶部按钮Begin -->
+<ng-template #abilityAssessSave>
+    <button nz-button nzType="primary" (click)="assessmentSave()" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</ng-template>
+<!-- 能力评估基本信息表顶部按钮End -->
+
+<!-- 生活自理能力评估表顶部按钮Begin -->
+<ng-template #dailyLifeBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 生活自理能力评估表End -->
+
+<!-- 生活自理能力评估表底部按钮Begin -->
+<ng-template #dailyLifeSaveBtnArea>
+    <button nz-button nzType="primary" (click)="viabilitySave()" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</ng-template>
+<!-- 生活自理能力评估表底部按钮End -->
+
+<!-- 认知能力评估表顶部按钮Begin -->
+<ng-template #healthBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 认知能力评估表顶部按钮End -->
+
+<!-- 认知能力评估表底部按钮Begin -->
+<ng-template #healthSaveBtnArea>
+    <button nz-button nzType="primary" (click)="cognitiveSave()" [nzLoading]="isLoadingOne " class="saveBtn">保存</button>
+</ng-template>
+<!-- 认知能力评估表底部按钮End -->
+
+<!-- 情绪行为评估表顶部按钮Begin -->
+<ng-template #sensoryPerBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 情绪行为评估表顶部按钮End -->
+
+<!-- 情绪行为表底部按钮Begin -->
+<ng-template #sensoryPerSaveBtnArea>
+    <button nz-button nzType="primary" (click)="emotionalBehaviorSave()" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</ng-template>
+<!-- 情绪行为表底部按钮End -->
+
+<!-- 视觉评估表顶部按钮Begin -->
+<ng-template #mentalCondiBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!--视觉评估表顶部按钮End -->
+
+<!-- 视觉评估表底部按钮Begin -->
+<ng-template #mentalCondiSaveBtnArea>
+    <button nz-button nzType="primary" (click)="viewSave()" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</ng-template>
+<!-- 视觉评估表底部按钮End -->
+
+<!-- 总结顶部按钮Begin -->
+<ng-template #asseReportBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 总结顶部按钮End -->
+
+<!-- 总结底部按钮Begin -->
+<ng-template #asseReportSaveBtnArea>
+    <button nz-button nzType="primary" (click)="assessmentSumSave()" [nzLoading]="isLoadingOne" class="saveBtn">保存</button>
+</ng-template>
+<!-- 总结底部按钮End -->
+
+<nz-card>
+    <nz-card-tab>
+        <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabIndex">
+            <!-- 能力评估基本信息表Begin -->
+            <nz-tab nzTitle="被评估人基本信息" [nzDisabled]="disabled">
+                <div id="abilityAssess">
+                    <nz-card nzType="inner" nzTitle="被评估人基本信息表" class="marginBottom24" [nzExtra]="abilityAssessBtnArea" [nzActions]="[abilityAssessSave]">
+                        <div>
+                            <table border="1" class="abilityAssess">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">评估日期</td>
+                                        <td>
+                                            <nz-date-picker [(ngModel)]="data"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">被评估者的基本信息</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">姓名</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.name" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">性别</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.sex" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">出生日期</td>
+                                        <td>
+                                            <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="abilityAssess.personInfo.birthYearMonth" class="w200" [nzDisabled]="true"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">身份证号</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.cardno" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">医保卡号</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.medicalCard" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">民族</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.nation" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">文化程度</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.education" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">宗教信仰</td>
+                                        <td>
+                                            <input *ngIf="abilityAssess.personInfo.religion=='无'" nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.religion" class="capacityAssessApply" disabled>
+                                            <input *ngIf="abilityAssess.personInfo.religion=='有'" nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.religion" class="capacityAssessApply addWidthA" disabled>
+                                            <input *ngIf="abilityAssess.personInfo.religion=='有'" nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.religionMemo" class="capacityAssessApply addWidthA" disabled>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">居住情况</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.livingSituation" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">经济来源</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.financialResources" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">医疗费用支付方式</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.medicalPayment" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 能力评估基本信息表End -->
+
+            <!-- 生活自理能力评估表Begin -->
+            <nz-tab nzTitle="生活自理能力评估表" [nzDisabled]="disabled">
+                <div id="dailyLife">
+                    <nz-card nzType="inner" nzTitle="生活自理能力评估表" class="marginBottom24" [nzExtra]="dailyLifeBtnArea" [nzActions]="[dailyLifeSaveBtnArea]">
+                        <div>
+                            <table border="1" class="dailyLife">
+                                <tbody>
+
+                                    <tr>
+                                        <td rowspan="4" class="w30p">
+                                            <b>进食</b>
+                                        </td>
+                                        <td rowspan="4" class="w20p">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [(ngModel)]="viabilityObj.eatFood" class="addWidth" (ngModelChange)="addSum()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：使用餐具入口、咀嚼、吞咽等步骤能够独立完成的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度依赖：使用餐具，再切碎、搅拌等协助下，能完成进食的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度依赖：使用餐具具有困难，将饭菜送入口、咀嚼、吞咽等步骤需要帮助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w50p">10分重度依赖：不能自主进食，或伴有吞咽困难，使用餐具将饭菜送入口、咀嚼、吞咽等步骤完全需要帮助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>修饰及洗浴</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [(ngModel)]="viabilityObj.modificationAndBath" class="addWidth" (ngModelChange)="addSum()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：修饰、洗浴能独立完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度依赖：修饰能独立完成，洗浴需要协助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度依赖：在他人协助下能完成部分修饰，洗浴需要帮助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度依赖：修饰、洗浴完全需要帮助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>穿、脱衣</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [(ngModel)]="viabilityObj.wearAndUndress" class="addWidth" (ngModelChange)="addSum()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：穿（脱）衣能独立完成的</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度依赖：穿（脱）衣需要他人协助，在适当的时间内完成部分穿（脱）衣</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度依赖：在他人协助下，仍需要在较长时间内完成穿（脱）衣的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度依赖：穿（脱）衣完全需要帮助的</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>排泄及如厕</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="viabilityObj.excretionAndToilet" (ngModelChange)="addSum()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：排泄正常，如厕不需要协助的</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度依赖：排泄偶尔失禁，不需协助能如厕或使用便盆的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度依赖：排泄经常失禁，在很多提示和协助下尚能如厕或使用便盆的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度依赖：排泄完全失禁，如厕完全需要帮助的</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>移动</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="viabilityObj.move" (ngModelChange)="addSum()">
+
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：站立、转移、行走、上下楼梯等能独立完成的</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度依赖：借助较小外力或辅助装置完成站立、转移、行走、上下楼梯等</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度依赖：动则气急喘息，借助较大外力才能完成站立、转移、行走等，不能上下楼梯的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度依赖：有下列情形之一的，程度等级评判为：
+                                            <span>------卧床不起;</span><br>
+                                            <span>------休息状态下时有气急喘息，难以站立;</span><br>
+                                            <span>------站立、转移、行走、上下楼梯等完全需要帮助;</span><br>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="addFirstTd" colspan="4">
+                                            <span>修饰：漱口、刷牙、洗脸、义齿清洁、口腔护理、梳头、洗脚、清洁会阴部、洗头、剃须、修剪指趾甲</span><br>
+                                            <span>洗浴：擦浴、淋浴</span><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>生活自理能力分值</b>
+                                        </td>
+                                        <td class="addFirstTd" colspan="2">
+                                            {{viabilityObj.selfAbilityTotalScore}} {{viabilityObj.lifeAbilityScore }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <h6 style="margin-top: 5px;">生活自理能力分值设定：<br>
+                                    <span class="setScore">正常（0-2） 取0分；轻度依赖（3-14）取7分；中度依赖（15-30）取21分；重度依赖（31分以上）取35分</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 生活自理能力评估表End -->
+
+            <!-- 认知能力评估表Begin -->
+            <nz-tab nzTitle="认知能力评估表" [nzDisabled]="disabled">
+                <div id="health">
+                    <nz-card nzType="inner" nzTitle="认知能力评估表" class="marginBottom24" [nzExtra]="healthBtnArea" [nzActions]="[healthSaveBtnArea]">
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>近期记忆</b>
+                                        </td>
+                                        <td rowspan="4" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [(ngModel)]="cognitiveObj.recentMemory" class="addWidth" (ngModelChange)="addCognitiveScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：对近期发生的事情记忆清晰的</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度缺失：对近期发生的事情记忆模糊的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度缺失：对近期发生的事情遗忘，在提示下能记忆起部分的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度缺失：对近期发生的事情经提示也不能记起的
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>程序记忆</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="cognitiveObj.proceduralMemory" (ngModelChange)="addCognitiveScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：习得的生活技能能正确记忆的 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度缺失：习得的生活技能在提示下能正确记忆的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度缺失：习得的生活技能经提示也不能正确记忆的</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>定向力</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="cognitiveObj.directionalAbility" (ngModelChange)="addCognitiveScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：对人物、地点、时间、空间等识别和判断能力正常的 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度缺失：在提示下能正确说出人物、地点、时间、空间等</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度缺失：经提示也不能正确说出人物、地点、时间、空间等</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>判断力</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="cognitiveObj.judgementAbility" (ngModelChange)="addCognitiveScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：对日常生活的内容、时间等能正确作出判断的 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度缺失：在提示下能作出判断，表现为判断迟缓、不决的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度缺失：在提示下不能作出判断或判断错误的</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>认知能力分值</b>
+                                        </td>
+                                        <td class="addFirstTd" colspan="2">
+                                            {{cognitiveObj.cognitiveAbilityTotalScore}} {{cognitiveObj.cognitiveScore }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <h6 style="margin-top: 5px;">认知能力分值设定：<br>
+                                    <span class="setScore">正常（0-4） 取0分；轻度缺失（5-14）取6分；中度缺失（15-29）取18分；重度缺失（30分及以上）取30分</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 认知能力评估表End -->
+
+            <!-- 情绪行为评估表Begin -->
+            <nz-tab nzTitle="情绪行为评估表" [nzDisabled]="disabled">
+                <div id="SensoryPerception">
+                    <nz-card nzType="inner" nzTitle="情绪行为评估表" class="marginBottom24" [nzExtra]="sensoryPerBtnArea" [nzActions]="[sensoryPerSaveBtnArea]">
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>情绪</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="emotionalBehaviorObj.emotion" (ngModelChange)="addEmotionalBehaviorScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td style="width: 400px;">0分正常：情绪稳定，对客观事物的主观态度体验与实际相符，能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度异常：情绪欠稳定，但对客观事物的主观态度体验尚能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度异常：无诱因，情绪变化较大，对客观事物的主观态度体验与实际不相符，不能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度异常：情绪喜怒无常或毫无反应，对客观事物的主观态度体验与实际不相符，不能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>行为</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="emotionalBehaviorObj.behavior" (ngModelChange)="addEmotionalBehaviorScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="1" nzValue="1"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：情绪稳定，对客观事物的主观态度体验与实际相符，能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分轻度异常：情绪欠稳定，但对客观事物的主观态度体验尚能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度异常：无诱因，情绪变化较大，对客观事物的主观态度体验与实际不相符，不能被常人理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度异常：情绪喜怒无常或毫无反应，对客观事物的主观态度体验与实际不相符，不能被常人理解的</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>沟通力</b>
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="emotionalBehaviorObj.communicateAbility" (ngModelChange)="addEmotionalBehaviorScore()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="5" nzValue="5"></nz-option>
+                                                <nz-option nzLabel="10" nzValue="10"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分正常：在交流中能理解准确，表达清晰的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分中度异常：在交流中提示后能理解，表达简单的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分重度异常：交流困难，不能表达和理解的</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd" rowspan="4">
+                                            <b>情绪行为分值</b>
+                                        </td>
+                                        <td rowspan="4" colspan="2">
+                                            {{emotionalBehaviorObj.emotionalBehaviorTotalScore}} {{emotionalBehaviorObj.emotionalBehaviorScore }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <h6 style="margin-top: 5px;">情绪行为分值设定：<br>
+                                    <span class="setScore">正常（0-1） 取1分；轻度异常（2-3）取1分；中度异常（6-15）取3分；重度异常（16分及以上）取5分</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 情绪行为评估表End -->
+
+            <!-- 视觉评估表Begin -->
+            <nz-tab nzTitle="视觉评估表" [nzDisabled]="disabled">
+                <div id="mentalCondition">
+                    <nz-card nzType="inner" nzTitle="视觉评估表" class="marginBottom24" [nzExtra]="mentalCondiBtnArea" [nzActions]="[mentalCondiSaveBtnArea]">
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>视觉</b>
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" class="addWidth" [(ngModel)]="viewObj.view" (ngModelChange)="addViewScroe()">
+                                                <nz-option nzLabel="0" nzValue="0"></nz-option>
+                                                <nz-option nzLabel="18" nzValue="18"></nz-option>
+                                                <nz-option nzLabel="30" nzValue="30"></nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td style="width:400px;">0分正常：无视力障碍或虽有视力障碍，在正常环境下能安全照顾自己的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18分中度障碍：低视力（矫正后），在正常环境下生活需要照顾的</td>
+                                    </tr>
+                                    <tr>
+                                        <td>30分重度障碍：视力丧失，无法适应生活环境而需要照顾的</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>视力分值</b>
+                                        </td>
+                                        <td class="addFirstTd" colspan="2">
+                                            {{viewObj.viewTotalScore}} {{viewObj.viewScore }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <h6 style="margin-top: 5px;">视力分值设定：<br>
+                                    <span class="setScore">正常0分；中度障碍18分；重度障碍30分</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 视觉评估表End -->
+
+            <!-- 评估报告Begin -->
+            <nz-tab nzTitle="总结报告" [nzDisabled]="disabled">
+                <div id="asseReport">
+                    <nz-card nzType="inner" nzTitle="总结报告" class="marginBottom24" [nzExtra]="asseReportBtnArea" [nzActions]="[asseReportSaveBtnArea]">
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td>等级评估总分</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.assessmentTotalScore" readonly>
+                                        </td>
+                                        <td>照护等级</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.careAdvice" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>评估人签字</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.asser">
+                                        </td>
+                                        <td>医生意见</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.dorAdvice">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>长者签字</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.oldmanName">
+                                        </td>
+                                        <td>监护人/担保人签字</td>
+                                        <td>
+                                            <input nz-input placeholder="" class="addInput admisW" [(ngModel)]="assessmentSumObj.guardian">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>院长意见</td>
+                                        <td colspan="3">
+                                            <textarea rows="4" nz-input [(ngModel)]="assessmentSumObj.deanAdvice"></textarea> <br>
+
+                                            <div style="text-align: right; margin-top: 10px; ">
+                                                <input nz-input placeholder="" class="w100 addInput" [(ngModel)]="assessmentSumObj.data">年
+                                                <input nz-input placeholder="" class="w100 addInput" [(ngModel)]="assessmentSumObj.month">月
+                                                <input nz-input placeholder="" class="w100 addInput" [(ngModel)]="assessmentSumObj.day">日
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <h6 style="margin-top: 5px;">照护等级划分：<br>
+                                    <span class="setScore">总分为0-7分的，照顾等级为自理；
+                                        总分为8-21分的，照护等级为介助；
+                                        总分为22-35分的，照护等级为介护；
+                                        总分为36分及以上的，照护等级为重度</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 评估报告End -->
+        </nz-tabset>
+    </nz-card-tab>
+</nz-card>

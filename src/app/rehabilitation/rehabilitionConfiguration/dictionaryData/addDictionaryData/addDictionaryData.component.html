@@ -1,0 +1,82 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+    <div>
+        <p><span>康复配置数据详情</span></p>
+    </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>项目名称</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="addDictionaryObj.name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">排序号</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-input-number [nzMax]="10000" [nzStep]="1" [(ngModel)]="addDictionaryObj.sort"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="state=='true'">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8"> <span style="color: red">*</span>康复类型</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-select style="width: 100%;" [(ngModel)]="addDictionaryObj.type" nzAllowClear>
+                        <nz-option nzValue="智力残疾" nzLabel="智力残疾"></nz-option>
+                        <nz-option nzValue="肢体障碍" nzLabel="肢体障碍"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="state=='true'">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">参考年龄</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="addDictionaryObj.age" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="state=='true'">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">提示方式</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <!-- <input nz-input [(ngModel)]="addDictionaryObj.promptWay" /> -->
+                    <nz-select style="width: 100%;" [(ngModel)]="addDictionaryObj.promptWay" nzAllowClear>
+                        <nz-option nzValue="P（动作协助）" nzLabel="P（动作协助）"></nz-option>
+                        <nz-option nzValue="G（手势提示）" nzLabel="G（手势提示）"></nz-option>
+                        <nz-option nzValue="V（口头提示）" nzLabel="V（口头提示）"></nz-option>
+                        <nz-option nzValue="I（自行完成）" nzLabel="I（自行完成）"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="state=='true'">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8">成功标准</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <input nz-input [(ngModel)]="addDictionaryObj.standard" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="saveForm()">
+            保存
+        </button>
+    </div>
+</nz-card>
+<!-- 表单区域End -->

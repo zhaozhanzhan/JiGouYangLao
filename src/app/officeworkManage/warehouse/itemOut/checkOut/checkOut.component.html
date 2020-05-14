@@ -1,0 +1,97 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row nzType="flex">
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="oldmanName">老人姓名</nz-form-label>
+          <nz-form-control>
+            <input
+            nz-input
+            id="oldmanName"
+            name="oldmanName"
+            placeholder="请输入老人姓名"
+            [(ngModel)]="reqObj.oldmanName"
+          />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <nz-form-item nzFlex>
+          <nz-form-label>发放时间</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker
+              name="date"
+              style="width:250px"
+              [(ngModel)]="selectedDates"
+              (ngModelChange)="onRangerPickerChange($event)"
+            ></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="updateList(true)"
+              style="margin-left: 10px;"
+            >
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+  </ng-template>
+<nz-card nzTitle="已发放物品列表" [nzExtra]="btnArea">
+    <nz-table
+    #ajaxTable
+    nzBordered
+    nzShowSizeChanger
+    [nzTitle]="serchArea"
+    [nzFrontPagination]="false"
+    [nzData]="list"
+    [nzTotal]="page.total"
+    [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size"
+    (nzPageIndexChange)="updateList()"
+    (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate"
+  >
+    <thead>
+      <tr>
+        <th class="textCenter">物品名称</th>
+        <th class="textCenter">发放人</th>
+        <th class="textCenter">发放班组</th>
+        <th class="textCenter">发放数量</th>
+        <th class="textCenter">待发数量</th>
+        <th class="textCenter">领用人</th>
+        <th class="textCenter">领用时间</th>
+        <th class="textCenter">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+          <td class="textCenter">{{ data?.sendGoodsName }}</td>
+          <td class="textCenter">{{ data?.sendEmp }}</td>
+          <td class="textCenter">{{ data?.schedulingProgram?.name }}</td>
+          <td class="textCenter">{{ data?.haveSendNum }}</td>
+          <td class="textCenter">{{ data?.leftSendNum }}</td>
+          <td class="textCenter">{{ data?.oldmans }}</td>
+          <td class="textCenter">{{ data?.sendTime }}</td>
+          <td class="textCenter">
+            <a href="javascript:void(0)" (click)="turnToEdit(data)">查看</a>
+          </td>
+        </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+  
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

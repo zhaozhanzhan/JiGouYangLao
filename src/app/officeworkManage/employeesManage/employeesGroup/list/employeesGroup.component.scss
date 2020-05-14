@@ -1,0 +1,22 @@
+.form-control[readonly] {
+  background-color: #fff;
+}
+
+.form-control:disabled {
+  background-color: #eee;
+}
+
+.banzu {
+  max-width: 400px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.banzu:hover {
+  overflow: visible;
+  // color: red;
+  max-width: 400px;
+  white-space: normal;
+  word-wrap: break-word;
+}

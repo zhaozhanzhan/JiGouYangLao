@@ -1,0 +1,63 @@
+<nz-layout style="height: calc(100vh - 112px);">
+  <nz-sider
+    class="slider"
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    style="overflow: auto;height: calc(100vh - 112px);"
+  >
+    <ul
+      nz-menu
+      [nzTheme]="'dark'"
+      [nzMode]="'inline'"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <ng-container *ngFor="let pNode of rolesMemo; let i = index">
+        <li
+          nz-menu-item
+          *ngIf="
+            pNode?.status && pNode?.children === undefined && pNode?.isuse == 1
+          "
+          [routerLink]="[pNode?.url]"
+        >
+          <span title>
+            <i nz-icon [iconfont]="pNode?.icon"></i>
+            <span class="nav-text">{{ pNode?.title }}</span>
+          </span>
+        </li>
+        <li
+          nz-submenu
+          *ngIf="
+            pNode?.status && pNode?.children !== undefined && pNode?.isuse == 1
+          "
+        >
+          <span title>
+            <i nz-icon [iconfont]="pNode?.icon"></i>
+            <span class="nav-text">{{ pNode?.title }}</span>
+          </span>
+          <ul *ngIf="pNode?.children !== undefined">
+            <ng-container *ngFor="let cNode of pNode.children">
+              <li
+                nz-menu-item
+                *ngIf="cNode?.status && cNode?.isuse == 1"
+                [routerLink]="[cNode?.url]"
+              >
+                <a style="padding-left:14px;">{{ cNode?.title }}</a>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-content #divTarget style="height: calc(100vh - 112px);overflow: auto;">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+<nz-footer
+  style="text-align: center;height: 48px;position: fixed;bottom: 0;width:100%;"
+>
+  {{ bottom }}
+  <span style="float:right;"> <app-versioninfo></app-versioninfo> </span
+></nz-footer>

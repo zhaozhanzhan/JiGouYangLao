@@ -1,0 +1,198 @@
+:host /deep/ .ant-calendar-picker {
+    width: 70% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 70% !important;
+}
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+.colorN {
+    color: red;
+    padding-right: 3px;
+}
+
+.marginBottom24 {
+    margin-top: 10px
+}
+
+.mr20 {
+    margin-left: 10px;
+}
+
+
+:host /deep/ .ant-card-extra {
+    padding: 6.5px 0;
+}
+
+:host /deep/ #health .ant-form-item-label {
+    text-align: left;
+}
+
+#health nz-select {
+    width: 60px;
+}
+
+#health div[nz-col] {
+    margin-bottom: 16px;
+}
+
+:host /deep/ #health input:hover {
+    border-color: #d9d9d9;
+}
+
+:host /deep/ #health input:focus {
+    border-color: #d9d9d9;
+    box-shadow: none;
+}
+
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+:host /deep/ #health [_nghost-c4] {
+    display: inline-block;
+}
+
+.marginBottom24 {
+    margin-bottom: 24px;
+}
+
+.textRight {
+    text-align: right
+}
+
+.addWidth {
+    width: 125px !important;
+}
+
+.addFirstTd {
+    width: 30%;
+    text-align: center
+}
+
+table {
+    border: 1px solid #e8e8e8;
+    width: 100%
+}
+
+table tr td {
+    padding: 8px 10px;
+}
+
+.ant-select,
+.ant-input {
+    margin-right: 5px;
+}
+
+.addInput {
+    width: 100px;
+    border: 0;
+    border-bottom: 1px solid #efefef
+}
+
+.ant-input:focus {
+    box-shadow: 0 0 0 0px transparent !important;
+}
+
+.addMarginData {
+    display: inline-block;
+    margin-left: 150px;
+}
+
+.addDateMargin {
+    display: inline-block;
+    margin-left: 240px;
+}
+
+.gradeStandard {
+    margin-top: 10px;
+}
+
+.assessmentForm thead tr th {
+    text-align: center;
+    padding: 10px 0px;
+
+}
+
+.tumbleInput {
+    width: 200px;
+    border: 0;
+    border-bottom: 1px solid #cccccc;
+    border-radius: 0
+}
+
+/* .assessmentForm tbody tr td:last-child{
+text-align: center
+} */
+.addMargin {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #000;
+}
+
+/* :host /deep/ .ant-calendar-picker {
+    width: 72% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 50% !important;
+} */
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-checkbox-wrapper,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+:host /deep/ .ant-radio-disabled+span,
+:host /deep/ .ant-checkbox-disabled+span {
+    color: rgba(0, 0, 0, .85) !important;
+}
+
+.colorN {
+    color: red;
+    padding-right: 3px;
+}
+
+.marginBottom24 {
+    margin-top: 10px
+}
+
+.mr20 {
+    margin-left: 10px;
+}
+
+.checkMargin {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.checkMargin label {
+    width: 140px;
+    text-align: right;
+}
+
+.recoveryTitle {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mLabel {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.wLabel {
+    width: 300px;
+}

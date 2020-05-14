@@ -1,0 +1,26 @@
+.textCenter {
+  text-align: center;
+}
+
+.red {
+  color: #f81d22 !important;
+}
+
+.buttons {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.marginR16 {
+  margin-right: 16px;
+}
+
+.dialog_input {
+  width: 300px;
+  max-width: 300px;
+}
+
+.dialog_label {
+  width: 100px;
+  text-align: right
+}

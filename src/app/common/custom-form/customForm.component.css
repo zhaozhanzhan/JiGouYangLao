@@ -1,0 +1,283 @@
+.formItem_edit {
+  margin: 2px 0;
+  padding: 0;
+  border: 0px solid #e2e2e2;
+  border-radius: 0px;
+  cursor: auto;
+}
+
+.formItem_view {
+  margin: 2px 0;
+  padding: 0;
+  border: 0px solid #e2e2e2;
+  border-radius: 0px;
+  cursor: auto;
+}
+
+.formItem_print {
+  margin: 2px 0;
+  padding: 0;
+  border: 0px solid #e2e2e2;
+  border-radius: 0px;
+  cursor: auto;
+}
+
+.formItem_design {
+  margin: 2px 0;
+  padding: 0px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ant-calendar-picker {
+  width: 100% !important;
+}
+
+.ant-select {
+  width: 100%;
+}
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled, .ant-select-disabled {
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+.selected {
+  background-color: #f4f4f4;
+}
+
+.closeIcon {
+  border-radius: 10px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 1;
+  padding: 0px;
+  color: #f5222d;
+  cursor: pointer;
+  line-height: 15px;
+  text-align: center;
+  font-size: 10px;
+}
+
+nz-form-explain {
+  color: #f5222d;
+}
+
+.content {
+  background-color: #FAFAFA;
+  font: 12pt "Tahoma";
+  position: relative;
+  padding: 20px;
+}
+
+.formDiv {
+  min-height: 600px;
+  overflow-y: auto;
+}
+
+.saveBtn {
+  width: 60px;
+  height: 30px;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.formTitle {
+  width: 21cm;
+  line-height: 15px;
+  font-size: 16pt;
+  text-align: center;
+  margin: 10px auto;
+}
+
+/* 编辑器控制器 */
+
+.controller {
+  text-align: right
+}
+
+/* 编辑器控制器 end*/
+
+/* 左侧实体控件列表 */
+
+.entityMenu {
+  z-index: 999;
+  width: 200px;
+  max-height: 800px;
+  position: fixed;
+  border: 1px solid #D3D3D3;
+  border-radius: 3px;
+  overflow: auto;
+  top: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+.collapsed_true {
+  width: 80px;
+}
+
+.collapsed_false {
+  width: 200px;
+}
+
+.entityItem {
+  cursor: pointer !important;
+  color: rgba(0, 0, 0, .85)!important;
+  border-bottom: #d3d3d3 1px solid !important;
+  margin: 0px;
+}
+
+.ant-menu-inline-collapsed>.ant-menu-item, .ant-menu-inline-collapsed>.ant-menu-item-group>.ant-menu-item-group-list>.ant-menu-item, .ant-menu-inline-collapsed>.ant-menu-item-group>.ant-menu-item-group-list>.ant-menu-submenu>.ant-menu-submenu-title, .ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title {
+  padding: 0 5px !important;
+}
+
+/* 左侧实体控件列表 end*/
+
+/* 右侧属性控制器  */
+
+.propertyController {
+  width: 250px;
+  max-height: 800px;
+  margin-left: 20px;
+  overflow: auto;
+  z-index: 999;
+  position: fixed;
+  top: 250px;
+  right: 50px;
+}
+
+/* 右侧属性控制器  end*/
+
+/* A4纸 */
+
+.page {
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 1cm;
+  margin: 20px auto;
+  border: 1px #D3D3D3 solid;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  page-break-before: always;
+}
+
+.subpage {
+  padding: 1cm;
+  border: 5px red solid;
+  height: 256mm;
+  outline: 2cm #FFEAEA solid;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.ant-form-item-label {
+  text-align: right;
+  vertical-align: middle;
+  line-height: 40px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ant-form-item {
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, .85);
+  box-sizing: border-box;
+  margin: 0px !important;
+  padding: 0;
+  list-style: none;
+  vertical-align: top;
+}
+
+@media print {
+  .page {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+  }
+}
+
+.my-label {
+  text-align: right;
+  vertical-align: middle;
+  line-height: 39.9999px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, .85);
+  /* width: 16.66666667%; */
+  float: left;
+}
+
+.my-label:after {
+  content: ":";
+  margin: 0 8px 0 2px;
+  position: relative;
+  top: -.5px;
+}
+
+.ant-checkbox-wrapper {
+  line-height: 40px;
+}
+
+/* 自定义UI框架中控件的显示效果 */
+
+:host /deep/ .ant-select-disabled .ant-select-selection {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+  border: 1px solid #D3D3D3 !important;
+}
+
+.ant-input {
+  border: 0px !important;
+  border-bottom: 1px solid #D3D3D3 !important;
+  border-radius: 0px !important;
+}
+
+:host /deep/ p {
+  line-height: 20px;
+  margin-bottom: 0px;
+}
+
+:host /deep/ .ant-calendar-picker {
+  width: 100%;
+}
+
+textarea.ant-input {
+  border: 0px !important;
+  border-bottom: 0px solid #D3D3D3 !important;
+  border-radius: 0px !important;
+}
+
+:host /deep/ .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner:after {
+  color: rgba(0, 0, 0, .85) !important;
+  border-color: rgba(0, 0, 0, .85) !important;
+}
+
+:host /deep/ .ant-checkbox-disabled .ant-checkbox-inner {
+  color: rgba(0, 0, 0, .85) !important;
+  border: 1px rgba(0, 0, 0, .85) !important;
+}
+
+:host /deep/ .ant-checkbox-disabled+span {
+  color: rgba(0, 0, 0, .85) !important;
+}

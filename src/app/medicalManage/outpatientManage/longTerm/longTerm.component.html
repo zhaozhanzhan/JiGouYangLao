@@ -1,0 +1,112 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>长期医嘱单</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <e-ngx-print #print [showBtn]=false [btnText]="'打印'" [printStyle]="printStyle" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="div_html" (printComplete)="printComplete()">
+    </e-ngx-print>
+    <button nz-button nzType="primary" (click)="clickPrint($event)" style="margin-left:5px;">打印</button>
+    <button nz-button nzType="default" class="mr20" (click)="back()" style="margin-left:5px;">返回</button>
+</ng-template>
+
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-card nzType="inner" nzTitle="基本信息">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">姓名</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">性别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">身份证号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">房间号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input readonly />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">既往病史</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="长期医嘱信息" style="margin-top:10px;">
+        <nz-table [nzData]="" #basicTable [nzBordered]="'true'" [nzShowPagination]="false" [nzSize]="'middle'" nzShowSizeChanger="false" nzFrontPagination="false">
+            <thead>
+                <tr>
+                    <th class="textCenter">药品名称</th>
+                    <th class="textCenter">规格</th>
+                    <th class="textCenter">剂量</th>
+                    <th class="textCenter">用法</th>
+                    <th class="textCenter">用药频次</th>
+                    <th class="textCenter">状态</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</nz-card>
+
+
+<div #div_html [hidden]="isShow==false">
+    <h2 class="textCenter" style="text-align: center">常熟市社会福利院红山路医务室</h2>
+    <div nz-row style="display:flex;width:100%">
+        <div nz-col class="left">
+            姓名：
+            <!-- {{oldManObjInfo.name}} -->
+        </div>
+        <div nz-col nzSpan="6" class="left">
+            性别：
+            <!-- {{oldManObjInfo.sex}} -->
+        </div>
+        <div nz-col nzSpan="6" class="left">
+            房间号：
+            <!-- {{oldManObjInfo.bedNo}} -->
+        </div>
+    </div>
+    <div nz-row style="display:flex;width:100%">
+        <div nz-col class="w2">
+            身份证号：
+            <!-- {{oldManObjInfo.cardno}} -->
+        </div>
+        <div nz-col class="w2">
+            打印日期：
+        </div>
+    </div>
+
+    <div>
+        <span>既往病史</span>
+    </div>
+    <div>
+        <span>长期医嘱</span>
+
+    </div>
+
+
+</div>

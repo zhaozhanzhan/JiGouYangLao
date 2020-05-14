@@ -1,0 +1,254 @@
+<nz-card nzType="inner" nzTitle="其他信息" class="marginBottom24">
+  <form nz-form [formGroup]="formData">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="projectDate">立项日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p" formControlName="projectDate" id="projectDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="beginDate">开工日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p" formControlName="beginDate" id="beginDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="endDate">预计完工日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p" formControlName="endDate" id="endDate"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="govOffice">政府办</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input maxlength="32" formControlName="govOffice" id="govOffice"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="socialOffice">社会办</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input  maxlength="32" formControlName="socialOffice" id="socialOffice"/>
+           </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="registerOffice">登记机关</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+             <input nz-input maxlength="32" formControlName="registerOffice" id="registerOffice"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="endyearBedNum">年末床位数</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input type="number" maxlength="4" oninput="if(value.length>4)value=value.slice(0,4)"  formControlName="endyearBedNum" id="endyearBedNum"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="finishedYear">建成投入使用年度</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <nz-year-picker  nzPlaceHolder="选择年" formControlName="finishedYear" id="finishedYear"></nz-year-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="registFund">注册（开办）资金</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+             <input nz-input formControlName="registFund" oninput="if(value.length>32)value=value.slice(0,32)"  maxlength="32"  id="registFund"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="leaseholdBegin">房屋租赁开始日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p"  formControlName="leaseholdBegin" id="leaseholdBegin"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="leaseholdEnd">房屋租赁结束日期</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker
+              nzFormat="yyyy-MM-dd"
+              class="w100p" formControlName="leaseholdEnd" id="leaseholdEnd"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="levelAssess">等级评定</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input formControlName="levelAssess" maxlength="32" id="levelAssess"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="manageSystemSound">管理制度是否健全</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <nz-select  formControlName="manageSystemSound" id="manageSystemSound"  nzAllowClear nzPlaceHolder="请选择">
+              <nz-option nzValue="是" nzLabel="是"></nz-option>
+              <nz-option nzValue="否" nzLabel="否"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="stationSystemSound">岗位责任制是否健全</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+             <nz-select  formControlName="stationSystemSound" id="stationSystemSound"  nzAllowClear nzPlaceHolder="请选择">
+                <nz-option nzValue="是" nzLabel="是"></nz-option>
+                <nz-option nzValue="否" nzLabel="否"></nz-option>
+              </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="isEstablishManagement">是否建立院管委会</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <nz-select  formControlName="isEstablishManagement" id="isEstablishManagement" nzAllowClear nzPlaceHolder="请选择">
+              <nz-option nzValue="是" nzLabel="是"></nz-option>
+              <nz-option nzValue="否" nzLabel="否"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="isHospitalAffairs">院务是否公开</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <nz-select  formControlName="isHospitalAffairs" id="isHospitalAffairs" nzAllowClear nzPlaceHolder="请选择">
+              <nz-option nzValue="是" nzLabel="是"></nz-option>
+              <nz-option nzValue="否" nzLabel="否"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="isFinanceOpen">财务是否公开</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+              <nz-select  formControlName="isFinanceOpen" id="isFinanceOpen" nzAllowClear nzPlaceHolder="请选择">
+                <nz-option nzValue="是" nzLabel="是"></nz-option>
+                <nz-option nzValue="否" nzLabel="否"></nz-option>
+              </nz-select> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="managementFunds">管理工作经费</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input formControlName="managementFunds" maxlength="32" id="managementFunds"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="annualSidelineIncome">年副业收入</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input formControlName="annualSidelineIncome" oninput="if(value.length>32)value=value.slice(0,32)"  maxlength="32" type="number" id="annualSidelineIncome"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8" nzFor="heatingMode">取暖方式</nz-form-label>
+          <nz-form-control [nzSpan]="16"> 
+            <input nz-input formControlName="heatingMode" id="heatingMode" maxlength="32"/> 
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="aroundMedicalOrgan">周边医疗机构</nz-form-label>
+          <nz-form-control [nzSpan]="20"> 
+            <textarea rows="4" nz-input maxlength="255" formControlName="aroundMedicalOrgan" id="aroundMedicalOrgan"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="projectDesc">立项批复</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="projectDesc" id="projectDesc"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="activitiesDevelopInfo">开展活动情况</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="activitiesDevelopInfo" id="activitiesDevelopInfo"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="aroundTouristSpot">周边旅游景点</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input  maxlength="255" formControlName="aroundTouristSpot" id="aroundTouristSpot"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255" formControlName="comment" id="comment"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      (click)="saveOtherInfo()" [nzLoading]="saveBasicInformationLoading"
+    >
+      保存
+    </button>
+  </div>
+</nz-card>

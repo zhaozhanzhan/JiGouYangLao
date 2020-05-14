@@ -1,0 +1,154 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-08-22 17:47:04
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button (click)="back()" *ngIf="!isModifyMode" nz-button nzType="default">
+    返回
+  </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p><span>合同详情</span></p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <div class="container long-div scrollable-container" #divTarget>
+    <div nz-row nzGutter="24" style="padding-left:-24px;padding-right: -24px">
+      <div nz-col nzSpan="5">
+        <nz-card class="oldCard">
+          <div nz-row>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+            <div
+              nz-col
+              [nzXs]="{ span: 11, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            >
+              <img
+                [src]="
+                  saveContractParams?.oldman?.oldmanUrl == undefined ||
+                  saveContractParams?.oldman?.oldmanUrl == ''
+                    ? 'assets/img/male-avatar.png'
+                    : saveContractParams?.oldman?.oldmanUrl
+                "
+                class="img-avatar"
+                style="width:80px;height:80px;margin-left: auto;margin-right: auto"
+              />
+            </div>
+            <div
+              nz-col
+              [nzXs]="{ span: 5, offset: 1 }"
+              [nzXs]="{ span: 6, offset: 2 }"
+            ></div>
+          </div>
+          <br />
+          <a>{{ saveContractParams?.oldman?.name }}</a>
+          <div style="text-align: left;">
+            性别：
+            <span>{{ saveContractParams?.oldman?.sex }}</span>
+            <br />
+            出生日期：
+            <span>{{ saveContractParams?.oldman?.birthYearMonth }}</span>
+            <br />
+            身份证号：
+            <span>{{ saveContractParams?.oldman?.cardno }}</span>
+            <br />
+            医疗支付：
+            <span>{{ saveContractParams?.oldman?.medicalPayment }}</span>
+            <br />
+            人员类别：
+            <span>{{ saveContractParams?.oldman?.personnelSort }}</span>
+            <br />
+            入院日期：
+            <span>{{
+              saveContractParams?.oldman?.inDate | date: "yyyy-MM-dd"
+            }}</span>
+          </div>
+        </nz-card>
+      </div>
+      <div nz-col nzSpan="19">
+        <nz-card
+          nzTitle="{{ saveContractParams?.name }}"
+          [nzExtra]="extraTemplate"
+        >
+          <div nz-row nzSpan="24">
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">签订日期</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker
+                    [(ngModel)]="saveContractParams.signDate"
+                    [nzFormat]="'yyyy-MM-dd'"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">生效日期</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker
+                    [(ngModel)]="saveContractParams.effectDate"
+                    [nzFormat]="'yyyy-MM-dd'"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="8">
+              <nz-form-item>
+                <nz-form-label nzFor="name">失效日期</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker
+                    [(ngModel)]="saveContractParams.invalidDate"
+                    [nzFormat]="'yyyy-MM-dd'"
+                  ></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <mirr-customform
+            [boundParams]="saveContractParams?.oldman"
+            [formMode]="'view'"
+            [formName]="saveContractParams?.name"
+            [(formContent)]="templateContent"
+            [isShowModeController]="'false'"
+            *ngIf="saveContractParams.theType === '2'"
+          ></mirr-customform>
+          <mirr-image
+            [(imageUrlStr)]="dischargeUrls"
+            isShowUploadBtn="true"
+            isShowOcrBtn="false"
+            *ngIf="saveContractParams?.theType == '1'"
+            #contractImg
+          ></mirr-image>
+        </nz-card>
+        <ng-template #extraTemplate>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button
+            (click)="saveContract()"
+            *ngIf="!isModifyMode"
+            nz-button
+            nzType="primary"
+            [nzLoading]="saveBtnLoading"
+          >
+            保存合同
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <nz-back-top [nzTarget]="divTarget" [nzVisibilityHeight]="100"> </nz-back-top>
+</nz-card>

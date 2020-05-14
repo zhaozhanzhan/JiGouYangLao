@@ -1,0 +1,102 @@
+<ng-template #titleArea>
+    <div>
+        <p><span>补价劵详情</span></p>
+    </div>
+</ng-template>
+<ng-template #basicInfoBtn>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<nz-card [nzTitle]="titleArea" [nzExtra]="basicInfoBtn">
+    <nz-card nzType="inner" nzTitle="基本信息">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 补价券代码</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="obj.supplementCode" [disabled]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 补价券名称</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <input nz-input [(ngModel)]="obj.supplementName" [disabled]="disabled" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 使用条件</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width:100%" nzAllowClear [(ngModel)]="obj.useConditions" nzPlaceHolder="" [nzDisabled]="disabled" (ngModelChange)="changeItem()">
+                            <nz-option nzValue="1" nzLabel="不限条件"></nz-option>
+                            <nz-option nzValue="2" nzLabel="消费使用"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 补价类型</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width:100%" [(ngModel)]="obj.supplementType" nzAllowClear nzPlaceHolder="" (ngModelChange)="changeType()">
+                            <nz-option nzValue="1" nzLabel="金额"></nz-option>
+                            <nz-option nzValue="2" nzLabel="比例"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 补价金额</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-input-number [nzMin]="1" [(ngModel)]="obj.supplementAmount" [nzDisabled]="disabled"></nz-input-number>
+                        <input nz-input [(ngModel)]="unit" readonly style="width:30%" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="isabled==true">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 抵扣消费类别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="obj.expCategoryId" [nzDisabled]="disabled" (ngModelChange)="changeExpItem()">
+                            <nz-option *ngFor="let option of expCategoryList" [nzLabel]="option.name" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" *ngIf="isabled==true">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 抵扣消费项目</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width: 100%;" [(ngModel)]="obj.expItemId" nzAllowClear [nzDisabled]="disabled">
+                            <nz-option nzLabel="全部" nzValue=""> </nz-option>
+                            <nz-option *ngFor="let option of expItemList" [nzLabel]="option.itemName" [nzValue]="option.id"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8"> 发行状态 </nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                        <nz-select style="width:100%" [(ngModel)]="obj.issuingState" [nzDisabled]="disabled" nzAllowClear nzPlaceHolder="">
+                            <nz-option nzValue="1" nzLabel="未发行"></nz-option>
+                            <nz-option nzValue="2" nzLabel="已发行"></nz-option>
+                            <nz-option nzValue="3" nzLabel="停发"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4"> 备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="4" nz-input [(ngModel)]="obj.remark" [disabled]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+</nz-card>

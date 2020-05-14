@@ -1,0 +1,11 @@
+:host /deep/ .ant-calendar-picker {
+    width: 100%;
+}
+
+.form_input {
+    width: 400px;
+}
+
+.textCenter {
+    text-align: center;
+}

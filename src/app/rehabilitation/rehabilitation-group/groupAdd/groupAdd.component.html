@@ -1,0 +1,86 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p>
+      <span>团体康复详情</span>
+    </p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+
+
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+    <nz-card nzType="inner" nzTitle="团体康复详情" class="marginBottom24" >
+      <form nz-form>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4"  nzFor="recureDate">团体康复日期</nz-form-label>
+              <nz-form-control [nzSm]="20">
+                <nz-input-group nzSearch >
+                    <nz-date-picker name="recureDate" [(ngModel)]="recureObj.recureDate" id="recureDate"></nz-date-picker>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4"  nzFor="oldmanGroup">长者姓名</nz-form-label>
+              <nz-form-control [nzSm]="20">
+                <nz-input-group nzSearch >
+                  <nz-select style="width: 100%"  nzMode="tags" [(ngModel)]="recureObj.oldmanGroup" name="oldmanGroup"  id="oldmanGroup" >
+                    <nz-option *ngFor="let option of oldmanList" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                  </nz-select>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4"  nzFor="number">总人数</nz-form-label>
+              <nz-form-control [nzSm]="20">
+                <nz-input-group nzSearch >
+                  <input nz-input placeholder="总人数"  [(ngModel)]="recureObj.number" nzSize="default" name="number" id="number">
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4"  nzFor="recureContent">团体康复内容</nz-form-label>
+              <nz-form-control [nzSm]="20">
+                <nz-input-group nzSearch >
+                  <textarea rows="4" nz-input name="recureContent" [(ngModel)]="recureObj.recureContent" id="recureContent"></textarea>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+    </nz-card>
+ 
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonalInfo()" [nzLoading]="savePersonalBtnLoading">保存</button>
+  </div>
+
+</nz-card>
+<!-- 表单区域End -->
+
+
+
+

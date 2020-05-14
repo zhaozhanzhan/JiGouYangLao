@@ -1,0 +1,31 @@
+:host /deep/ .ant-card-extra {
+  padding: 13px 0;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.marginLR8 {
+    margin-right: 16px;
+}
+
+.paddingTD15 {
+    padding: 15px 0;
+}
+.addMargin{
+  padding-top: 10px;
+}
+.admissionCursor{
+  cursor: pointer;
+}
+a{
+  color: #20a8d8;
+  text-decoration: none;
+  background-color: transparent;
+  text-align: left;
+  display: inline-block;
+}
+nz-form-item {
+  margin-bottom: 0px;
+}

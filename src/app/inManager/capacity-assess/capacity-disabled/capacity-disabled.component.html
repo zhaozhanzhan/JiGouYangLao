@@ -1,0 +1,1209 @@
+<!-- 能力评估基本信息表顶部按钮Begin -->
+<ng-template #abilityAssessBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 能力评估基本信息表顶部按钮End -->
+
+
+<!-- 能力评估基本信息表底部按钮End -->
+
+<!-- 日常生活活动评估表顶部按钮Begin -->
+<ng-template #dailyLifeBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 日常生活活动评估表顶部按钮End -->
+
+
+
+<!-- 精神状态评估表顶部按钮Begin -->
+<ng-template #healthBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 精神状态评估表顶部按钮End -->
+
+
+
+<!-- 感知觉与沟通评估表顶部按钮Begin -->
+<ng-template #sensoryPerBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+</ng-template>
+<!-- 感知觉与沟通评估表顶部按钮End -->
+
+
+
+<!-- 社会参与评估表顶部按钮Begin -->
+<ng-template #mentalCondiBtnArea>
+    <button nz-button nzType="default" (click)="clickBack()" >返回</button>
+</ng-template>
+<!-- 社会参与评估表顶部按钮End -->
+
+
+<!-- 评估报告顶部按钮Begin -->
+<ng-template #asseReportBtnArea>
+    <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{'btn': true, 'btn-success': true}" [printHTML]="print_div"
+    (printComplete)="printComplete()">
+    </e-ngx-print>
+    <button nz-button nzType="default" (click)="clickBack()">返回</button>
+    <button nz-button nzType="primary" *ngIf="state=='edit'"  (click)="onPrint($event)" style="margin-left:5px;">打印</button>
+</ng-template>
+<!-- 评估报告顶部按钮End -->
+
+
+<nz-card >
+    <nz-card-tab>
+        <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="clickTab($event)">
+            <!-- 能力评估基本信息表Begin -->
+            <nz-tab nzTitle="能力评估基本信息表"  >
+                <div id="abilityAssess" >
+                    <nz-card nzType="inner" nzTitle="能力评估基本信息表" class="marginBottom24" [nzExtra]="abilityAssessBtnArea">
+                        <div>
+                            <table border="1" class="abilityAssess">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">评估基本信息</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">评估编号</td>
+                                        <td>
+                                            <input nz-input placeholder="请输入评估编号" [(ngModel)]="abilityAssess.assCode" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">评估人</td>
+                                        <td>
+                                            <input nz-input placeholder="请输入评估人" disabled [(ngModel)]="abilityAssess.asser" class="capacityAssessApply" maxlength="10">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">评估基准日期</td>
+                                        <td>
+                                            <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="true"  [(ngModel)]="abilityAssess.assDate" class="w200"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">评估原因</td>
+                                        <td>
+                                            <nz-radio-group [(ngModel)]="abilityAssess.assReason" [nzDisabled]="true">
+                                                <label nz-radio nzValue="接受服务前初评">1 接受服务前初评</label>
+                                                <label nz-radio nzValue="接受服务后的常规评估">2 接受服务后的常规评估</label>
+                                                <label nz-radio nzValue="状况发生变化后的即时评估">3 状况发生变化后的即时评估</label>
+                                                <label nz-radio nzValue="因评估结果有疑问进行的复评">4 因评估结果有疑问进行的复评</label>
+                                            </nz-radio-group>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">被评估者的基本信息</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">姓名</td>
+                                        <td>
+                                            <input nz-input placeholder="" *ngIf="abilityAssess.personInfo.name!=undefined"  [(ngModel)]="abilityAssess.personInfo.name" class="capacityAssessApply"  disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">性别</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.sex" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">出生日期</td>
+                                        <td>
+                                            <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="abilityAssess.personInfo.birthYearMonth" class="w200" [nzDisabled]="true"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">身份证号</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.cardno" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">社保卡号</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.medicalCard" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">民族</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.nation" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">文化程度</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.education" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">宗教信仰</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.religion" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">居住情况</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.livingSituation" class="capacityAssessApply"
+                                            disabled>
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                        <td colspan="2">经济来源</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.financialResources" class="capacityAssessApply"
+                                            disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">婚姻状况</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.marriage" class="capacityAssessApply" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">医疗费用支付方式</td>
+                                        <td>
+                                            <input nz-input placeholder="" [(ngModel)]="abilityAssess.personInfo.medicalPayment" class="capacityAssessApply" disabled>
+                                          
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                            <td rowspan="3">疾病诊断</td>
+                                            <td>痴呆</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.dementiaDiagnosis" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="轻度">轻度</label>
+                                                    <label nz-radio nzValue="中度">中度</label>
+                                                    <label nz-radio nzValue="重度">重度</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>精神疾病</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.mentalDiseaseDiagnosis" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="精神分裂症">精神分裂症</label>
+                                                    <label nz-radio nzValue="双相情感障碍">双相情感障碍</label>
+                                                    <label nz-radio nzValue="偏执性精神障碍">偏执性精神障碍</label>
+                                                    <label nz-radio nzValue="分裂情感性障碍">分裂情感性障碍</label>
+                                                    <label nz-radio nzValue="癫痫所致精神障碍">癫痫所致精神障碍</label>
+                                                    <label nz-radio nzValue="精神发育迟滞伴发精神障碍">精神发育迟滞伴发精神障碍</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>慢性疾病</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled [(ngModel)]="abilityAssess.chronicDiseaseDiagnosis" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                      
+                                        <tr>
+                                            <td rowspan="5">近30天内意外事件</td>
+                                            <td>跌倒</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.fallDownAccd" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="发生过1次">发生过1次</label>
+                                                    <label nz-radio nzValue="发生过2次">发生过2次</label>
+                                                    <label nz-radio nzValue="发生过3次以上">发生过3次以上</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>走失</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.wanderAwayAccd" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="发生过1次">发生过1次</label>
+                                                    <label nz-radio nzValue="发生过2次">发生过2次</label>
+                                                    <label nz-radio nzValue="发生过3次以上">发生过3次以上</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>噎食</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.chokeFeedAccd" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="发生过1次">发生过1次</label>
+                                                    <label nz-radio nzValue="发生过2次">发生过2次</label>
+                                                    <label nz-radio nzValue="发生过3次以上">发生过3次以上</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>自杀</td>
+                                            <td>
+                                                <nz-radio-group [(ngModel)]="abilityAssess.commitSuicideAccd" [nzDisabled]="true">
+                                                    <label nz-radio nzValue="无">无</label>
+                                                    <label nz-radio nzValue="发生过1次">发生过1次</label>
+                                                    <label nz-radio nzValue="发生过2次">发生过2次</label>
+                                                    <label nz-radio nzValue="发生过3次以上">发生过3次以上</label>
+                                                </nz-radio-group>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>其他</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled   [(ngModel)]="abilityAssess.otherAccd" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">信息提供者及联系人信息</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">信息提供者的姓名</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled  [(ngModel)]="abilityAssess.infoProvider" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">信息提供者与老年人的关系</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled  [(ngModel)]="abilityAssess.infoProviderRelationship" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">联系人姓名</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled [(ngModel)]="abilityAssess.contactName" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">联系人电话</td>
+                                            <td>
+                                                <input nz-input placeholder="" disabled [(ngModel)]="abilityAssess.contactPhone" class="capacityAssessApply">
+                                            </td>
+                                        </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 能力评估基本信息表End -->
+
+            <!-- 日常生活活动评估表Begin -->
+            <nz-tab nzTitle="日常生活活动评估表" [nzDisabled]="!abilityAssessId">
+                <div id="dailyLife">
+                    <nz-card nzType="inner" nzTitle="日常生活活动评估表" class="marginBottom24" [nzExtra]="dailyLifeBtnArea" >
+                        <div>
+                            <table border="1" class="dailyLife">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3" class="w30p">
+                                            <b>进食：</b> 指用餐具将食物由容器送到口中、咀嚼、吞咽等过程
+                                        </td>
+                                        <td rowspan="3" class="w20p">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[0]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，需极大帮助或完全依赖他人，或有留置营养管</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分，需部分帮助（进食过程中需要一定帮助，如协助把持餐具）</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w50p">10分，可独立进食（在合理的时间内独立进食准备好的食物）</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2" class="addFirstTd">
+                                            <b>洗澡</b>
+                                        </td>
+                                        <td rowspan="2">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[1]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        
+                                        <td>0分，在洗澡过程中需他人帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分，准备好洗澡水后，可独立完成洗澡过程</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2" class="addFirstTd">
+                                            <b>修饰：</b> 指洗脸、刷牙、梳头、刮脸等
+                                        </td>
+                                        <td rowspan="2">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[2]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                       
+                                        <td>0分，需他人帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分，可独立完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>穿衣：</b> 指穿脱衣服、系扣、拉拉链、穿脱鞋袜、系鞋带
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[3]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，需极大帮助或完全依赖他人</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5分，需部分帮助（能自己穿脱，但需他人帮助整理衣物、系扣/鞋带、拉拉链）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分，可独立完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>大便控制</b>
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[4]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，完全失控</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分，偶尔失控（每周&nbsp;&lt;&nbsp;1次），或需要他人提示</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分，可控制大便</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>小便控制</b>
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[5]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，完全失控，或留置导尿管</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分，偶尔失控（每天&nbsp;&lt;&nbsp;1次，但每周&nbsp;&gt;&nbsp;1次），或需要他人提示</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10分，可控制小便</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>如厕：</b>包括去厕所、解开衣裤、擦净、整理衣裤、冲水等
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[6]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分， 需极大帮助或完全依赖他人</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5分， 需部分帮助（需他人搀扶去厕所、需他人帮忙冲水或整理衣裤等）</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>10分，可独立完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>床椅转移</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[7]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                                <nz-option nzLabel="15" nzValue="15">15</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        
+
+                                        <td>0分， 完全依赖他人</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5分， 需极大帮助（较大程度上依赖他人搀扶和帮助）</td>
+                                    </tr>
+                                    <tr>
+                                       <td>10分，需部分帮助（需他人搀扶或使用拐杖）</td>
+                                    </tr>
+                                    <tr>
+                                       <td>15分，可独立完成</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>平地行走</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[8]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                                <nz-option nzLabel="15" nzValue="15">15</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分， 完全依赖他人</td>
+                                    </tr>
+                                    <tr>
+                                      <td>5分， 需极大帮助（较大程度上依赖他人搀扶，或坐在轮椅上自行移动）</td> 
+                                    </tr>
+                                    <tr>
+                                     <td>10分，需部分帮助（需他人搀扶，或使用拐杖、助行器等辅助用具）</td>
+                                    </tr>
+                                    <tr>
+                                      <td>15分，可独立在平地上行走45m </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>上下楼梯</b>
+                                        </td>
+                                        <td rowspan="3">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="dailyLife.assessmentDay[9]" class="addWidth" (ngModelChange)="selScore(dailyLife.assessmentDay,'dailyLife')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="5" nzValue="5">5</nz-option>
+                                                <nz-option nzLabel="10" nzValue="10">10</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分， 需极大帮助或完全依赖他人</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5分， 需部分帮助（需扶楼梯、他人搀扶，或使用拐杖等） </td>
+                                    </tr>
+                                    <tr>
+                                       <td>10分，可独立上下楼梯（10~15个台阶）</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>日常生活部分总分</b>
+                                        </td>
+                                        <td>
+                                            <input type="text" nz-input [ngModel]="dailyLife.totalScore" class="addWidth" disabled>分
+                                        </td>
+                                        <td>上述10个项目得分之和</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>日常生活活动分级</b>
+                                        </td>
+                                        <td rowspan="4">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择等级" [(ngModel)]="dailyLife.classification" class="addWidth" [nzDisabled]="true">
+                                                <nz-option nzLabel="能力完好" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="轻度受损" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="中度受损" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="重度受损" nzValue="3">3</nz-option>
+                                            </nz-select>级
+                                        </td>
+                                        <td>0 （能力完好）：总分100分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 （轻度受损）：总分65~95分 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2 （中度受损）：总分45~60分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 （重度受损）：总分≤40分</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 日常生活活动评估表End -->
+
+            <!-- 精神状态评估表Begin -->
+            <nz-tab nzTitle="精神状态评估表" [nzDisabled]="!abilityAssessId">
+                <div id="health">
+                    <nz-card nzType="inner" nzTitle="精神状态评估表" class="marginBottom24" [nzExtra]="healthBtnArea" >
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="6" class="addFirstTd">
+                                            <b>认知功能</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            测试
+                                        </td>
+                                        <td class="w50p tac">“我说三样东西，请重复一遍，并记住，一会儿还会问您”：苹果、手表、国旗</td>
+                                    </tr>
+                                    <tr>
+                                        <td>(1)画钟测验：“请在这儿画一个圆形时钟，在时钟上标出10点45分”</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            (2)回忆词语：“现在请您告诉我，刚才我要您记住的三样东西是什么
+                                            <br> 答：_______、________、_________（不必按顺序）
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="health.assessmentMentality[0]" class="addWidth" (ngModelChange)="selScore(health.assessmentMentality,'health')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，画钟正确（画出一个闭锁圆，指针位置准确），且能回忆出2-3个词</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，画钟错误（画的圆不闭锁，或指针位置不准确），或只回忆出0-1个词
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，确诊为认知障碍，如老年痴呆</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>攻击行为</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="health.assessmentMentality[1]" class="addWidth" (ngModelChange)="selScore(health.assessmentMentality,'health')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，无身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，每月有几次身体攻击行为，或每周有几次语言攻击行为</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，每周有几次身体攻击行为，或每日有语言攻击行为</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3" class="addFirstTd">
+                                            <b>抑郁情绪</b>
+                                        </td>
+                                        <td rowspan="3" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="health.assessmentMentality[2]" class="addWidth" (ngModelChange)="selScore(health.assessmentMentality,'health')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，无 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，情绪低落、不爱说话、不爱梳洗、不爱活动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，有自杀念头或自杀行为</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>精神状态总分</b>
+                                        </td>
+                                        <td class="tac">
+                                            <input type="text" nz-input [ngModel]="health.totalScore" class="addWidth" disabled>分
+                                        </td>
+                                        <td>上述3个项目得分之和 </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>精神状态分级</b>
+                                        </td>
+                                        <td rowspan="4" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择等级" [(ngModel)]="health.classification" class="addWidth" [nzDisabled]="true">
+                                                <nz-option nzLabel="能力完好" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="轻度受损" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="中度受损" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="重度受损" nzValue="3">3</nz-option>
+                                            </nz-select>级
+                                        </td>
+                                        <td>0（能力完好）：总分为0分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1（轻度受损）：总分为1分 </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 2（中度受损）：总分2-3分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3（重度受损）：总分4-6分</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 精神状态评估表End -->
+
+            <!-- 感知觉与沟通评估表Begin -->
+            <nz-tab nzTitle="感知觉与沟通评估表" [nzDisabled]="!abilityAssessId">
+                <div id="SensoryPerception">
+                    <nz-card nzType="inner" nzTitle="感知觉与沟通评估表" class="marginBottom24" [nzExtra]="sensoryPerBtnArea" >
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>精神意识水平</b>
+                                        </td>
+                                        <td rowspan="4" class="tac w20p">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="sensoryPer.assessmentCommunication[0]" class="addWidth" (ngModelChange)="selScore(sensoryPer.assessmentCommunication,'sensoryPer')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，神志清醒，对周围环境警觉</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，嗜睡，表现为睡眠状态过度延长。当呼唤或推动患者的肢体时可唤醒，并能进行正确的交谈或执行指令，停止刺激后又继续入睡</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，昏睡，一般的外界刺激不能使其觉醒，给予较强烈的刺激时可有短时的意识清醒，醒后可简短回答提问，当刺激减弱后又很快进入睡眠状态</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，昏迷，处于浅昏迷时对疼痛刺激有回避和痛苦表情；处于深昏迷时对刺激无反应，全身肌肉松弛，眼球固定，瞳孔散大</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>视力：</b>若平日带老花镜或近视镜，应在佩戴眼镜的情况下评估
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="sensoryPer.assessmentCommunication[1]" class="addWidth" (ngModelChange)="selScore(sensoryPer.assessmentCommunication,'sensoryPer')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，能看清书报上的标准字体</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，能看清楚大字体，但看不清书报上的标准字体</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，视力有限，看不清报纸大标题，但能辨认物体</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，辨认物体有困难，但眼睛能跟随物体移动，只能看到光、颜色和形状</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，没有视力，眼睛不能跟随物体移动</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>听力：</b>若平时佩戴助听器，应在佩戴助听器的情况下评估
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="sensoryPer.assessmentCommunication[2]" class="addWidth" (ngModelChange)="selScore(sensoryPer.assessmentCommunication,'sensoryPer')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，可正常交谈，能听到电视、电话、门铃的声音</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，在轻声说话或说话距离超过2米时听不清</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，正常交流有些困难，需在安静的环静或大声说话才能听到</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，讲话者大声说话或说话很慢，才能部分听见</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，完全听不见</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>沟通交流（包括非语言沟通）</b>
+                                        </td>
+                                        <td rowspan="4" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="sensoryPer.assessmentCommunication[3]" class="addWidth" (ngModelChange)="selScore(sensoryPer.assessmentCommunication,'sensoryPer')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，无困难，能与他人正常沟通和交流</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，能够沟通，但需要增加时间或给予帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，沟通有困难，需频繁重复或简化口头表达</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，不能表达需要</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>感知觉与沟通分级</b>
+                                        </td>
+                                        <td rowspan="4" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择等级" [(ngModel)]="sensoryPer.classification" class="addWidth" [nzDisabled]="true">
+                                                <nz-option nzLabel="能力完好" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="轻度受损" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="中度受损" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="重度受损" nzValue="3">3</nz-option>
+                                            </nz-select>级
+                                        </td>
+                                        <td> 0（能力完好）：意识为清醒，且视力和听力评定为0或1，沟通评定为0。</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 1（轻度受损）：意识为清醒，但视力或听力中至少一项评定为2，或沟通评定为1。</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 2（中度受损）：意识清醒，但视力或听力中至少一项评定为3，或沟通评定为2；或嗜睡，视力或听力评定为3级及以下，沟通评定为2级及以下。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3（重度受损）：意识为清醒或嗜睡，但视力或听力中至少一项评定为4，或沟通评定为3；或昏睡/昏迷。</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 感知觉与沟通评估表End -->
+
+            <!-- 社会参与评估表Begin -->
+            <nz-tab nzTitle="社会参与评估表" [nzDisabled]="!abilityAssessId">
+                <div id="mentalCondition">
+                    <nz-card nzType="inner" nzTitle="社会参与评估表" class="marginBottom24" [nzExtra]="mentalCondiBtnArea" >
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>生活能力</b>
+                                        </td>
+                                        <td rowspan="5" class="tac w20p">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="mentalCondi.assessmentSocial[0]" class="addWidth" (ngModelChange)="selScore(mentalCondi.assessmentSocial,'mentalCondi')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，除个人生活自理外（如饮食、洗漱、穿戴、二便），还能料理家务（如做饭、洗衣）或当家管理事务</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，除个人生活自理外，能做家务，但欠好，家庭事务安排欠条理</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，个人生活能自理；只有在他人帮助下才能做些家务，但质量不好</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，个人基本生活事务能自理（如饮食、二便），在督促下可洗漱</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，个人基本生活事务（如饮食、二便）需要部分帮助或完全帮助</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>工作能力</b>
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="mentalCondi.assessmentSocial[1]" class="addWidth" (ngModelChange)="selScore(mentalCondi.assessmentSocial,'mentalCondi')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，原来熟练的脑力工作或体力技巧性工作可照常进行</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，原来熟练的脑力工作或体力技巧性工作能力有所下降</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，原来熟练的脑力工作或体力技巧性工作明显不如以往，部分遗忘</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，对熟练工作只有一些片段保留，技能全部遗忘</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，对以往的知识或技能全部磨灭</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>时间/空间定向</b>
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="mentalCondi.assessmentSocial[2]" class="addWidth" (ngModelChange)="selScore(mentalCondi.assessmentSocial,'mentalCondi')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，时间观念（年、月、日、时）清楚；可单独出远门，能很快掌握新环境的方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，时间观念有些下降，年、月、日清楚，但有时相差几天；可单独来往于近街，知道现住地的名称和方位，但不知回家路线</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，时间观念较差，年、月、日不清楚，可知上半年或下半年；只能单独在家附近行动，对现住地只知名称，不知道方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，时间观念很差，年、月、日不清楚，可知上午或下午；只能在左邻右舍间串门，对现住地不知名称和方位</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，无时间观念；不能单独外出</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>人物定向</b>
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="mentalCondi.assessmentSocial[3]" class="addWidth" (ngModelChange)="selScore(mentalCondi.assessmentSocial,'mentalCondi')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td>0分，知道周围人们的关系，知道祖孙、叔伯、姑姨、侄子侄女等称谓的意义；可分辨陌生人的大致年龄和身份，可用适当称呼</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1分，只知家中亲密近亲的关系，不会分辨陌生人的大致年龄，不能称呼陌生人</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2分，只能称呼家中人，或只能照样称呼，不知其关系，不辨辈分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，只认识常同住的亲人，可称呼子女或孙子女，可辨熟人和生人</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，只认识保护人，不辨熟人和生人</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="5" class="addFirstTd">
+                                            <b>社会交往能力</b>
+                                        </td>
+                                        <td rowspan="5" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择分数" [nzDisabled]="true" [(ngModel)]="mentalCondi.assessmentSocial[4]" class="addWidth" (ngModelChange)="selScore(mentalCondi.assessmentSocial,'mentalCondi')">
+                                                <nz-option nzLabel="0" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="1" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="2" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="3" nzValue="3">3</nz-option>
+                                                <nz-option nzLabel="4" nzValue="4">4</nz-option>
+                                            </nz-select>分
+                                        </td>
+                                        <td> 0分，参与社会，在社会环境有一定的适应能力，待人接物恰当</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 1分，能适应单纯环境，主动接触人，初见面时难让人发现智力问题，不能理解隐喻语</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 2分，脱离社会，可被动接触，不会主动待人，谈话中很多不适词句，容易上当受骗</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3分，勉强可与人交往，谈吐内容不清楚，表情不恰当</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4分，难以与人接触</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>社会参与总分</b>
+                                        </td>
+                                        <td class="tac">
+                                            <input type="text" nz-input [ngModel]="mentalCondi.totalScore" class="addWidth" disabled>分
+                                        </td>
+                                        <td> 上述5个项目得分之和</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" class="addFirstTd">
+                                            <b>社会参与分级</b>
+                                        </td>
+                                        <td rowspan="4" class="tac">
+                                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择等级" [(ngModel)]="mentalCondi.classification" class="addWidth" [nzDisabled]="true">
+                                                <nz-option nzLabel="能力完好" nzValue="0">0</nz-option>
+                                                <nz-option nzLabel="轻度受损" nzValue="1">1</nz-option>
+                                                <nz-option nzLabel="中度受损" nzValue="2">2</nz-option>
+                                                <nz-option nzLabel="重度受损" nzValue="3">3</nz-option>
+                                            </nz-select>级
+                                        </td>
+                                        <td> 0（能力完好）：总分0-2分</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 1（轻度受损）：总分3-7分</td>
+                                    </tr>
+                                    <tr>
+                                        <td> 2（中度受损）：总分8-13分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3（重度受损）：总分14-20分</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 社会参与评估表End -->
+
+            <!-- 评估报告Begin -->
+            <nz-tab nzTitle="评估报告" [nzDisabled]="!abilityAssessId">
+                <div id="asseReport" >
+                    <nz-card nzType="inner" nzTitle="评估报告" class="marginBottom24" [nzExtra]="asseReportBtnArea" >
+                        <div >
+                            <table border="1">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2" class="addFirstTd">
+                                            <b>一级指标分级</b>
+                                        </td>
+                                        <td class="tac">
+                                            <label>日常生活活动：</label>
+                                            <span>{{dailyLife.classification}}
+                                                <span *ngIf='dailyLife.classification=="0"'>能力完好</span>
+                                                <span *ngIf='dailyLife.classification=="1"'>轻度受损</span>
+                                                <span *ngIf='dailyLife.classification=="2"'>中度受损</span>
+                                                <span *ngIf='dailyLife.classification=="3"'>重度受损</span>
+                                            </span>
+                                        </td>
+                                        <td class="tac">
+                                            <label>精神状况：</label>
+                                            <span>{{health.classification}}
+                                                <span *ngIf='health.classification=="0"'>能力完好</span>
+                                                <span *ngIf='health.classification=="1"'>轻度受损</span>
+                                                <span *ngIf='health.classification=="2"'>中度受损</span>
+                                                <span *ngIf='health.classification=="3"'>重度受损</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tac">
+                                            <label>感知觉与沟通：</label>
+                                            <span>{{sensoryPer.classification}}
+                                                <span *ngIf='sensoryPer.classification=="0"'>能力完好</span>
+                                                <span *ngIf='sensoryPer.classification=="1"'>轻度受损</span>
+                                                <span *ngIf='sensoryPer.classification=="2"'>中度受损</span>
+                                                <span *ngIf='sensoryPer.classification=="3"'>重度受损</span>
+                                            </span>
+                                        </td>
+                                        <td class="tac">
+                                            <label>社会参与：</label>
+                                            <span>{{mentalCondi.classification}}
+                                                <span *ngIf='mentalCondi.classification=="0"'>能力完好</span>
+                                                <span *ngIf='mentalCondi.classification=="1"'>轻度受损</span>
+                                                <span *ngIf='mentalCondi.classification=="2"'>中度受损</span>
+                                                <span *ngIf='mentalCondi.classification=="3"'>重度受损</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>老年人能力初步等级</b>
+                                        </td>
+                                        <td colspan="2">
+                                            <nz-radio-group [(ngModel)]="asseReport.preliminaryGrade" [nzDisabled]="true">
+                                                <label nz-radio nzValue="0">0 能力完好</label>
+                                                <label nz-radio nzValue="1">1 轻度失能</label>
+                                                <label nz-radio nzValue="2">2 中度失能</label>
+                                                <label nz-radio nzValue="3">3 重度失能</label>
+                                            </nz-radio-group>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>等级变更条款</b>
+                                        </td>
+                                        <td colspan="2">
+                                            <span>1 有认知障碍/痴呆、精神疾病者，在原有能力级别上提高一个等级；</span><br>
+                                            <span>2 近30天内发生过2次及以上跌倒、噎食、自杀、走失者，在原有能力级别上提高一个等级；</span><br>
+                                            <span>3 处于昏迷状态者，直接评定为重度失能；</span><br>
+                                            <span>4 若初步等级确定为“3重度失能”，则不考虑上述1-3各情况对最终等级的影响，等级不再提高。</span><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <b>老年人能力最终等级</b>
+                                        </td>
+                                        <td colspan="2">
+                                            <nz-radio-group [(ngModel)]="asseReport.finalGrade" [nzDisabled]="true">
+                                                <label nz-radio [nzValue]="x.levelName" *ngFor="let x of finalLevel" [nzDisabled]="true">{{x.levelName}}</label>
+                                            </nz-radio-group>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <span>评 估 员 签 名&nbsp;&nbsp;&nbsp;</span>
+                                        </td>
+                                        <td class="addFirstTd">
+                                             <input nz-input placeholder="" class="addInput admisW" disabled  [(ngModel)]="asseReport.autographMemo.assess.name" >
+                                        </td>
+                                        <td colspan="2">
+                                            <span class="">日期</span>
+                                            <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="true" [(ngModel)]="asseReport.autographMemo.assess.date" class="w140 ml10"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addFirstTd">
+                                            <span>信息提供者签名</span>
+                                        </td>
+                                        <td class="addFirstTd">
+                                            <input nz-input placeholder="" disabled   class="addInput admisW" [(ngModel)]="asseReport.autographMemo.provide.name" >
+                                        </td>
+                                        <td colspan="2">
+                                            <span class="">日期</span>
+                                            <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="true" [(ngModel)]="asseReport.autographMemo.provide.date" class="w140 ml10"></nz-date-picker>
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td class="addFirstTd" colspan="3" class="tal">
+                                            <div>
+                                                <span>评 估 员 签 名&nbsp;&nbsp;&nbsp;</span>
+                                                <input nz-input placeholder="" class="addInput w200" [(ngModel)]="asseReport.autographMemo.assess.name">
+                                                <span class="addDateMargin">日期</span>
+                                                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="asseReport.autographMemo.assess.date" class="w140 ml10"></nz-date-picker>
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.assess.year">年
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.assess.month">月
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.assess.day">日
+                                            </div>
+                                            <div>
+                                                <span>信息提供者签名</span>
+                                                <input nz-input placeholder="" class="addInput w200" [(ngModel)]="asseReport.autographMemo.provide.name">
+                                                <span class="addDateMargin">日期</span>
+                                                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="asseReport.autographMemo.provide.date" class="w140 ml10"></nz-date-picker>
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.provide.year">年
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.provide.month">月
+                                                <input nz-input placeholder="" class="addInput" [(ngModel)]="asseReport.autographMemo.provide.day">日
+                                            </div>
+                                        </td>
+                                    </tr> -->
+                                    <tr>
+                                        <td class="addFirstTd" colspan="3" class="tal">
+                                            <span>注：老年人能力等级划分标准</span><br>
+                                            <div class="gradeStandard" *ngFor="let item of gradingData">
+                                                <b><span style="margin-right:10px;">{{item.dictValue}}</span> <span>{{item.dictTag}}</span>：</b><br>
+                                                <span>{{item.comment}}</span>
+                                            </div>
+                                            <!-- <div class="gradeStandard">
+                                                <b>1 轻度失能：</b> <br>
+                                                <span>日常生活活动分级为0，但精神状态、感知觉与沟通中至少一项分级为1及以上，或社会参与的分级为2；</span><br>
+                                                <span>或日常生活活动分级为1，但精神状态、感知觉与沟通、社会参与中至少有一项的分级为0或1；</span>
+                                            </div>
+                                            <div class="gradeStandard">
+                                                <b>2 中度失能：</b><br>
+                                                <span>日常生活活动分级为1，但精神状态、感知觉与沟通、社会参与均为2，或有一项为3；</span><br>
+                                                <span>或日常生活活动分级为2，且精神状态、感知觉与沟通、社会参与中有1-2项的分级为1或2</span>
+                                            </div>
+                                            <div class="gradeStandard">
+                                                <b>3 重度失能：</b><br>
+                                                <span>日常生活活动的分级为3；</span><br>
+                                                <span>或日常生活活动、精神状态、感知觉与沟通、社会参与分级均为2； </span><br>
+                                                <span>或日常生活活动的分级为2，且精神状态、感知觉与沟通、社会参与中至少有一项的分级为3</span> <br>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </nz-card>
+                </div>
+            </nz-tab>
+            <!-- 评估报告End -->
+        </nz-tabset>
+    </nz-card-tab>
+</nz-card>
+<!-- 选择老人弹出框 -->
+<nz-modal [nzFooter]="null" [(nzVisible)]="isShowOldDialog" [nzTitle]="oldModalTitle" [nzContent]="oldModalContent" (nzOnCancel)="cancelOldDialog()">
+    <ng-template #oldModalTitle>
+      请选择长者
+    </ng-template>
+  
+    <ng-template #oldModalContent>
+      <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 15px">
+        <input type="text" nz-input placeholder="按老人姓名检索" [(ngModel)] = "searchOldName">
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch (click)="loadingOldList(true)">
+          <i class="anticon anticon-search"></i>
+        </button>
+      </ng-template>
+  
+      <nz-table #basicTable [nzData]="oldDataArray" [nzShowPagination]="true" [nzBordered]="'true'" [nzSize]="'middle'" [nzLoading]="isOldTableLoading"
+        [nzTotal]="oldResultData.totalElements" [(nzPageIndex)]="oldQueryParams.page" [(nzPageSize)]="oldQueryParams.size" (nzPageIndexChange)="loadingOldList()"
+        (nzPageSizeChange)="loadingOldList(true)" [nzShowSizeChanger]="false" [nzFrontPagination]="false">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>身份证</th>
+            <th>入院时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data" (click)="chooseOld(data)">
+            <td>{{data?.name}}</td>
+            <td>{{data?.sex}}</td>
+            <td>{{data?.cardno}}</td>
+            <td>{{data?.inDate | date:'yyyy-MM-dd HH:mm'}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </ng-template>
+  </nz-modal>
+
+  <!-- 打印内容 -->
+  <div #print_div [hidden]="!disabled">
+     <app-print></app-print>
+     <div *ngIf="tag=='halcyky'" >
+        <app-printContent></app-printContent>
+     </div>
+     
+     <app-printDetails></app-printDetails>
+  </div>
+  

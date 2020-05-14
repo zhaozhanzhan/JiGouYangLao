@@ -1,0 +1,39 @@
+.form_input {
+    max-width: 150px;
+    width: 130px;
+}
+
+.form_label {
+    width: 90px;
+    text-align: right;
+}
+
+button {
+    margin-left: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.leftCol {
+    width: 150px;
+}
+
+td {
+    height: 30px;
+}
+
+.cusTable {
+    border-collapse: collapse;
+    border: 1px solid black !important;
+}
+
+.cusTable td,
+.cusTable th {
+    border: 1px solid black !important;
+    height: 30px !important;
+}
+
+.cusTable td.noBorder {
+    border-top: 1px solid transparent !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}

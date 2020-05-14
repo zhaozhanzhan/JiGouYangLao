@@ -1,0 +1,66 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+<nz-card style="width: 100%;" nzTitle="科室详情" [nzExtra]="extraTemplate">
+  <form nz-form [formGroup]="formData">
+    <div nz-row>
+      <div nz-col nzSpan="13" *ngIf="addOrEdit == 'EDIT'">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="propertyNumbers">资产编号</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input class="w100p" nz-input formControlName="propertyNumbers" id="propertyNumbers" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="13">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="propertyName" nzRequired>名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input class="w100p" nz-input formControlName="propertyName" id="propertyName" />
+            <nz-form-explain *ngIf="formData.get('propertyName').dirty && formData.get('propertyName').errors">
+              名称不能为空</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="13">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="propertySpecifications">规格</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input class="w100p" nz-input formControlName="propertySpecifications" id="propertySpecifications" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="13">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="propertyType">类型</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input class="w100p" nz-input formControlName="propertyType" id="propertyType" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="13" *ngIf="addOrEdit == 'ADD'">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="num" nzRequired>数量</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-input-number class="w100p" formControlName="num" id="num" [nzMin]="1" [nzStep]="1">
+            </nz-input-number>
+            <nz-form-explain *ngIf="formData.get('num').dirty && formData.get('num').errors">
+              数量不能为空</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="13">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSpan]="8" nzFor="remark">备注</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <textarea rows="4" nz-input formControlName="remark" id="remark"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSubmit()"
+      [nzLoading]="isSaveBtnLoading">保存</button>
+  </div>
+</nz-card>

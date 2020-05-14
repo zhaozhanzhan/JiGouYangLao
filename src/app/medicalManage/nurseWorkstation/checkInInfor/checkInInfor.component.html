@@ -1,0 +1,86 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <!-- <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label nzFor="name">姓名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="reqObj.name" placeholder="请输入姓名" />
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>入院日期</nz-form-label>
+                <nz-form-control>
+                    <nz-range-picker name="date" style="width:250px" [(ngModel)]="selectedDates" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<ng-template #btnAdd>
+    <button nz-button nzType="primary" (click)="turnToAdd()" *ngIf="status=='1'">添加</button>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+
+</ng-template>
+<nz-card nzTitle="入住信息列表" [nzExtra]="btnAdd">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+        (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate" [nzScroll]="{ x: '1300px' }">
+        <thead>
+            <tr>
+                <th nzWidth="200px" nzLeft="0px" class="textCenter">住院号</th>
+                <th class="textCenter">入院日期</th>
+                <th class="textCenter">科室</th>
+                <th class="textCenter">主治医生</th>
+                <th class="textCenter">护理级别</th>
+                <th class="textCenter">病区</th>
+                <th class="textCenter">床位</th>
+                <th class="textCenter">入院时情况</th>
+                <th nzWidth="220px" nzRight="0px" class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td nzWidth="200px" nzLeft="0px" class="textCenter">
+                    {{ data?.admissionNo }}
+                </td>
+                <td class="textCenter">
+                    {{ data?.admissionDate | date: "yyyy-MM-dd" }}
+                </td>
+                <td class="textCenter">{{ data?.sectionOffice?.name }}</td>
+                <td class="textCenter">{{ data?.attendingDoc }}</td>
+                <td class="textCenter">
+                    <span *ngIf="data.careLevelCase=='0'">一级护理</span>
+                    <span *ngIf="data.careLevelCase=='1'">二级护理</span>
+                    <span *ngIf="data.careLevelCase=='2'">三级护理</span>
+                    <span *ngIf="data.careLevelCase=='3'">特级护理</span>
+                </td>
+                <td class="textCenter">{{data?.sickWard?.sickWardName}}</td>
+                <td class="textCenter">{{data?.bedName}}</td>
+                <td class="textCenter">{{data?.situation}}</td>
+                <td class="textCenter" nzWidth="220px" nzRight="0px">
+                    <!-- <a href="javascript:void(0)" (click)="turnToEdit(data)" roleBtnControll [roleBtnKey]="'EditMenuBtn'">编辑
+                    </a>
+                    <nz-divider nzType="vertical"></nz-divider> -->
+                    <a href="javascript:void(0)" (click)="turnTocheck(data)" roleBtnControll [roleBtnKey]="'checkMenuBtn'">查看
+                    </a>
+                    <nz-divider nzType="vertical" *ngIf="data.status == '2'"></nz-divider>
+                    <a href="javascript:void(0)" (click)="delete(data?.id)" *ngIf="data.status == '2'" style="color: #f81d22 !important;" roleBtnControll [roleBtnKey]="'DelMenuBtn'">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

@@ -1,0 +1,161 @@
+.isOver_true {
+  color: red;
+}
+
+.isOver_false {
+  color: green;
+}
+
+.numberWidth {
+  width: 45px;
+  border: 0;
+  border-bottom: 1px solid gray;
+  text-align: center;
+}
+
+.selectWidth {
+  width: 80px;
+  border: 0;
+  border-bottom: 1px solid gray;
+  text-align: center;
+}
+
+.detailWidth {
+  margin-left: 5px;
+  width: 300px;
+  border: 0;
+  border-bottom: 1px solid gray;
+}
+
+.nameWidth {
+  width: 100px;
+  border: 0;
+  border-bottom: 1px solid gray;
+}
+
+input[type="checkbox"] {
+  margin: 0 3px;
+}
+
+.text {
+  margin-left: 15px;
+  margin-right: 25px;
+}
+
+.form-control[readonly] {
+  background-color: #fff;
+}
+
+.form-control:disabled {
+  background-color: #eee;
+}
+
+#delChildren {
+  position: absolute;
+  top: 28px;
+  right: -15px;
+}
+
+.innerRow {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.paddingClear {
+  padding: 0 0 0 0;
+  margin: 0;
+}
+
+.paddingClearLeft {
+  padding: 0 20px 0 0;
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  top: 2px;
+}
+
+.form-control label {
+  margin: 0 15px 0 0;
+}
+.PapAssessmentApply {
+  width: 80%;
+  margin-left: 10px;
+}
+table {
+  border: 1px solid #e8e8e8;
+  width: 100%;
+  margin-top: 20px;
+}
+
+table thead tr th {
+  text-align: center;
+  padding: 10px 5px;
+}
+
+table tr td {
+  padding: 8px 10px;
+}
+table.dailyLife tr td:nth-child(2) {
+  text-align: center;
+}
+.ant-select,
+.ant-input {
+  margin-right: 5px;
+}
+.addInput {
+  width: 100px;
+  border: 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.ant-input:focus {
+  box-shadow: 0 0 0 0px transparent !important;
+}
+.addMarginData {
+  display: inline-block;
+  margin-left: 150px;
+}
+.addDateMargin {
+  display: inline-block;
+  margin-left: 240px;
+}
+.gradeStandard {
+  margin-top: 10px;
+}
+
+.showTime {
+  margin-left: 10px;
+}
+.intelligenceApply {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+}
+.addMargin {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+input {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+nz-form-label {
+  text-align: left;
+  line-height: 20px;
+}
+.card-block {
+  padding-bottom: 0px;
+}
+.barthelBorder{
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
+  border-radius: 0;
+}
+.infoDisplay{
+  display: inline-block
+}

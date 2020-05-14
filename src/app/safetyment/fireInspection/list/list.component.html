@@ -1,0 +1,95 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="4" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="8">巡查周期</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXXl]="16">
+                    <nz-radio-group [(ngModel)]="radioValue" name="radioValueName" nzDisabled>
+                        <label nz-radio nzValue="1">日</label>
+                        <label nz-radio nzValue="2">周</label>
+                        <label nz-radio nzValue="3">月</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="4" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="8">巡查人</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXXl]="16">
+                    <input nz-input [(ngModel)]="queryParams.recorder" nzSize="default">
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="4" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="8">巡查区域</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXXl]="16">
+                    <nz-select [(ngModel)]="queryParams.areaId" nzAllowClear style="width:100%">
+                        <nz-option *ngFor="let area of ObtainPatrol" [nzValue]="area.id" [nzLabel]="area.name"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="4" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="8">巡查结论</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXXl]="16">
+                    <nz-select nzAllowClear [(ngModel)]="queryParams.qualifieds" style="width:100%">
+                        <nz-option nzValue="0" nzLabel="不合格"></nz-option>
+                        <nz-option nzValue="1" nzLabel="合格"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" [nzXs]="4" [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="8">巡查日期</nz-form-label>
+                <nz-form-control [nzXs]="18" [nzSm]="18" [nzMd]="18" [nzLg]="18" [nzXl]="18" [nzXXl]="16">
+                    <!-- <nz-range-picker name="date" nzFormat="yyyy-MM-dd" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker> -->
+
+                    <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="dataTime" name="dataTime" (ngModelChange)="onRangerPickerChange($event)"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="4" [nzMd]="2" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="loadingDataArray(true)">查询</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<!-- 消防巡检 -->
+<nz-card nzTitle="消防巡查列表">
+    <nz-table #basicTable [nzData]="dataArray" [nzTitle]="serchArea" [nzBordered]="'true'" nzShowSizeChanger [nzLoading]="isTableLoading" [nzTotal]="resultData.totalElements" [nzShowTotal]="totalTit" [(nzPageIndex)]="queryParams.page" [(nzPageSize)]="queryParams.size" (nzPageIndexChange)="loadingDataArray()" (nzPageSizeChange)="loadingDataArray(true)" [nzShowSizeChanger]="true" [nzFrontPagination]="false">
+        <thead>
+            <tr>
+                <th class="textCenter">巡查时间</th>
+                <th class="textCenter">消防区域</th>
+                <th class="textCenter">巡查班组/人</th>
+                <th class="textCenter">巡查结论</th>
+                <th class="textCenter">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of dataArray">
+                <td>{{data.updateDate}}</td>
+                <td>{{data.ffdArea}}</td>
+                <td>{{data.name}}</td>
+                <td>
+                    <span *ngIf="data.isQualified=='0'">未巡查</span>
+                    <span *ngIf="data.isQualified=='1'">部分巡查</span>
+                    <span *ngIf="data.isQualified=='2'">巡查完毕</span>
+                    <span *ngIf="data.isQualified=='3'">不合格</span>
+                </td>
+                <td>
+                    <a href="#" (click)="showFirePatrol(data.id,$event)">查看</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+<ng-template #totalTit>共&nbsp;{{resultData.totalElements}}&nbsp;条</ng-template>

@@ -1,0 +1,60 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p>
+      <span >康复个案详情</span>
+    </p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <nz-card nzType="inner" nzTitle="康复个案详情" class="marginBottom24">
+    <form nz-form >
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired nzFor="name">姓名</nz-form-label>
+            <nz-form-control [nzSm]="18">
+              <nz-input-group nzSearch >
+                <input nz-input  class="oldName" placeholder="长者姓名"  [(ngModel)]="interview.name"  name="name" id="name" disabled>
+                <div *ngIf="ShowDisabled">
+                  <button nz-button nzType="primary" nzSearch class="chooseOldMan">
+                      选择
+                  </button>
+                </div>
+                <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">姓名不能为空
+                </nz-form-explain>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired nzFor="recureName">康复训练名称</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <input nz-input  disabled class="oldName" placeholder="康复训练名称"  [(ngModel)]="recureObj.recureName"  name="recureName" id="recureName" >
+              <nz-form-explain *ngIf="validateForm.get('recureName').dirty && validateForm.get('recureName').errors">康复训练名称</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6"  nzFor="applyDate">申请日期</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-date-picker nzDisabled nzFormat="yyyy-MM-dd" [(ngModel)]="recureObj.applyDate"  name="applyDate" id="applyDate" style="width: 100%"></nz-date-picker>
+              <nz-form-explain *ngIf="validateForm.get('applyDate').dirty && validateForm.get('applyDate').errors">申请日期</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+</nz-card>
+<!-- 表单区域End -->
+

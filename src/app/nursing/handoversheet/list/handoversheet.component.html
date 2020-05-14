@@ -1,0 +1,57 @@
+<nz-card nzTitle="交接班日志" [nzLoading]="isLoadingData">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="employeesGroupId" nzRequired >班组</nz-form-label>
+        <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+          <nz-select style="width: 150px;" [(ngModel)]="reqObj.spId" nzPlaceHolder="请选择班组" nzAllowClear nzShowSearch
+            [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" (ngModelChange)="updateList()">
+            <ng-container *ngFor="let o of employeesGroupList">
+              <nz-option *ngIf="!isLoading" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <nz-calendar [nzFullscreen]="true" [(ngModel)]="dateTime" (ngModelChange)="onChange($event)">
+    <ul *nzDateCell="let date" class="events">
+      <ng-container [ngSwitch]="date.getDate()">
+        <span *ngFor="let data of dataList;" (click)="click(data.day)">
+          <ng-container *ngSwitchCase="data.date.getDate()">
+            <nz-badge [nzStatus]="'success'" nzText="{{'存在'+dataList.length+'条日志'}}" *ngIf="isShow(date,data.day)"></nz-badge>
+          </ng-container>
+        </span>
+      </ng-container>
+    </ul>
+  </nz-calendar>
+</nz-card>
+
+
+<!-- 点击查看班组日期详细情况 -->
+<nz-modal [(nzVisible)]="FirePatrolIsVisible" nzTitle="交接班详情" nzWidth="500px"  (nzOnCancel)="handleCancel()" (nzOnOk)="handleCancel()">
+  <label>班别：</label>
+  <span>{{teamDetails.teamName}}</span>
+  <label style="margin-left: 20px">日期：</label>
+  <span>{{teamOrGroup.day}}</span>
+  <label style="margin-left: 20px">选择班次：</label>
+  <nz-select style="width: 120px;" [(ngModel)]="teamOrGroup.scheduling" nzAllowClear nzPlaceHolder="Choose"
+    (ngModelChange)="click(teamOrGroup.day)">
+    <nz-option nzValue="早班" nzLabel="早班"></nz-option>
+    <nz-option nzValue="晚班" nzLabel="晚班"></nz-option>
+  </nz-select><br>
+  <table style="margin-top: 20px">
+      <thead>
+        <tr>
+          <th class="textCenter" style="width: 30%">提交人</th>
+          <th class="textCenter">日志详情</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of teamorArray">
+          <td>{{data?.name}}</td>
+          <td>{{data?.memo}}</td>
+      </tr>
+      </tbody>
+    </table>
+</nz-modal>

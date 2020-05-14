@@ -1,0 +1,103 @@
+
+
+<div style="background:#fff;position: relative;height: 100%;">
+    <nz-spin [nzSpinning]="loading">
+      <!-- 配置项目图标 -->
+      <nz-card style="width:100%;font-size:15px;" nzTitle="配置项目图标" [nzLoading]="false" [nzExtra]="goBack">
+        <div style="padding-left:60px;">
+          <div style="line-height: 32px;width: 33%;" >
+            项目名称：{{data.project?data.project:''}}
+          </div>
+          <div style="line-height: 32px;width: 33%;">
+            项目类别：{{data.classify?data.classify:''}}
+          </div>
+          <div style="line-height: 32px;width: 33%;margin-top: 10px;position: relative;">
+            <span style="display:inline-block;position: absolute;top: -10px;margin-right: 20px;">项目图标：</span>
+            <span style="display:inline-block;width: 150px;height: 150px;background: #eee;margin-left: 95px;border-radius: 10px;text-align: center;">
+              <!-- 自定义图标 -->
+              <span *ngIf="diyIconInfo.mode === 'diy'" style="display:inline-block;width: 165px;height: 150px;border-radius: 10px;" [ngStyle]="{'background': diyIconInfo.bacColor}">
+                <span style="font-size: 120px;font-weight: bold;line-height: 143px;padding-left: 5px;" [ngStyle]="{'color': diyIconInfo.fontColor}">{{diyIconInfo.word}}</span>
+              </span>
+              <!-- 本地 -->
+              <span *ngIf="diyIconInfo.mode === 'local'">
+                <img [src]="picUrl" alt="" width="150px;" height="150px;" style="border-radius: 10px;">
+              </span>
+              <!-- 系统图标 -->
+              <span *ngIf="diyIconInfo.mode === 'sysIcon'">
+                <img [src]="picUrl" alt="" width="150px;" height="150px;" style="border-radius: 10px;">
+              </span>
+            </span>
+          </div>
+          <div style="line-height: 32px;margin-top:30px;margin-left: 95px;">
+            <span style="margin-right:20px;">
+              <button nz-button nzType="default" (click)="diyIcon()">自定义图标</button>
+            </span>
+
+            <span style="margin-right:20px;">
+              <button nz-button nzType="default" (click)="sysIcon()">系统图标</button>
+            </span>
+
+            <span style="display:inline-block;position:relative;">
+              <button nz-button nzType="default" (click)="localUpImg(uploadImg)">本地上传</button>
+              <input #uploadImg style="display:none;" type="file" accept="image/jpeg,image/png,image/jpg" (change)="changepic(uploadImg)">
+            </span>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin:60px;">
+          <button style="width:130px;height:40px;margin-right:20px;" nz-button nzType="primary" (click)="saveForm()">保存</button>
+        </div>
+
+      </nz-card>
+
+
+  
+        
+    </nz-spin>
+  </div>
+  
+  <!-- 新增自定义弹框 -->
+  <nz-modal [nzWidth]=800 [(nzVisible)]="diyIconisVisible" nzTitle="自定义图标" nzOkText="确认" nzCancelText="取消" (nzOnOk)="diyIconModelOk()" (nzOnCancel)="diyIconModelCancel()">
+    <div style="margin-left:50px;font-size: 15px;position: relative;">
+      <div style="width:300px;">
+        字&emsp;&nbsp;&ensp;&nbsp;符：
+        <input nz-input style="width:200px;text-align: center" maxlength="2" type="text" placeholder="最多2个数字" [(ngModel)]="diyIconInfo.word" oninput="value=value.replace(/[^\d]/g,'')">
+      </div>
+      <p></p>
+      <div style="width:300px;margin-left:1px;">
+        字符颜色：<input nz-input style="width:200px;margin-left:3px;" maxlength="8" type="color"  [(ngModel)]="diyIconInfo.fontColor">
+      </div>
+      <p></p>
+      <div style="width:300px;margin-left:1px;">
+        背景颜色：<input nz-input style="width:200px;margin-left:3px;" maxlength="8" type="color"  [(ngModel)]="diyIconInfo.bacColor">
+      </div>
+      <p></p>
+    </div>
+    <div style="font-size: 15px;position: absolute; right: 142px; top:83px;">
+      <span style="display:block;position:absolute;right: 160px; top:0;width: 50px;">预览:</span>    
+      <div>
+        <span style="display:inline-block;text-align: center;width: 165px;height: 150px;border-radius: 10px;" [ngStyle]="{'background': diyIconInfo.bacColor}">
+          <span style="font-size: 120px;font-weight: bold;line-height: 143px;" [ngStyle]="{'color': diyIconInfo.fontColor}">{{diyIconInfo.word}}</span>
+        </span>
+      </div>
+    </div>
+  </nz-modal>
+
+  <!-- 选择系统图标 -->
+  <nz-modal [nzWidth]=800 [(nzVisible)]="sysIconisVisible" nzTitle="系统图标" nzOkText="确认" nzCancelText="取消" (nzOnOk)="sysIconModelOk()" (nzOnCancel)="sysIconModelCancel()">
+    <nz-spin [nzSpinning]="iocnloading">
+      <div style="height:355px;">
+        <span *ngFor="let item of sysIconList;let i = index;" style="margin: 8px;cursor: pointer;display: inline-block; padding: 3px;border: 2px solid;border-radius: 10px;border-color: #fff;" [ngClass]="{'checked': item.check}" (click)="selIcon(i)">
+          <img [src]="item.phtotUrl" alt="">
+        </span>
+      </div>
+    </nz-spin>
+  </nz-modal>
+  
+  <!-- 模板 -->
+  <ng-template #goBack>
+    <div style="position:relative;z-index:100;">
+      <button nz-button (click)="goback()">返回</button>
+    </div>
+  </ng-template>
+  

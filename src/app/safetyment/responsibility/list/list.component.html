@@ -1,0 +1,220 @@
+<ng-template #extraTemplate>
+  <button
+    nz-button
+    nzType="primary"
+    (click)="addListUser()"
+    [hidden]="!assignedTeamsAdd"
+  >
+    添加个人
+  </button>
+</ng-template>
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
+        <nz-form-item>
+          <nz-form-label
+            [nzSpan]="4"
+            [nzXs]="4"
+            [nzSm]="4"
+            [nzMd]="4"
+            [nzLg]="4"
+            [nzXl]="6"
+            [nzXXl]="6"
+            nzFor="name"
+            >分配班组/个人</nz-form-label
+          >
+          <nz-form-control
+            [nzXs]="8"
+            [nzSm]="8"
+            [nzMd]="8"
+            [nzLg]="8"
+            [nzXl]="8"
+            [nzXXl]="8"
+          >
+            <nz-select
+              style="width: 100%;"
+              [(ngModel)]="appayType"
+              (ngModelChange)="assignedTeams()"
+              nzPlaceHolder="选择分配班组/个人"
+              name="auditStatus"
+            >
+              <nz-option nzValue="1" nzLabel="班组"></nz-option>
+              <nz-option nzValue="2" nzLabel="个人"></nz-option>
+            </nz-select>
+          </nz-form-control>
+          <!--
+            <div nz-col [nzSm]="6" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+                <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+
+                </nz-form-control>
+                </nz-form-item>
+            </div>
+          -->
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 个人列表 -->
+<nz-card
+  nzTitle="{{listName}}"
+  [nzExtra]="extraTemplate"
+  class="fireArea"
+  style="position: absolute;top: 100px;"
+>
+  <nz-table
+    #basicTable
+    [nzData]="dataArray"
+    [nzTitle]="serchArea"
+    [nzBordered]="'true'"
+    nzShowSizeChanger
+    [nzLoading]="isTableLoading"
+    [nzTotal]="resultData.totalElements"
+    [nzShowTotal]="totalTit"
+    [(nzPageIndex)]="queryParams.page"
+    [(nzPageSize)]="queryParams.size"
+    (nzPageIndexChange)="loadingDataArray()"
+    (nzPageSizeChange)="loadingDataArray(true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+  >
+    <tbody>
+      <tr
+        *ngFor="let data of dataArray"
+        (click)="loadingDataFireArea(data.id, data.name, true)"
+        [ngClass]="{
+          selectedRow_true: data.id && data.id == selectedGroupId,
+          selectedRow_false: !data.id || data.id != selectedGroupId
+        }"
+      >
+        <td>{{ data.name }}</td>
+        <td *ngIf="assignedTeamsAdd">
+          <a href="#" (click)="removePersonalUser(data.id, $event)">移除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTit
+  >共&nbsp;{{ resultData.totalElements }}&nbsp;条</ng-template
+>
+<!-- 消防区域分配 -->
+<nz-card
+  nzTitle="{{fireName1}}"
+  class="fireArea fireAreaM"
+  style="position: absolute;top: 100px;right: 10px"
+>
+  <nz-table
+    #basicTable
+    [nzData]="FireAreaArray"
+    [nzBordered]="'true'"
+    nzShowSizeChanger
+    [nzLoading]="isTableLoadingFireArea"
+    [nzTotal]="resultData1.totalElements"
+    [nzShowTotal]="totalTit1"
+    [(nzPageIndex)]="fireArea.page"
+    [(nzPageSize)]="fireArea.size"
+    (nzPageIndexChange)="loadingDataFireArea('', '', false)"
+    (nzPageSizeChange)="loadingDataFireArea('', '', true)"
+    [nzShowSizeChanger]="true"
+    [nzFrontPagination]="false"
+  >
+    <tbody>
+      <tr *ngFor="let data of FireAreaArray">
+        <td>{{ data.name }}</td>
+        <td>
+          <a
+            href="#"
+            *ngIf="!data.spId"
+            (click)="AssignResponsibility(data.id, $event)"
+            >分配责任</a
+          >
+          <a
+            href="#"
+            style="color:red"
+            *ngIf="data.spId && data.spId == selectedGroupId"
+            (click)="cancelAssignResponsibility(data.id, $event)"
+            >取消分配</a
+          >
+          <label *ngIf="data.spId && data.spId != selectedGroupId"
+            >已被分配</label
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTit1
+  >共&nbsp;{{ resultData1.totalElements }}&nbsp;条</ng-template
+>
+
+<!-- 选择用户弹出窗 -->
+<nz-modal
+  [nzFooter]="null"
+  [(nzVisible)]="isShowOldDialog"
+  [nzTitle]="oldModalTitle"
+  [nzContent]="oldModalContent"
+  (nzOnCancel)="cancelOldDialog()"
+>
+  <ng-template #oldModalTitle> 请选择用户 </ng-template>
+
+  <ng-template #oldModalContent>
+    <nz-input-group
+      nzSearch
+      [nzSuffix]="suffixIconButton"
+      style="margin-bottom: 15px"
+    >
+      <input
+        type="text"
+        nz-input
+        placeholder="按用户名称检索"
+        [(ngModel)]="searchOldName"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button
+        nz-button
+        nzType="primary"
+        nzSearch
+        (click)="loadingOldList(true)"
+      >
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+
+    <nz-table
+      #basicTable
+      [nzData]="oldDataArray"
+      [nzShowPagination]="true"
+      [nzBordered]="'true'"
+      [nzSize]="'middle'"
+      [nzLoading]="isOldTableLoading"
+      [nzTotal]="oldResultData.totalElements"
+      [(nzPageIndex)]="oldQueryParams.page"
+      [(nzPageSize)]="oldQueryParams.size"
+      (nzPageIndexChange)="loadingOldList()"
+      (nzPageSizeChange)="loadingOldList(true)"
+      [nzShowSizeChanger]="false"
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>姓名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let data of basicTable.data"
+          (click)="chooseOld(data.id)"
+          style="cursor: pointer;"
+        >
+          <td>{{ data?.name }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
+</nz-modal>

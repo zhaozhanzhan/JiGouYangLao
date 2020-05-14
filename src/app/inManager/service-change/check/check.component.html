@@ -1,0 +1,113 @@
+<ng-template #extraTemplate>
+  <button nz-button nzType="default" (click)="back()">返回</button>
+</ng-template>
+
+<nz-card nzTitle="异动详情" [nzExtra]="extraTemplate">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="name">姓名</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.oldman.name" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="sex">性别</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <nz-select [(ngModel)]="serviceChange.oldman.sex" nzAllowClear nzPlaceHolder="请选择" style="width: 100%"
+            nzDisabled>
+            <nz-option nzValue="男" nzLabel="男"></nz-option>
+            <nz-option nzValue="女" nzLabel="女"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="birthYearMonth">出生年月</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="serviceChange.oldman.birthYearMonth" style="width: 100%"
+            nzDisabled></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="cardno">身份证号码</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.oldman.cardno" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8" *ngIf="serviceChange.oldBed">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="cardno">原房间等级</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.oldBed" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="cardno">现房间等级</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.newBed" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8" *ngIf="serviceChange.oldLevel">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="cardno">原服务等级</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.oldLevel" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="cardno">现服务等级</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.newLevel" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="16">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="3" nzFor="cardno">调整原因</nz-form-label>
+        <nz-form-control [nzSpan]="21">
+          <!-- <input nz-input [(ngModel)]="serviceChange.changeReason" disabled> -->
+          <textarea nz-input [(ngModel)]="serviceChange.changeReason" [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+            disabled></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="birthYearMonth">变更时间</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <nz-date-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="serviceChange.updateDate" nzDisabled></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="birthYearMonth">操作人</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+          <input nz-input [(ngModel)]="serviceChange.noteTaker" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-card>

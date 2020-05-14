@@ -1,0 +1,56 @@
+ <!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSm]="24" [nzMd]="8" [nzLg]="8" [nzXl]="6" [nzXXl]="4">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" [nzXs]="5" [nzSm]="4" [nzMd]="10" [nzLg]="9" [nzXl]="8" [nzXXl]="8" nzFor="name">护工姓名</nz-form-label>
+          <nz-form-control [nzXs]="18" [nzSm]="20" [nzMd]="14" [nzLg]="15" [nzXl]="16" [nzXXl]="16">
+            <input nz-input name="name" id="name" placeholder="请输入护工姓名" [(ngModel)]="reqObj.name">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSm]="4" [nzMd]="4" [nzLg]="2" [nzXl]="2" [nzXXl]="2">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-template>
+  <!-- 表格查询条件End -->
+  
+  <ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+  </ng-template>
+  
+  <nz-card nzTitle="护士班组列表" [nzExtra]="extraTemplate">
+    <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isTableLoading" [nzData]="list"
+      [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+      [nzShowTotal]="totalTemplate">
+      <thead>
+        <tr>
+          <th class="textCenter">班组名称</th>
+          <th class="textCenter">班组护士</th>
+          <th class="textCenter">所属病区</th>
+          <th class="textCenter">班长</th>
+          <th class="textCenter" style="width:100px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+          <td class="textCenter">{{data.name}}</td>
+          <td class="textCenter">{{data.nurse}}</td>
+          <td class="textCenter banzu">{{data.sickWard}}</td>
+          <td class="textCenter">{{data.monitor}}</td>
+          <td class="textCenter" style="width:200px;">
+            <a href="javascript:void(0)" (click)="turnToEdit(data)">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a href="javascript:void(0)" (click)="deleteEmployee(data.id, $event)" style="color: #f81d22 !important;">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>
+  

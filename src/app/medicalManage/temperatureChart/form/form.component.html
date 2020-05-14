@@ -1,0 +1,972 @@
+<!-- 患者基本信息 -->
+<div nz-row nzType="flex">
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="personInfo?.name"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >科&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="personInfo?.medicalService"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >病&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="personInfo?.medicalArea"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >床&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="personInfo?.bedNo"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >住&nbsp;&nbsp;院&nbsp;&nbsp;号</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [ngModel]="personInfo?.inNo"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<!-- 选择日期 -->
+<div nz-row nzType="flex" nzAlign="middle">
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label class="form_label"
+        >日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期</nz-form-label
+      >
+      <nz-form-control>
+        <nz-date-picker
+          [nzDisabledDate]="disabledDate"
+          nzFormat="yyyy-MM-dd"
+          class="form_input"
+          [(ngModel)]="queryDayDate"
+          nzAllowClear="false"
+          (ngModelChange)="onDateChange()"
+        >
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="queryDayPointInfo()"
+    [nzLoading]="isBtnLoading"
+  >
+    查询
+  </button>
+
+  <button nz-button nzType="default" (click)="reset()" *ngIf="isCurDate">
+    重置
+  </button>
+
+  <button
+    nz-button
+    nzType="primary"
+    (click)="save()"
+    [nzLoading]="isBtnLoading"
+    *ngIf="isCurDate"
+  >
+    保存
+  </button>
+  <button
+    nz-button
+    nzType="primary"
+    (click)="importNursData()"
+    [nzLoading]="isBtnLoading"
+    *ngIf="BloodPressMode == 'normal'"
+  >
+    导入护理单
+  </button>
+</div>
+
+<label>日数登记</label>
+<div nz-row nzType="flex">
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label style="width:90px;text-align: reight"
+        >住院日数</nz-form-label
+      >
+      <nz-form-control>
+        <input class="form_input" nz-input [(ngModel)]="inDays" readonly />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col>
+    <nz-form-item nzFlex>
+      <nz-form-label style="width:90px;text-align: reight"
+        >手术后日数</nz-form-label
+      >
+      <nz-form-control>
+        <input
+          class="form_input"
+          nz-input
+          [(ngModel)]="dayInfo.operationDays"
+        />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+
+<label style="margin-top:20px;">常规检测项</label>
+<table border="1" width="100%" style="table-layout: fixed;">
+  <tr>
+    <td class="leftCol"></td>
+    <td align="center"><span style="color:red">2</span></td>
+    <td align="center"><span style="color:red">6</span></td>
+    <td align="center">10</td>
+    <td align="center">14</td>
+    <td align="center">18</td>
+    <td align="center"><span style="color:red">22</span></td>
+  </tr>
+  <tr>
+    <td class="leftCol">体温(℃)</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.temperature?.valueStr }}
+      </td>
+    </ng-container>
+  </tr>
+  <tr>
+    <td class="leftCol">处理后体温(℃)</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.handingTemperature?.valueStr }}
+      </td>
+    </ng-container>
+  </tr>
+  <tr>
+    <td class="leftCol">脉搏(次/分)</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.pulse }}
+      </td>
+    </ng-container>
+  </tr>
+  <tr>
+    <td class="leftCol">心率(次/分)</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.heartRate }}
+      </td>
+    </ng-container>
+  </tr>
+
+  <tr>
+    <td class="leftCol">呼吸(次/分)</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td (click)="showInputNormalDialog(i, pointInfo)" align="center">
+        {{ pointInfo?.breathe?.valueStr }}
+      </td>
+    </ng-container>
+  </tr>
+
+  <tr>
+    <td class="leftCol">42℃线下</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.underLine42?.first }}&nbsp;&nbsp;&nbsp;&nbsp;{{
+          pointInfo?.underLine42?.second
+        }}
+      </td>
+    </ng-container>
+  </tr>
+
+  <tr>
+    <td class="leftCol">35℃线上</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.aboveLine35 }}
+      </td>
+    </ng-container>
+  </tr>
+
+  <tr>
+    <td class="leftCol">35℃线下</td>
+    <ng-container *ngFor="let pointInfo of dayInfo?.pointsData; let i = index">
+      <td align="center" (click)="showInputNormalDialog(i, pointInfo)">
+        {{ pointInfo?.underLine35 }}
+      </td>
+    </ng-container>
+  </tr>
+</table>
+
+<label style="margin-top:20px;">其他检测项</label>
+<table border="1" width="100%" style="table-layout: fixed;">
+  <tr>
+    <td align="center" rowspan="2">入量(ml)</td>
+    <td align="center" colspan="3">排出量</td>
+    <td align="center" rowspan="2">血压(mmHg)</td>
+    <td align="center" rowspan="2">体重(Kg)</td>
+    <td align="center" rowspan="2" colspan="2">皮试</td>
+    <td align="center" rowspan="2">其他</td>
+  </tr>
+  <tr>
+    <td align="center">大便(次)</td>
+    <td align="center">尿量(ml)</td>
+    <td align="center">其他</td>
+  </tr>
+  <tr (click)="showInputOtherDialog()">
+    <td align="center">{{ dayInfo?.inTake }}</td>
+    <td align="center">{{ dayInfo?.shit?.valueStr }}</td>
+    <td align="center">{{ dayInfo?.urine?.valueStr }}</td>
+    <td align="center">{{ dayInfo?.dischargeOther }}</td>
+
+    <!-- 非正常显示血压 -->
+    <td align="center" *ngIf="BloodPressMode !== 'normal'">
+      <span *ngIf="dayInfo?.bloodPressure?.highValue!=''||dayInfo?.bloodPressure?.lowValue!=''" >
+        早： {{ dayInfo?.bloodPressure?.highValue }}
+        /
+        {{ dayInfo?.bloodPressure?.lowValue }}
+      </span> <br>
+      <span *ngIf="dayInfo?.bloodPressure?.highValue1!=''||dayInfo?.bloodPressure?.lowValue1!=''" >
+        中： {{ dayInfo?.bloodPressure?.highValue1 }}
+        /
+        {{ dayInfo?.bloodPressure?.lowValue1 }}
+      </span><br>
+      <span *ngIf="dayInfo?.bloodPressure?.highValue2!=''||dayInfo?.bloodPressure?.lowValue2!=''" >
+        晚： {{ dayInfo?.bloodPressure?.highValue2 }}
+        /
+        {{ dayInfo?.bloodPressure?.lowValue2 }}
+      </span>
+    </td>
+
+    <!-- 正常显示血压 -->
+    <td align="center" *ngIf="BloodPressMode == 'normal'">
+      <span *ngIf="dayInfo?.bloodPressure?.highValue!=''||dayInfo?.bloodPressure?.lowValue!=''" >
+        {{ dayInfo?.bloodPressure?.highValue }}
+        /
+        {{ dayInfo?.bloodPressure?.lowValue }}
+      </span> <br>
+    </td>
+
+    <td align="center">
+      {{ dayInfo?.weight }}
+    </td>
+    <td align="center">
+      {{ dayInfo?.skinTest1?.testName }}
+      {{ dayInfo?.skinTest1?.isPositive ? "(" : "" }}
+      <span style="color:red" *ngIf="dayInfo?.skinTest1?.isPositive">+</span>
+      {{ dayInfo?.skinTest1?.isPositive ? ")" : "" }}
+    </td>
+    <td align="center">
+      {{ dayInfo?.skinTest2?.testName }}
+      {{ dayInfo?.skinTest2?.isPositive ? "(" : "" }}
+      <span style="color:red" *ngIf="dayInfo?.skinTest2?.isPositive">+</span>
+      {{ dayInfo?.skinTest2?.isPositive ? ")" : "" }}
+    </td>
+    <td align="center">{{ dayInfo?.other }}</td>
+  </tr>
+</table>
+
+<!-- 常规检测项录入对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowInputNormalDialog"
+  nzTitle="录入常规检测项"
+  nzWidth="800"
+  (nzOnCancel)="isShowInputNormalDialog = false"
+  (nzOnOk)="inputNormalDialog_saveBtn()"
+>
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+        <nz-form-item nzFlex style="margin-top:10px;">
+          <nz-form-label class="form_label">时间</nz-form-label>
+          <nz-form-control>
+              <nz-time-picker class="w100p" nzFormat="HH:mm" [attr.value]="inputNormalInfo.createTime" [(ngModel)]="inputNormalInfo.createTime"[nzAddOn]="addOnTemplate" #timePicker></nz-time-picker>
+              <ng-template #addOnTemplate>
+                  <button nz-button nzSize="small" nzType="primary" (click)="timePicker.close()">确定</button>
+              </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+  </div>
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex style="margin-top:10px;">
+        <nz-form-label class="form_label">体温</nz-form-label>
+        <nz-form-control>
+          <label
+            nz-checkbox
+            [(ngModel)]="inputNormalInfo.temperature.isUncheck"
+            [nzDisabled]="!isCurDate"
+            >未测</label
+          >
+
+          <nz-radio-group
+            *ngIf="!inputNormalInfo.temperature.isUncheck"
+            [(ngModel)]="inputNormalInfo.temperature.type"
+            [nzDisabled]="!isCurDate"
+          >
+            <label nz-radio nzValue="0">口温</label>
+            <label nz-radio nzValue="1">耳温</label>
+            <label nz-radio nzValue="2">腋温</label>
+            <label nz-radio nzValue="3">肛温</label>
+          </nz-radio-group>
+        </nz-form-control></nz-form-item
+      >
+    </div>
+    <div nz-col *ngIf="!inputNormalInfo.temperature.isUncheck">
+      <nz-form-item nzFlex style="margin-top:10px;">
+        <nz-form-control>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.temperature.value"
+            [nzMin]="34"
+            [nzMax]="42.6"
+            [nzStep]="0.2"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >℃</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex style="margin-top:10px;">
+        <nz-form-label class="form_label">处理后体温</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="inputNormalInfo.handingTemperature.type"
+            [nzDisabled]="!isCurDate"
+          >
+            <label nz-radio nzValue="0">口温</label>
+            <label nz-radio nzValue="1">耳温</label>
+            <label nz-radio nzValue="2">腋温</label>
+            <label nz-radio nzValue="3">肛温</label>
+          </nz-radio-group>
+        </nz-form-control></nz-form-item
+      >
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex style="margin-top:10px;">
+        <nz-form-control>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.handingTemperature.value"
+            [nzMin]="34"
+            [nzMax]="42.6"
+            [nzStep]="0.2"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >℃</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <nz-form-label class="form_label">脉搏</nz-form-label>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.pulse"
+            [nzMin]="20"
+            [nzMax]="190"
+            [nzStep]="4"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;次/分</label
+        >
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">心率</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.heartRate"
+            [nzMin]="20"
+            [nzMax]="190"
+            [nzStep]="4"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;次/分</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">呼吸</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.breathe.value"
+            [nzMin]="10"
+            [nzMax]="50"
+            [nzStep]="2"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;次/分</label
+        >
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">呼吸机</nz-form-label>
+        <nz-form-control>
+          <label nz-checkbox [(ngModel)]="inputNormalInfo.breathe.isMR"
+            >使用</label
+          >
+          <nz-input-number
+            *ngIf="inputNormalInfo.breathe.isMR"
+            class="form_input"
+            nz-input
+            [(ngModel)]="inputNormalInfo.breathe.MRDays"
+            [nzMin]="1"
+            [nzStep]="1"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          *ngIf="inputNormalInfo.breathe.isMR"
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;日</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">35℃线上</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [readOnly]="!isCurDate"
+            [(ngModel)]="inputNormalInfo.aboveLine35"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">35℃线下</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [readOnly]="!isCurDate"
+            [(ngModel)]="inputNormalInfo.underLine35"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">42℃线下</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [readOnly]="!isCurDate"
+            [(ngModel)]="inputNormalInfo.underLine42.first"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col style="margin-left: 20px;">
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [readOnly]="!isCurDate"
+            [(ngModel)]="inputNormalInfo.underLine42.second"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>
+
+<!-- 其他检测项录入对话框 -->
+<nz-modal
+  [(nzVisible)]="isShowInputOtherDialog"
+  nzTitle="录入其他检测项"
+  nzWidth="800"
+  (nzOnCancel)="isShowInputOtherDialog = false"
+  (nzOnOk)="inputOtherDialog_saveBtn()"
+>
+  <!-- 入量 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">入量</nz-form-label>
+        <nz-form-control>
+          <input
+            [readOnly]="!isCurDate"
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.inTake"
+          />
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;ml</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- 大便 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">大便</nz-form-label>
+        <nz-form-control>
+          <label nz-checkbox [(ngModel)]="dayInfo.shit.isIncontinence"
+            >失禁或假肛</label
+          >
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.shit.value"
+            [nzMin]="0"
+            *ngIf="!dayInfo.shit.isIncontinence"
+            [nzStep]="1"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          *ngIf="!dayInfo.shit.isIncontinence"
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;次</label
+        >
+      </nz-form-item>
+    </div>
+
+    <!-- 是否保留灌肠 -->
+    <div nz-col style="margin-left: 30px;">
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <label nz-checkbox [(ngModel)]="dayInfo.shit.isEnema">灌肠后</label>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.shit.enemaValue"
+            [nzMin]="0"
+            *ngIf="dayInfo.shit.isEnema && !dayInfo.shit.isIncontinence"
+            [nzStep]="1"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.shit.cleaningEnemaValue"
+            [nzMin]="0"
+            *ngIf="dayInfo.shit.isIncontinence"
+            [nzStep]="1"
+            [nzDisabled]="!isCurDate"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          *ngIf="dayInfo.shit.isEnema"
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;次</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- 大便 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">尿量</nz-form-label>
+        <nz-form-control>
+          <label
+            nz-checkbox
+            [(ngModel)]="dayInfo.urine.isIncontinence"
+            [nzDisabled]="!isCurDate"
+            >失禁</label
+          >
+          <label
+            nz-checkbox
+            [(ngModel)]="dayInfo.urine.isCatheterization"
+            *ngIf="!dayInfo.urine.isIncontinence"
+            >导尿</label
+          >
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.urine.value"
+            [nzMin]="0"
+            [nzStep]="1"
+            [nzDisabled]="!isCurDate"
+            *ngIf="!dayInfo.urine.isIncontinence"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          *ngIf="!dayInfo.urine.isIncontinence"
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;ml</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- 其他排出量 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">其他排出量</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.dischargeOther"
+            maxlength="30"
+            [readOnly]="!isCurDate"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <!-- 血压 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">血压</nz-form-label>
+          <div *ngIf="BloodPressMode !== 'normal'">
+            <nz-form-control>
+              <span>早：</span>
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.highValue"
+                [nzMin]="0"
+                [nzStep]="1"
+                [nzDisabled]="!isCurDate"
+              ></nz-input-number>
+              /
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.lowValue"
+                [nzMin]="0"
+                [nzStep]="1"
+              ></nz-input-number><br>
+              <span>中：</span>
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.highValue1"
+                [nzMin]="0"
+                [nzStep]="1"
+                [nzDisabled]="!isCurDate"
+              ></nz-input-number>
+              /
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.lowValue1"
+                [nzMin]="0"
+                [nzStep]="1"
+              ></nz-input-number><br>
+              <span>晚：</span>
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.highValue2"
+                [nzMin]="0"
+                [nzStep]="1"
+                [nzDisabled]="!isCurDate"
+              ></nz-input-number>
+              /
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.lowValue2"
+                [nzMin]="0"
+                [nzStep]="1"
+              ></nz-input-number>
+            </nz-form-control>
+          </div>
+          <div *ngIf="BloodPressMode == 'normal'">
+            <nz-form-control>
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.highValue"
+                [nzMin]="0"
+                [nzStep]="1"
+                [nzDisabled]="!isCurDate"
+              ></nz-input-number>
+              /
+              <nz-input-number
+                class="form_input"
+                nz-input
+                [(ngModel)]="dayInfo.bloodPressure.lowValue"
+                [nzMin]="0"
+                [nzStep]="1"
+              ></nz-input-number>
+            </nz-form-control>
+          </div>
+          
+
+      </nz-form-item>
+    </div>
+  </div>
+
+  <!-- 体重 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">体重</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.weight"
+            [nzMin]="10"
+            [nzDisabled]="!isCurDate"
+            [nzStep]="0.1"
+          ></nz-input-number>
+        </nz-form-control>
+        <label
+          style=" display: block; height: 48px; margin-bottom: 0; line-height: 40px;"
+          >&nbsp;&nbsp;Kg</label
+        >
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- 皮试 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">皮试1</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.skinTest1.testName"
+            maxlength="10"
+            [readOnly]="!isCurDate"
+          />
+          <label
+            nz-checkbox
+            [(ngModel)]="dayInfo.skinTest1.isPositive"
+            style="margin-left: 10px"
+            [nzDisabled]="!isCurDate"
+            >阳性</label
+          >
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">皮试2</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.skinTest2.testName"
+            maxlength="10"
+            [readOnly]="!isCurDate"
+          />
+          <label
+            nz-checkbox
+            [(ngModel)]="dayInfo.skinTest2.isPositive"
+            style="margin-left: 10px"
+            [nzDisabled]="!isCurDate"
+            >阳性</label
+          >
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- 其他 -->
+  <div nz-row nzType="flex" style="line-height: 40px;">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label class="form_label">其他</nz-form-label>
+        <nz-form-control>
+          <input
+            class="form_input"
+            nz-input
+            [(ngModel)]="dayInfo.other"
+            maxlength="30"
+            [readOnly]="!isCurDate"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>
+
+<!-- 护理数据列表 -->
+<nz-modal
+  [(nzVisible)]="isShowNusData"
+  nzTitle="护理记录单"
+  nzWidth="1200"
+  [nzOkText]=null
+  (nzOnCancel)="isShowNusData = false"
+>
+<nz-card >
+    <table class="w100p cusTable">
+        <thead>
+            <tr class="tac">
+                <td class="textCenter paddingAll" colspan="2">2019</td>
+                <td class="textCenter paddingAll" colspan="5">生命体征</td>
+                <td class="textCenter paddingAll" colspan="2">入量</td>
+                <td class="textCenter paddingAll" colspan="3">出量</td>
+                <td class="textCenter paddingAll" rowspan="2">末梢血糖<br>(mmol/L)</td>
+                <td class="textCenter paddingAll" rowspan="2">心率<br>(次/分)</td>
+                <td class="textCenter paddingAll" rowspan="2">风险评估</td>
+                <td class="textCenter paddingAll" rowspan="2" style="width:150px;">病情观察及<br>护理措施</td>
+            </tr>
+            <tr>
+                <td class="textCenter paddingAll">日/月</td>
+                <td class="textCenter paddingAll">时间</td>
+                <td class="textCenter paddingAll">体温<br>(℃)</td>
+                <td class="textCenter paddingAll">脉搏<br>(次/分)</td>
+                <td class="textCenter paddingAll">呼吸<br>(次/分)</td>
+                <td class="textCenter paddingAll">血压<br>(mmHg)</td>
+                <td class="textCenter paddingAll">血氧<br>饱和度%</td>
+                <td class="textCenter paddingAll">名称</td>
+                <td class="textCenter paddingAll">量<br>(ml)</td>
+                <td class="textCenter paddingAll">名称</td>
+                <td class="textCenter paddingAll">颜色<br>形状</td>
+                <td class="textCenter paddingAll">量<br>(ml)</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of listAll;let i=index" (click)="addData(data)">
+                <td class="textCenter paddingAll" style="width: 40px;">{{data?.createDate}}</td>
+                <td class="textCenter paddingAll">{{data?.createTime}}</td>
+                <td class="textCenter paddingAll">{{data?.bodyTemperature}}</td>
+                <td class="textCenter paddingAll" style="width: 24px;">{{data?.pulse}}</td>
+                <td class="textCenter paddingAll" style="width: 24px;">{{data?.breathing}}</td>
+                <td class="textCenter paddingAll">
+                    <span *ngIf="data?.bloodPressureHigh!='' || data?.bloodPressureLow!=''"> {{data?.bloodPressureHigh}}/{{data?.bloodPressureLow}}</span>
+                </td>
+                <td class="textCenter paddingAll" style="width: 20px;">{{data?.blooOxygen}}</td>
+                <td class="textJustify paddingAll" style="width: 60px;">{{data?.intakeName}}</td>
+                <td class="textCenter paddingAll">{{data?.intakeAmount}}</td>
+                <td class="textJustify paddingAll" style="width: 60px;">{{data?.outtakeName}}</td>
+                <td class="textJustify paddingAll" style="width: 60px;">{{data?.colorShape}}</td>
+                <td class="textCenter paddingAll">{{data?.outtakeAmount}}</td>
+                <td class="textCenter paddingAll">{{data?.bloodSugar}}</td>
+                <td class="textCenter paddingAll">{{data?.heartRate}}</td>
+                <td class="textJustify paddingAll" style="width: 40px;">
+                    <span *ngIf="data?.morse!=''">Morse{{data?.morse}}/</span>
+                    <span *ngIf="data?.branden!=''">Branden{{data?.branden}}/</span><br>
+                    <span *ngIf="data?.autar!=''">Autar{{data?.autar}}/</span>
+                    <span *ngIf="data?.barthe!=''">Barthe{{data?.barthe}}</span>
+                </td>
+                <td class="textJustify paddingAll">{{data?.measures}}</td>
+            </tr>
+        </tbody>
+      </table>
+</nz-card>
+
+</nz-modal>
+
+
+<nz-modal
+  [(nzVisible)]="isShowChoseTime"
+  nzTitle="选择所属时间段"
+  nzWidth="400"
+  (nzOnCancel)="isShowChoseTime = false"
+  (nzOnOk)="saveChooseTime()"
+>
+<div nz-row [nzGutter]="24" class="marginTop">
+    <div nz-col [nzSpan]="24">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="8">选择时间段</nz-form-label>
+            <nz-form-control [nzSpan]="15">
+                <nz-select style="width: 120px;" [(ngModel)]="chooseTime" nzAllowClear>
+                    <nz-option nzValue="0" nzLabel="2"></nz-option>
+                    <nz-option nzValue="1" nzLabel="6"></nz-option>
+                    <nz-option nzValue="2" nzLabel="10"></nz-option>
+                    <nz-option nzValue="3" nzLabel="14"></nz-option>
+                    <nz-option nzValue="4" nzLabel="18"></nz-option>
+                    <nz-option nzValue="5" nzLabel="22"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
+</nz-modal>

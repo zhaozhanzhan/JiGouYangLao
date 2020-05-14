@@ -1,0 +1,1266 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-06 16:33:20
+ * @Description:
+ -->
+
+<div class="content">
+  <div class="controller">
+    <nz-radio-group
+      [(ngModel)]="formMode"
+      [nzButtonStyle]="'solid'"
+      *ngIf="isShowModeController === 'true'"
+    >
+      <label nz-radio-button nzValue="design">设计模式</label>
+      <label nz-radio-button nzValue="edit">编辑模式</label>
+      <label nz-radio-button nzValue="view">展示模式</label>
+    </nz-radio-group>
+    <e-ngx-print
+      #print
+      [showBtn]="false"
+      [btnText]="'打印'"
+      [btnClass]="{ btn: true, 'btn-success': true }"
+      [printHTML]="form_content"
+      [printCSS]="printCSS"
+      (printComplete)="printComplete()"
+    ></e-ngx-print>
+    <button
+      nz-button
+      nzType="default"
+      style="margin-left:10px"
+      (click)="clickPrint()"
+      *ngIf="isShowPrintController === 'true'"
+    >
+      打印
+    </button>
+  </div>
+  <!-- 可添加的标签列表start -->
+  <div
+    class="entityMenu collapsed_{{ isCollapsed }}"
+    *ngIf="formMode === 'design'"
+  >
+    <ul
+      nz-menu
+      nzMode="inline"
+      nzTheme="light"
+      [nzInlineCollapsed]="isCollapsed"
+      nzMode="inline"
+    >
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzDisabled
+        class="entityItem"
+        style="font-size: 16px;font-weight: 500;color: rgba(0, 0, 0, 0.85);background: #fafafa;"
+        (click)="toggleCollapsed()"
+      >
+        <span>
+          <i nz-icon type="{{ isCollapsed ? 'menu-unfold' : 'menu-fold' }}"></i
+          ><label [hidden]="isCollapsed">控件列表</label></span
+        >
+      </li>
+      <li
+        nz-menu-item
+        nz-tooltip
+        *ngFor="let item of data"
+        (click)="addItem(item.type)"
+        nzDisabled
+        class="entityItem"
+      >
+        <span>{{ item.title }}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- 可添加的标签列表end -->
+  <div class="formDiv">
+    <!-- 构建表单start -->
+    <div class="formTitle">
+      <h5>{{ formName }}</h5>
+    </div>
+
+    <div #form_content class="page">
+      <div nz-row>
+        <div
+          nz-col
+          [nzSpan]="item.span"
+          *ngFor="let item of items; let i = index"
+          class="formItem_{{ formMode }}"
+          [ngClass]="{
+            selected: i == selectedItemIndex && formMode === 'design'
+          }"
+          (click)="selectItem(i)"
+        >
+          <!-- 标题标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'title' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              *ngIf="item.labelMode == 'title'"
+              class="titleType"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [ngStyle]="{
+                'font-size': item.labelSize + 'em',
+                'text-align': item.textAlign
+              }"
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-label
+              class="my-label"
+              *ngIf="item.labelMode == 'label'"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [innerHTML]="item.label"
+            >
+            </nz-form-label>
+          </nz-form-item>
+          <!-- 标题标签end -->
+
+          <!-- 标题标签  打印 start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'title' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              *ngIf="item.labelMode == 'title'"
+              class="titleType"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [ngStyle]="{
+                'font-size': item.labelSize + 'em',
+                'text-align': item.textAlign
+              }"
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-label
+              class="my-label"
+              *ngIf="item.labelMode == 'label'"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [innerHTML]="item.label"
+            >
+            </nz-form-label>
+          </nz-form-item>
+          <!-- 标题标签 打印 end -->
+
+          <!-- 文本内容标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'text' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-control>
+              <ck-editor
+                [config]="ckeditorConfig"
+                [(ngModel)]="item.value"
+                [inline]="true"
+                [language]="'zh-cn'"
+                class="ckeditor"
+              ></ck-editor>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 文本内容标签end -->
+
+          <!-- 文本内容标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'text' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <nz-form-control>
+              <ck-editor
+                [config]="ckeditorConfig"
+                [(ngModel)]="item.value"
+                [inline]="true"
+                [language]="'zh-cn'"
+                class="ckeditor"
+                [readonly]="true"
+              ></ck-editor>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 文本内容标签 打印end -->
+
+          <!-- 文本框标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'input' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <input
+                nz-input
+                nzAutosize
+                [(ngModel)]="item.value"
+                [placeholder]="item.placeholderText"
+                [attr.value]="item.value"
+              />
+              <nz-form-explain *ngIf="item.required">{{
+                item.requiredMsg
+              }}</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 文本框标签end -->
+
+          <!-- 文本框标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'input' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <input
+                nz-input
+                nzAutosize
+                [(ngModel)]="item.value"
+                [placeholder]="item.placeholderText"
+                [attr.value]="item.value"
+                [readonly]="true"
+              />
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 文本框标签 打印end -->
+
+          <!-- 多行文框本标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'textarea' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <textarea
+                nz-input
+                nzAutosize
+                [(ngModel)]="item.value"
+                [placeholder]="item.placeholderText"
+                [attr.value]="item.value"
+              ></textarea>
+              <nz-form-explain *ngIf="item.required">{{
+                item.requiredMsg
+              }}</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 多行文本框标签end -->
+
+          <!-- 多行文本框标签  打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'textarea' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <textarea
+                nz-input
+                nzAutosize
+                [(ngModel)]="item.value"
+                [placeholder]="item.placeholderText"
+                [attr.value]="item.value"
+                [readonly]="true"
+                >{{ item.value }}</textarea
+              >
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 多行文本框标签  打印end -->
+
+          <!-- 选择器标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'select' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            >
+            </nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <nz-select
+                nzAllowClear
+                nzShowSearch
+                [nzMode]="item.mode"
+                [(ngModel)]="item.value"
+                [nzPlaceHolder]="item.placeholderText"
+              >
+                <nz-option
+                  *ngFor="let opt of item.options"
+                  [nzLabel]="opt.label"
+                  [nzValue]="opt.value"
+                ></nz-option>
+              </nz-select>
+              <nz-form-explain *ngIf="item.required">{{
+                item.requiredMsg
+              }}</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 选择器标签end -->
+
+          <!-- 选择器标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'select' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <nz-select
+                nzAllowClear
+                nzShowSearch
+                [nzMode]="item.mode"
+                [(ngModel)]="item.value"
+                [nzPlaceHolder]="item.placeholderText"
+                [nzDisabled]="true"
+              >
+                <nz-option
+                  *ngFor="let opt of item.options"
+                  [nzLabel]="opt.label"
+                  [nzValue]="opt.value"
+                ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 选择器标签 打印end -->
+
+          <!-- 多选框标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'checkbox' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              *ngIf="item.label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <nz-checkbox-group
+                [(ngModel)]="item.checkOptions"
+              ></nz-checkbox-group>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 多选框标签end -->
+
+          <!-- 多选框标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'checkbox' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <nz-checkbox-group
+                [(ngModel)]="item.checkOptions"
+                [nzDisabled]="true"
+              ></nz-checkbox-group>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 多选框标签 打印end -->
+
+          <!-- 日期标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'date' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <nz-date-picker
+                nzAllowClear
+                [nzShowTime]="item.format != 'yyyy-MM-dd'"
+                [nzFormat]="item.format"
+                [(ngModel)]="item.value"
+                [nzPlaceHolder]="item.placeholderText"
+              ></nz-date-picker>
+              <nz-form-explain *ngIf="item.required">{{
+                item.requiredMsg
+              }}</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 日期标签end -->
+
+          <!-- 日期标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'date' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 6
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 18
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <input
+                nz-input
+                [placeholder]="item.placeholderText"
+                [attr.value]="item.value | date: item.format"
+                [readonly]="true"
+              />
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 日期标签 打印end -->
+
+          <!-- 占位标签start -->
+          <nz-form-item *ngIf="item.type == 'blank' && formMode === 'design'">
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              class="titleType"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [ngStyle]="{
+                'font-size': item.labelSize + 'em',
+                'text-align': item.textAlign
+              }"
+              [innerHTML]="item.label"
+            ></div>
+          </nz-form-item>
+          <!-- 占位标签end -->
+
+          <!-- 占位标签 打印start -->
+          <nz-form-item *ngIf="item.type == 'blank' && !formMode === 'design'">
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <div
+              class="titleType"
+              [ngClass]="{ ftwB: item.labelBold }"
+              [ngStyle]="{
+                'font-size': item.labelSize + 'em',
+                'text-align': item.textAlign
+              }"
+            ></div>
+          </nz-form-item>
+          <!-- 占位标签 打印end -->
+
+          <!-- 扫码签名标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'sign' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <mirr-electronicSign
+                [imgUrl]="item.value"
+                [isShowSign]="true"
+                [(imgsTagged)]="item.imgsTagged"
+              >
+              </mirr-electronicSign>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 扫码签名标签end -->
+
+          <!-- 扫码签名标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'sign' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <mirr-electronicSign
+                [imgUrl]="item.value"
+                [isShowSign]="false"
+                [(imgsTagged)]="item.imgsTagged"
+              >
+              </mirr-electronicSign>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 扫码签名标签 打印end -->
+
+          <!-- 键只绑定标签start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'bound' &&
+              !(formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="closeIcon"
+              (click)="delItem(i)"
+              [hidden]="items.length === 1"
+              *ngIf="i == selectedItemIndex && formMode === 'design'"
+            >
+              <i nz-icon type="minus-circle"></i>
+            </div>
+            <nz-form-label
+              class="my-label"
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [nzRequired]="item.required"
+              [innerHTML]="item.label"
+            ></nz-form-label>
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <label>{{
+                boundParams ? boundParams[(item?.boundKey)] : ""
+              }}</label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 键值绑定标签end -->
+
+          <!-- 键只绑定标签 打印start -->
+          <nz-form-item
+            *ngIf="
+              item.type == 'bound' &&
+              (formMode === 'view' || formMode === 'print')
+            "
+          >
+            <div
+              class="my-label"
+              [ngClass]="{ 'ant-form-item-required': item.required }"
+              nz-col
+              [nzSpan]="
+                item.span == 6
+                  ? 6
+                  : item.span == 8
+                  ? 8
+                  : item.span == 12
+                  ? 6
+                  : item.span == 16
+                  ? 4
+                  : 4
+              "
+              [innerHTML]="item.label"
+            ></div>
+
+            <nz-form-control
+              [nzSpan]="
+                item.span == 6
+                  ? 12
+                  : item.span == 8
+                  ? 16
+                  : item.span == 12
+                  ? 18
+                  : item.span == 16
+                  ? 20
+                  : 20
+              "
+            >
+              <label>{{
+                boundParams ? boundParams[(item?.boundKey)] : ""
+              }}</label>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- 键值绑定标签 打印end -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 构建表单end -->
+  </div>
+
+  <!-- 标签参数start -->
+  <div
+    class="propertyController"
+    *ngIf="formMode === 'design' && items && items.length > 0"
+  >
+    <nz-card nzType="inner" nzTitle="标签属性">
+      <nz-form-item>
+        <nz-form-label
+          [nzRequired]="items[selectedItemIndex].type !== 'checkbox'"
+          >名称</nz-form-label
+        >
+        <nz-form-control>
+          <input nz-input [(ngModel)]="items[selectedItemIndex].label" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>布局</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="items[selectedItemIndex].span"
+            [nzButtonStyle]="'solid'"
+          >
+            <label nz-radio-button nzValue="24">整行</label>
+            <label nz-radio-button nzValue="6">1/4行</label>
+            <label nz-radio-button nzValue="8">1/3行</label>
+            <label nz-radio-button nzValue="12">1/2行</label>
+            <label nz-radio-button nzValue="16">2/3行</label>
+            <label nz-radio-button nzValue="18">3/4行</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="
+          items[selectedItemIndex].type !== 'title' &&
+          items[selectedItemIndex].type !== 'checkbox'
+        "
+      >
+        <label nz-checkbox [(ngModel)]="items[selectedItemIndex].required"
+          >必填</label
+        >
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="
+          items[selectedItemIndex].type !== 'title' &&
+          items[selectedItemIndex].type !== 'checkbox' &&
+          items[selectedItemIndex].required
+        "
+      >
+        <nz-form-label nzRequired>必填项提示信息</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="items[selectedItemIndex].requiredMsg" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="
+          items[selectedItemIndex].type !== 'title' &&
+          items[selectedItemIndex].type !== 'checkbox' &&
+          items[selectedItemIndex].type !== 'text'
+        "
+      >
+        <nz-form-label>占位文字</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            [(ngModel)]="items[selectedItemIndex].placeholderText"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'title'">
+        <nz-form-label nzRequired>标题模式</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="items[selectedItemIndex].labelMode"
+            [nzButtonStyle]="'solid'"
+          >
+            <label nz-radio-button nzValue="title">大标题</label>
+            <label nz-radio-button nzValue="label">小标题</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'title'">
+        <label nz-checkbox [(ngModel)]="items[selectedItemIndex].labelBold"
+          >标题加粗</label
+        >
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="
+          items[selectedItemIndex].type === 'title' &&
+          items[selectedItemIndex].labelMode == 'title'
+        "
+      >
+        <nz-form-label>标题加大</nz-form-label>
+        <nz-form-control>
+          <nz-input-number
+            [(ngModel)]="items[selectedItemIndex].labelSize"
+            [nzMin]="1"
+            [nzMax]="3"
+            [nzStep]="0.1"
+            [nzFormatter]="formatterPercent"
+            [nzParser]="parserPercent"
+          ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item
+        *ngIf="
+          items[selectedItemIndex].type === 'title' &&
+          items[selectedItemIndex].labelMode == 'title'
+        "
+      >
+        <nz-form-label>对齐方式</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="items[selectedItemIndex].textAlign"
+            [nzButtonStyle]="'solid'"
+          >
+            <label nz-radio-button nzValue="left">居左</label>
+            <label nz-radio-button nzValue="center">居中</label>
+            <label nz-radio-button nzValue="right">居右</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'select'">
+        <nz-form-label nzRequired>模式</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="items[selectedItemIndex].mode"
+            [nzButtonStyle]="'solid'"
+          >
+            <label nz-radio-button nzValue="default">单选</label>
+            <label nz-radio-button nzValue="multiple">多选</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'select'">
+        <nz-form-label nzRequired>选项</nz-form-label>
+        <nz-form-control
+          *ngFor="let opt of items[selectedItemIndex].options; let i = index"
+        >
+          <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="opt.label"
+              placeholder="请输入选项内容"
+              (ngModelChange)="optModelChange(i)"
+            />
+          </nz-input-group>
+          <ng-template #addOnAfterTemplate>
+            <div (click)="delOpt(i)">
+              <i nz-icon type="minus-circle"></i>
+            </div>
+          </ng-template>
+        </nz-form-control>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="dashed"
+            style="width:60%"
+            (click)="addOpt()"
+          >
+            <i nz-icon type="plus"></i> 添加选项
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'checkbox'">
+        <nz-form-label nzRequired>选项</nz-form-label>
+        <nz-form-control
+          *ngFor="
+            let opt of items[selectedItemIndex].checkOptions;
+            let i = index
+          "
+        >
+          <nz-input-group [nzAddOnAfter]="addOnAfterTemplate2">
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="opt.label"
+              placeholder="请输入选项内容"
+              (ngModelChange)="checkOptModelChange(i)"
+            />
+          </nz-input-group>
+          <ng-template #addOnAfterTemplate2>
+            <div (click)="delCheckOption(i)">
+              <i nz-icon type="minus-circle"></i>
+            </div>
+          </ng-template>
+        </nz-form-control>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="dashed"
+            style="width:60%"
+            (click)="addCheckOption()"
+          >
+            <i nz-icon type="plus"></i> 添加选项
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'date'">
+        <nz-form-label nzRequired>格式化</nz-form-label>
+        <!-- <nz-form-control>
+          <nz-radio-group
+            [(ngModel)]="items[selectedItemIndex].format"
+            [nzButtonStyle]="'solid'"
+          >
+            <label nz-radio-button nzValue="yyyy-MM-dd">日期</label>
+            <label nz-radio-button nzValue="yyyy-MM-dd HH:mm:ss">时间</label>
+          </nz-radio-group>
+        </nz-form-control> -->
+        <nz-input-group>
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="items[selectedItemIndex].format"
+            />
+          </nz-input-group>
+        </nz-input-group>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="items[selectedItemIndex].type === 'bound'">
+        <nz-form-label nzRequired>绑定键值</nz-form-label>
+        <nz-input-group>
+          <nz-input-group>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="items[selectedItemIndex].boundKey"
+            />
+          </nz-input-group>
+        </nz-input-group>
+      </nz-form-item>
+    </nz-card>
+  </div>
+  <!-- 标签参数end -->
+</div>

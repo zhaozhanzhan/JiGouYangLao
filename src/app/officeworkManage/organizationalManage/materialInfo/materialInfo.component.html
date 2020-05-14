@@ -1,0 +1,161 @@
+<nz-card nzType="inner" nzTitle="证明材料" class="marginBottom24">
+  <form nz-form>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"
+            >养老机构设立许可证信息及扫描件</nz-form-label
+          >
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.agedLicenceInfo"
+              #agedLicenceImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"
+            >医疗机构执业许可证信息及扫描件</nz-form-label
+          >
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.medicalLicenceInfo"
+              #medicalLicenceImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">民非证书信息及扫描件</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.privateNoneInfo"
+              #privateNoneImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"
+            >事业单位法人证书信息及扫描件</nz-form-label
+          >
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.publicInstitutionInfo"
+              #publicInstitutionImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">竣工验收证明信息及扫描</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.finalAcceptanceInfo"
+              #finalAcceptanceImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">餐饮服务许可证信息及扫描件</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.restaurantServiceInfo"
+              #restaurantServiceImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8"
+            >消防验收合格意见信息及扫描件</nz-form-label
+          >
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.fireControlInfo"
+              #fireControlImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">环保局审核意见信息及扫描件</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.epaAuditInfo"
+              #epaAuditImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">其他证明材料信息及扫描件</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <mirr-image
+              isShowUploadBtn="true"
+              isShowOcrBtn="false"
+              [imageUrlStr]="info.otherProveInfo"
+              #otherProveImg
+            ></mirr-image>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button
+      class="saveBtn"
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      [nzLoading]="isSaveLoading"
+      (click)="
+        saveInfo(
+          agedLicenceImg.showImageUrls,
+          medicalLicenceImg.showImageUrls,
+          privateNoneImg.showImageUrls,
+          publicInstitutionImg.showImageUrls,
+          finalAcceptanceImg.showImageUrls,
+          restaurantServiceImg.showImageUrls,
+          fireControlImg.showImageUrls,
+          epaAuditImg.showImageUrls,
+          otherProveImg.showImageUrls
+        )
+      "
+    >
+      保存
+    </button>
+  </div>
+</nz-card>

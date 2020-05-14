@@ -1,0 +1,57 @@
+:host /deep/ .ant-calendar-picker {
+    width: 70% !important;
+}
+
+:host(.ant-calendar-picker) {
+    width: 70% !important;
+}
+
+/* 禁用模式下表单控件字体颜色纯黑色Begin */
+
+.ant-input-disabled,
+.ant-select-disabled,
+:host /deep/ .ant-input-disabled {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+:host /deep/ .ant-radio-disabled+span,
+:host /deep/ .ant-checkbox-disabled+span {
+    color: rgba(0, 0, 0, .85) !important;
+}
+
+.colorN {
+    color: red;
+    padding-right: 3px;
+}
+
+.marginBottom24 {
+    margin-top: 10px
+}
+
+.mr20 {
+    margin-left: 10px;
+}
+
+.checkMargin {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.checkMargin label {
+    width: 140px;
+    text-align: right;
+}
+
+.recoveryTitle {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mLabel {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.wLabel {
+    width: 300px;
+}

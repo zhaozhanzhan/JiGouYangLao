@@ -1,0 +1,310 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-06 15:59:22
+ * @Description:
+ -->
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="primary"
+    class="marginLeft"
+    (click)="chooseTemplate()"
+    *ngIf="templateVisible && user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    选择模板
+  </button>
+
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="primary"
+    class="marginLeft"
+    (click)="addTemplate()"
+    *ngIf="addVisible && user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    添加病程
+  </button>
+
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="danger"
+    class="marginLeft"
+    (click)="deleTemplate()"
+    *ngIf="deleteVisible && user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    删除当前
+  </button>
+
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    class="marginLeft bgColor"
+    (click)="saveOrEditTemplate('1')"
+    *ngIf="temporaryVisible && user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    暂存病程
+  </button>
+
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="primary"
+    class="marginLeft"
+    (click)="saveOrEditTemplate('2')"
+    *ngIf="accomplishVisible && user.data.employees.personType == '0'"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    完成编写
+  </button>
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="default"
+    class="marginLeft"
+    *ngIf="addVisible && user.data.employees.personType == '0'"
+    (click)="getAllProgress()"
+    [nzLoading]="isSaveBtnLoading"
+  >
+    查看全部病程
+  </button>
+
+  <button
+    nz-col
+    nzSpan="12"
+    nz-button
+    nzType="default"
+    class="marginLeft"
+    *ngIf="temporaryVisible && user.data.employees.personType == '0'"
+    (click)="checkHistoryAdvice()"
+  >
+    查看历史病程
+  </button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card [nzExtra]="btnArea">
+  <div nz-row nzGutter="24">
+    <div nz-col nzSpan="24">
+      <h5>
+        病程名称：
+        <input
+          nz-input
+          placeholder="请输入病程名称"
+          [(ngModel)]="caseTemplateObj.name"
+          style="width: 80%;"
+          [readonly]="!disabled"
+        />
+      </h5>
+      <div class="container long-div scrollable-container">
+        <mirr-customform
+          [boundParams]="oldmanInfo"
+          [formMode]="disabled ? 'edit' : 'view'"
+          [formName]="caseTemplateObj?.name"
+          [(formContent)]="templateContent"
+          [isShowModeController]="'false'"
+        ></mirr-customform>
+
+        <p style="color:crimson"></p>
+      </div>
+    </div>
+  </div>
+</nz-card>
+<!-- 表单区域End -->
+
+<!-- 需要选择的模板 -->
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  nzPlacement="right"
+  nzTitle="病历模板"
+  (nzOnClose)="close()"
+>
+  <ul>
+    <li *ngFor="let item of caseList" (click)="chooseCase(item)">
+      {{ item.name }}
+    </li>
+  </ul>
+</nz-drawer>
+
+<!-- 查看全部病程 -->
+<nz-modal
+  [(nzVisible)]="progressIsVisible"
+  nzTitle="所有的病程"
+  (nzOnCancel)="progressIsVisible = false"
+  [nzOkText]="null"
+  nzWidth="850"
+>
+  <div nz-row>
+    <div>
+      <nz-form-item nzFlex>
+        <nz-form-label nzFor="name">病程名称</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            style="width: 200px;"
+            [(ngModel)]="caseObj.name"
+            (ngModelChange)="provinceChange($event)"
+          >
+            <nz-option
+              *ngFor="let item of courseAllList"
+              [nzValue]="item.contractMemo"
+              [nzLabel]="item.name"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <mirr-customform
+      [boundParams]="oldmanInfo"
+      [formMode]="'view'"
+      [(formContent)]="caseObj.value"
+      [isShowModeController]="'false'"
+    ></mirr-customform>
+  </div>
+</nz-modal>
+
+<!-- 历史病程 -->
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="isShowHistoryAdvice"
+  nzPlacement="right"
+  [nzWidth]="700"
+  nzTitle="历史医嘱"
+  (nzOnClose)="closeHistoryAdvice()"
+>
+  <div style="margin-bottom: 10px;">
+    <span>姓名：</span>
+    <nz-select
+      style="width: 200px;"
+      [(ngModel)]="historyAdviceObj.name"
+      nzAllowClear
+      nzShowSearch
+    >
+      <nz-option
+        *ngFor="let option of nameList"
+        [nzLabel]="option.name"
+        [nzValue]="option.name"
+      ></nz-option>
+    </nz-select>
+    <!-- <input nz-input placeholder="请输入病人姓名" style="width: 120px;margin-right:5px;" [(ngModel)]="historyAdviceObj.name" /> -->
+    <button
+      nz-button
+      nzType="primary"
+      (click)="checkHistoryAdvice()"
+      style="margin-left:10px;"
+    >
+      查询
+    </button>
+  </div>
+  <nz-collapse>
+    <nz-collapse-panel
+      *ngFor="let panel of historyAdviceList"
+      [nzActive]="false"
+      [nzShowArrow]="false"
+      [nzHeader]="panel?.createDate"
+      class="positionR"
+    >
+      <div class="positionA">
+        <button nz-button nzType="default" (click)="importHistoryAdvice(panel)">
+          导入
+        </button>
+      </div>
+
+      <!-- 显示主要内容 -->
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">姓名：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.inHospitalInfo?.basicInfo?.name }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">科室：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.inHospitalInfo?.sectionOffice?.name }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">病区：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.inHospitalInfo?.sickWard?.sickWardName }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">床号：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.inHospitalInfo?.sickWard?.roomNames }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">病程名称：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.name }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">病程内容：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.contractMemo }}
+          </div>
+        </div>
+      </div>
+      <div class="contentsMedical">
+        <div nz-row class="contentsMedicalDetails">
+          <div nz-col [nzSpan]="6">
+            <span class="contentsTitle">医生姓名：</span>
+          </div>
+          <div nz-col [nzSpan]="18">
+            {{ panel?.noteTaker }}
+          </div>
+        </div>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+  <div class="tac mt5" *ngIf="historyAdviceObj.page + 1 < caseTotalPages">
+    <button nz-button nzType="default" class="w100p" (click)="loadMoreCase()">
+      加载更多...
+    </button>
+  </div>
+  <div class="tac mt5" *ngIf="historyAdviceObj.page + 1 >= caseTotalPages">
+    没有更多数据了...
+  </div>
+</nz-drawer>

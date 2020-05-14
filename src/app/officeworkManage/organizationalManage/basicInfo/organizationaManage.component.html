@@ -1,0 +1,279 @@
+<nz-card nzType="inner" nzTitle="机构基本信息" class="marginBottom24">
+  <form nz-form>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">所属地区</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构名称（英文）</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构电话</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">邮编</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">传真</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">电子邮箱</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">建设状态</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input maxlength="2" nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构性质</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+              <nz-option nzLabel="全额拨款事业" nzValue="0"></nz-option>
+              <nz-option nzLabel="差额拨款事业" nzValue="1"></nz-option>
+              <nz-option nzLabel="自收自支事业" nzValue="2"></nz-option>
+              <nz-option nzLabel="事业单位登记" nzValue="3"></nz-option>
+              <nz-option nzLabel="民非登记" nzValue="4"></nz-option>
+              <nz-option nzLabel="非登记" nzValue="5"></nz-option>
+              <nz-option nzLabel="民办非企业" nzValue="6"></nz-option>
+              <nz-option nzLabel="企业" nzValue="7"></nz-option>
+              <nz-option nzLabel="其他" nzValue="8"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">建院时间</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker nzFormat="yyyy-MM-dd" class="w100p"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">运营时间</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-date-picker nzFormat="yyyy-MM-dd" class="w100p"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">设置床位数</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">养老机构类别</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">兴办主体</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">建设形式</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">运营方式</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构运营单位名称</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构投资总金额</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <nz-input-number [nzMin]="1" [nzStep]="1" class="w100"></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">机构补贴类型</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">注册资金</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="8">流动资金</nz-form-label>
+          <nz-form-control [nzSpan]="16">
+            <input nz-input type="number" maxlength="32">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">地址</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="255">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">养老机构设立许可证编号</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="64">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">养老机构设立许可证申请时间</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <nz-date-picker nzFormat="yyyy-MM-dd" class="w100p"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">养老机构设立许可证办理人身份号码</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="18">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">机构设置批准证书</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">民办社会福利机构证书编号</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">社会福利机构登记证书编号</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input maxlength="64">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">社会福利机构登记类型代码</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <input nz-input>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">经营范围</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input maxlength="255"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="4">备注</nz-form-label>
+          <nz-form-control [nzSpan]="20">
+            <textarea rows="4" nz-input></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div style="text-align:center;margin-top: 30px;">
+    <button class="saveBtn" nz-button nzType="primary" nzSize="large" >保存</button>
+  </div>
+</nz-card>

@@ -1,0 +1,72 @@
+<nz-layout>
+    <nz-header style="background:white;position:fixed; width:100%;padding-right:0px;padding-left:20px;">
+        <div class="logo" style="float: left">
+            <img id="sysLogo" src="assets/img/logo.png" style="    height: 40px; vertical-align: middle; margin-right: 15px;" />
+            <span>{{ title }}</span>
+        </div>
+
+        <ul nz-menu [nzMode]="'horizontal'" style="height: 64px;border-bottom: 0px; display:flex; float: left;margin-left: 20px;max-width: 64%;overflow: overlay;">
+            <ng-container *ngFor="let roleMemo of rolesMemo">
+                <li *ngIf="roleMemo.isuse == 1 && roleMemo.status" nz-menu-item routerLink="{{ roleMemo.url }}" style="height: 64px;padding: 0 18px !important">
+                    <span style="margin-top:8px;display:inline-block">{{
+            roleMemo.title
+          }}</span>
+                </li>
+            </ng-container>
+        </ul>
+        <ul class="alain-default__nav" style="margin-right:20px;float:right;padding: 0;
+    width: 170px;
+    list-style: none;">
+            <li style="float: left;width:120px">
+                <nz-dropdown nzTrigger="click" nzPlacement="bottomRight">
+                    <div class="alain-default__nav-item" nz-dropdown>
+                        <nz-avatar nzText="Hi" style="background-color:#40a9ff;"></nz-avatar>
+                        {{ user.data.name != "" ? user.data.name : user.data.num }}
+                        <i nz-icon type="down"></i>
+                    </div>
+                    <div nz-menu>
+                        <div nz-menu-item (click)="logout()">注销</div>
+                        <div nz-menu-item (click)="edit()">修改密码</div>
+                    </div>
+                </nz-dropdown>
+            </li>
+            <!-- 全屏显示 -->
+            <li class="nav-item d-md-down-none">
+                <header-fullscreen></header-fullscreen>
+            </li>
+        </ul>
+    </nz-header>
+    <nz-content style="min-height: 280px;margin-top:64px;">
+        <router-outlet></router-outlet>
+    </nz-content>
+</nz-layout>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="修改密码" (nzOnCancel)="isVisible=false" (nzOnOk)="handleOk()">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="user">用户名</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input name="user" id="user" [(ngModel)]="user.data.name" [disabled]="true" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="oldPwd">旧密码</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input name="oldPwd" id="oldPwd" type="password" [(ngModel)]="editPasswordObj.oldPwd" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="newPwd">新密码</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input name="newPwd" id="newPwd" type="password" [(ngModel)]="editPasswordObj.newPwd" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="newPwd2">确认新密码</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input name="newPwd2" id="newPwd2" type="password" [(ngModel)]="editPasswordObj.newPwd2" />
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

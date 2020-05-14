@@ -1,0 +1,97 @@
+<!-- 表格查询条件Begin -->
+  <!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <form nz-form>
+    <div nz-row nzType="flex">
+      <div nz-col class="mr20">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="name">姓名</nz-form-label>
+          <nz-form-control>
+            <input nz-input name="name" id="name" style="width:150px" placeholder="请输入人员姓名" [(ngModel)]="reqObj.name" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col class="mr20">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="phone">电话</nz-form-label>
+          <nz-form-control>
+            <input nz-input name="phone" id="phone" style="width:150px" placeholder="请输入人员电话" [(ngModel)]="reqObj.phone" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col class="mr20">
+        <nz-form-item nzFlex>
+          <nz-form-label nzFor="team">班组</nz-form-label>
+          <nz-form-control>
+            <input nz-input name="team" id="team" style="width:150px" placeholder="请输入人员班组" [(ngModel)]="reqObj.nurseTeams" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div>
+        <nz-form-item nzFlex>
+          <nz-form-control>
+            <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left: 10px;">
+              查询
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<!-- <ng-template #extraTemplate>
+<button nz-button nzType="primary" (click)="turnToAdd()">添加</button>
+</ng-template> -->
+
+<nz-card nzTitle="护士档案列表" >
+<nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false" [nzLoading]="isTableLoading"
+  [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index" [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()"
+  (nzPageSizeChange)="updateList(true)" [nzShowTotal]="totalTemplate">
+  <thead>
+    <tr>
+      <th class="textCenter">姓名</th>
+      <th class="textCenter">性别</th>
+      <th class="textCenter">部门</th>
+      <th class="textCenter">入职时间</th>
+      <th class="textCenter">电话号码</th>
+      <th class="textCenter">所在班组</th>
+      <th class="textCenter">是否班长</th>
+      <th class="textCenter">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">
+          {{data.name}}
+        </td>
+        <td class="textCenter">{{data.sex}}</td>
+        <td class="textCenter">{{data.department}}</td>
+        <td class="textCenter">{{data.comeDate}}</td>
+        <td class="textCenter">{{data.phone}}</td>
+        <td class="textCenter">{{data.nurseTeams}}</td>
+        <td class="textCenter">{{data.isMonitor}}</td>
+        <!-- <td class="textCenter">
+          <span *ngIf="data.personType=='0'">医生</span>
+          <span *ngIf="data.personType=='1'">护理人员</span>
+          <span *ngIf="data.personType=='2'">护士</span>
+          <span *ngIf="data.personType=='3'">普通职员</span>
+          <span *ngIf="data.personType=='4'">其他人员</span>
+          <span *ngIf="data.personType=='5'">管理人员</span>
+        </td>
+        <td class="textCenter">
+           <span *ngIf="data.status=='0'">在职</span>
+           <span *ngIf="data.status=='1'">离职</span>
+        </td> -->
+        <td class="textCenter">
+            <a href="#" (click)="turnToEdit(data,$event)">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a href="javascript:void(0)" (click)="turnToLinkGroup(data)" [hidden]="data.nurseTeams != ''">分配班组</a>
+            <a href="javascript:void(0)" (click)="deLinkGroup(data.id)" [hidden]="data.nurseTeams == ''">移除班组</a>
+        </td>
+      </tr>
+  </tbody>
+</nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{total}} 条</ng-template>

@@ -1,0 +1,76 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div style="padding: 20px 0;">
+      <div nz-row nzType="flex">
+          <div nz-col style="margin-right:10px;margin-left: 20px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>计划名称</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input style="width:150px" placeholder="按计划名称检索" [(ngModel)]="sendData.planName" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-control>
+                      <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                          查询
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+      </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;position:relative;">
+  服务计划
+  <div style="position:absolute;right:20px;top:0;">
+      <button nz-button nzType="primary" style="margin-left:10px;" (click)="addPlan()">
+          添加
+      </button>
+  </div>
+</div>
+<div style="padding:0 50px;padding-top: 24px;background: #fff;">
+  <nz-table #basicTable [nzData]="listOfData" [nzLoading]="Loading" [nzTitle]="serchArea" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"
+  (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+      <thead>
+          <tr>
+            <th class="center">计划名称</th>
+            <th class="center">月计划</th>
+            <th class="center">周计划</th>
+            <th class="center">日计划</th>
+            <th class="center">操作</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data;let i = index">
+          <td class="center">{{data.planName}}</td>
+          <td class="center"> <a href="javascript:void(0)" (click)="goPage('month',data.id,data.planName)">
+            <span *ngIf="data.hasMonth">编辑月计划</span> 
+            <span *ngIf="!data.hasMonth">开始制定月计划</span> 
+          </a> </td>
+          <td class="center"> <a href="javascript:void(0)" (click)="goPage('week',data.id,data.planName)">
+            <span *ngIf="data.hasWeek">编辑周计划</span> 
+            <span *ngIf="!data.hasWeek">开始制定周计划</span>
+          </a> </td>
+          <td class="center"> <a href="javascript:void(0)" (click)="goPage('day',data.id,data.planName)">
+            <span *ngIf="data.hasDay">编辑日计划</span> 
+            <span *ngIf="!data.hasDay">开始制定日计划</span>
+          </a> </td>
+          <td class="center">
+            <a style="color:red;" href="javascript:void(0)" (click)="delete(data.id,data.planName)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+</div>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>
+
+<!-- 新增计划 -->
+<nz-modal [(nzVisible)]="addTabModelIsVisible" nzTitle="新增计划" nzOkText="确认" nzCancelText="取消" (nzOnOk)="addTabModelOk(addTabTitle)"
+  (nzOnCancel)="addTabModelCancel(addTabTitle)">
+  <p></p>
+  新增计划名称：<input #addTabTitle nz-input style="width:70%;" maxlength="16" type="text">
+  <p></p>
+</nz-modal>

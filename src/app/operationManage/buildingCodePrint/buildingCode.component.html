@@ -1,0 +1,158 @@
+<!--
+ * @Author: dakui.tian
+ * @date: Do not edit
+ * @LastEditors: dakui.tian
+ * @LastEditTime: 2019-09-11 17:17:39
+ * @Description:
+ -->
+<div nz-row nzGutter="16">
+  <div nz-col nzMd="6" nzLg="6" nzXl="4" nzXXl="4">
+    <nz-card nzTitle="建筑" style="height: calc(100vh - 112px);overflow: auto;">
+      <nz-tree
+        [(ngModel)]="nodes"
+        [nzShowLine]="true"
+        [nzDefaultExpandedKeys]="expandKeys"
+        (nzExpandChange)="mouseAction('expand', $event)"
+        (nzClick)="mouseAction('click', $event)"
+      >
+      </nz-tree>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="18" nzLg="18" nzXl="20" nzXXl="20">
+    <nz-card nzTitle="打印配置">
+      <div nz-col nzSpan="8">
+        <label>打印类型:</label>
+        <nz-radio-group [(ngModel)]="printCodeType">
+          <label nz-radio nzValue="1">房间</label>
+          <label nz-radio nzValue="2">卫生间</label>
+          <label nz-radio nzValue="3">床位</label>
+        </nz-radio-group>
+      </div>
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>框内间距:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.paddingSize"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>框内顶部间距:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.paddingTop"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>框内底部间距:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.paddingBottom"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>二维码大小:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.codeSize"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>字体大小:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.fontSize"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+
+      <div nz-col nzSpan="5">
+        <div class="updateConfiguration">
+          <label>字体间距:</label>
+          <div>
+            <nz-input-number
+              [nzStep]="1"
+              nz-input
+              [(ngModel)]="printConfig.fontTop"
+            ></nz-input-number>
+          </div>
+        </div>
+      </div>
+    </nz-card>
+    <ng-template #btnPrint>
+      <e-ngx-print
+        #print
+        [showBtn]="false"
+        [btnText]="'打印'"
+        [btnClass]="{ btn: true, 'btn-success': true }"
+        [printHTML]="print_content"
+        [printCSS]="printCSS"
+      ></e-ngx-print>
+      <button nz-button nzType="primary" (click)="clickPrint()">打印</button>
+    </ng-template>
+    <nz-card nzTitle="二维码" [nzExtra]="btnPrint">
+      <div #print_content class="page">
+        <div
+          style="display: flex;
+    flex-flow: row wrap;"
+        >
+          <ng-container *ngFor="let item of codeList">
+            <div
+              nz-col
+              style="border:1px dotted #828282;text-align: center"
+              [ngStyle]="{
+                width: printConfig.codeSize + printConfig.paddingSize + 'px',
+                'padding-top': printConfig.paddingTop + 'px',
+                'padding-bottom': printConfig.paddingBottom + 'px'
+              }"
+            >
+              <div
+                style="display:flex;justify-content:center;align-items:center;"
+                [ngStyle]="{
+                  'margin-bottom': printConfig.fontTop + 'px'
+                }"
+              >
+                <qr-code
+                  [value]="item.id"
+                  [size]="printConfig.codeSize"
+                ></qr-code>
+              </div>
+              <label
+                [ngStyle]="{
+                  'font-size': printConfig.fontSize + 'px'
+                }"
+                >{{ item.name }}</label
+              >
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>

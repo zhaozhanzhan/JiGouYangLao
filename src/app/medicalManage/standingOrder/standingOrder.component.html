@@ -1,0 +1,837 @@
+<!-- 表格查询条件End -->
+<ng-template #serchArea>
+    <ng-container *ngIf="!inHospitalInfoId">
+        <!-- 医生状态 -->
+        <div nz-col *ngIf="user.data.employees.personType=='0' && isShow">
+            <nz-form-item nzFlex>
+                <nz-form-label>状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="detailsObj.status">
+                        <nz-option nzValue="0" nzLabel="已下达"></nz-option>
+                        <nz-option nzValue="1" nzLabel="已执行"></nz-option>
+                        <nz-option nzValue="2" nzLabel="已下达停止"></nz-option>
+                        <nz-option nzValue="3" nzLabel="已停止"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- 护士状态 -->
+        <div nz-col *ngIf="user.data.employees.personType=='2'  && isShow">
+            <nz-form-item nzFlex>
+                <nz-form-label>状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="detailsObj.sunStatus">
+                        <nz-option nzValue="0" nzLabel="待确认"></nz-option>
+                        <nz-option nzValue="1" nzLabel="待审核"></nz-option>
+                        <nz-option nzValue="2" nzLabel="已执行"></nz-option>
+                        <nz-option nzValue="3" nzLabel="待确认停止"></nz-option>
+                        <nz-option nzValue="4" nzLabel="待确认审核"></nz-option>
+                        <nz-option nzValue="5" nzLabel="已停止"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col *ngIf="isShow">
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="getListDetails()" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </ng-container>
+
+</ng-template>
+<ng-template #btnAdd>
+    <ng-container *ngIf="!inHospitalInfoId">
+        <button nz-button nzType="primary" style="margin-left:10px;" (click)="turnToAdd('add')" *ngIf="isShow && user.data.employees.personType=='0'">新增长期医嘱</button>
+        <button nz-button nzType="primary" style="margin-left:10px;" (click)="checkHistoryAdvice()" *ngIf="isShow && user.data.employees.personType=='0'">查看历史医嘱</button>
+        <e-ngx-print #print [showBtn]="false" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+        <button nz-button nzType="primary" *ngIf="isShow" style="margin-left:10px;" (click)="clickPrint($event)">打印</button>
+    </ng-container>
+</ng-template>
+<div id="standingOrder" style="page-break-after: always;" #printArea>
+    <div>
+        <div class="publicName docName">{{ systemInfo.sysTitle }}</div>
+        <div class="publicName adviceName">长期医嘱单</div>
+
+    </div>
+    <nz-card [nzExtra]="btnAdd" [nzTitle]="serchArea">
+        <div>
+            <table class="w100p cusTable">
+                <thead>
+                    <tr>
+                        <td colspan="10" class="noBorder">
+                            <div class="details1">
+                                <span>姓名：</span><span style="margin-right: 20px;">{{patientsBasicInfo.name}}</span>
+                                <span>科室：</span><span style="margin-right: 20px;">{{patientsBasicInfo.sectionOfficeName}}</span>
+                                <span>病区：</span><span style="margin-right: 20px;">{{patientsBasicInfo.sickWardName}}</span>
+                                <span>床号：</span><span style="margin-right: 20px;">{{patientsBasicInfo.bedName}}</span>
+                                <span>住院号：</span><span>{{patientsBasicInfo.admissionNo}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="tac">
+                        <td class="textCenter paddingAll" colspan="2">起始</td>
+                        <td class="textCenter paddingAll" rowspan="2" style="width:35%">医嘱</td>
+                        <td class="textCenter paddingAll" rowspan="2" style="width:70px">医生 <br>签名</td>
+                        <td class="textCenter tabRelative" rowspan="2" style="width:150px;">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                                <!-- <img src="assets/img/1.svg" alt="" class="widthImg"> -->
+                            </div>
+                            <!-- 执行者签名/核对者签名 -->
+                            <span class="poTop">执行者<br>签名</span>
+                            <span class="poBottom">核对者<br>签名</span>
+                        </td>
+                        <td class="textCenter paddingAll" colspan="4">停止</td>
+                        <ng-container *ngIf="!inHospitalInfoId">
+                            <td class="textCenter paddingAll" rowspan="2" *ngIf="isShow" style="width:100px">操作</td>
+                        </ng-container>
+                    </tr>
+                    <tr class="tac">
+                        <td class="textCenter paddingAll" style="width: 100px;">日期</td>
+                        <td class="textCenter paddingAll" style="width: 40px;">时间</td>
+                        <td class="textCenter paddingAll" style="width: 100px;">日期</td>
+                        <td class="textCenter paddingAll" style="width: 40px;">时间</td>
+                        <td class="textCenter paddingAll" style="width:70px">医生<br>签名</td>
+                        <td class="textCenter tabRelative" style="width: 150px;height: 41px !important;">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                            </div>
+                            <span class="poTop">执行者</span>
+                            <span class="poBottom">核对者</span>
+                        </td>
+                        <!-- <ng-container *ngIf="!inHospitalInfoId">
+                            <td>
+                            </td>
+                        </ng-container> -->
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- 已经下达过的医嘱列表 -->
+                    <tr *ngFor="let data of list;let i=index">
+                        <td class="textCenter paddingAll">{{data?.beginDate}}</td>
+                        <td class="textCenter paddingAll">{{data?.beginTime}}</td>
+                        <td class="textLeft paddingAll">
+                            <div *ngIf="data?.orderType=='2'">
+                                <div class="left" [innerHTML]="data?.html | html">
+                                </div>
+                                <div class="right" [innerHTML]="data?.html1 | html">
+                                </div>
+                            </div>
+                            <span *ngIf="data?.orderType!='2'" class="lettSpan borW">
+                                <div *ngFor="let item of data?.objArr,let c=index" [ngClass]="{'borderC': c!=data.objArr.length-1, 'borderB': c==data.objArr.length-1}">
+                                    {{item}}
+                                </div>
+                                <!-- {{data?.orderSum}} -->
+                            </span>
+
+
+                        </td>
+                        <td class="textCenter paddingAll">{{data?.dorSign}}</td>
+                        <td class="textCenter tabRelative">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                            </div>
+                            <span class="poTop">{{data?.operatorSign}}</span>
+                            <span class="poBottom"> {{data?.checkerSign}}</span>
+                        </td>
+                        <td class="textCenter paddingAll">{{data?.endDate}}</td>
+                        <td class="textCenter paddingAll">{{data?.endTime}}</td>
+                        <td class="textCenter paddingAll">{{data?.endDorSign}}</td>
+                        <td class="textCenter tabRelative">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                            </div>
+                            <span class="poTop">{{data?.endOperatorSign}}</span>
+                            <span class="poBottom"> {{data?.endCheckerSign}}</span>
+                        </td>
+                        <td class="textCenter paddingAll" *ngIf="isShow">
+                            <ng-container *ngIf="!inHospitalInfoId">
+                                <!-- 护士状态 -->
+                                <!-- <a href="javascript:void(0)" (click)="showModal('确认',data)" *ngIf="data.sunStatus=='0' && user.data.employees.personType=='2'">待确认</a> -->
+                                <a href="javascript:void(0)" (click)="edit('confirmed',data,i)" *ngIf="data.sunStatus=='0' && user.data.employees.personType=='2'">待确认</a>
+                                <!-- <a href="javascript:void(0)" (click)="showModal('审核',data)" *ngIf="data.sunStatus=='1'  && user.data.employees.personType=='2'">待审核</a> -->
+                                <a href="javascript:void(0)" (click)="edit('audit',data,i)" *ngIf="data.sunStatus=='1'  && user.data.employees.personType=='2'">待审核</a>
+                                <a href="javascript:void(0)" *ngIf="data.sunStatus=='2' && user.data.employees.personType=='2'">执行中</a>
+                                <!-- <a href="javascript:void(0)" (click)="showModal('确认',data)" *ngIf="data.sunStatus=='3' && user.data.employees.personType=='2'">待确认停止</a> -->
+                                <a href="javascript:void(0)" (click)="edit('sureConfirmed',data,i)" *ngIf="data.sunStatus=='3' && user.data.employees.personType=='2'">待确认停止</a>
+                                <!-- <a href="javascript:void(0)" (click)="showModal('审核',data)" *ngIf="data.sunStatus=='4'  && user.data.employees.personType=='2'">待确认审核</a> -->
+                                <a href="javascript:void(0)" (click)="edit('sureAudit',data,i)" *ngIf="data.sunStatus=='4'  && user.data.employees.personType=='2'">待确认审核</a>
+                                <a href="javascript:void(0)" *ngIf="data.sunStatus=='5'  && user.data.employees.personType=='2'">已停止</a>
+                                <a href="javascript:void(0)" style="color:red" *ngIf="data.sunStatus=='6'  && user.data.employees.personType=='2'">已取消</a>
+                                <!-- 医生状态 -->
+                                <a href="javascript:void(0)" *ngIf="data.status=='0' && user.data.employees.personType=='0'">已下达</a>
+                                <nz-divider nzType="vertical" *ngIf="data.status=='0' && user.data.employees.personType=='0'"></nz-divider>
+                                <a href="javascript:void(0)" style="color:red" *ngIf="data.status=='0' && user.data.employees.personType=='0'" (click)="edit('cancel',data,i)">取消</a>
+                                <a href="javascript:void(0)" style="color:red" *ngIf="data.status=='4' && user.data.employees.personType=='0'">已取消</a>
+                                <a href="javascript:void(0)" *ngIf="data.status=='1' && user.data.employees.personType=='0'" (click)="edit('stop',data,i)">执行中</a>
+                                <a href="javascript:void(0)" *ngIf="data.status=='2' && user.data.employees.personType=='0'">停止已下达</a>
+                                <a href="javascript:void(0)" *ngIf="data.status=='3' && user.data.employees.personType=='0'">已停止</a>
+                            </ng-container>
+                        </td>
+                    </tr>
+
+                    <!-- 未下达的医嘱列表 -->
+                    <tr *ngFor="let data of orderList;let i=index">
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.beginDate}}</td>
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.beginTime}}</td>
+                        <td class="textLeft paddingAll" *ngIf="orderListIsVisabled">
+                            <div *ngIf="data?.orderType=='2'">
+                                <div class="left" [innerHTML]="data?.html | html">
+                                </div>
+                                <!-- <div class="right" [innerHTML]="data?.html1 | html">
+                                </div> -->
+                            </div>
+                            <span *ngIf="data?.orderType!='2'" class="lettSpan borW">
+                                <div *ngFor="let item of data?.objArr,let c=index" [ngClass]="{'borderC': c!=data.objArr.length-1, 'borderB': c==data.objArr.length-1}">
+                                    {{item}}
+                                </div>
+                                <!-- {{data?.orderSum}} -->
+                            </span>
+                        </td>
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.dorSign}}</td>
+                        <td class="textCenter tabRelative" *ngIf="orderListIsVisabled">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                            </div>
+                            <span class="poTop">{{data?.operatorSign}}</span>
+                            <span class="poBottom"> {{data?.checkerSign}}</span>
+                        </td>
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.endDate}}</td>
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.endTime}}</td>
+                        <td class="textCenter paddingAll" *ngIf="orderListIsVisabled">{{data?.endDorSign}}</td>
+                        <td class="textCenter tabRelative" *ngIf="orderListIsVisabled">
+                            <div class="tabAbsolute">
+                                <img src="assets/img/bgLine.png" alt="" class="widthImg">
+                            </div>
+                            <span class="poTop">{{data?.endOperatorSign}}</span>
+                            <span class="poBottom"> {{data?.endCheckerSign}}</span>
+                        </td>
+                        <td class="textCenter paddingAll" *ngIf="isShow && orderListIsVisabled ">
+                            <ng-container *ngIf="!inHospitalInfoId">
+                                <!-- 没下达时的状态 -->
+                                <a href="javascript:void(0)" (click)="edit('edit',data,i)" roleBtnControll [roleBtnKey]="'editMenuBtn'" *ngIf="data.state=='6'">编辑</a>
+                                <nz-divider nzType="vertical" *ngIf="data.state=='6'"></nz-divider>
+                                <a href="javascript:void(0)" (click)="delete(data,i)" style="color:red" roleBtnControll [roleBtnKey]="'DelMenuBtn'" *ngIf="data.state=='6'">删除</a>
+                                <nz-divider nzType="vertical" *ngIf="data.state=='6'"></nz-divider>
+                                <a href="javascript:void(0)" (click)="edit('smitState',data,i)" roleBtnControll [roleBtnKey]="'levelsMenuBtn'" *ngIf="data.state=='6'">下达</a>
+                            </ng-container>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let data of nullList;let i=index">
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <td class="textCenter paddingAll"></td>
+                        <ng-container *ngIf="!inHospitalInfoId">
+                            <td class="textCenter paddingAll"></td>
+                            <!-- <td class="textCenter paddingAll" *ngIf="isShow && orderListIsVisabled"></td> -->
+                        </ng-container>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </nz-card>
+</div>
+
+
+
+<!-- 新增长期医嘱对话框 -->
+<nz-modal [(nzVisible)]="isVisible" [nzOkText]=null nzTitle="新增医嘱" nzWidth="1280" (nzOnCancel)="isVisible=false">
+    <div>
+        <div class="sickDetails">
+            <div class="details">
+                <span>姓名：</span><span>{{patientsBasicInfo.name}}</span>
+                <span>性别：</span><span> {{ patientsBasicInfo.sex == '0' ? "男" : "女" }} </span>
+                <span>年龄：</span><span>{{patientsBasicInfo.age}}岁</span>
+                <span>住院号：</span><span>{{patientsBasicInfo.admissionNo}}</span>
+                <span>科室：</span><span>{{patientsBasicInfo.sectionOfficeName}}</span>
+                <span>床号：</span><span>{{patientsBasicInfo.bedName}}</span>
+            </div>
+        </div>
+        <div style="text-align:center">
+            <nz-radio-group [(ngModel)]="tabIndex">
+                <label nz-radio-button [nzValue]="'0'" [nzDisabled]="addState=='edit' && tabIndex!='0' || addState=='smitState' && tabIndex!='0' || addState=='stop' && tabIndex!='0' || addState=='confirmed' && tabIndex!='0' || addState=='audit' && tabIndex!='0' || addState=='sureConfirmed' && tabIndex!='0' || addState=='sureAudit' && tabIndex!='0' || addState=='cancel' && tabIndex!='0'">护理医嘱</label>
+                <label nz-radio-button [nzValue]="'1'" [nzDisabled]="addState=='edit' && tabIndex!='1' || addState=='smitState' && tabIndex!='1' || addState=='stop' && tabIndex!='1' || addState=='confirmed' && tabIndex!='1' || addState=='audit' && tabIndex!='1' || addState=='sureConfirmed' && tabIndex!='1' || addState=='sureAudit' && tabIndex!='1' || addState=='cancel' && tabIndex!='1'">嘱托医嘱</label>
+                <label nz-radio-button [nzValue]="'2'" [nzDisabled]=" addState=='edit' && tabIndex!='2' || addState=='smitState' && tabIndex!='2' || addState=='stop' && tabIndex!='2' || addState=='confirmed' && tabIndex!='2' || addState=='audit' && tabIndex!='2' || addState=='sureConfirmed' && tabIndex!='2' || addState=='sureAudit' && tabIndex!='2' || addState=='cancel' && tabIndex!='2'">西药医嘱</label>
+                <label nz-radio-button [nzValue]="'3'" [nzDisabled]="addState=='edit' && tabIndex!='3' || addState=='smitState' && tabIndex!='3' || addState=='stop' && tabIndex!='3' || addState=='confirmed' && tabIndex!='3' || addState=='audit' && tabIndex!='3' || addState=='sureConfirmed' && tabIndex!='3' || addState=='sureAudit' && tabIndex!='3' || addState=='cancel' && tabIndex!='3'">诊疗医嘱</label>
+                <label nz-radio-button [nzValue]="'4'" [nzDisabled]=" addState=='edit' && tabIndex!='4' || addState=='smitState' && tabIndex!='4' || addState=='stop' && tabIndex!='4' || addState=='confirmed' && tabIndex!='4' || addState=='audit' && tabIndex!='4' || addState=='sureConfirmed' && tabIndex!='4' || addState=='sureAudit' && tabIndex!='4' || addState=='cancel' && tabIndex!='4'">特殊医嘱</label>
+            </nz-radio-group>
+        </div>
+
+        <!-- 护理医嘱 -->
+        <div nz-row [nzGutter]="24" *ngIf="tabIndex== '0' " class="marginTop">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">护理常规</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.routine" (ngModelChange)="changRoutineName('0')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of nursingRoutineList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">护理级别</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select [nzDisabled]="disabled" nzAllowClear style="width: 100%;" [(ngModel)]="nursObj.level" nzPlaceHolder="请选择" name="careLevelCase" id="careLevelCase" (ngModelChange)="changRoutineName('1')">
+                            <nz-option *ngFor="let option of nursingList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">病危或并重通知</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.terminally" (ngModelChange)="changRoutineName('2')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of notificationList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">隔离种类</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.isolationType" (ngModelChange)="changRoutineName('3')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of isolationList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">饮食种类</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.foodType" (ngModelChange)="changRoutineName('4')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of foodTypeList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">体位要求</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.requires" (ngModelChange)="changRoutineName('5')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of positionRequiresList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">特殊检查和治疗 </nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="nursObj.treatments" (ngModelChange)="changRoutineName('6')" [nzDisabled]="disabled">
+                            <nz-option *ngFor="let option of examinationsList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="8">是否留陪</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <label nz-radio [(ngModel)]="nursObj.isAccompany" [nzDisabled]="disabled" (click)="getIsAccompany()">需要</label>
+                        <nz-input-number [(ngModel)]="nursObj.peopleNum" [nzMin]="1" [nzStep]="1" [nzDisabled]="disabled"></nz-input-number>人
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">其他</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="8" nz-input [(ngModel)]="nursObj.other" placeholder="请输入嘱托医嘱内容" [readonly]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div style="text-align:center;margin-top: 30px;">
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='add' || addState=='edit'" nz-button nzType="primary" nzSize="large" (click)="saveWesternMedicine()">
+                    确定
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='smitState'" nz-button nzType="primary" nzSize="large" (click)="confirmOrder()">
+                    确认下达
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='stop'" nz-button nzType="primary" nzSize="large" (click)="stopAdvice()">
+                    停止
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='confirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='audit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureConfirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待停止确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureAudit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待停止审核
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='cancel'" nz-button nzType="primary" nzSize="large" (click)="toCancel()">
+                    取消医嘱
+                </button>
+
+            </div>
+        </div>
+
+
+
+        <!-- 嘱托医嘱 -->
+        <div nz-row [nzGutter]="24" *ngIf="tabIndex== '1' " class="marginTop">
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-control [nzSpan]="24">
+                        <textarea rows="8" nz-input [(ngModel)]="asksObj.saveAsks" placeholder="请输入嘱托医嘱内容" [readonly]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div style="text-align:center;margin-top: 30px;">
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='add' || addState=='edit'" nz-button nzType="primary" nzSize="large" (click)="saveWesternMedicine()">
+                    确定
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='smitState'" nz-button nzType="primary" nzSize="large" (click)="confirmOrder()">
+                    确认下达
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='stop'" nz-button nzType="primary" nzSize="large" (click)="stopAdvice()">
+                    停止
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='confirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='audit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureConfirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待停止确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureAudit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待停止审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='cancel'" nz-button nzType="primary" nzSize="large" (click)="toCancel()">
+                    取消医嘱
+                </button>
+            </div>
+        </div>
+
+
+        <ng-template #extraTemplate1>
+            <button nz-button nzType="dashed" (click)="addField($event)" *ngIf="addState=='add' || addState=='edit'">
+                <i class="anticon anticon-plus"></i> 添加药品
+            </button>
+        </ng-template>
+        <ng-template #extraTitle1>
+            <label nz-checkbox [(ngModel)]="westernMedicine.asBigUnit" [nzDisabled]="disabled">是否按盒扣</label>
+        </ng-template>
+        <!-- 西药医嘱 -->
+        <div nz-row [nzGutter]="24" *ngIf="tabIndex== '2' " class="marginTop">
+            <nz-card nzType="inner" [nzExtra]="extraTemplate1" [nzTitle]="extraTitle1">
+                <table #basicTable>
+                    <tbody>
+                        <tr *ngFor="let data of westernMedicine.drugList;let i=index">
+                            <td style="width:25%">
+                                药品名称：<input nz-input style="float:rigth;width:50%" [(ngModel)]="data.name" *ngIf="addState=='add' || addState=='edit'" readonly>
+                                <!-- (click)="changeDrug(i)" -->
+                                <input nz-input style="float:rigth;width:50%" [(ngModel)]="data.name" readonly *ngIf="addState=='smitState' || addState=='stop' || addState=='confirmed' || addState=='audit' || addState=='sureConfirmed' || addState=='sureAudit' || addState=='cancel'">
+                                <span class="guig">{{data.specification}}</span>
+                            </td>
+                            <td style="width:15%" *ngIf="!westernMedicine.asBigUnit">
+                                剂量：
+                                <nz-input-number style="float:rigth;width:59%" [(ngModel)]="data.dosage" [nzDisabled]="disabled" [nzMin]="1" [nzStep]="1"></nz-input-number>{{data.unitName}}
+                            </td>
+                            <td style="width:15%" *ngIf="westernMedicine.asBigUnit">
+                                总数：
+                                <nz-input-number style="float:rigth;width:59%" [(ngModel)]="data.bigUnitNum" [nzDisabled]="disabled" [nzMin]="1" [nzStep]="1"></nz-input-number>{{data.bigUnitName}}
+                            </td>
+                            <td style="width:38%">
+                                用法：
+                                <nz-select style="width: 26%;" nzPlaceHolder="请选择" [(ngModel)]="data.medUsage" (ngModelChange)="changUsageName(i)" [nzDisabled]="disabled">
+                                    <nz-option *ngFor="let option of usageList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                                    </nz-option>
+                                </nz-select>
+                                <nz-select style="width: 62%;" [nzDisabled]="disabled" nzMode="multiple" nzPlaceHolder="请选择" [(ngModel)]="data.takeFrequency" (ngModelChange)="changFrequencyName(i)">
+                                    <nz-option *ngFor="let option of frequencyList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                            <td style="width:14%">
+                                <span style="color:red">*</span>用药频次：
+                                <nz-select style="width: 53%;" [nzDisabled]="disabled" nzPlaceHolder="请选择" [(ngModel)]="data.medFrequency" (ngModelChange)="changDrugFrequency(i)">
+                                    <nz-option *ngFor="let option of drugFrequencyList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                                    </nz-option>
+                                </nz-select>
+                            </td>
+                            <td style="width:4%" *ngIf="!disabled">
+                                <a href="javascript:void(0)" (click)="deleteDrug(i)" *ngIf="!disabled" style="color: #f81d22 !important;">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </nz-card>
+
+            <div class="marginTop" style="width:100%;height:2px;background: #efefef"></div>
+            <div nz-row [nzGutter]="24" class="marginTop">
+                <div nz-col [nzSpan]="24" class="marginTop">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4">其他</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <textarea rows="8" nz-input [(ngModel)]="westernMedicine.other" [readonly]="disabled"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top: 30px;">
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='add' || addState=='edit'" nz-button nzType="primary" nzSize="large" (click)="saveWesternMedicine()">
+                    确定
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='smitState'" nz-button nzType="primary" nzSize="large" (click)="confirmOrder()">
+                    确认下达
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='stop'" nz-button nzType="primary" nzSize="large" (click)="stopAdvice()">
+                    停止
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='confirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='audit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureConfirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待停止确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureAudit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待停止审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='cancel'" nz-button nzType="primary" nzSize="large" (click)="toCancel()">
+                    取消医嘱
+                </button>
+            </div>
+        </div>
+
+
+        <!-- 诊疗医嘱 -->
+        <div nz-row [nzGutter]="24" *ngIf="tabIndex== '3' " class="marginTop">
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">项目</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="diagnosisObj.item" [nzDisabled]="disabled" (ngModelChange)="changItemName()">
+
+                            <nz-option *ngFor="let option of itemList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24" class="marginTop">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">其他</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="8" nz-input [(ngModel)]="diagnosisObj.other" [readonly]="disabled" placeholder="请输入"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div style="text-align:center;margin-top: 30px;">
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='add' || addState=='edit'" nz-button nzType="primary" nzSize="large" (click)="saveWesternMedicine()">
+                    确定
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='smitState'" nz-button nzType="primary" nzSize="large" (click)="confirmOrder()">
+                    确认下达
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='stop'" nz-button nzType="primary" nzSize="large" (click)="stopAdvice()">
+                    停止
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='confirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='audit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureConfirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待停止确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureAudit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待停止审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='cancel'" nz-button nzType="primary" nzSize="large" (click)="toCancel()">
+                    取消医嘱
+                </button>
+            </div>
+        </div>
+
+        <!-- 特殊医嘱 -->
+        <div nz-row [nzGutter]="24" *ngIf="tabIndex== '4' " class="marginTop">
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">项目</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="specialObj.specialItem" [nzDisabled]="disabled" (ngModelChange)="changSpecialItemName()">
+                            <nz-option *ngFor="let option of specialList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4">其他</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <textarea rows="8" nz-input placeholder="请输入" [(ngModel)]="specialObj.other" [readonly]="disabled"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div style="text-align:center;margin-top: 30px;">
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='add' || addState=='edit'" nz-button nzType="primary" nzSize="large" (click)="saveWesternMedicine()">
+                    确定
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='smitState'" nz-button nzType="primary" nzSize="large" (click)="confirmOrder()">
+                    确认下达
+                </button>
+
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='stop'" nz-button nzType="primary" nzSize="large" (click)="stopAdvice()">
+                    停止
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='confirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='audit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureConfirmed'" nz-button nzType="primary" nzSize="large" (click)="showModal('确认')">
+                    待停止确认
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='sureAudit'" nz-button nzType="primary" nzSize="large" (click)="showModal('审核')">
+                    待停止审核
+                </button>
+                <button class="saveBtn" style="margin-top: 30px;" [nzLoading]="sureLoading" *ngIf="addState=='cancel'" nz-button nzType="primary" nzSize="large" (click)="toCancel()">
+                    取消医嘱
+                </button>
+            </div>
+        </div>
+    </div>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isShowDrug" nzTitle="请选择药房" nzWidth="400" (nzOnCancel)="isShowDrug=false" (nzOnOk)="changeMedRoom()">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">药房</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+            <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="drugObj.medRoomId" (ngModelChange)="changSpecialItemName()">
+                <nz-option *ngFor="let item of medRoomList" [nzLabel]="item.medRoomName" [nzValue]="item.id">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isShowOldDialog" [nzOkText]=null nzTitle="药品列表" nzWidth="900" (nzOnCancel)="isShowOldDialog=false">
+    <!-- <div nz-col [nzSpan]="10">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">药房</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <nz-select style="width: 100%;" nzPlaceHolder="请选择" [(ngModel)]="drugObj.medRoomId" (ngModelChange)="changSpecialItemName()">
+                    <nz-option *ngFor="let item of medRoomList" [nzLabel]="item.medRoomName" [nzValue]="item.id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div> -->
+    <div nz-col [nzSpan]="10">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">药名</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <input nz-input placeholder="按药品名称检索" [(ngModel)]="drugObj.search" (keyup)="getDrugAllList()">
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="getDrugAllList()" style="margin-left:10px;">
+                    查询
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div style="margin-top: 50px;">
+        <!-- <nz-table #drupInfo [nzData]="drugAllList" [nzShowPagination]="true" [nzBordered]="'true'"
+        [nzSize]="'middle'" [nzLoading]="isDrugTableLoading" [nzTotal]="drugPage.total" [(nzPageIndex)]="drugObj.page" [(nzPageSize)]="drugPage.size"
+        (nzPageIndexChange)="getDrugAllList()" (nzPageSizeChange)="getDrugAllList(true)" [nzShowSizeChanger]="false" [nzShowTotal]="totalTemplate" [nzFrontPagination]="false"> -->
+        <nz-table #drupInfo nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="isDrugTableLoading" [nzData]="drugAllList" [nzTotal]="drugPage.total" [(nzPageIndex)]="drugPage.index" [(nzPageSize)]="drugPage.size" (nzPageIndexChange)="getDrugAllList()" (nzPageSizeChange)="getDrugAllList(true)" [nzShowTotal]="totalTemplate">
+            <thead>
+                <tr>
+                    <th>药品名称</th>
+                    <th>通用名</th>
+                    <th>规格</th>
+                    <th>类型</th>
+                    <th>库存</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of drupInfo.data" (click)="chooseDrug(data)">
+                    <td>{{data?.medDrug?.drugName}}</td>
+                    <td>{{data?.medDrug?.commonName}}</td>
+                    <td>{{data?.medDrug?.specification}}</td>
+                    <td>{{data?.medDrug?.drugType}}</td>
+                    <td>{{data?.quantity}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <ng-template #totalTemplate let-total>共 {{ drugPage.total }} 条</ng-template>
+    </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isConfirmBox" nzTitle="提示" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p>{{titStr}}</p>
+</nz-modal>
+
+<!-- 历史医嘱 -->
+<nz-drawer [nzClosable]="false" [nzVisible]="isShowHistoryAdvice" nzPlacement="right" [nzWidth]="700" nzTitle="历史医嘱" (nzOnClose)="closeHistoryAdvice()">
+    <div style="margin-bottom: 10px;">
+        <span>姓名：</span>
+        <nz-select style="width: 200px;" [(ngModel)]="historyAdviceObj.name" nzAllowClear nzShowSearch>
+            <nz-option *ngFor="let option of nameList" [nzLabel]="option.name" [nzValue]="option.name"></nz-option>
+        </nz-select>
+        <!-- <input nz-input placeholder="请输入病人姓名" style="width: 120px;margin-right:5px;" [(ngModel)]="historyAdviceObj.name" /> -->
+        <span>医嘱类型：</span>
+        <nz-select style="width: 120px;" [(ngModel)]="historyAdviceObj.orderType" nzAllowClear nzPlaceHolder="请选择医嘱类型">
+            <nz-option nzValue="0" nzLabel="护理医嘱"></nz-option>
+            <nz-option nzValue="1" nzLabel="嘱托医嘱"></nz-option>
+            <nz-option nzValue="2" nzLabel="西药医嘱"></nz-option>
+            <nz-option nzValue="3" nzLabel="诊疗医嘱"></nz-option>
+            <nz-option nzValue="4" nzLabel="特殊医嘱"></nz-option>
+        </nz-select>
+        <button nz-button nzType="primary" (click)="checkHistoryAdvice()" style="margin-left:10px;">
+            查询
+        </button>
+    </div>
+    <nz-collapse>
+        <nz-collapse-panel *ngFor="let panel of historyAdviceList" [nzShowArrow]="false" [nzActive]="false" [nzHeader]="panel?.dateAndName" class="positionR">
+            <div class="positionA">
+                <button nz-button nzType="default" (click)="importHistoryAdvice(panel)">
+                    导入
+                </button>
+            </div>
+
+            <!-- 显示主要内容 -->
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">姓名：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.inHospitalInfo?.basicInfo?.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">科室：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.inHospitalInfo?.sectionOffice?.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">病区：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.inHospitalInfo?.sickWard?.sickWardName }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">床号：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.inHospitalInfo?.bedName }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">日期：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.beginDate }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">时间：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.beginTime }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">医生：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        {{ panel?.dorSign }}
+                    </div>
+                </div>
+            </div>
+            <div class="contentsMedical">
+                <div nz-row class="contentsMedicalDetails">
+                    <div nz-col [nzSpan]="6">
+                        <span class="contentsTitle">医嘱：</span>
+                    </div>
+                    <div nz-col [nzSpan]="18">
+                        <div *ngIf="panel?.orderType=='2'">
+                            <div class="left" [innerHTML]="panel?.html | html">
+                            </div>
+                        </div>
+                        <span *ngIf="panel?.orderType!='2'" class="lettSpan">{{panel?.orderSum}}</span>
+                    </div>
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+    <div class="tac mt5" *ngIf="historyAdviceObj.page + 1 < caseTotalPages"><button nz-button nzType="default" class="w100p" (click)="loadMoreCase()">加载更多...</button></div>
+    <div class="tac mt5" *ngIf="historyAdviceObj.page + 1 >= caseTotalPages">没有更多数据了...</div>
+</nz-drawer>

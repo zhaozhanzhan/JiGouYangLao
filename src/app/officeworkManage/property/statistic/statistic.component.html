@@ -1,0 +1,62 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div nz-row nzType="flex">
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-label>名称</nz-form-label>
+        <nz-form-control>
+          <input class="w200" nz-input [(ngModel)]="reqObj.propertyName" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-label>类型</nz-form-label>
+        <nz-form-control>
+          <input class="w200" nz-input [(ngModel)]="reqObj.propertyType" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="ml16">
+      <nz-form-item nzFlex>
+        <nz-form-control>
+          <button nz-button nzType="primary" (click)="updateList(true)">查询</button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<nz-card nzTitle="资产统计列表">
+  <nz-table #ajaxTable nzBordered nzShowSizeChanger [nzTitle]="serchArea" [nzFrontPagination]="false"
+    [nzLoading]="isTableLoading" [nzData]="list" [nzTotal]="page.total" [(nzPageIndex)]="page.index"
+    [(nzPageSize)]="page.size" (nzPageIndexChange)="updateList()" (nzPageSizeChange)="updateList(true)"
+    [nzShowTotal]="totalTemplate">
+    <thead>
+      <tr>
+        <th class="textCenter">名称</th>
+        <th class="textCenter">规格</th>
+        <th class="textCenter">类型</th>
+        <th class="textCenter">总数</th>
+        <th class="textCenter">封存</th>
+        <th class="textCenter">使用</th>
+        <th class="textCenter">维修</th>
+        <th class="textCenter">报废</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="textCenter">{{ data?.propertyName }}</td>
+        <td class="textCenter">{{ data?.propertySpecifications }}</td>
+        <td class="textCenter">{{ data?.propertyType }}</td>
+        <td class="textCenter">{{ data?.num }}</td>
+        <td class="textCenter">{{ data?.fengcun }}</td>
+        <td class="textCenter">{{ data?.shiyong }}</td>
+        <td class="textCenter">{{ data?.weixiu }}</td>
+        <td class="textCenter">{{ data?.baofei }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+<ng-template #totalTemplate let-total>共 {{ total }} 条</ng-template>

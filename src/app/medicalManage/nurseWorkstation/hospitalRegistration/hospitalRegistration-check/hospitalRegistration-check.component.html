@@ -1,0 +1,219 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+    <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="住院登记详情" [nzExtra]="btnArea">
+    <nz-card nzType="inner" nzTitle="基本信息登记" class="marginBottom24">
+        <form nz-form>
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="name">姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="name" id="name" [(ngModel)]="result.name" readonly />
+                        </nz-form-control>
+
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="sex">性别</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" name="sex" id="sex" [(ngModel)]="result.sex" nzDisabled>
+                                <nz-option *ngFor="let option of sexList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="birthDay">出生年月</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-date-picker nzFormat="yyyy-MM-dd" name="birthDay" id="birthDay" [(ngModel)]="result.birthDay" nzDisabled></nz-date-picker>
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="age">年龄</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="age" id="age" [(ngModel)]="result.age" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="marriage">婚姻</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="marriage" id="marriage" [(ngModel)]="result.marriage" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="occupation">职业</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" name="occupation" id="occupation" [(ngModel)]="result.occupation" nzDisabled>
+                                <nz-option *ngFor="let option of occupationList" [nzLabel]="option.dictTag" [nzValue]="option.dictValue"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="nation">民族</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <nz-select nzAllowClear nzPlaceHolder="请选择" name="nation" id="nation" [(ngModel)]="result.nation" nzDisabled>
+                                <nz-option *ngFor="let item of folkList" [nzLabel]="item.dictTag" [nzValue]="item.dictValue"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="country">国籍</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="country" id="country" [(ngModel)]="result.country" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="cardno">身份证号</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="cardno" id="cardno" [(ngModel)]="result.cardno" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyAndAddress">工作单位及地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="companyAndAddress" id="companyAndAddress" [(ngModel)]="result.companyAndAddress" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyPhone">工作单位联系电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="companyPhone" id="companyPhone" [(ngModel)]="result.companyPhone" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="companyPost">工作单位邮编</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="companyPost" id="companyPost" [(ngModel)]="result.companyPost" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="registeredAddress">户口地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="registeredAddress" id="registeredAddress" [(ngModel)]="result.registeredAddress" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="post">邮编</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="post" id="post" [(ngModel)]="result.post" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="phone">电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="phone" id="phone" [(ngModel)]="result.phone" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactName">联系人姓名</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="contactName" id="contactName" maxlength="255" [(ngModel)]="result.contactName" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="relation">联系人关系</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="relation" id="relation" maxlength="255" [(ngModel)]="result.relation" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactAddress">联系人地址</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="contactAddress" id="contactAddress" [(ngModel)]="result.contactAddress" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="contactPhone">联系人电话</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="contactPhone" id="contactPhone" [(ngModel)]="result.contactPhone" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="medicalPayment">医疗付款方式</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="medicalPayment" id="medicalPayment" [(ngModel)]="result.medicalPayment" readonly />
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="8" nzFor="medicalNum">医疗保险（公费）号</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input nz-input name="medicalNum" id="medicalNum" [(ngModel)]="result.medicalNum" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="birthPlace">出生地</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" name="birthPlacePro" id="birthPlacePro" [(ngModel)]="result.birthPlacePro" nzDisabled (ngModelChange)="getListCitys()">
+                                <nz-option *ngFor="let option of provincesList" [nzLabel]="option.provName" [nzValue]="option.provCode"> </nz-option>
+                            </nz-select>省
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" name="birthPlaceCity" id="birthPlaceCity" [(ngModel)]="result.birthPlaceCity" nzDisabled (ngModelChange)="getListAreas()">
+                                <nz-option *ngFor="let option of citysList" [nzLabel]="option.cityName" [nzValue]="option.cityCode"> </nz-option>
+                            </nz-select>市
+                            <nz-select nzAllowClear style="width: 25%" nzPlaceHolder="请选择" name="birthPlaceArea" id="birthPlaceArea" [(ngModel)]="result.birthPlaceArea" nzDisabled>
+                                <nz-option *ngFor="let option of areasList" [nzLabel]="option.areaName" [nzValue]="option.areaCode"> </nz-option>
+                            </nz-select>县
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" nzFor="basicComment">备注</nz-form-label>
+                        <nz-form-control [nzSpan]="20">
+                            <textarea rows="4" nz-input name="basicComment" id="basicComment" [(ngModel)]="result.basicComment" readonly></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </nz-card>
+</nz-card>
+<!-- 表单区域End -->

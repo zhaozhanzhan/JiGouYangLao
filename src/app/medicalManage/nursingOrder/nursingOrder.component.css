@@ -1,0 +1,77 @@
+@media all {
+    :host /deep/ .ant-calendar-picker {
+        width: 100%;
+    }
+
+    nz-form-label {
+        margin-left: 10px;
+    }
+
+    .cusBoxInput {
+        outline: none !important;
+        border: 1px solid #CCC;
+        text-align: center !important;
+        margin-left: 5px !important;
+        margin-right: 5px !important;
+    }
+
+    .cusLineInput {
+        padding: 0px !important;
+        outline: none !important;
+        border-radius: 0px !important;
+        border-left: none !important;
+        border-top: none !important;
+        border-right: none !important;
+        box-shadow: none !important;
+    }
+
+    .cusNoLineInput,
+    .cusNoLineTextarea {
+        padding: 0px !important;
+        outline: none !important;
+        border-radius: 0px !important;
+        border-left: none !important;
+        border-top: none !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+
+    /* .cusNoLineTextarea {
+        padding: 5px !important;
+    } */
+
+    .cusTable {
+        border-collapse: collapse;
+        border: 1px solid black !important;
+    }
+
+    .cusTable td {
+        border: 1px solid black !important;
+        height: 30px !important;
+        /* padding-top: 5px;
+        padding-bottom: 5px; */
+    }
+
+    /* .paddingAll {
+        padding: 15px;
+    } */
+
+    .borderC {
+        border-bottom: 1px solid #000;
+        padding: 2px 0;
+        width: 100%;
+        text-align: left;
+        height: 26px;
+        line-height: 24px;
+    }
+
+    .borderB {
+        /* border-bottom: 1px solid #000; */
+        padding: 2px 0;
+        width: 100%;
+        text-align: left;
+        height: 26px;
+        line-height: 24px;
+    }
+}

@@ -1,0 +1,601 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+<!-- 顶部标题Begin -->
+<ng-template #titleArea>
+  <div>
+    <p>
+      <span>{{details}}</span>
+    </p>
+  </div>
+</ng-template>
+<!-- 顶部标题End -->
+
+
+
+
+<!-- 表单区域Begin -->
+<nz-card [nzTitle]="titleArea" [nzExtra]="btnArea">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="name">姓名</nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <nz-input-group nzSearch>
+            <input nz-input class="oldName" [(ngModel)]="personFinal.name" placeholder="长者姓名" name="name" id="name"
+              disabled>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="recureName">康复训练名称</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input nz-input class="oldName" placeholder="康复训练名称" [(ngModel)]="personFinal.recureName" name="recureName"
+            id="recureName" disabled>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="8" nzFor="applyDate"><i class="red">*</i>评价日期</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <nz-date-picker nzFormat="yyyy-MM-dd" name="applyDate" id="applyDate" [(ngModel)]="personFinal.applyDate"
+            style="width: 100%" nzDisabled></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <nz-tabset nzSize="large" [nzSelectedIndex]="tabIndex" (nzSelectChange)="clickTab($event)">
+    <nz-tab nzTitle="康复训练初期评价单">
+      
+        <form nz-form>
+          <nz-card nzType="inner" nzTitle="康复训练初期评价单" class="marginBottom24"  >
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="name">姓名</nz-form-label>
+                  <nz-form-control [nzSm]="16">
+                    <nz-input-group nzSearch>
+                      <input nz-input class="oldName" [(ngModel)]="personFinal.name" disabled placeholder="长者姓名" name="name"
+                        id="name" maxlength="10">
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzRequired nzFor="sex">性别</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input class="oldName" [(ngModel)]="personFinal.sex" disabled name="sex" id="sex">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzRequired nzFor="age">年龄</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input class="oldName" [(ngModel)]="personFinal.age" disabled name="age" id="age">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="education">文化程度</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="education" disabled [(ngModel)]="personFinal.education" id="education">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="BedID">床位号</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="BedID" id="BedID" disabled [(ngModel)]="personFinal.bed">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="careLevel">护理等级</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="careLevel" id="careLevel" disabled [(ngModel)]="personFinal.careLevel">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="RehabilitationTrainer">康复训练师</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="RehabilitationTrainer" [(ngModel)]="personFinalSave.recureTrainer" id="RehabilitationTrainer">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="applicationDate"><i class="red">*</i>评价日期</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <nz-date-picker name="applicationDate" id="applicationDate" [(ngModel)]="personFinalSave.applyDate"></nz-date-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </nz-card>
+          <nz-card nzType="inner" nzTitle="计划详情" class="marginBottom24"  >
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="illnessIntroduction" class="tf">病情简介</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="illnessIntroduction" id="illnessIntroduction" [(ngModel)]="personFinalSave.illnessSummary"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="clinicalDiagnosis" class="tf">临床病情诊断</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="clinicalDiagnosis" id="clinicalDiagnosis" [(ngModel)]="personFinalSave.clinicalDiagnosis"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="rehabilitationIssues" class="tf">主要康复问题</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="rehabilitationIssues" id="rehabilitationIssues" [(ngModel)]="personFinalSave.majorRecureProblem"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="shotRehabilitationTraining" class="tf">短期康复训练目标</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="shotRehabilitationTraining" id="shotRehabilitationTraining"
+                      [(ngModel)]="personFinalSave.shortTermGoal"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="intermediateRehabilitationTraining" class="tf">中期康复训练目标</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="intermediateRehabilitationTraining" id="intermediateRehabilitationTraining"
+                      [(ngModel)]="personFinalSave.midTermGoal"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="longRehabilitationTraining" class="tf">长期康复训练目标</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="longRehabilitationTraining" id="longRehabilitationTraining"
+                      [(ngModel)]="personFinalSave.longTermGoal"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor=" programsMeasures" class="tf">康复训练计划和措施</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="programsMeasures" id="programsMeasures" [(ngModel)]="personFinalSave.recurePlan"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="rehabilitationNotes" class="tf">康复注意事项</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="rehabilitationNotes" id="rehabilitationNotes" [(ngModel)]="personFinalSave.recureNotes"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col [nzSpan]="24">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="20" nzFor="comment" class="tf">备注</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea rows="4" nz-input name="comment" id="comment" [(ngModel)]="personFinalSave.comment"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row [nzGutter]="24">
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="rehabilitationTherapist">治疗师姓名</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="rehabilitationTherapist" [(ngModel)]="personFinalSave.therapeutist" id="rehabilitationTherapist">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8" nzFor="rehabilitationDoctor">康复医生姓名</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input nz-input name="rehabilitationDoctor" [(ngModel)]="personFinalSave.recureDoctor" id="rehabilitationDoctor">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </nz-card>
+        </form>
+      
+      <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonalInitial()" [nzLoading]="savePersonalBtnLoading">保存</button>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="康复计划评价单" [nzDisabled]="interimDisabledNumber">
+      <nz-card nzType="inner" nzTitle="康复训练中期评价单" class="marginBottom24" >
+        <form nz-form>
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="name">姓名</nz-form-label>
+                <nz-form-control [nzSm]="16">
+                  <nz-input-group nzSearch>
+                    <input nz-input class="oldName" [(ngModel)]="personFinal.name" disabled placeholder="长者姓名" name="name"
+                      id="name" maxlength="10">
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired nzFor="sex">性别</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input class="oldName" [(ngModel)]="personFinal.sex" disabled name="sex" id="sex">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired nzFor="age">年龄</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input class="oldName" [(ngModel)]="personFinal.age" disabled name="age" id="age">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="education">文化程度</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="education" disabled [(ngModel)]="personFinal.education" id="education">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="BedID">床位号</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="BedID" id="BedID" disabled [(ngModel)]="personFinal.bed">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="careLevel">护理等级</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="careLevel" id="careLevel" disabled [(ngModel)]="personFinal.careLevel">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="metaphaseRehabilitationTrainer">康复训练师</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="metaphaseRehabilitationTrainer" [(ngModel)]="personMiddleSave.recureTrainer" id="metaphaseRehabilitationTrainer">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="metaphaseApplicationDate"><i class="red">*</i>评价日期</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <nz-date-picker name="metaphaseApplicationDate" [(ngModel)]="personMiddleSave.evaluateDate" id="metaphaseApplicationDate"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="metaphaseRehabilitationTherapist">治疗师姓名</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="metaphaseRehabilitationTherapist" [(ngModel)]="personMiddleSave.therapeutist"
+                    id="metaphaseRehabilitationTherapist">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="metaphaseRehabilitationDoctor">康复医生姓名</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                  <input nz-input name="metaphaseRehabilitationDoctor" [(ngModel)]="personMiddleSave.recureDoctor" id="metaphaseRehabilitationDoctor">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" nzFor="comment">备注</nz-form-label>
+                <nz-form-control [nzSpan]="20">
+                  <textarea rows="4" nz-input  name="comment" [(ngModel)]="personMiddleSave.comment" id="comment"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <!-- 康复计划列表 -->
+          <nz-card nzTitle="康复训练项目" [nzExtra]="extraTemplate" style="margin-bottom:20px;" class="tableList">
+            <table>
+              <thead>
+                <tr>
+                  <th class="textCenter">康复计划名称</th>
+                  <th class="textCenter">训练时间</th>
+                  <th class="textCenter">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of personMiddleSave.recurePlans;let i=index">
+                  <td class="textCenter">{{data.planName}}</td>
+                  <td class="textCenter">{{data.startDate | date:"yyyy-MM-dd"}} ~  {{data.endDate | date:"yyyy-MM-dd"}}</td>
+                  <td class="textCenter">
+                    <a href="#" (click)="turnToEdit(i,data, $event)">编辑</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a href="#" (click)="delete(data, $event)" class="red">删除</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </nz-card>
+          <ng-template #extraTemplate>
+            <button nz-button nzType="primary" (click)="addRehabilitation()">添加</button>
+          </ng-template>
+        </form>
+      </nz-card>
+      <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonMiddle()" [nzLoading]="savePersonalBtnLoading">保存</button>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="康复训练末期评价单" [nzDisabled]="telocinesiaDisabledNumber">
+      
+        <form nz-form>
+            <nz-card nzType="inner" nzTitle="康复训练末期评价单" class="marginBottom24" >
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="name">姓名</nz-form-label>
+                    <nz-form-control [nzSm]="16">
+                      <nz-input-group nzSearch>
+                        <input nz-input class="oldName" [(ngModel)]="personFinal.name" disabled placeholder="长者姓名" name="name"
+                          id="name" maxlength="10">
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzRequired nzFor="sex">性别</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input class="oldName" [(ngModel)]="personFinal.sex" disabled name="sex" id="sex">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzRequired nzFor="age">年龄</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input class="oldName" [(ngModel)]="personFinal.age" disabled name="age" id="age">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="education">文化程度</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="education" disabled [(ngModel)]="personFinal.education" id="education">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="BedID">床位号</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="BedID" id="BedID" disabled [(ngModel)]="personFinal.bed">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="careLevel">护理等级</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="careLevel" id="careLevel" disabled [(ngModel)]="personFinal.careLevel">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="telocinesiaRehabilitationTrainer">康复训练师</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="telocinesiaRehabilitationTrainer" [(ngModel)]="personFinalLastSave.recureTrainer" id="telocinesiaRehabilitationTrainer">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="telocinesiaApplicationDate"><i class="red">*</i>评价日期</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <nz-date-picker name="telocinesiaApplicationDate"  [(ngModel)]="personFinalLastSave.evaluateDate" id="telocinesiaApplicationDate"></nz-date-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+              </div>
+            </nz-card>
+            <nz-card nzType="inner" nzTitle="计划详情" class="marginBottom24" >
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="24">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="20" nzFor="telocinesiaRehabilitationMajor" class="tf">主要康复训练的问题</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                      <textarea rows="4" nz-input name="telocinesiaRehabilitationMajor" [(ngModel)]="personFinalLastSave.mainTrainProblem" id="telocinesiaRehabilitationMajor"></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="20" nzFor="telocinesiaRehabilitationAchieved" class="tf">已取得康复训练效果</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                      <textarea rows="4" nz-input name="telocinesiaRehabilitationAchieved" [(ngModel)]="personFinalLastSave.achievedEffect" id="telocinesiaRehabilitationAchieved"></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="20" nzFor="telocinesiaRehabilitationRemainingProblems " class="tf">尚存的康复训练问题</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                      <textarea rows="4" nz-input name="telocinesiaRehabilitationRemainingProblems" [(ngModel)]="personFinalLastSave.existProblem" id="telocinesiaRehabilitationRemainingProblems"></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="20" nzFor="telocinesiaRehabilitationSuggestions" class="tf">继续康复训练建议与指导</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                      <textarea rows="4" nz-input name="telocinesiaRehabilitationSuggestions" [(ngModel)]="personFinalLastSave.continueAdviceGuide" id="telocinesiaRehabilitationSuggestions"></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="24">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="20" nzFor="comment" class="tf">备注</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                      <textarea rows="4" nz-input name="comment" [(ngModel)]="personFinalLastSave.comment" id="comment"></textarea>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="telocinesiaRehabilitationTherapist">治疗师签字</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="telocinesiaRehabilitationTherapist" [(ngModel)]="personFinalLastSave.therapeutist" id="telocinesiaRehabilitationTherapist">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8" nzFor="telocinesiaRehabilitationDoctor">康复医生签字</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <input nz-input name="telocinesiaRehabilitationDoctor"  [(ngModel)]="personFinalLastSave.recureDoctor"  id="telocinesiaRehabilitationDoctor">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+            </nz-card>
+        </form>
+      
+      <div style="text-align:center;margin-top: 30px;">
+        <button class="saveBtn" nz-button nzType="primary" nzSize="large" (click)="onSavePersonLast()" [nzLoading]="savePersonalBtnLoading">保存</button>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+
+
+</nz-card>
+<!-- 表单区域End -->
+
+
+<!-- 添加训练计划弹框 -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="康复训练项目详情" nzWidth="80%" (nzOnCancel)="handleCancel()" (nzOnOk)="saveItem()" [nzStyle]="dialogStyle">
+  <div nz-row [nzGutter]="24"  >
+    <div nz-col [nzSpan]="24"  >
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="rehabilitationName"><i class="red">*</i>康复计划名称</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+            <input nz-input placeholder="请输入康复训练名称" [(ngModel)]="personMiddleSaveItem.planName" name="rehabilitationName"  id="rehabilitationName">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24"  >
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="rehabilitationDate"><i class="red">*</i>康复训练日期</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <nz-range-picker name="rehabilitationDate" id="rehabilitationDate" [(ngModel)]="selectedDate" (ngModelChange)="onRangerPickerChange($event)"></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="rehabilitationDate">康复项目</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <nz-select nzAllowClear  style="width: 100%" [(ngModel)]="personMiddleSaveItem.trainItems"  
+            nzMode="tags" name="rehabilitationDate" id="rehabilitationDate" nzPlaceHolder="请选择">
+            <nz-option-group *ngFor="let option of rehabilitationDate" [nzLabel]="option.dictName">
+                 <nz-option *ngFor="let data of option.dictDesc" [nzLabel]="data.tag" [nzValue]="data.value"></nz-option>
+              </nz-option-group>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="rehabilitationProgress">康复训练进展情况</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <textarea rows="4" nz-input name="rehabilitationProgress" [(ngModel)]="personMiddleSaveItem.trainProcess" id="rehabilitationProgress"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="rehabilitationProblems">康复训练尚存的问题</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <textarea rows="4" nz-input name="rehabilitationProblems" [(ngModel)]="personMiddleSaveItem.trainExistProblem"
+            id="rehabilitationProblems"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="furtherTreatment ">进一步治疗目标和措施</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <textarea rows="4" nz-input name="furtherTreatment" [(ngModel)]="personMiddleSaveItem.moreCureMeasure" id="furtherTreatment"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor=" metaphaseRehabilitationNotes">康复注意事项</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <textarea rows="4" nz-input name="metaphaseRehabilitationNotes" [(ngModel)]="personMiddleSaveItem.recureAttention"
+            id="metaphaseRehabilitationNotes"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>

@@ -1,0 +1,267 @@
+<!-- 顶部功能按钮Begin -->
+<ng-template #btnArea>
+  <button nz-button nzType="default" class="mr20" (click)="back()">返回</button>
+</ng-template>
+<!-- 顶部功能按钮End -->
+
+<!-- 表单区域Begin -->
+<nz-card nzTitle="入库详情" [nzExtra]="btnArea">
+  <nz-skeleton [nzActive]="isLoading" *ngIf="isLoading"></nz-skeleton>
+  <nz-card nzType="inner" *ngIf="!isLoading">
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="whInId"
+        >入库单号</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          [ngModel]="inStorehouse.inId"
+          readonly
+          class="form_input"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="whInId"
+        >入库库房</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          [ngModel]="inStorehouse.inWhName"
+          class="form_input"
+          id="whInId"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzMd]="4" [nzLg]="4" [nzXl]="2" [nzXXl]="2" nzFor="inDate"
+        >入库时间</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          [ngModel]="inStorehouse.inDate | date: 'yyyy-MM-dd HH:mm:ss'"
+          id="inDate"
+          class="form_input"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="inSource"
+        >入库来源</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          [ngModel]="inStorehouse.inSource"
+          id="inSource"
+          class="form_input"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="accountName"
+        >入库人员</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <input
+          nz-input
+          [ngModel]="inStorehouse.operator"
+          id="accountName"
+          class="form_input"
+          readonly
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        [nzMd]="4"
+        [nzLg]="4"
+        [nzXl]="2"
+        [nzXXl]="2"
+        nzFor="inComment"
+        >备注</nz-form-label
+      >
+      <nz-form-control [nzMd]="12" [nzLg]="12" [nzXl]="14" [nzXXl]="14">
+        <textarea
+          rows="4"
+          nz-input
+          [ngModel]="inStorehouse.inComment"
+          id="inComment"
+          class="form_input"
+          readonly
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-card>
+
+  <nz-card class="mt10" nzType="inner" nzTitle="入库物品">
+    <nz-table
+      #goodsTable
+      [nzData]="inGoodsList"
+      [nzHideOnSinglePage]="true"
+      nzBordered
+      [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th class="tac">批次号</th>
+          <th class="tac">物品名称</th>
+          <th class="tac">入库日期</th>
+          <th class="tac">数量</th>
+          <th class="tac">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of goodsTable.data; let num = index">
+          <td class="maxW50 tac">{{ data?.batchNum }}</td>
+          <td class="maxW150 tac">{{ data?.name }}</td>
+          <td class="maxW80 tac">
+            {{ data?.requisitionDate | date: "yyyy-MM-dd" }}
+          </td>
+          <td class="maxW150 tac">{{ data?.inNum }}</td>
+          <td class="maxW50 tac">
+            <a href="javascript:void(0)" (click)="showSaveGoodsDialog(data)"
+              >查看</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+</nz-card>
+<!-- 表单区域End -->
+
+<nz-modal
+  [(nzVisible)]="isShowSaveGoodsDialog"
+  nzTitle="入库物品详情"
+  nzWidth="900"
+  (nzOnCancel)="isShowSaveGoodsDialog = false"
+  (nzOnOk)="isShowSaveGoodsDialog = false"
+>
+  <div nz-row nzType="flex">
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>物品名称</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.name"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>采购日期</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.requisitionDate"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>数量</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.inNum"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>生产日期</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.productionDate"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>保质期(天)</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.shelfLife"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>采购单价</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.singlePrice"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>备注</nz-form-label>
+        <nz-form-control>
+          <textarea
+            nz-input
+            class="dialog_areaInput"
+            rows="2"
+            maxlength="50"
+            [ngModel]="selectedGoods.goodsComment"
+            readonly
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label>采购总价</nz-form-label>
+        <nz-form-control>
+          <input
+            class="dialog_input"
+            nz-input
+            [ngModel]="selectedGoods.inMoney"
+            readonly
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-modal>

@@ -1,0 +1,135 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+  <div style="padding: 20px 0;">
+      <div nz-row nzType="flex">
+          <div nz-col style="margin-right:10px;margin-left: 20px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>病人</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input style="width:150px" placeholder="按老人姓名或住院号检索" [(ngModel)]="sendData.name" />
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>建筑</nz-form-label>
+                  <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="选择建筑" [(ngModel)]="sendData.build" (ngModelChange)="reFreshBuild(sendData.build)">
+                          <nz-option *ngFor="let item of buildArr;let key = index" [nzValue]="item.id" [nzLabel]="item.buildingName"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>楼层</nz-form-label>
+                  <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="选择楼层" [(ngModel)]="sendData.floor" (ngModelChange)="reFreshFloor(sendData.floor)">
+                          <nz-option *ngFor="let item of floorArr;let key = index" [nzValue]="item.id" [nzLabel]="item.floorName"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col style="margin-right:10px;">
+              <nz-form-item nzFlex>
+                  <nz-form-label>房间</nz-form-label>
+                  <nz-form-control>
+                      <nz-select style="width: 200px;" nzPlaceHolder="选择房间" [(ngModel)]="sendData.room" (ngModelChange)="getList(true)">
+                          <nz-option *ngFor="let item of roomArr;let key = index" [nzValue]="item.id" [nzLabel]="item.roomName"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div nz-col>
+              <nz-form-item nzFlex>
+                  <nz-form-control>
+                      <button nz-button nzType="primary" style="margin-left:10px;" (click)="getList(true)">
+                          查询
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+      </div>
+  </div>
+</ng-template>
+<!-- 表格查询条件End -->
+<div style="background: #fff;height: 68px;line-height: 68px;padding: 0 24px;border: 1px solid #e8e8e8;border-radius: 2px 2px 0 0;zoom: 1;margin-bottom: 1px;min-height: 48px;font-size: 16px;color: rgba(0,0,0,.85);font-weight: 500;position:relative;">
+  委托用药
+  <div style="position:absolute;display: inline-block; right:20px;">
+    <button nz-button nzType="primary" style="margin-left:10px;" (click)="addEntrust()">新增委托</button>
+  </div>
+</div>
+<div style="padding:0 50px;padding-top: 24px;background: #fff;">
+  <nz-table #basicTable [nzData]="listOfData" [nzLoading]="Loading" [nzTitle]="serchArea" nzBordered nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="totalElements" [nzShowTotal]="totalTemplate" [nzPageIndex]="sendData.page+1" [nzPageSize]="sendData.size" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"
+  (nzPageSizeChange)="PageSizeChange($event)" (nzPageIndexChange)="PageIndexChange($event)">
+      <thead>
+          <tr>
+              <th class="center">姓名</th>
+              <th class="center">床位</th>
+              <th class="center">药品</th>
+              <th class="center">规格</th>
+              <th class="center">作用</th>
+              <th class="center">剩余数量</th>
+              <th class="center">服用期限</th>
+              <th class="center">预计服用期限</th>
+              <th class="center">剂量(片/次)</th>
+              <th class="center">频次(次/天)</th>
+              <th class="center">操作</th>
+          </tr>
+      </thead>
+      <tbody>
+          <ng-container *ngFor="let item of basicTable.data">
+                <tr *ngFor="let data of item.medList;let i = index">
+                  <td [attr.rowspan]="item.medList.length" *ngIf="i == 0" class="center">{{item.name}}</td>
+                  <td [attr.rowspan]="item.medList.length" *ngIf="i == 0" class="center">{{item.bedNum}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.medName}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.standard}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.usefor}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.residues}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.endDate}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.limitPredictDate}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.dosage}}</td>
+                  <td class="center" [ngClass]="{'red': data.limitSign == 1}">{{data.frequency}}</td>
+                  <td [attr.rowspan]="item.medList.length" *ngIf="i == 0" class="center">
+                    <a href="javascript:void(0)" (click)="entrustDetail(item)">委托详情</a>
+                    <!-- <nz-divider nzType="vertical"></nz-divider> -->
+                  </td>
+                </tr>
+          </ng-container>
+      </tbody>
+  </nz-table>
+</div>
+<ng-template #totalTemplate let-total>共 {{ totalElements }} 条</ng-template>
+
+<!-- 新增委托弹框 -->
+<nz-modal nzWidth="700" [(nzVisible)]="showTrustModel" nzTitle="选择老人" (nzOnCancel)="trustModelCancel()" (nzOnOk)="trustModelOk()" [nzFooter]='null'>
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" #inputOldName nz-input placeholder="按老人姓名检索" (keyup)="onSearchNameChange($event.target.value)"/>
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="getOlderList(inputOldName.value,true)"><i nz-icon type="search"></i></button>
+    </ng-template>
+    <div style="height:20px;"></div>
+    <nz-table #entrustOlderTable nzBordered nzShowSizeChanger [nzData]="listOfEntrustOlder" [nzTotal]="totalOlderElements" [nzLoading]="entrustOlderLoading" [nzFrontPagination]="false" [nzShowTotal]="entrustOlderTableTemplate" [nzPageIndex]="OutPage+1" [nzPageSize]="OutSize"
+    (nzPageSizeChange)="OutPageSizeChange($event)" (nzPageIndexChange)="OutPageIndexChange($event)">
+        <thead>
+            <tr>
+                <th class="center">姓名</th>
+                <th class="center">性别</th>
+                <th class="center">年龄</th>
+                <th class="center">身份证号</th>
+                <th class="center">床位</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of entrustOlderTable.data" (click)="addNewEntrust(data.name,data.id)">
+                <td class="center">{{data.name}}</td>
+                <td class="center">{{data.sex}}</td>
+                <td class="center">{{data.age}}</td>
+                <td class="center">{{data.IDcard}}</td>
+                <td class="center">{{data.bedNum}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <ng-template #entrustOlderTableTemplate let-total>共 {{ totalOlderElements }} 条</ng-template>
+</nz-modal>

@@ -1,0 +1,239 @@
+<!-- 表格查询条件Begin -->
+<ng-template #serchArea>
+    <div nz-row nzType="flex">
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>病人姓名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input name="name" id="name" style="width:150px" [(ngModel)]="reqObj.name" placeholder="请输入姓名" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>建筑</nz-form-label>
+                <nz-form-control>
+                    <nz-select class="" nzPlaceHolder="请选择建筑" style="width: 150px;" [(ngModel)]="reqObj.buildId" [ngModelOptions]="{ standalone: true }" (ngModelChange)="changeBuild(reqObj.buildId)">
+                        <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                        <nz-option *ngFor="let x of buildArr; let key = index" [nzValue]="x.id" [nzLabel]="x.buildingName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>楼层</nz-form-label>
+                <nz-form-control>
+                    <nz-select class="" nzPlaceHolder="请选择楼层" style="width: 150px;" [(ngModel)]="reqObj.floorId" [ngModelOptions]="{ standalone: true }" (ngModelChange)="changeFloor(reqObj.floorId)">
+                        <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                        <nz-option *ngFor="let x of floorArr; let key = index" [nzValue]="x.id" [nzLabel]="x.floorName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>房间</nz-form-label>
+                <nz-form-control>
+                    <nz-select class="" nzPlaceHolder="请选择房间" style="width: 150px;" [(ngModel)]="reqObj.roomId">
+                        <nz-option nzValue="" nzLabel="全部" selected></nz-option>
+                        <nz-option *ngFor="let x of roomArr; let key = index" [nzValue]="x.id" [nzLabel]="x.roomName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.status">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="0" nzLabel="正常"></nz-option>
+                        <nz-option nzValue="1" nzLabel="外出就诊"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>修养类型</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.cultureType">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="政府供养" nzLabel="政府供养"></nz-option>
+                        <nz-option nzValue="社会寄养" nzLabel="社会寄养"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>护理等级</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 150px;" [(ngModel)]="reqObj.careLevelId">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option *ngFor="let item of careLevelCaseList" [nzValue]="item.id" [nzLabel]="item.levelName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-label>医疗类型</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" style="width: 200px;" [(ngModel)]="reqObj.medicalType">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="城镇职工基本医疗保险" nzLabel="城镇职工基本医疗保险"></nz-option>
+                        <nz-option nzValue="城镇居民基本医疗保险" nzLabel="城镇居民基本医疗保险"></nz-option>
+                        <nz-option nzValue="新型农村合作医疗" nzLabel="新型农村合作医疗"></nz-option>
+                        <nz-option nzValue="贫困救助" nzLabel="贫困救助"></nz-option>
+                        <nz-option nzValue="商业医疗保险" nzLabel="商业医疗保险"></nz-option>
+                        <nz-option nzValue="全公费" nzLabel="全公费"></nz-option>
+                        <nz-option nzValue="全自费" nzLabel="全自费"></nz-option>
+                        <nz-option nzValue="其他" nzLabel="其他"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col>
+            <nz-form-item nzFlex>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="updateList(true)" style="margin-left:10px;">
+                        查询
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<!-- 表格查询条件End -->
+
+<!-- 卡片显示 -->
+<nz-card [nzTitle]="serchArea">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="4" *ngFor="let data of list">
+            <nz-card class="card card-radius " [ngClass]="{'cardBgBlue':data?.status=='1','cardBgWhite':data?.status=='0'}">
+                <div class="nurseCard">
+                    <!-- 如果病人是外出就诊得显示外出日期 -->
+                    <div *ngIf="data?.status == '1'" class="titlePublic">
+                        <span class="title">外出日期：</span>
+                        <span style="display: inline-block;font-size: 13px;">{{data?.outDate}}</span>
+                        <span class="nurseLeave">
+                            <!-- 外出就诊标识 -->
+                            <img src="assets/img/outpatien/outHospital.png" alt="" class="nurseImg" />
+                        </span>
+                    </div>
+                    <!-- 如果病人是正常状态-->
+                    <div *ngIf="data?.status == '0'" class="titlePublic">
+                        <span class="title"></span>
+                        <span style="display: inline-block;font-size: 13px;"></span>
+                    </div>
+                </div>
+                <nz-skeleton [nzActive]="true" [nzAvatar]="{ size: 'large' }" [nzLoading]="isLoading">
+                    <nz-card-meta [nzAvatar]="avatarTemplate" [nzDescription]="descriptionTemplate" style="margin-top: 6px;"></nz-card-meta>
+                </nz-skeleton>
+                <div nz-row style="text-align: center;border-top:1px solid #efefef;margin-top: 5px;">
+                    <div nz-col nzSpan="12" (click)="toPatient(data)">病人档案</div>
+                    <div nz-col nzSpan="12" (click)="toLongTerm(data)">长期医嘱</div>
+                </div>
+            </nz-card>
+
+            <!-- 病人得头像显示，如果有就显示自己得，如果没有就默认，外出得头像是白色得，正常得头像是蓝色得 -->
+            <ng-template #avatarTemplate>
+                <!-- 如果状态是0正常的，图片显示蓝色头像图片 -->
+                <div class="bickImgef" *ngIf="data?.status == '0'">
+
+                </div>
+                <!-- 如果状态是1外出就医时，头像显示白色头像 -->
+                <div class="bickImg" *ngIf="data?.status == '1'">
+
+                </div>
+            </ng-template>
+
+            <!-- 显示病人基本信息  姓名、性别、年龄、修养类型、医疗类型 -->
+            <ng-template #descriptionTemplate>
+                <div [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}">
+                    <div class="paddingSpan">
+                        <!-- 病人姓名 -->
+                        <span [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}">
+                            {{ data?.name}}
+                        </span>
+                    </div>
+                    <br />
+                    <div class="paddingSpan">
+                        <!-- 病人性别 -->
+                        <div class="disB" [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}">
+                            <span *ngIf="data?.sex == '男'">男</span>
+                            <span *ngIf="data?.sex == '女'">女</span>
+                        </div>
+                        <!-- 病人年龄 -->
+                        <span [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}" style="margin-left:20px;">
+                            {{ data?.age }}岁</span>
+                    </div>
+                    <br />
+                    <div class="paddingSpan">
+                        <!-- 病人床位 -->
+                        <div class="disB" [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}">
+                            <span>{{ data?.bedName }}</span>
+                        </div>
+                        <!-- 病人护理等级 -->
+                        <span [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}" class="nursCase">
+                            {{ data?.careLevel}}</span>
+                    </div>
+                    <br />
+
+                    <div class="paddingSpan" style="height:30px;">
+                        <!-- 修养类型 -->
+                        <div class="disB widthI" [ngClass]="{'whitColr':data?.status == '1','bickColr':data?.status == '0'}">
+                            {{data?.cultureType}}
+                        </div>
+                        <!-- 医疗类型 -->
+                        <span style="margin-left:20px;">
+                            <img src="assets/img/outpatien/xin.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='新型农村合作医疗' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/xin1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='新型农村合作医疗' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/jum.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='城镇居民基本医疗保险' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/jum1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='城镇居民基本医疗保险' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/zhigong.png" alt="" style="width: 37px;" *ngIf="data?.medicalType=='城镇职工基本医疗保险' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/zhigong1.png" alt="" style="width: 37px;" *ngIf="data?.medicalType=='城镇职工基本医疗保险' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/pingk.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='贫困救助' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/pingk1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='贫困救助' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/baox1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='商业医疗保险' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/baox.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='商业医疗保险' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/gongfei1.png" alt="" style="width: 24px;" *ngIf="data?.medicalType=='全公费' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/gongfei.png" alt="" style="width: 24px;" *ngIf="data?.medicalType=='全公费' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/zifei1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='全自费' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/zifei.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='全自费' && data?.status=='1'" />
+                            <img src="assets/img/outpatien/other.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='其他' && data?.status=='0'" />
+                            <img src="assets/img/outpatien/other1.png" alt="" style="width: 30px;" *ngIf="data?.medicalType=='其他' && data?.status=='1'" />
+                        </span>
+                    </div>
+                    <br />
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <!-- 分页显示 -->
+    <div nz-row class="marginTopBottom16">
+        <div class="floatRight">
+            <nz-pagination [(nzPageIndex)]="reqObj.page" [(nzTotal)]="total" [(nzPageSize)]="reqObj.size" [nzShowTotal]="totalTemplate" (nzPageIndexChange)="onPageIndexChange($event)"></nz-pagination>
+            <ng-template #totalTemplate let-total> 共 {{ total }} 条 </ng-template>
+        </div>
+    </div>
+
+    <!-- 医疗类型图片解释 -->
+    <div>
+        <img src="assets/img/outpatien/xin.png" alt="" /><span>新型农村合作医疗</span>
+        <img src="assets/img/outpatien/jum.png" alt="" class="imgAll" /><span>城镇居民基本医疗保险</span>
+        <img src="assets/img/outpatien/zhigong.png" alt="" /><span>城镇职工基本医疗保险</span>
+        <img src="assets/img/outpatien/pingk.png" alt="" class="imgAll" /><span>贫困救助</span>
+        <img src="assets/img/outpatien/baox1.png" alt="" class="imgAll" /><span class="jies">商业医疗保险</span>
+        <img src="assets/img/outpatien/gongfei1.png" alt="" class="imgAll" style="width:25px;" /><span class="jies">全公费</span>
+        <img src="assets/img/outpatien/zifei1.png" alt="" class="imgAll" /><span class="jies">全自费</span>
+        <img src="assets/img/outpatien/other.png" alt="" class="imgAll" /><span class="jies">其他</span>
+        <img src="assets/img/outpatien/1.png" alt="" class="imgAll" /><span class="jies">外出就诊</span>
+    </div>
+<<<<<<< HEAD
+</nz-card>
+=======
+</nz-card>
+>>>>>>> 9dda0dbaf712eacbb8cb0d8e4c2d5c50444fbe68

@@ -1,0 +1,144 @@
+<!-- 主体内容 Begin -->
+<object id="factory" style="display:none" viewastext classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=5,60,0,360"></object>
+<div nz-row>
+    <div nz-col nzMd="24" nzLg="24" nzXl="24" nzXXl="24">
+        <div class="w100p">
+            <div id="nursingOrder" style="page-break-after: always;" class="w100p pr10 pb20" #printArea>
+                <div class="tac ftz12">
+                    <span class="ftzPt20">{{ systemInfo.sysTitle }}</span>
+                </div>
+                <div class="h100 posRel">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <div class="w100p tac ftz13">
+                            <span class="ftwB ftzPt16">一&nbsp;般&nbsp;护&nbsp;理&nbsp;记&nbsp;录&nbsp;单&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="posAbs r0 t0">
+                        <e-ngx-print #print [showBtn]="false" [btnText]="'打印'" [btnClass]="{ btn: true, 'btn-success': true }" [printHTML]="printArea" [printCSS]="printCSS" [printStyle]="printStyle" (printComplete)="printComplete()"></e-ngx-print>
+                        <!-- <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="clickPrint($event)">打印当前</button> -->
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isPrintNow" (click)="printAll()" [nzLoading]="serAll">
+                            <span *ngIf="!serAll">打印</span>
+                            <span *ngIf="serAll">正在查询</span>
+                        </button>
+                        <button nz-button nzType="default" class="ml20" *ngIf="!isAdd && !isPrintNow" (click)="cancelAdd()">取消新增</button>
+                        <button nz-button nzType="primary" class="ml20" *ngIf="isAdd && !isPrintNow && !isDisable" (click)="addData()">新增</button>
+                        <button nz-button nzType="primary" class="ml20" *ngIf="!isAdd && !isDisable" (click)="saveForm()">保存</button>
+                    </div>
+                </div>
+                <div class="mt10">
+                    <table class="w100p cusTable" style="border: none !important;">
+                        <thead class="w100p" style="display:table-header-group;border: none !important;">
+                            <tr class="w100p" style="border: none !important;">
+                                <td class="w100p" colspan="4" style="border: none !important;">
+                                    <div class="w100p h30">
+                                        <div class="w100p disFlex justConSB">
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>姓名：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{formInfo?.basicInfo?.name}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>科别：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{formInfo?.sectionOffice?.name}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>病区：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{formInfo?.sickWard?.sickWardName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>床号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{formInfo?.bedName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="disFlex">
+                                                <div>
+                                                    <span>住院号：</span>
+                                                </div>
+                                                <div>
+                                                    <span>{{formInfo?.admissionNo}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tac">日期</td>
+                                <td class="tac">时间</td>
+                                <td class="tac">病情观察情况及护理措施和效果</td>
+                                <td class="tac">护士签名</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of formData">
+                                <td class="w100" *ngIf="!isPrintNow">
+                                    <nz-date-picker [attr.value]="x.date" [(ngModel)]="x.date"></nz-date-picker>
+                                    <!-- <input nz-input placeholder="yyyy-mm-dd" class="cusNoLineInput h20 tac" [attr.value]="x.date" [(ngModel)]="x.date"> -->
+                                </td>
+                                <td class="w100" *ngIf="!isPrintNow">
+                                    <nz-time-picker class="w100p" nzFormat="HH:mm" [attr.value]="x.time" [(ngModel)]="x.time" [nzAddOn]="addOnTemplate" #timePicker></nz-time-picker>
+                                    <ng-template #addOnTemplate>
+                                        <button nz-button nzSize="small" nzType="primary" (click)="timePicker.close()">确定</button>
+                                    </ng-template>
+                                    <!-- <input nz-input placeholder="hh:mm" class="cusNoLineInput h20 tac" [attr.value]="x.time" [(ngModel)]="x.time"> -->
+                                </td>
+                                <td *ngIf="!isPrintNow">
+                                    <textarea nz-input rows="4" class="cusNoLineTextarea w100p" placeholder="请输入详细信息" [attr.value]="x.disease" [(ngModel)]="x.disease"></textarea>
+                                </td>
+                                <td class="w100" *ngIf="!isPrintNow">
+                                    <input nz-input placeholder="" class="cusNoLineInput h20 tac" [attr.value]="x.empName" [(ngModel)]="x.empName" [disabled]="true">
+                                </td>
+                            </tr>
+                            <tr *ngFor="let x of listAll;let i = index;">
+                                <td style="min-height: 30px;" class="w100 textCenter">{{x?.date}}</td>
+                                <td class="w100 textCenter">{{x?.time}}</td>
+                                <td class="textCenter paddingAll">
+                                    {{x?.disease}}
+
+                                    <!-- <div *ngFor="let item of x?.objArr,let c=index" [ngClass]="{'borderC': c!=x.objArr.length-1, 'borderB': c==x.objArr.length-1}">
+                                        {{item}}
+                                    </div> -->
+                                </td>
+                                <td class="w100 textCenter">{{x?.sign}}</td>
+                            </tr>
+                            <tr *ngFor="let x of nullList;let i = index;">
+                                <td style="min-height: 30px;" class="w100 textCenter">&nbsp;</td>
+                                <td class="w100 textCenter"></td>
+                                <td class="pl10 textCenter"></td>
+                                <td class="w100 textCenter"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="disFlex justConC mt30" *ngIf="!isPrintNow">
+                    <span *ngIf="isMore" class="color09F" (click)="loadingMore()">
+                        <nz-spin nzSimple [nzSize]="'small'" *ngIf="isLoading"></nz-spin>
+                        <i nz-icon type="down" theme="outline" *ngIf="!isLoading"></i>
+                        &emsp;加载更多
+                    </span>
+                    <span *ngIf="!isMore" class="color09F">没有更多数据</span>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主体内容 End -->
+<!-- 新增数据弹出框 Begin -->
+<nz-modal [(nzVisible)]="isVisible" nzTitle="提示" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <p>是否确认保存该条数据？</p>
+</nz-modal>
+<!-- 新增数据弹出框 End -->
