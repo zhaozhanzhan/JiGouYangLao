@@ -50,7 +50,7 @@
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "ts-helpers": "1.1.2",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "zone.js": "^0.8.26",
     "ztree": "^3.5.24"
   },
